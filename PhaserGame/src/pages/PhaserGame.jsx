@@ -21,6 +21,7 @@ function PhaserGame() {
                     preload: function () {
                         this.load.image('ground', 'images/image 52.png');
                         this.load.image('unbrkwall', 'images/unbreakable_wall.png');
+                        this.load.image('brkwall','images/brick-wall.png')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 30,
                             frameHeight: 50,
@@ -46,6 +47,7 @@ function PhaserGame() {
                         const self = this;
 
                         this.createBackgrounds = function () { 
+                            //add background
                             self.add.sprite(-500, -500, 'ground').setOrigin(0, 0);
                         }
 
@@ -83,14 +85,23 @@ function PhaserGame() {
     
                                     for (let bb = 1; bb <= self.rows - 3; bb++) {
                                         if (putWall) {
-                                            let innerWall = self.topwall.create(adjusttopwall, insidewall, 'unbrkwall');
-                                            insidewall += self.wallDim;
-                                            innerWall.body.setSize(self.wallDim, self.wallDim);
-                                            innerWall.setDisplaySize(self.wallDim, self.wallDim);
-                                            putWall = false;
+                                            //random number to check wether to put wall or not
+                                            var randnum =  Math.random() < 0.75 ? 1 : 0;
+                                            if (randnum == 1) {
+                                                let innerWall = self.topwall.create(adjusttopwall, insidewall, 'unbrkwall');
+                                                insidewall += self.wallDim;
+                                                innerWall.body.setSize(self.wallDim, self.wallDim);
+                                                innerWall.setDisplaySize(self.wallDim, self.wallDim);
+                                                putWall = false;
+                                            }
+                                            else {
+                                                insidewall+=self.wallDim
+                                                putWall = false;
+                                            }
                                         } else {
                                             insidewall += self.wallDim;
-                                            putWall = true;
+                                            putWall = true
+                                            
                                         }
                                     }
                                     skipColumn = true;
@@ -120,7 +131,7 @@ function PhaserGame() {
                             }
                         },
                         this.createPlayer= function() {
-                            self.player = self.physics.add.sprite(500, 500, 'character');
+                            self.player = self.physics.add.sprite(60, 450, 'character');
                             self.player.setScale(48 / 30, 70 / 50);
                             self.player.setCollideWorldBounds(true);
     
