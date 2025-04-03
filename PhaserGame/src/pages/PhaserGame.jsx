@@ -86,7 +86,7 @@ function PhaserGame() {
                                     for (let bb = 0; bb <= self.rows - 2; bb++) {
                                         if (putWall && (bb >=1 && bb <=self.rows-3)) {
                                             //random number to check wether to put wall or not
-                                            var randnum =  Math.random() < 0.80 ? 1 : 0;
+                                            let randnum =  Math.random() < 0.80 ? 1 : 0;
                                             if (randnum == 1) {
                                                 let innerWall = self.topwall.create(adjusttopwall, insidewall, 'unbrkwall');
                                                 insidewall += self.wallDim;
@@ -95,18 +95,33 @@ function PhaserGame() {
                                                 putWall = false;
                                             }
                                             else {
+                                                let randnum = Math.random() < 0.50 ? 1 : 0;
+                                                if (randnum == 1) {
+                                                    let innerWall = self.topwall.create(adjusttopwall, insidewall, 'brkwall');
+                                                    insidewall += self.wallDim;
+                                                    innerWall.body.setSize(self.wallDim, self.wallDim);
+                                                    innerWall.setDisplaySize(self.wallDim, self.wallDim);
+                                                    putWall = false;
+                                                }
+                                                else {
+                                                    insidewall += self.wallDim;
+                                                    putWall = false;
+                                                }
+
+                                            }
+                                        } else {
+                                            let randnum = Math.random() < 0.50 ? 1 : 0;
+                                            if (randnum == 1) {
                                                 let innerWall = self.topwall.create(adjusttopwall, insidewall, 'brkwall');
                                                 insidewall += self.wallDim;
                                                 innerWall.body.setSize(self.wallDim, self.wallDim);
                                                 innerWall.setDisplaySize(self.wallDim, self.wallDim);
-                                                putWall = false;
+                                                putWall = true
                                             }
-                                        } else {
-                                            let innerWall = self.topwall.create(adjusttopwall, insidewall, 'brkwall');
-                                            insidewall += self.wallDim;
-                                            innerWall.body.setSize(self.wallDim, self.wallDim);
-                                            innerWall.setDisplaySize(self.wallDim, self.wallDim);
-                                            putWall = true
+                                            else {
+                                                insidewall += self.wallDim;
+                                                putWall = true
+                                            }
                                             
                                         }
                                     }
@@ -115,11 +130,17 @@ function PhaserGame() {
                                     if (nn != 0 && nn <= self.cols - 3 && skipColumn) {
                                         let insidewall = self.wallDim;
                                         for (let bb = 0; bb <= self.rows - 2; bb++) { 
-                                            
-                                            let innerWall = self.topwall.create(adjusttopwall, insidewall, 'brkwall');
-                                            insidewall += self.wallDim;
-                                            innerWall.body.setSize(self.wallDim, self.wallDim);
-                                            innerWall.setDisplaySize(self.wallDim, self.wallDim);
+
+                                            let randnum = Math.random() < 0.50 ? 1 : 0;
+                                            if (randnum == 1) {
+                                                let innerWall = self.topwall.create(adjusttopwall, insidewall, 'brkwall');
+                                                insidewall += self.wallDim;
+                                                innerWall.body.setSize(self.wallDim, self.wallDim);
+                                                innerWall.setDisplaySize(self.wallDim, self.wallDim);
+                                            }
+                                            else {
+                                                insidewall += self.wallDim;
+                                            }
                                         }
                                     }
                                     skipColumn = false;
