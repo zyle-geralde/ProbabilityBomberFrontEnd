@@ -21,6 +21,7 @@ function PhaserGame() {
                     preload: function () {
                         this.load.image('ground', 'images/image 52.png');
                         this.load.image('unbrkwall', 'images/unbreakable_wall.png');
+                        this.load.image('brkwall','images/brick-wall.png')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 30,
                             frameHeight: 50,
@@ -32,8 +33,8 @@ function PhaserGame() {
                         this.player = null;
                         this.cursors = null;
                         this.wallDim = 64;
-                        this.cols = 19;
-                        this.rows = 8;
+                        this.cols = 15;//odd
+                        this.rows = 8;//even
                         this.totalWallWidth = this.cols * this.wallDim;
                         this.totalWallHeight = this.rows * this.wallDim;
                         this.speed = 150;
@@ -46,6 +47,7 @@ function PhaserGame() {
                         const self = this;
 
                         this.createBackgrounds = function () { 
+                            //add background
                             self.add.sprite(-500, -500, 'ground').setOrigin(0, 0);
                         }
 
@@ -77,24 +79,49 @@ function PhaserGame() {
                                 wall.body.setSize(self.wallDim, self.wallDim);
                                 wall.setDisplaySize(self.wallDim, self.wallDim);
     
-                                if (nn >= 1 && nn <= self.cols - 4 && !skipColumn) {
-                                    let insidewall = self.wallDim * 2;
+                                if (nn >= 1 && nn <= self.cols - 3 && !skipColumn) {
+                                    let insidewall = self.wallDim;
                                     let putWall = true;
     
-                                    for (let bb = 1; bb <= self.rows - 3; bb++) {
-                                        if (putWall) {
-                                            let innerWall = self.topwall.create(adjusttopwall, insidewall, 'unbrkwall');
+                                    for (let bb = 0; bb <= self.rows - 2; bb++) {
+                                        if (putWall && (bb >=1 && bb <=self.rows-3)) {
+                                            //random number to check wether to put wall or not
+                                            var randnum =  Math.random() < 0.80 ? 1 : 0;
+                                            if (randnum == 1) {
+                                                let innerWall = self.topwall.create(adjusttopwall, insidewall, 'unbrkwall');
+                                                insidewall += self.wallDim;
+                                                innerWall.body.setSize(self.wallDim, self.wallDim);
+                                                innerWall.setDisplaySize(self.wallDim, self.wallDim);
+                                                putWall = false;
+                                            }
+                                            else {
+                                                let innerWall = self.topwall.create(adjusttopwall, insidewall, 'brkwall');
+                                                insidewall += self.wallDim;
+                                                innerWall.body.setSize(self.wallDim, self.wallDim);
+                                                innerWall.setDisplaySize(self.wallDim, self.wallDim);
+                                                putWall = false;
+                                            }
+                                        } else {
+                                            let innerWall = self.topwall.create(adjusttopwall, insidewall, 'brkwall');
                                             insidewall += self.wallDim;
                                             innerWall.body.setSize(self.wallDim, self.wallDim);
                                             innerWall.setDisplaySize(self.wallDim, self.wallDim);
-                                            putWall = false;
-                                        } else {
-                                            insidewall += self.wallDim;
-                                            putWall = true;
+                                            putWall = true
+                                            
                                         }
                                     }
                                     skipColumn = true;
                                 } else {
+                                    if (nn != 0 && nn <= self.cols - 3 && skipColumn) {
+                                        let insidewall = self.wallDim;
+                                        for (let bb = 0; bb <= self.rows - 2; bb++) { 
+                                            
+                                            let innerWall = self.topwall.create(adjusttopwall, insidewall, 'brkwall');
+                                            insidewall += self.wallDim;
+                                            innerWall.body.setSize(self.wallDim, self.wallDim);
+                                            innerWall.setDisplaySize(self.wallDim, self.wallDim);
+                                        }
+                                    }
                                     skipColumn = false;
                                 }
                             }
@@ -120,7 +147,7 @@ function PhaserGame() {
                             }
                         },
                         this.createPlayer= function() {
-                            self.player = self.physics.add.sprite(500, 500, 'character');
+                            self.player = self.physics.add.sprite(60, 450, 'character');
                             self.player.setScale(48 / 30, 70 / 50);
                             self.player.setCollideWorldBounds(true);
     
@@ -189,6 +216,7 @@ function PhaserGame() {
                         this.createWalls();
                         this.createPlayer();
                         this.cursors = this.input.keyboard.createCursorKeys();
+                        self.cameras.main.scrollX = -300
                     },
                     update:function() {
                         this.handleCollisions();
