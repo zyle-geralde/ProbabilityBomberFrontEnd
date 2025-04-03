@@ -33,8 +33,8 @@ function PhaserGame() {
                         this.player = null;
                         this.cursors = null;
                         this.wallDim = 64;
-                        this.cols = 19;
-                        this.rows = 8;
+                        this.cols = 15;//odd
+                        this.rows = 8;//even
                         this.totalWallWidth = this.cols * this.wallDim;
                         this.totalWallHeight = this.rows * this.wallDim;
                         this.speed = 150;
@@ -79,14 +79,14 @@ function PhaserGame() {
                                 wall.body.setSize(self.wallDim, self.wallDim);
                                 wall.setDisplaySize(self.wallDim, self.wallDim);
     
-                                if (nn >= 1 && nn <= self.cols - 4 && !skipColumn) {
-                                    let insidewall = self.wallDim * 2;
+                                if (nn >= 1 && nn <= self.cols - 3 && !skipColumn) {
+                                    let insidewall = self.wallDim;
                                     let putWall = true;
     
-                                    for (let bb = 1; bb <= self.rows - 3; bb++) {
-                                        if (putWall) {
+                                    for (let bb = 0; bb <= self.rows - 2; bb++) {
+                                        if (putWall && (bb >=1 && bb <=self.rows-3)) {
                                             //random number to check wether to put wall or not
-                                            var randnum =  Math.random() < 0.75 ? 1 : 0;
+                                            var randnum =  Math.random() < 0.80 ? 1 : 0;
                                             if (randnum == 1) {
                                                 let innerWall = self.topwall.create(adjusttopwall, insidewall, 'unbrkwall');
                                                 insidewall += self.wallDim;
@@ -112,9 +112,9 @@ function PhaserGame() {
                                     }
                                     skipColumn = true;
                                 } else {
-                                    if (nn != 0 && nn <= self.cols - 4 && skipColumn) {
-                                        let insidewall = self.wallDim * 2;
-                                        for (let bb = 1; bb <= self.rows - 3; bb++) { 
+                                    if (nn != 0 && nn <= self.cols - 3 && skipColumn) {
+                                        let insidewall = self.wallDim;
+                                        for (let bb = 0; bb <= self.rows - 2; bb++) { 
                                             
                                             let innerWall = self.topwall.create(adjusttopwall, insidewall, 'brkwall');
                                             insidewall += self.wallDim;
@@ -216,6 +216,7 @@ function PhaserGame() {
                         this.createWalls();
                         this.createPlayer();
                         this.cursors = this.input.keyboard.createCursorKeys();
+                        self.cameras.main.scrollX = -300
                     },
                     update:function() {
                         this.handleCollisions();
