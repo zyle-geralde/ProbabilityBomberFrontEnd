@@ -95,17 +95,33 @@ function PhaserGame() {
                                                 putWall = false;
                                             }
                                             else {
-                                                insidewall+=self.wallDim
+                                                let innerWall = self.topwall.create(adjusttopwall, insidewall, 'brkwall');
+                                                insidewall += self.wallDim;
+                                                innerWall.body.setSize(self.wallDim, self.wallDim);
+                                                innerWall.setDisplaySize(self.wallDim, self.wallDim);
                                                 putWall = false;
                                             }
                                         } else {
+                                            let innerWall = self.topwall.create(adjusttopwall, insidewall, 'brkwall');
                                             insidewall += self.wallDim;
+                                            innerWall.body.setSize(self.wallDim, self.wallDim);
+                                            innerWall.setDisplaySize(self.wallDim, self.wallDim);
                                             putWall = true
                                             
                                         }
                                     }
                                     skipColumn = true;
                                 } else {
+                                    if (nn != 0 && nn <= self.cols - 4 && skipColumn) {
+                                        let insidewall = self.wallDim * 2;
+                                        for (let bb = 1; bb <= self.rows - 3; bb++) { 
+                                            
+                                            let innerWall = self.topwall.create(adjusttopwall, insidewall, 'brkwall');
+                                            insidewall += self.wallDim;
+                                            innerWall.body.setSize(self.wallDim, self.wallDim);
+                                            innerWall.setDisplaySize(self.wallDim, self.wallDim);
+                                        }
+                                    }
                                     skipColumn = false;
                                 }
                             }
