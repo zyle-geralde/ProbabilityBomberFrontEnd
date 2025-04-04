@@ -172,8 +172,8 @@ function PhaserGame() {
                             this.createPlayer = function () {
                                 self.player = self.physics.add.sprite(60, 450, 'character');
                                 //self.player.setScale(48 / 30, 70 / 50);
-                                self.player.body.setSize(self.wallDim-15, self.wallDim - 3);
-                                self.player.setDisplaySize(self.wallDim-15, self.wallDim - 3);
+                                self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
+                                self.player.setDisplaySize(self.wallDim - 15, self.wallDim - 3);
                                 self.player.setCollideWorldBounds(true);
 
                                 self.anims.create({
@@ -241,15 +241,38 @@ function PhaserGame() {
                                     self.cameras.main.scrollY += self.cameraSpeed * self.game.loop.delta / 1000;
                                 }
                             },
-                            this.dropBomb= function () {
+                            this.dropBomb = function () {
                                 const gridX = Math.round(self.player.x / self.wallDim) * self.wallDim;
                                 const gridY = Math.round(self.player.y / self.wallDim) * self.wallDim;
-                            
+
                                 let bomb = self.physics.add.group({ immovable: true }).create(gridX, gridY, 'bomb');
-                                bomb.body.setSize(self.bombSize, self.bombSize);
-                                bomb.setDisplaySize(self.bombSize, self.bombSize);
-                            
-                                self.time.delayedCall(2000, self.explodeBomb, [bomb], self);
+
+                                bomb.body.setSize(0, 0); //Set initial body size to 0
+                                bomb.setDisplaySize(0, 0); //Set initial display size to 0
+
+                                self.tweens.add({
+                                    targets: bomb,
+                                    displayWidth: self.bombSize, //Animate to original displayWidth
+                                    displayHeight: self.bombSize, //Animate to original displayHeight
+                                    duration: 100, // Duration of the animation in milliseconds
+                                    ease: 'Linear', //Easing function ('Linear', 'EaseInOut')
+                                    onComplete: function () {
+                                        //after the tween. set the body size to the display size.
+                                        bomb.body.setSize(self.bombSize, self.bombSize);
+
+                                        // Start alternating opacity tween
+                                        self.tweens.add({
+                                            targets: bomb,
+                                            alpha: { from: 1, to: 0.5 },//opacity
+                                            duration: 400,
+                                            ease: 'Linear',
+                                            yoyo: true,// Allow alternate
+                                            repeat: -1 // Infinite loop
+                                        });
+                                    }
+                                });
+
+
                             },
 
 
