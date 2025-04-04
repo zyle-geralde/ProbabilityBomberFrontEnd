@@ -50,10 +50,11 @@ function PhaserGame() {
                         this.bombLimit = 1
                         this.bombDuration = 300
                         this.bombrepeat = 4
-                        this.bombRange = 2
+                        this.bombRange = 1
                         this.unbrkWallList = []
                         this.brkWallList = []
                         this.brkWallGroup = null
+                        this.bombGroup = null
 
                         const self = this;
 
@@ -219,6 +220,7 @@ function PhaserGame() {
                                 self.physics.add.collider(self.player, self.rightwall);
                                 self.physics.add.collider(self.player, self.bottomwall);
                                 self.physics.add.collider(self.player, self.brkWallGroup);
+                                self.physics.add.collider(self.player,self.bombGroup)
                                 
                             },
                             this.handlePlayerMovement = function () {
@@ -274,8 +276,9 @@ function PhaserGame() {
                                 if (self.bombLoc.some(bomb => bomb.x === gridX && bomb.y === gridY)) {
                                     return
                                 }
-
-                                let bomb = self.physics.add.group({ immovable: true }).create(gridX, gridY, 'bomb');
+                            
+                                self.bombGroup = self.physics.add.group({ immovable: true })
+                                let bomb = self.bombGroup.create(gridX, gridY, 'bomb');
 
                                 bomb.body.setSize(0, 0); //Set initial body size to 0
                                 bomb.setDisplaySize(0, 0); //Set initial display size to 0
