@@ -46,6 +46,9 @@ function PhaserGame() {
                         this.bottomwall = null;
                         this.bombSize = 40;
                         this.bombLoc = []
+                        this.bombLimit = 1
+                        this.bombDuration = 300
+                        this.bombrepeat = 4
 
                         const self = this;
 
@@ -245,9 +248,15 @@ function PhaserGame() {
                             this.dropBomb = function () {
                                 const gridX = Math.round(self.player.x / self.wallDim) * self.wallDim;
                                 const gridY = Math.round(self.player.y / self.wallDim) * self.wallDim;
-                            
+                                
+                                //check if number of bombs exceed bomblimit
+                                if (self.bombLoc.length >= self.bombLimit) {
+                                    console.log("bomb exceed limit")
+                                    return
+                                }
+                                //check if location exist
                                 if (self.bombLoc.some(bomb => bomb.x === gridX && bomb.y === gridY)) {
-                                    console.log("Existed already")
+
                                     return
                                 }
                                 
@@ -274,10 +283,13 @@ function PhaserGame() {
                                         self.tweens.add({
                                             targets: bomb,
                                             alpha: { from: 1, to: 0.5 },//opacity
-                                            duration: 400,
+                                            duration: self.bombDuration,
                                             ease: 'Linear',
                                             yoyo: true,// Allow alternate
-                                            repeat: -1 // Infinite loop
+                                            repeat: self.bombrepeat, // Infinite loop
+                                            onComplete: function () {
+                                                
+                                            }
                                         });
                                     }
                                 });
