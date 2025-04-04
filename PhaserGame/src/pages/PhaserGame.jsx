@@ -331,27 +331,42 @@ function PhaserGame() {
                                                 })
 
                                                 let bombDur = 150
+                                                let topExplode = true
+                                                let bottomExplode = true
+                                                let rightExplode = true
+                                                let leftExplode = true
+
                                                 for (var bombnum = 1; bombnum <= self.bombRange; bombnum++) {
                                                     // Add top bomb
-                                                    let explodeTop = self.physics.add.group({ immovable: true }).create(gridX, gridY - (bombnum * self.wallDim), 'explode');
-                                                    explodeTop.body.setSize(self.bombSize, self.bombSize);
-                                                    explodeTop.setDisplaySize(self.bombSize, self.bombSize);
+                                                    if (self.unbrkWallList.some(bomb => bomb.x === gridX && bomb.y === gridY - (bombnum * self.wallDim)) && topExplode == true){
+                                                        topExplode = false
+                                                    }
+                                                    if (topExplode == true) {
+                                                        let explodeTop = self.physics.add.group({ immovable: true }).create(gridX, gridY - (bombnum * self.wallDim), 'explode');
+                                                        explodeTop.body.setSize(self.bombSize, self.bombSize);
+                                                        explodeTop.setDisplaySize(self.bombSize, self.bombSize);
+    
+                                                        explodeTop.alpha = 0
+                                                        //animation for bomb
+                                                        self.tweens.add({
+                                                            targets: explodeTop,
+                                                            alpha: 1,
+                                                            duration: bombDur, // Duration of the animation in milliseconds
+                                                            ease: 'Linear', //Easing function ('Linear', 'EaseInOut')
+                                                            onComplete: function () {
+                                                                // Add a delay before destroying the explosion
+                                                            self.time.delayedCall(700, function () { // 500 milliseconds (0.5 seconds) delay
+                                                                explodeTop.destroy();
+                                                            }, [], self); // The last self argument ensures that the context of the destroy function is correct.
+                                                            }
+                                                        })
+                                                    }
 
-                                                    explodeTop.alpha = 0
-                                                    //animation for bomb
-                                                    self.tweens.add({
-                                                        targets: explodeTop,
-                                                        alpha: 1,
-                                                        duration: bombDur, // Duration of the animation in milliseconds
-                                                        ease: 'Linear', //Easing function ('Linear', 'EaseInOut')
-                                                        onComplete: function () {
-                                                            // Add a delay before destroying the explosion
-                                                        self.time.delayedCall(700, function () { // 500 milliseconds (0.5 seconds) delay
-                                                            explodeTop.destroy();
-                                                        }, [], self); // The last self argument ensures that the context of the destroy function is correct.
-                                                        }
-                                                    })
+                                                    if (self.unbrkWallList.some(bomb => bomb.x === gridX - (bombnum * self.wallDim) && bomb.y === gridY) && leftExplode == true){
+                                                        leftExplode = false
+                                                    }
 
+                                                    if (leftExplode == true) {
                                                     // Add left bomb
                                                     let explodeLeft = self.physics.add.group({ immovable: true }).create(gridX - (bombnum * self.wallDim), gridY, 'explode');
                                                     explodeLeft.body.setSize(self.bombSize, self.bombSize);
@@ -371,7 +386,13 @@ function PhaserGame() {
                                                         }, [], self); // The last self argument ensures that the context of the destroy function is correct.
                                                         }
                                                     })
+                                                    }
 
+                                                    if (self.unbrkWallList.some(bomb => bomb.x ===gridX + (bombnum * self.wallDim) && bomb.y === gridY) && rightExplode == true){
+                                                        rightExplode = false
+                                                    }
+
+                                                    if (rightExplode == true) {
                                                     // Add right bomb
                                                     let explodeRight = self.physics.add.group({ immovable: true }).create(gridX + (bombnum * self.wallDim), gridY, 'explode');
                                                     explodeRight.body.setSize(self.bombSize, self.bombSize);
@@ -391,8 +412,14 @@ function PhaserGame() {
                                                         }, [], self); // The last self argument ensures that the context of the destroy function is correct.
                                                         }
                                                     })
+                                                    }
 
-                                                    // Add bottom bomb
+                                                    if (self.unbrkWallList.some(bomb => bomb.x ===gridX && bomb.y === gridY + (bombnum * self.wallDim)) && bottomExplode == true){
+                                                        bottomExplode = false
+                                                    }
+
+                                                    if (bottomExplode == true) {
+                                                                                                            // Add bottom bomb
                                                     let explodeBottom = self.physics.add.group({ immovable: true }).create(gridX, gridY + (bombnum * self.wallDim), 'explode');
                                                     explodeBottom.body.setSize(self.bombSize, self.bombSize);
                                                     explodeBottom.setDisplaySize(self.bombSize, self.bombSize);
@@ -411,6 +438,7 @@ function PhaserGame() {
                                                         }, [], self); // The last self argument ensures that the context of the destroy function is correct.
                                                         }
                                                     })
+                                                    }
 
                                                     bombDur += 50
 
