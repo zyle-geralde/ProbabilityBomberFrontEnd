@@ -45,6 +45,7 @@ function PhaserGame() {
                         this.rightwall = null;
                         this.bottomwall = null;
                         this.bombSize = 40;
+                        this.bombLoc = []
 
                         const self = this;
 
@@ -244,11 +245,20 @@ function PhaserGame() {
                             this.dropBomb = function () {
                                 const gridX = Math.round(self.player.x / self.wallDim) * self.wallDim;
                                 const gridY = Math.round(self.player.y / self.wallDim) * self.wallDim;
-
+                            
+                                if (self.bombLoc.some(bomb => bomb.x === gridX && bomb.y === gridY)) {
+                                    console.log("Existed already")
+                                    return
+                                }
+                                
                                 let bomb = self.physics.add.group({ immovable: true }).create(gridX, gridY, 'bomb');
 
                                 bomb.body.setSize(0, 0); //Set initial body size to 0
                                 bomb.setDisplaySize(0, 0); //Set initial display size to 0
+                            
+                                //add to bombArray
+                                self.bombLoc.push({"x":gridX,"y":gridY})
+                            
 
                                 self.tweens.add({
                                     targets: bomb,
