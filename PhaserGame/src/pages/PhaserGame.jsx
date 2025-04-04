@@ -50,7 +50,9 @@ function PhaserGame() {
                         this.bombLimit = 1
                         this.bombDuration = 300
                         this.bombrepeat = 4
-                        this.bombRange = 1
+                        this.bombRange = 2
+                        this.unbrkWallList = []
+                        this.brkWallList = []
 
                         const self = this;
 
@@ -71,6 +73,7 @@ function PhaserGame() {
                             let adjustwall = self.wallDim;
                             for (let nn = 0; nn < self.rows; nn++) {
                                 let wall = self.outsidewall.create(0, adjustwall, 'unbrkwall');
+                                self.unbrkWallList.push({"x":0,"y":adjustwall})
                                 adjustwall += self.wallDim;
                                 wall.body.setSize(self.wallDim, self.wallDim);
                                 wall.setDisplaySize(self.wallDim, self.wallDim);
@@ -83,6 +86,7 @@ function PhaserGame() {
 
                             for (let nn = 0; nn < self.cols; nn++) {
                                 let wall = self.topwall.create(adjusttopwall, 0, 'unbrkwall');
+                                self.unbrkWallList.push({"x":adjusttopwall,"y":0})
                                 adjusttopwall += self.wallDim;
                                 wall.body.setSize(self.wallDim, self.wallDim);
                                 wall.setDisplaySize(self.wallDim, self.wallDim);
@@ -97,6 +101,7 @@ function PhaserGame() {
                                             let randnum = Math.random() < 0.80 ? 1 : 0;
                                             if (randnum == 1) {
                                                 let innerWall = self.topwall.create(adjusttopwall, insidewall, 'unbrkwall');
+                                                self.unbrkWallList.push({"x":adjusttopwall,"y":insidewall})
                                                 insidewall += self.wallDim;
                                                 innerWall.body.setSize(self.wallDim, self.wallDim);
                                                 innerWall.setDisplaySize(self.wallDim, self.wallDim);
@@ -106,6 +111,7 @@ function PhaserGame() {
                                                 let randnum = Math.random() < 0.50 ? 1 : 0;
                                                 if (randnum == 1) {
                                                     let innerWall = self.topwall.create(adjusttopwall, insidewall, 'brkwall');
+                                                    self.brkWallList.push({"x":adjusttopwall,"y":insidewall})
                                                     insidewall += self.wallDim;
                                                     innerWall.body.setSize(self.wallDim, self.wallDim);
                                                     innerWall.setDisplaySize(self.wallDim, self.wallDim);
@@ -121,6 +127,7 @@ function PhaserGame() {
                                             let randnum = Math.random() < 0.50 ? 1 : 0;
                                             if (randnum == 1) {
                                                 let innerWall = self.topwall.create(adjusttopwall, insidewall, 'brkwall');
+                                                self.brkWallList.push({"x":adjusttopwall,"y":insidewall})
                                                 insidewall += self.wallDim;
                                                 innerWall.body.setSize(self.wallDim, self.wallDim);
                                                 innerWall.setDisplaySize(self.wallDim, self.wallDim);
@@ -142,6 +149,7 @@ function PhaserGame() {
                                             let randnum = Math.random() < 0.50 ? 1 : 0;
                                             if (randnum == 1) {
                                                 let innerWall = self.topwall.create(adjusttopwall, insidewall, 'brkwall');
+                                                self.brkWallList.push({"x":adjusttopwall,"y":insidewall})
                                                 insidewall += self.wallDim;
                                                 innerWall.body.setSize(self.wallDim, self.wallDim);
                                                 innerWall.setDisplaySize(self.wallDim, self.wallDim);
@@ -160,6 +168,7 @@ function PhaserGame() {
                                 let adjustrightwall = self.wallDim;
                                 for (let nn = 0; nn < self.rows; nn++) {
                                     let wall = self.rightwall.create(self.totalWallWidth - self.wallDim, adjustrightwall, 'unbrkwall');
+                                    self.unbrkWallList.push({"x":self.totalWallWidth - self.wallDim,"y":adjustrightwall})
                                     adjustrightwall += self.wallDim;
                                     wall.body.setSize(self.wallDim, self.wallDim);
                                     wall.setDisplaySize(self.wallDim, self.wallDim);
@@ -170,6 +179,7 @@ function PhaserGame() {
                                 let adjustbottomwall = 0;
                                 for (let nn = 0; nn < self.cols; nn++) {
                                     let wall = self.bottomwall.create(adjustbottomwall, self.totalWallHeight, 'unbrkwall');
+                                    self.unbrkWallList.push({"x":adjustbottomwall,"y":self.totalWallHeight})
                                     adjustbottomwall += self.wallDim;
                                     wall.body.setSize(self.wallDim, self.wallDim);
                                     wall.setDisplaySize(self.wallDim, self.wallDim);
@@ -299,28 +309,76 @@ function PhaserGame() {
                                                 //Replacing bomb with explosion
                                                 let explode = self.physics.add.group({ immovable: true }).create(gridX, gridY, 'explode');
                                                 explode.body.setSize(self.bombSize, self.bombSize); 
-                                                explode.setDisplaySize(self.bombSize, self.bombSize); 
+                                                explode.setDisplaySize(self.bombSize, self.bombSize);
+                                                explode.alpha = 0
+                                                //bomb animation
+                                                self.tweens.add({
+                                                    targets: explode,
+                                                    alpha:1,
+                                                    duration: 100, // Duration of the animation in milliseconds
+                                                    ease: 'Linear', //Easing function ('Linear', 'EaseInOut')
+                                                })
 
+                                                let bombDur = 150
                                                 for (var bombnum = 1; bombnum <= self.bombRange; bombnum++) {
                                                     // Add top bomb
                                                     let explodeTop = self.physics.add.group({ immovable: true }).create(gridX, gridY - (bombnum * self.wallDim), 'explode');
                                                     explodeTop.body.setSize(self.bombSize, self.bombSize);
                                                     explodeTop.setDisplaySize(self.bombSize, self.bombSize);
+
+                                                    explodeTop.alpha = 0
+                                                    //animation for bomb
+                                                    self.tweens.add({
+                                                        targets: explodeTop,
+                                                        alpha:1,
+                                                        duration: bombDur, // Duration of the animation in milliseconds
+                                                        ease: 'Linear', //Easing function ('Linear', 'EaseInOut')
+                                                    })
                                                 
                                                     // Add left bomb
                                                     let explodeLeft = self.physics.add.group({ immovable: true }).create(gridX - (bombnum * self.wallDim), gridY, 'explode');
                                                     explodeLeft.body.setSize(self.bombSize, self.bombSize);
                                                     explodeLeft.setDisplaySize(self.bombSize, self.bombSize);
+
+                                                    explodeLeft.alpha = 0
+                                                    //animation for bomb
+                                                    self.tweens.add({
+                                                        targets: explodeLeft,
+                                                        alpha:1,
+                                                        duration: bombDur, // Duration of the animation in milliseconds
+                                                        ease: 'Linear', //Easing function ('Linear', 'EaseInOut')
+                                                    })
                                                 
                                                     // Add right bomb
                                                     let explodeRight = self.physics.add.group({ immovable: true }).create(gridX + (bombnum * self.wallDim), gridY, 'explode');
                                                     explodeRight.body.setSize(self.bombSize, self.bombSize);
                                                     explodeRight.setDisplaySize(self.bombSize, self.bombSize);
+
+                                                    explodeRight.alpha = 0
+                                                    //animation for bomb
+                                                    self.tweens.add({
+                                                        targets: explodeRight,
+                                                        alpha:1,
+                                                        duration: bombDur, // Duration of the animation in milliseconds
+                                                        ease: 'Linear', //Easing function ('Linear', 'EaseInOut')
+                                                    })
                                                 
                                                     // Add bottom bomb
                                                     let explodeBottom = self.physics.add.group({ immovable: true }).create(gridX, gridY + (bombnum * self.wallDim), 'explode');
                                                     explodeBottom.body.setSize(self.bombSize, self.bombSize);
                                                     explodeBottom.setDisplaySize(self.bombSize, self.bombSize);
+
+                                                    explodeBottom.alpha = 0
+                                                    //animation for bomb
+                                                    self.tweens.add({
+                                                        targets: explodeBottom,
+                                                        alpha:1,
+                                                        duration: bombDur, // Duration of the animation in milliseconds
+                                                        ease: 'Linear', //Easing function ('Linear', 'EaseInOut')
+                                                    })
+
+                                                    bombDur+=50
+                                                
                                                 }
                                             }
                                         });
