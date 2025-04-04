@@ -288,7 +288,13 @@ function PhaserGame() {
                                             yoyo: true,// Allow alternate
                                             repeat: self.bombrepeat, // Infinite loop
                                             onComplete: function () {
-                                                
+                                                bomb.destroy();//destroy bomb
+
+                                                // Remove the bomb's location from bombLoc
+                                                const index = self.bombLoc.findIndex(loc => loc.x === gridX && loc.y === gridY);
+                                                if (index !== -1) {
+                                                    self.bombLoc.splice(index, 1);
+                                                }
                                             }
                                         });
                                     }
