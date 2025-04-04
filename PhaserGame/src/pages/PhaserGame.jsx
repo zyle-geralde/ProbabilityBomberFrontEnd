@@ -53,6 +53,7 @@ function PhaserGame() {
                         this.bombRange = 2
                         this.unbrkWallList = []
                         this.brkWallList = []
+                        this.brkWallGroup = null
 
                         const self = this;
 
@@ -84,6 +85,7 @@ function PhaserGame() {
                             let adjusttopwall = 0;
                             let skipColumn = false;
 
+                            self.brkWallGroup = self.physics.add.group({immovable:true})
                             for (let nn = 0; nn < self.cols; nn++) {
                                 let wall = self.topwall.create(adjusttopwall, 0, 'unbrkwall');
                                 self.unbrkWallList.push({ "x": adjusttopwall, "y": 0 })
@@ -110,7 +112,7 @@ function PhaserGame() {
                                             else {
                                                 let randnum = Math.random() < 0.50 ? 1 : 0;
                                                 if (randnum == 1) {
-                                                    let innerWall = self.topwall.create(adjusttopwall, insidewall, 'brkwall');
+                                                    let innerWall = self.brkWallGroup.create(adjusttopwall, insidewall, 'brkwall');
                                                     self.brkWallList.push({ "x": adjusttopwall, "y": insidewall })
                                                     insidewall += self.wallDim;
                                                     innerWall.body.setSize(self.wallDim, self.wallDim);
@@ -126,7 +128,7 @@ function PhaserGame() {
                                         } else {
                                             let randnum = Math.random() < 0.50 ? 1 : 0;
                                             if (randnum == 1) {
-                                                let innerWall = self.topwall.create(adjusttopwall, insidewall, 'brkwall');
+                                                let innerWall = self.brkWallGroup.create(adjusttopwall, insidewall, 'brkwall');
                                                 self.brkWallList.push({ "x": adjusttopwall, "y": insidewall })
                                                 insidewall += self.wallDim;
                                                 innerWall.body.setSize(self.wallDim, self.wallDim);
@@ -148,7 +150,7 @@ function PhaserGame() {
 
                                             let randnum = Math.random() < 0.50 ? 1 : 0;
                                             if (randnum == 1) {
-                                                let innerWall = self.topwall.create(adjusttopwall, insidewall, 'brkwall');
+                                                let innerWall = self.brkWallGroup.create(adjusttopwall, insidewall, 'brkwall');
                                                 self.brkWallList.push({ "x": adjusttopwall, "y": insidewall })
                                                 insidewall += self.wallDim;
                                                 innerWall.body.setSize(self.wallDim, self.wallDim);
@@ -216,6 +218,7 @@ function PhaserGame() {
                                 self.physics.add.collider(self.player, self.topwall);
                                 self.physics.add.collider(self.player, self.rightwall);
                                 self.physics.add.collider(self.player, self.bottomwall);
+                                self.physics.add.collider(self.player, self.brkWallGroup);
                                 
                             },
                             this.handlePlayerMovement = function () {
@@ -420,7 +423,7 @@ function PhaserGame() {
 
                             },
                             this.handleExplosionCollision = function () {
-                                self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.physics.add.group(self.children.list.filter(child => child.texture.key === 'brkwall')), (explode, wall) => {
+                                self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.brkWallGroup, (explode, wall) => {
                                     //when explosion overlaps with breakable wall
                                     wall.destroy();
                                     //remove destroyed wall from brkWallList
@@ -439,7 +442,8 @@ function PhaserGame() {
                         this.handleCollisions();
                         this.handlePlayerMovement();
                         this.handleCameraMovement();
-                        //this.handleExplosionCollision()
+                        this.handleExplosionCollision()
+                        
                     }
                 },
                 parent: gameRef.current,
