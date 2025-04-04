@@ -23,7 +23,7 @@ function PhaserGame() {
                         this.load.image('unbrkwall', 'images/unbreakable_wall.png');
                         this.load.image('brkwall', 'images/brick-wall.png')
                         this.load.image('bomb', 'images/bomb.png')
-                        this.load.image('explode','images/explode.png')
+                        this.load.image('explode', 'images/explode.png')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 30,
                             frameHeight: 50,
@@ -73,7 +73,7 @@ function PhaserGame() {
                             let adjustwall = self.wallDim;
                             for (let nn = 0; nn < self.rows; nn++) {
                                 let wall = self.outsidewall.create(0, adjustwall, 'unbrkwall');
-                                self.unbrkWallList.push({"x":0,"y":adjustwall})
+                                self.unbrkWallList.push({ "x": 0, "y": adjustwall })
                                 adjustwall += self.wallDim;
                                 wall.body.setSize(self.wallDim, self.wallDim);
                                 wall.setDisplaySize(self.wallDim, self.wallDim);
@@ -86,7 +86,7 @@ function PhaserGame() {
 
                             for (let nn = 0; nn < self.cols; nn++) {
                                 let wall = self.topwall.create(adjusttopwall, 0, 'unbrkwall');
-                                self.unbrkWallList.push({"x":adjusttopwall,"y":0})
+                                self.unbrkWallList.push({ "x": adjusttopwall, "y": 0 })
                                 adjusttopwall += self.wallDim;
                                 wall.body.setSize(self.wallDim, self.wallDim);
                                 wall.setDisplaySize(self.wallDim, self.wallDim);
@@ -101,7 +101,7 @@ function PhaserGame() {
                                             let randnum = Math.random() < 0.80 ? 1 : 0;
                                             if (randnum == 1) {
                                                 let innerWall = self.topwall.create(adjusttopwall, insidewall, 'unbrkwall');
-                                                self.unbrkWallList.push({"x":adjusttopwall,"y":insidewall})
+                                                self.unbrkWallList.push({ "x": adjusttopwall, "y": insidewall })
                                                 insidewall += self.wallDim;
                                                 innerWall.body.setSize(self.wallDim, self.wallDim);
                                                 innerWall.setDisplaySize(self.wallDim, self.wallDim);
@@ -111,7 +111,7 @@ function PhaserGame() {
                                                 let randnum = Math.random() < 0.50 ? 1 : 0;
                                                 if (randnum == 1) {
                                                     let innerWall = self.topwall.create(adjusttopwall, insidewall, 'brkwall');
-                                                    self.brkWallList.push({"x":adjusttopwall,"y":insidewall})
+                                                    self.brkWallList.push({ "x": adjusttopwall, "y": insidewall })
                                                     insidewall += self.wallDim;
                                                     innerWall.body.setSize(self.wallDim, self.wallDim);
                                                     innerWall.setDisplaySize(self.wallDim, self.wallDim);
@@ -127,7 +127,7 @@ function PhaserGame() {
                                             let randnum = Math.random() < 0.50 ? 1 : 0;
                                             if (randnum == 1) {
                                                 let innerWall = self.topwall.create(adjusttopwall, insidewall, 'brkwall');
-                                                self.brkWallList.push({"x":adjusttopwall,"y":insidewall})
+                                                self.brkWallList.push({ "x": adjusttopwall, "y": insidewall })
                                                 insidewall += self.wallDim;
                                                 innerWall.body.setSize(self.wallDim, self.wallDim);
                                                 innerWall.setDisplaySize(self.wallDim, self.wallDim);
@@ -149,7 +149,7 @@ function PhaserGame() {
                                             let randnum = Math.random() < 0.50 ? 1 : 0;
                                             if (randnum == 1) {
                                                 let innerWall = self.topwall.create(adjusttopwall, insidewall, 'brkwall');
-                                                self.brkWallList.push({"x":adjusttopwall,"y":insidewall})
+                                                self.brkWallList.push({ "x": adjusttopwall, "y": insidewall })
                                                 insidewall += self.wallDim;
                                                 innerWall.body.setSize(self.wallDim, self.wallDim);
                                                 innerWall.setDisplaySize(self.wallDim, self.wallDim);
@@ -168,7 +168,7 @@ function PhaserGame() {
                                 let adjustrightwall = self.wallDim;
                                 for (let nn = 0; nn < self.rows; nn++) {
                                     let wall = self.rightwall.create(self.totalWallWidth - self.wallDim, adjustrightwall, 'unbrkwall');
-                                    self.unbrkWallList.push({"x":self.totalWallWidth - self.wallDim,"y":adjustrightwall})
+                                    self.unbrkWallList.push({ "x": self.totalWallWidth - self.wallDim, "y": adjustrightwall })
                                     adjustrightwall += self.wallDim;
                                     wall.body.setSize(self.wallDim, self.wallDim);
                                     wall.setDisplaySize(self.wallDim, self.wallDim);
@@ -179,7 +179,7 @@ function PhaserGame() {
                                 let adjustbottomwall = 0;
                                 for (let nn = 0; nn < self.cols; nn++) {
                                     let wall = self.bottomwall.create(adjustbottomwall, self.totalWallHeight, 'unbrkwall');
-                                    self.unbrkWallList.push({"x":adjustbottomwall,"y":self.totalWallHeight})
+                                    self.unbrkWallList.push({ "x": adjustbottomwall, "y": self.totalWallHeight })
                                     adjustbottomwall += self.wallDim;
                                     wall.body.setSize(self.wallDim, self.wallDim);
                                     wall.setDisplaySize(self.wallDim, self.wallDim);
@@ -216,6 +216,7 @@ function PhaserGame() {
                                 self.physics.add.collider(self.player, self.topwall);
                                 self.physics.add.collider(self.player, self.rightwall);
                                 self.physics.add.collider(self.player, self.bottomwall);
+                                
                             },
                             this.handlePlayerMovement = function () {
                                 if (self.cursors.left.isDown) {
@@ -260,7 +261,7 @@ function PhaserGame() {
                             this.dropBomb = function () {
                                 const gridX = Math.round(self.player.x / self.wallDim) * self.wallDim;
                                 const gridY = Math.round(self.player.y / self.wallDim) * self.wallDim;
-                                
+
                                 //check if number of bombs exceed bomblimit
                                 if (self.bombLoc.length >= self.bombLimit) {
                                     console.log("bomb exceed limit")
@@ -270,15 +271,15 @@ function PhaserGame() {
                                 if (self.bombLoc.some(bomb => bomb.x === gridX && bomb.y === gridY)) {
                                     return
                                 }
-                                
+
                                 let bomb = self.physics.add.group({ immovable: true }).create(gridX, gridY, 'bomb');
 
                                 bomb.body.setSize(0, 0); //Set initial body size to 0
                                 bomb.setDisplaySize(0, 0); //Set initial display size to 0
-                            
+
                                 //add to bombArray
-                                self.bombLoc.push({"x":gridX,"y":gridY})
-                            
+                                self.bombLoc.push({ "x": gridX, "y": gridY })
+
 
                                 self.tweens.add({
                                     targets: bomb,
@@ -308,15 +309,22 @@ function PhaserGame() {
                                                 }
                                                 //Replacing bomb with explosion
                                                 let explode = self.physics.add.group({ immovable: true }).create(gridX, gridY, 'explode');
-                                                explode.body.setSize(self.bombSize, self.bombSize); 
+                                                explode.body.setSize(self.bombSize, self.bombSize);
                                                 explode.setDisplaySize(self.bombSize, self.bombSize);
                                                 explode.alpha = 0
                                                 //bomb animation
                                                 self.tweens.add({
                                                     targets: explode,
-                                                    alpha:1,
+                                                    alpha: 1,
                                                     duration: 100, // Duration of the animation in milliseconds
                                                     ease: 'Linear', //Easing function ('Linear', 'EaseInOut')
+                                                    onComplete: function () {
+                                                        
+                                                        // Add a delay before destroying the explosion
+                                                        self.time.delayedCall(700, function () { // 500 milliseconds (0.5 seconds) delay
+                                                            explode.destroy();
+                                                        }, [], self); // The last self argument ensures that the context of the destroy function is correct.
+                                                    }
                                                 })
 
                                                 let bombDur = 150
@@ -330,11 +338,17 @@ function PhaserGame() {
                                                     //animation for bomb
                                                     self.tweens.add({
                                                         targets: explodeTop,
-                                                        alpha:1,
+                                                        alpha: 1,
                                                         duration: bombDur, // Duration of the animation in milliseconds
                                                         ease: 'Linear', //Easing function ('Linear', 'EaseInOut')
+                                                        onComplete: function () {
+                                                            // Add a delay before destroying the explosion
+                                                        self.time.delayedCall(700, function () { // 500 milliseconds (0.5 seconds) delay
+                                                            explodeTop.destroy();
+                                                        }, [], self); // The last self argument ensures that the context of the destroy function is correct.
+                                                        }
                                                     })
-                                                
+
                                                     // Add left bomb
                                                     let explodeLeft = self.physics.add.group({ immovable: true }).create(gridX - (bombnum * self.wallDim), gridY, 'explode');
                                                     explodeLeft.body.setSize(self.bombSize, self.bombSize);
@@ -344,11 +358,17 @@ function PhaserGame() {
                                                     //animation for bomb
                                                     self.tweens.add({
                                                         targets: explodeLeft,
-                                                        alpha:1,
+                                                        alpha: 1,
                                                         duration: bombDur, // Duration of the animation in milliseconds
                                                         ease: 'Linear', //Easing function ('Linear', 'EaseInOut')
+                                                        onComplete: function () {
+                                                        // Add a delay before destroying the explosion
+                                                        self.time.delayedCall(700, function () { // 500 milliseconds (0.5 seconds) delay
+                                                            explodeLeft.destroy();
+                                                        }, [], self); // The last self argument ensures that the context of the destroy function is correct.
+                                                        }
                                                     })
-                                                
+
                                                     // Add right bomb
                                                     let explodeRight = self.physics.add.group({ immovable: true }).create(gridX + (bombnum * self.wallDim), gridY, 'explode');
                                                     explodeRight.body.setSize(self.bombSize, self.bombSize);
@@ -358,11 +378,17 @@ function PhaserGame() {
                                                     //animation for bomb
                                                     self.tweens.add({
                                                         targets: explodeRight,
-                                                        alpha:1,
+                                                        alpha: 1,
                                                         duration: bombDur, // Duration of the animation in milliseconds
                                                         ease: 'Linear', //Easing function ('Linear', 'EaseInOut')
+                                                        onComplete: function () {
+                                                        // Add a delay before destroying the explosion
+                                                        self.time.delayedCall(700, function () { // 500 milliseconds (0.5 seconds) delay
+                                                            explodeRight.destroy();
+                                                        }, [], self); // The last self argument ensures that the context of the destroy function is correct.
+                                                        }
                                                     })
-                                                
+
                                                     // Add bottom bomb
                                                     let explodeBottom = self.physics.add.group({ immovable: true }).create(gridX, gridY + (bombnum * self.wallDim), 'explode');
                                                     explodeBottom.body.setSize(self.bombSize, self.bombSize);
@@ -372,13 +398,19 @@ function PhaserGame() {
                                                     //animation for bomb
                                                     self.tweens.add({
                                                         targets: explodeBottom,
-                                                        alpha:1,
+                                                        alpha: 1,
                                                         duration: bombDur, // Duration of the animation in milliseconds
                                                         ease: 'Linear', //Easing function ('Linear', 'EaseInOut')
+                                                        onComplete: function () {
+                                                        // Add a delay before destroying the explosion
+                                                        self.time.delayedCall(700, function () { // 500 milliseconds (0.5 seconds) delay
+                                                            explodeBottom.destroy();
+                                                        }, [], self); // The last self argument ensures that the context of the destroy function is correct.
+                                                        }
                                                     })
 
-                                                    bombDur+=50
-                                                
+                                                    bombDur += 50
+
                                                 }
                                             }
                                         });
@@ -387,6 +419,14 @@ function PhaserGame() {
 
 
                             },
+                            this.handleExplosionCollision = function () {
+                                self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.physics.add.group(self.children.list.filter(child => child.texture.key === 'brkwall')), (explode, wall) => {
+                                    //when explosion overlaps with breakable wall
+                                    wall.destroy();
+                                    //remove destroyed wall from brkWallList
+                                    self.brkWallList = self.brkWallList.filter(item => !(item.x === wall.x && item.y === wall.y));
+                                });
+                            }
 
 
                             this.createBackgrounds();
@@ -399,6 +439,7 @@ function PhaserGame() {
                         this.handleCollisions();
                         this.handlePlayerMovement();
                         this.handleCameraMovement();
+                        //this.handleExplosionCollision()
                     }
                 },
                 parent: gameRef.current,
