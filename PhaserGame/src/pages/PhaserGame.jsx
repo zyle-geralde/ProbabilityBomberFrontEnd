@@ -23,6 +23,7 @@ function PhaserGame() {
                         this.load.image('unbrkwall', 'images/unbreakable_wall.png');
                         this.load.image('brkwall', 'images/brick-wall.png')
                         this.load.image('bomb', 'images/bomb.png')
+                        this.load.image('explode','images/explode.png')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 30,
                             frameHeight: 50,
@@ -44,11 +45,12 @@ function PhaserGame() {
                         this.topwall = null;
                         this.rightwall = null;
                         this.bottomwall = null;
-                        this.bombSize = 40;
+                        this.bombSize = 50;
                         this.bombLoc = []
                         this.bombLimit = 1
                         this.bombDuration = 300
                         this.bombrepeat = 4
+                        this.bombRange = 1
 
                         const self = this;
 
@@ -256,7 +258,6 @@ function PhaserGame() {
                                 }
                                 //check if location exist
                                 if (self.bombLoc.some(bomb => bomb.x === gridX && bomb.y === gridY)) {
-
                                     return
                                 }
                                 
@@ -294,6 +295,32 @@ function PhaserGame() {
                                                 const index = self.bombLoc.findIndex(loc => loc.x === gridX && loc.y === gridY);
                                                 if (index !== -1) {
                                                     self.bombLoc.splice(index, 1);
+                                                }
+                                                //Replacing bomb with explosion
+                                                let explode = self.physics.add.group({ immovable: true }).create(gridX, gridY, 'explode');
+                                                explode.body.setSize(self.bombSize, self.bombSize); 
+                                                explode.setDisplaySize(self.bombSize, self.bombSize); 
+
+                                                for (var bombnum = 1; bombnum <= self.bombRange; bombnum++) {
+                                                    // Add top bomb
+                                                    let explodeTop = self.physics.add.group({ immovable: true }).create(gridX, gridY - (bombnum * self.wallDim), 'explode');
+                                                    explodeTop.body.setSize(self.bombSize, self.bombSize);
+                                                    explodeTop.setDisplaySize(self.bombSize, self.bombSize);
+                                                
+                                                    // Add left bomb
+                                                    let explodeLeft = self.physics.add.group({ immovable: true }).create(gridX - (bombnum * self.wallDim), gridY, 'explode');
+                                                    explodeLeft.body.setSize(self.bombSize, self.bombSize);
+                                                    explodeLeft.setDisplaySize(self.bombSize, self.bombSize);
+                                                
+                                                    // Add right bomb
+                                                    let explodeRight = self.physics.add.group({ immovable: true }).create(gridX + (bombnum * self.wallDim), gridY, 'explode');
+                                                    explodeRight.body.setSize(self.bombSize, self.bombSize);
+                                                    explodeRight.setDisplaySize(self.bombSize, self.bombSize);
+                                                
+                                                    // Add bottom bomb
+                                                    let explodeBottom = self.physics.add.group({ immovable: true }).create(gridX, gridY + (bombnum * self.wallDim), 'explode');
+                                                    explodeBottom.body.setSize(self.bombSize, self.bombSize);
+                                                    explodeBottom.setDisplaySize(self.bombSize, self.bombSize);
                                                 }
                                             }
                                         });
