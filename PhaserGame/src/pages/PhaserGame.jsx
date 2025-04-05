@@ -33,6 +33,7 @@ function PhaserGame() {
 
                         this.wallGroup = null;
                         this.player = null;
+                        this.life = 4
                         this.cursors = null;
                         this.wallDim = 64;
                         this.cols = 15;//odd
@@ -50,7 +51,7 @@ function PhaserGame() {
                         this.bombLimit = 1
                         this.bombDuration = 300
                         this.bombrepeat = 4
-                        this.bombRange = 1
+                        this.bombRange = 2
                         this.unbrkWallList = []
                         this.brkWallList = []
                         this.brkWallGroup = null
@@ -348,6 +349,15 @@ function PhaserGame() {
                                                         let explodeTop = self.physics.add.group({ immovable: true }).create(gridX, gridY - (bombnum * self.wallDim), 'explode');
                                                         explodeTop.body.setSize(self.bombSize, self.bombSize);
                                                         explodeTop.setDisplaySize(self.bombSize, self.bombSize);
+                                                        explodeTop.hasDamaged = false
+                                                        self.physics.add.overlap(explodeTop, self.player, function (explode, player) {
+                                                            if (!explode.hasDamaged) {
+                                                                console.log("damage");
+                                                                explode.hasDamaged = true
+                                                            }
+                                                            
+                                                        });
+                                                        
     
                                                         explodeTop.alpha = 0
                                                         //animation for bomb
@@ -460,6 +470,13 @@ function PhaserGame() {
                                     //remove destroyed wall from brkWallList
                                     self.brkWallList = self.brkWallList.filter(item => !(item.x === wall.x && item.y === wall.y));
                                 });
+                            
+                                /*self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.player, (explode, player) => {
+
+                                    self.life -= 1
+                                    console.log(self.life)
+                                    
+                                });*/
                             }
 
 
