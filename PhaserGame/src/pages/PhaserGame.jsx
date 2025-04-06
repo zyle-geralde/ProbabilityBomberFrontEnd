@@ -532,6 +532,12 @@ function PhaserGame() {
                                         console.log(self.life)
                                         
                                     });*/
+                                    self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.ghostGroup, (explode, ghost) => {
+                                        //when explosion overlaps with breakable wall
+                                        ghost.destroy();
+                                        //remove destroyed wall from brkWallList
+                                        
+                                    });
                             },
                             this.enemyWallCollide = function (enemy,wall) {
                                 const direction = ['u', 'd', 'l', 'r']
