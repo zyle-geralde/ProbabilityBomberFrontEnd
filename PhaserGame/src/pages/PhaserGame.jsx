@@ -24,6 +24,7 @@ function PhaserGame() {
                         this.load.image('brkwall', 'images/brick-wall.png')
                         this.load.image('bomb', 'images/bomb.png')
                         this.load.image('explode', 'images/explode.png')
+                        this.load.image('ghost','images/ghost.png')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 30,
                             frameHeight: 50,
@@ -34,6 +35,13 @@ function PhaserGame() {
 
                         this.wallGroup = null;
                         this.player = null;
+                        this.ghostGroup = this.physics.add.group()
+                        this.enemies = [];
+                        this.enemySpeed = 50
+                        this.enemySizeX = 64 + 120;
+                        this.enemySizeY = 64 + 160;
+                        this.numberOfEnemies = 3
+                        this.deployedEnemies = 0;
                         this.life = 4
                         this.cursors = null;
                         this.wallDim = 64;
@@ -123,6 +131,11 @@ function PhaserGame() {
                                                     putWall = false;
                                                 }
                                                 else {
+                                                    let randEnemynum = Math.random() < 0.50 ? 1 : 0;
+                                                    if (randEnemynum == 1 && self.deployedEnemies <= self.numberOfEnemies) {
+                                                        self.createEnemy(adjusttopwall, insidewall)
+                                                        self.deployedEnemies+=1
+                                                    }
                                                     insidewall += self.wallDim;
                                                     putWall = false;
                                                 }
@@ -139,6 +152,11 @@ function PhaserGame() {
                                                 putWall = true
                                             }
                                             else {
+                                                let randEnemynum = Math.random() < 0.50 ? 1 : 0;
+                                                if (randEnemynum == 1 && self.deployedEnemies <= self.numberOfEnemies) {
+                                                    self.createEnemy(adjusttopwall, insidewall)
+                                                    self.deployedEnemies+=1
+                                                }
                                                 insidewall += self.wallDim;
                                                 putWall = true
                                             }
@@ -160,6 +178,11 @@ function PhaserGame() {
                                                 innerWall.setDisplaySize(self.wallDim, self.wallDim);
                                             }
                                             else {
+                                                let randEnemynum = Math.random() < 0.50 ? 1 : 0;
+                                                if (randEnemynum == 1 && self.deployedEnemies <= self.numberOfEnemies) {
+                                                    self.createEnemy(adjusttopwall, insidewall)
+                                                    self.deployedEnemies+=1
+                                                }
                                                 insidewall += self.wallDim;
                                             }
                                         }
@@ -216,6 +239,13 @@ function PhaserGame() {
                                     repeat: -1,
                                 });
                             },
+                            this.createEnemy = function (x,y) {
+                                let enemy = self.ghostGroup.create(x,y,'ghost')
+                                enemy.body.setSize(self.enemySizeX, self.enemySizeY);
+                                enemy.setDisplaySize(self.bombSize, self.bombSize);
+                                enemy.setCollideWorldBounds(true);
+                                enemy.setVelocityY((self.enemySpeed))
+                            },
                             this.handlePlayerMovement = function () {
                                 if (self.cursors.left.isDown) {
                                     self.player.setVelocityX(-self.speed);
@@ -258,7 +288,7 @@ function PhaserGame() {
                             },
                             this.handleCollisions = function () {
                                 this.physics.add.collider(this.player, this.bombGroup)
-                            }
+                            },
                             this.dropBomb = function () {
                                 const gridX = Math.round(self.player.x / self.wallDim) * self.wallDim;
                                 const gridY = Math.round(self.player.y / self.wallDim) * self.wallDim;
@@ -488,21 +518,46 @@ function PhaserGame() {
 
 
                             },
-                            this.handleExplosionCollision = function () {
-                                self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.brkWallGroup, (explode, wall) => {
-                                    //when explosion overlaps with breakable wall
-                                    wall.destroy();
-                                    //remove destroyed wall from brkWallList
-                                    self.brkWallList = self.brkWallList.filter(item => !(item.x === wall.x && item.y === wall.y));
-                                });
-                            
-                                /*self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.player, (explode, player) => {
-
-                                    self.life -= 1
-                                    console.log(self.life)
-                                    
-                                });*/
+                                this.handleExplosionCollision = function () {
+                                    self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.brkWallGroup, (explode, wall) => {
+                                        //when explosion overlaps with breakable wall
+                                        wall.destroy();
+                                        //remove destroyed wall from brkWallList
+                                        self.brkWallList = self.brkWallList.filter(item => !(item.x === wall.x && item.y === wall.y));
+                                    });
+                                
+                                    /*self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.player, (explode, player) => {
+    
+                                        self.life -= 1
+                                        console.log(self.life)
+                                        
+                                    });*/
+                            },
+                            this.enemyWallCollide = function (enemy,wall) {
+                                const direction = ['u', 'd', 'l', 'r']
+                                let randomNum = Math.floor(Math.random() * 4);
+                                switch (direction[randomNum]) {
+                                    case direction[0]:
+                                        enemy.setVelocityY(-self.enemySpeed)
+                                        enemy.setVelocityX(0)
+                                        break
+                                    case direction[1]:
+                                        enemy.setVelocityY(self.enemySpeed)
+                                        enemy.setVelocityX(0)
+                                        break
+                                    case direction[2]:
+                                        enemy.setVelocityX(-self.enemySpeed)
+                                        enemy.setVelocityY(0)
+                                        break
+                                    case direction[3]:
+                                        enemy.setVelocityX(self.enemySpeed)
+                                        enemy.setVelocityY(0)
+                                        break
+                                }
                             }
+                            
+
+                            
 
 
                         this.createBackgrounds();
@@ -513,6 +568,12 @@ function PhaserGame() {
                         this.physics.add.collider(this.player, this.rightwall);
                         this.physics.add.collider(this.player, this.bottomwall);
                         this.physics.add.collider(this.player, this.brkWallGroup);
+                        
+                        this.physics.add.collider(this.ghostGroup, this.outsidewall,this.enemyWallCollide,null, this);
+                        this.physics.add.collider(this.ghostGroup, this.topwall,this.enemyWallCollide,null, this);
+                        this.physics.add.collider(this.ghostGroup, this.rightwall,this.enemyWallCollide,null, this);
+                        this.physics.add.collider(this.ghostGroup, this.bottomwall,this.enemyWallCollide,null, this);
+                        this.physics.add.collider(this.ghostGroup, this.brkWallGroup,this.enemyWallCollide,null, this);
                         //this.physics.add.collider(this.player, this.bombGroup)
                         this.cursors = this.input.keyboard.createCursorKeys();
                         self.cameras.main.scrollX = -300
