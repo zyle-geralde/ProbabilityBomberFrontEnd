@@ -5,7 +5,7 @@ function PhaserGame() {
     const gameInstance = useRef(null);
 
     useEffect(() => {
-        if (window.Phaser) {
+        if (window.Phaser && !gameInstance.current) {
             const config = {
                 type: window.Phaser.AUTO,
                 width: window.innerWidth,
@@ -30,6 +30,7 @@ function PhaserGame() {
                         });
                     },
                     create: function () {
+                        this.game.canvas.willReadFrequently = true;
 
                         this.wallGroup = null;
                         this.player = null;
@@ -51,7 +52,7 @@ function PhaserGame() {
                         this.bombLimit = 1
                         this.bombDuration = 300
                         this.bombrepeat = 4
-                        this.bombRange = 2
+                        this.bombRange = 1
                         this.unbrkWallList = []
                         this.brkWallList = []
                         this.brkWallGroup = null
@@ -215,15 +216,6 @@ function PhaserGame() {
                                     repeat: -1,
                                 });
                             },
-                            this.handleCollisions = function () {
-                                self.physics.add.collider(self.player, self.outsidewall);
-                                self.physics.add.collider(self.player, self.topwall);
-                                self.physics.add.collider(self.player, self.rightwall);
-                                self.physics.add.collider(self.player, self.bottomwall);
-                                self.physics.add.collider(self.player, self.brkWallGroup);
-                                self.physics.add.collider(self.player,self.bombGroup)
-                                
-                            },
                             this.handlePlayerMovement = function () {
                                 if (self.cursors.left.isDown) {
                                     self.player.setVelocityX(-self.speed);
@@ -264,6 +256,9 @@ function PhaserGame() {
                                     self.cameras.main.scrollY += self.cameraSpeed * self.game.loop.delta / 1000;
                                 }
                             },
+                            this.handleCollisions = function () {
+                                this.physics.add.collider(this.player, this.bombGroup)
+                            }
                             this.dropBomb = function () {
                                 const gridX = Math.round(self.player.x / self.wallDim) * self.wallDim;
                                 const gridY = Math.round(self.player.y / self.wallDim) * self.wallDim;
@@ -352,7 +347,8 @@ function PhaserGame() {
                                                         explodeTop.hasDamaged = false
                                                         self.physics.add.overlap(explodeTop, self.player, function (explode, player) {
                                                             if (!explode.hasDamaged) {
-                                                                console.log("damage");
+                                                                self.life-=1
+                                                                console.log(self.life);
                                                                 explode.hasDamaged = true
                                                             }
                                                             
@@ -384,6 +380,17 @@ function PhaserGame() {
                                                     let explodeLeft = self.physics.add.group({ immovable: true }).create(gridX - (bombnum * self.wallDim), gridY, 'explode');
                                                     explodeLeft.body.setSize(self.bombSize, self.bombSize);
                                                     explodeLeft.setDisplaySize(self.bombSize, self.bombSize);
+                                                    
+                                                    self.physics.add.overlap(explodeLeft, self.player, function (explode, player) {
+                                                        if (!explode.hasDamaged) {
+                                                            self.life-=1
+                                                            console.log(self.life);
+                                                            explode.hasDamaged = true
+                                                        }
+                                                        
+                                                    });
+                                                        
+                                                        
 
                                                     explodeLeft.alpha = 0
                                                     //animation for bomb
@@ -411,6 +418,15 @@ function PhaserGame() {
                                                     explodeRight.body.setSize(self.bombSize, self.bombSize);
                                                     explodeRight.setDisplaySize(self.bombSize, self.bombSize);
 
+                                                    self.physics.add.overlap(explodeRight, self.player, function (explode, player) {
+                                                        if (!explode.hasDamaged) {
+                                                            self.life-=1
+                                                            console.log(self.life);
+                                                            explode.hasDamaged = true
+                                                        }
+                                                        
+                                                    });
+                                                        
                                                     explodeRight.alpha = 0
                                                     //animation for bomb
                                                     self.tweens.add({
@@ -437,6 +453,15 @@ function PhaserGame() {
                                                     explodeBottom.body.setSize(self.bombSize, self.bombSize);
                                                     explodeBottom.setDisplaySize(self.bombSize, self.bombSize);
 
+                                                    self.physics.add.overlap(explodeBottom, self.player, function (explode, player) {
+                                                        if (!explode.hasDamaged) {
+                                                            self.life-=1
+                                                            console.log(self.life);
+                                                            explode.hasDamaged = true
+                                                        }
+                                                        
+                                                    });
+                                                        
                                                     explodeBottom.alpha = 0
                                                     //animation for bomb
                                                     self.tweens.add({
@@ -480,13 +505,20 @@ function PhaserGame() {
                             }
 
 
-                            this.createBackgrounds();
+                        this.createBackgrounds();
                         this.createWalls();
                         this.createPlayer();
+                        this.physics.add.collider(this.player, this.outsidewall);
+                        this.physics.add.collider(this.player, this.topwall);
+                        this.physics.add.collider(this.player, this.rightwall);
+                        this.physics.add.collider(this.player, this.bottomwall);
+                        this.physics.add.collider(this.player, this.brkWallGroup);
+                        //this.physics.add.collider(this.player, this.bombGroup)
                         this.cursors = this.input.keyboard.createCursorKeys();
                         self.cameras.main.scrollX = -300
                     },
                     update: function () {
+                        //run later
                         this.handleCollisions();
                         this.handlePlayerMovement();
                         this.handleCameraMovement();
@@ -502,6 +534,7 @@ function PhaserGame() {
             return () => {
                 if (gameInstance.current) {
                     gameInstance.current.destroy(true);
+                    gameInstance.current = null
                 }
             };
         }
