@@ -1,0 +1,37 @@
+.level-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 500px;
+  justify-content: center;
+}
+
+.level-btn {
+  width: 200px;
+  height: 100px;
+  padding: 10px 20px;
+  border: 1px solid #888;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: 0.2s;
+}
+
+.level-btn:hover {
+  background-color: #eee;
+}
+
+.level-btn.selected {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.level-btn.disabled {
+  background-color: #ddd;
+  color: #888;
+  cursor: not-allowed;
+  pointer-events: none;
+  border-color: #bbb;
+}
