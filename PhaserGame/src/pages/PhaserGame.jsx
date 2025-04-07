@@ -41,7 +41,7 @@ function PhaserGame() {
                         this.enemySpeed = 50
                         this.enemySizeX = 64 + 120;
                         this.enemySizeY = 64 + 160;
-                        this.numberOfEnemies = 3
+                        this.numberOfEnemies = 20
                         this.deployedEnemies = 0;
                         this.life = 4
                         this.cursors = null;
@@ -246,7 +246,7 @@ function PhaserGame() {
                                 enemy.setDisplaySize(self.bombSize, self.bombSize);
                                 enemy.setCollideWorldBounds(true);
                                 enemy.setVelocityY((self.enemySpeed))
-                                enemy.hitPlayer=false
+                                enemy.hitPlayer = false
                             },
                             this.handlePlayerMovement = function () {
                                 if (self.cursors.left.isDown) {
@@ -694,12 +694,12 @@ function PhaserGame() {
                                 const ghostBounds = ghost.getBounds();
                                 const playerBounds = player.getBounds();
 
-                            // Calculate overlap in X and Y
+                                // Calculate overlap in X and Y
                                 const overlapX = Math.max(0, Math.min(ghostBounds.right, playerBounds.right) - Math.max(ghostBounds.left, playerBounds.left));
                                 const overlapY = Math.max(0, Math.min(ghostBounds.bottom, playerBounds.bottom) - Math.max(ghostBounds.top, playerBounds.top));
 
-                            // You can choose to check either axis or both
-                            // You could also use Math.max or both axes separately
+                                // You can choose to check either axis or both
+                                // You could also use Math.max or both axes separately
 
                                 if (Math.abs(overlapX) >= 10 && Math.abs(overlapY) >= 10) {
                                     if (self.playerHit == false) {
@@ -708,10 +708,40 @@ function PhaserGame() {
                                         self.time.delayedCall(1500, function () { // 500 milliseconds (0.5 seconds) delay
                                             self.playerHit = false
                                         }, [], self);
+                                        self.player.setTint(0xff0000); // Set tint to red
+
+                                        const originalHeight = self.player.displayHeight;
+                                        const originalwidth = self.player.displayWidth;
+                                        const targetHeight = originalHeight * 1.1;
+                                        const targetWidth = originalwidth * 1.1;// Increase size by 20% (adjust as needed)
+                                        const duration = 200; // Duration of the scaling animation in milliseconds
+
+                                        // Create a smooth tween for scaling up
+                                        self.tweens.add({
+                                            targets: self.player,
+                                            displayHeight: targetHeight,
+                                            displayWidth: targetWidth,
+                                            duration: duration,
+                                            ease: 'Sine.out', // Use a smooth easing function
+                                            onComplete: () => {
+                                                // Create a smooth tween for scaling back down
+                                                self.tweens.add({
+                                                    targets: self.player,
+                                                    displayHeight: originalHeight,
+                                                    displayWidth: originalwidth,
+                                                    duration: duration,
+                                                    ease: 'Sine.inOut', // Use a smooth easing function
+                                                });
+
+                                                self.time.delayedCall(400, () => {
+                                                    self.player.clearTint(); // Clear the tint after the scale animation
+                                                });
+                                            }
+                                        });
                                         console.log(self.life)
 
                                     }
-                                // Your actual response to deep overlap here
+                                    // Your actual response to deep overlap here
                                 }
                             }
 
@@ -733,7 +763,7 @@ function PhaserGame() {
                         this.physics.add.collider(this.ghostGroup, this.rightwall, this.enemyWallCollide, null, this);
                         this.physics.add.collider(this.ghostGroup, this.bottomwall, this.enemyWallCollide, null, this);
                         this.physics.add.collider(this.ghostGroup, this.brkWallGroup, this.enemyWallCollide, null, this);
-                        this.physics.add.overlap(this.ghostGroup, this.player,this.ghostPlayerCollide,null,this);
+                        this.physics.add.overlap(this.ghostGroup, this.player, this.ghostPlayerCollide, null, this);
                         //this.physics.add.collider(this.player, this.bombGroup)
                         this.cursors = this.input.keyboard.createCursorKeys();
                         self.cameras.main.scrollX = -300
