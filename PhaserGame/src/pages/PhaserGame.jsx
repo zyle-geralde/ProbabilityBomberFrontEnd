@@ -35,6 +35,7 @@ function PhaserGame() {
 
                         this.wallGroup = null;
                         this.player = null;
+                        this.playerHit = false
                         this.ghostGroup = this.physics.add.group()
                         this.enemies = [];
                         this.enemySpeed = 50
@@ -244,8 +245,8 @@ function PhaserGame() {
                                 enemy.body.setSize(self.enemySizeX, self.enemySizeY);
                                 enemy.setDisplaySize(self.bombSize, self.bombSize);
                                 enemy.setCollideWorldBounds(true);
-                                enemy.hitPlayer = false
-                                //enemy.setVelocityY((self.enemySpeed))
+                                enemy.setVelocityY((self.enemySpeed))
+                                enemy.hitPlayer=false
                             },
                             this.handlePlayerMovement = function () {
                                 if (self.cursors.left.isDown) {
@@ -688,6 +689,30 @@ function PhaserGame() {
                                         enemy.setVelocityY(0)
                                         break
                                 }
+                            },
+                            this.ghostPlayerCollide = function (ghost, player) {
+                                const ghostBounds = ghost.getBounds();
+                                const playerBounds = player.getBounds();
+
+                            // Calculate overlap in X and Y
+                                const overlapX = Math.max(0, Math.min(ghostBounds.right, playerBounds.right) - Math.max(ghostBounds.left, playerBounds.left));
+                                const overlapY = Math.max(0, Math.min(ghostBounds.bottom, playerBounds.bottom) - Math.max(ghostBounds.top, playerBounds.top));
+
+                            // You can choose to check either axis or both
+                            // You could also use Math.max or both axes separately
+
+                                if (Math.abs(overlapX) >= 10 && Math.abs(overlapY) >= 10) {
+                                    if (self.playerHit == false) {
+                                        self.life -= 1
+                                        self.playerHit = true
+                                        self.time.delayedCall(1500, function () { // 500 milliseconds (0.5 seconds) delay
+                                            self.playerHit = false
+                                        }, [], self);
+                                        console.log(self.life)
+
+                                    }
+                                // Your actual response to deep overlap here
+                                }
                             }
 
 
@@ -708,24 +733,7 @@ function PhaserGame() {
                         this.physics.add.collider(this.ghostGroup, this.rightwall, this.enemyWallCollide, null, this);
                         this.physics.add.collider(this.ghostGroup, this.bottomwall, this.enemyWallCollide, null, this);
                         this.physics.add.collider(this.ghostGroup, this.brkWallGroup, this.enemyWallCollide, null, this);
-                        this.physics.add.overlap(this.ghostGroup, this.player, function (ghost, player) {
-                            const ghostBounds = ghost.getBounds();
-                            const playerBounds = player.getBounds();
-
-                            // Calculate overlap in X and Y
-                            const overlapX = Math.max(0, Math.min(ghostBounds.right, playerBounds.right) - Math.max(ghostBounds.left, playerBounds.left));
-                            const overlapY = Math.max(0, Math.min(ghostBounds.bottom, playerBounds.bottom) - Math.max(ghostBounds.top, playerBounds.top));
-
-                            // You can choose to check either axis or both
-                            // You could also use Math.max or both axes separately
-
-                            if (Math.abs(overlapX) >= 10 && Math.abs(overlapY) >= 10) {
-                                console.log("enemy overlapX with player: depth =", overlapX);
-                                console.log("enemy overlapY with player: depth =", overlapY);
-                                // Your actual response to deep overlap here
-                            }
-
-                        });
+                        this.physics.add.overlap(this.ghostGroup, this.player,this.ghostPlayerCollide,null,this);
                         //this.physics.add.collider(this.player, this.bombGroup)
                         this.cursors = this.input.keyboard.createCursorKeys();
                         self.cameras.main.scrollX = -300
