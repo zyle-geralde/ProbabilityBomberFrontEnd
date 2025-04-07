@@ -41,7 +41,7 @@ function PhaserGame() {
                         this.enemySpeed = 50
                         this.enemySizeX = 64 + 120;
                         this.enemySizeY = 64 + 160;
-                        this.numberOfEnemies = 20
+                        this.numberOfEnemies = 4
                         this.deployedEnemies = 0;
                         this.life = 4
                         this.cursors = null;
@@ -132,8 +132,8 @@ function PhaserGame() {
                                                     putWall = false;
                                                 }
                                                 else {
-                                                    let randEnemynum = Math.random() < 0.50 ? 1 : 0;
-                                                    if (randEnemynum == 1 && self.deployedEnemies <= self.numberOfEnemies) {
+                                                    let randEnemynum = Math.random() < 0.20 ? 1 : 0;
+                                                    if (randEnemynum == 1 && self.deployedEnemies <= self.numberOfEnemies && nn>=2) {
                                                         self.createEnemy(adjusttopwall, insidewall)
                                                         self.deployedEnemies += 1
                                                     }
@@ -153,8 +153,8 @@ function PhaserGame() {
                                                 putWall = true
                                             }
                                             else {
-                                                let randEnemynum = Math.random() < 0.50 ? 1 : 0;
-                                                if (randEnemynum == 1 && self.deployedEnemies <= self.numberOfEnemies) {
+                                                let randEnemynum = Math.random() < 0.20 ? 1 : 0;
+                                                if (randEnemynum == 1 && self.deployedEnemies <= self.numberOfEnemies && nn>=2) {
                                                     self.createEnemy(adjusttopwall, insidewall)
                                                     self.deployedEnemies += 1
                                                 }
@@ -179,8 +179,8 @@ function PhaserGame() {
                                                 innerWall.setDisplaySize(self.wallDim, self.wallDim);
                                             }
                                             else {
-                                                let randEnemynum = Math.random() < 0.50 ? 1 : 0;
-                                                if (randEnemynum == 1 && self.deployedEnemies <= self.numberOfEnemies) {
+                                                let randEnemynum = Math.random() < 0.20 ? 1 : 0;
+                                                if (randEnemynum == 1 && self.deployedEnemies <= self.numberOfEnemies && nn>=2) {
                                                     self.createEnemy(adjusttopwall, insidewall)
                                                     self.deployedEnemies += 1
                                                 }
