@@ -24,7 +24,7 @@ function PhaserGame() {
                         this.load.image('brkwall', 'images/brick-wall.png')
                         this.load.image('bomb', 'images/bomb.png')
                         this.load.image('explode', 'images/explode.png')
-                        this.load.image('ghost','images/ghost.png')
+                        this.load.image('ghost', 'images/ghost.png')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 30,
                             frameHeight: 50,
@@ -96,7 +96,7 @@ function PhaserGame() {
                             let adjusttopwall = 0;
                             let skipColumn = false;
 
-                            self.brkWallGroup = self.physics.add.group({immovable:true})
+                            self.brkWallGroup = self.physics.add.group({ immovable: true })
                             for (let nn = 0; nn < self.cols; nn++) {
                                 let wall = self.topwall.create(adjusttopwall, 0, 'unbrkwall');
                                 self.unbrkWallList.push({ "x": adjusttopwall, "y": 0 })
@@ -134,7 +134,7 @@ function PhaserGame() {
                                                     let randEnemynum = Math.random() < 0.50 ? 1 : 0;
                                                     if (randEnemynum == 1 && self.deployedEnemies <= self.numberOfEnemies) {
                                                         self.createEnemy(adjusttopwall, insidewall)
-                                                        self.deployedEnemies+=1
+                                                        self.deployedEnemies += 1
                                                     }
                                                     insidewall += self.wallDim;
                                                     putWall = false;
@@ -155,7 +155,7 @@ function PhaserGame() {
                                                 let randEnemynum = Math.random() < 0.50 ? 1 : 0;
                                                 if (randEnemynum == 1 && self.deployedEnemies <= self.numberOfEnemies) {
                                                     self.createEnemy(adjusttopwall, insidewall)
-                                                    self.deployedEnemies+=1
+                                                    self.deployedEnemies += 1
                                                 }
                                                 insidewall += self.wallDim;
                                                 putWall = true
@@ -181,7 +181,7 @@ function PhaserGame() {
                                                 let randEnemynum = Math.random() < 0.50 ? 1 : 0;
                                                 if (randEnemynum == 1 && self.deployedEnemies <= self.numberOfEnemies) {
                                                     self.createEnemy(adjusttopwall, insidewall)
-                                                    self.deployedEnemies+=1
+                                                    self.deployedEnemies += 1
                                                 }
                                                 insidewall += self.wallDim;
                                             }
@@ -239,8 +239,8 @@ function PhaserGame() {
                                     repeat: -1,
                                 });
                             },
-                            this.createEnemy = function (x,y) {
-                                let enemy = self.ghostGroup.create(x,y,'ghost')
+                            this.createEnemy = function (x, y) {
+                                let enemy = self.ghostGroup.create(x, y, 'ghost')
                                 enemy.body.setSize(self.enemySizeX, self.enemySizeY);
                                 enemy.setDisplaySize(self.bombSize, self.bombSize);
                                 enemy.setCollideWorldBounds(true);
@@ -302,7 +302,7 @@ function PhaserGame() {
                                 if (self.bombLoc.some(bomb => bomb.x === gridX && bomb.y === gridY)) {
                                     return
                                 }
-                            
+
                                 self.bombGroup = self.physics.add.group({ immovable: true })
                                 let bomb = self.bombGroup.create(gridX, gridY, 'bomb');
 
@@ -351,9 +351,9 @@ function PhaserGame() {
                                                     duration: 100, // Duration of the animation in milliseconds
                                                     ease: 'Linear', //Easing function ('Linear', 'EaseInOut')
                                                     onComplete: function () {
-                                                        
+
                                                         // Add a delay before destroying the explosion
-                                                        self.time.delayedCall(700, function () { // 500 milliseconds (0.5 seconds) delay
+                                                        self.time.delayedCall(400, function () { // 500 milliseconds (0.5 seconds) delay
                                                             explode.destroy();
                                                         }, [], self); // The last self argument ensures that the context of the destroy function is correct.
                                                     }
@@ -367,7 +367,7 @@ function PhaserGame() {
 
                                                 for (var bombnum = 1; bombnum <= self.bombRange; bombnum++) {
                                                     // Add top bomb
-                                                    if (self.unbrkWallList.some(bomb => bomb.x === gridX && bomb.y === gridY - (bombnum * self.wallDim)) && topExplode == true){
+                                                    if (self.unbrkWallList.some(bomb => bomb.x === gridX && bomb.y === gridY - (bombnum * self.wallDim)) && topExplode == true) {
                                                         topExplode = false
                                                     }
                                                     if (topExplode == true) {
@@ -377,14 +377,45 @@ function PhaserGame() {
                                                         explodeTop.hasDamaged = false
                                                         self.physics.add.overlap(explodeTop, self.player, function (explode, player) {
                                                             if (!explode.hasDamaged) {
-                                                                self.life-=1
+                                                                self.life -= 1
                                                                 console.log(self.life);
                                                                 explode.hasDamaged = true
+
+                                                                self.player.setTint(0xff0000); // Set tint to red
+
+                                                                const originalHeight = self.player.displayHeight;
+                                                                const originalwidth = self.player.displayWidth;
+                                                                const targetHeight = originalHeight * 1.1;
+                                                                const targetWidth = originalwidth * 1.1;// Increase size by 20% (adjust as needed)
+                                                                const duration = 200; // Duration of the scaling animation in milliseconds
+
+                                                                // Create a smooth tween for scaling up
+                                                                self.tweens.add({
+                                                                    targets: self.player,
+                                                                    displayHeight: targetHeight,
+                                                                    displayWidth: targetWidth,
+                                                                    duration: duration,
+                                                                    ease: 'Sine.out', // Use a smooth easing function
+                                                                    onComplete: () => {
+                                                                        // Create a smooth tween for scaling back down
+                                                                        self.tweens.add({
+                                                                            targets: self.player,
+                                                                            displayHeight: originalHeight,
+                                                                            displayWidth: originalwidth,
+                                                                            duration: duration,
+                                                                            ease: 'Sine.inOut', // Use a smooth easing function
+                                                                        });
+
+                                                                        self.time.delayedCall(400, () => {
+                                                                            self.player.clearTint(); // Clear the tint after the scale animation
+                                                                        });
+                                                                    }
+                                                                });
+
                                                             }
-                                                            
                                                         });
-                                                        
-    
+
+
                                                         explodeTop.alpha = 0
                                                         //animation for bomb
                                                         self.tweens.add({
@@ -394,118 +425,213 @@ function PhaserGame() {
                                                             ease: 'Linear', //Easing function ('Linear', 'EaseInOut')
                                                             onComplete: function () {
                                                                 // Add a delay before destroying the explosion
-                                                            self.time.delayedCall(700, function () { // 500 milliseconds (0.5 seconds) delay
-                                                                explodeTop.destroy();
-                                                            }, [], self); // The last self argument ensures that the context of the destroy function is correct.
+                                                                self.time.delayedCall(400, function () { // 500 milliseconds (0.5 seconds) delay
+                                                                    explodeTop.destroy();
+                                                                }, [], self); // The last self argument ensures that the context of the destroy function is correct.
                                                             }
                                                         })
                                                     }
 
-                                                    if (self.unbrkWallList.some(bomb => bomb.x === gridX - (bombnum * self.wallDim) && bomb.y === gridY) && leftExplode == true){
+                                                    if (self.unbrkWallList.some(bomb => bomb.x === gridX - (bombnum * self.wallDim) && bomb.y === gridY) && leftExplode == true) {
                                                         leftExplode = false
                                                     }
 
                                                     if (leftExplode == true) {
-                                                    // Add left bomb
-                                                    let explodeLeft = self.physics.add.group({ immovable: true }).create(gridX - (bombnum * self.wallDim), gridY, 'explode');
-                                                    explodeLeft.body.setSize(self.bombSize, self.bombSize);
-                                                    explodeLeft.setDisplaySize(self.bombSize, self.bombSize);
-                                                    
-                                                    self.physics.add.overlap(explodeLeft, self.player, function (explode, player) {
-                                                        if (!explode.hasDamaged) {
-                                                            self.life-=1
-                                                            console.log(self.life);
-                                                            explode.hasDamaged = true
-                                                        }
-                                                        
-                                                    });
-                                                        
-                                                        
+                                                        // Add left bomb
+                                                        let explodeLeft = self.physics.add.group({ immovable: true }).create(gridX - (bombnum * self.wallDim), gridY, 'explode');
+                                                        explodeLeft.body.setSize(self.bombSize, self.bombSize);
+                                                        explodeLeft.setDisplaySize(self.bombSize, self.bombSize);
 
-                                                    explodeLeft.alpha = 0
-                                                    //animation for bomb
-                                                    self.tweens.add({
-                                                        targets: explodeLeft,
-                                                        alpha: 1,
-                                                        duration: bombDur, // Duration of the animation in milliseconds
-                                                        ease: 'Linear', //Easing function ('Linear', 'EaseInOut')
-                                                        onComplete: function () {
-                                                        // Add a delay before destroying the explosion
-                                                        self.time.delayedCall(700, function () { // 500 milliseconds (0.5 seconds) delay
-                                                            explodeLeft.destroy();
-                                                        }, [], self); // The last self argument ensures that the context of the destroy function is correct.
-                                                        }
-                                                    })
+                                                        self.physics.add.overlap(explodeLeft, self.player, function (explode, player) {
+                                                            if (!explode.hasDamaged) {
+                                                                self.life -= 1
+                                                                console.log(self.life);
+                                                                explode.hasDamaged = true
+
+
+                                                                self.player.setTint(0xff0000); // Set tint to red
+
+                                                                const originalHeight = self.player.displayHeight;
+                                                                const originalwidth = self.player.displayWidth;
+                                                                const targetHeight = originalHeight * 1.1;
+                                                                const targetWidth = originalwidth * 1.1;// Increase size by 20% (adjust as needed)
+                                                                const duration = 200; // Duration of the scaling animation in milliseconds
+
+                                                                // Create a smooth tween for scaling up
+                                                                self.tweens.add({
+                                                                    targets: self.player,
+                                                                    displayHeight: targetHeight,
+                                                                    displayWidth: targetWidth,
+                                                                    duration: duration,
+                                                                    ease: 'Sine.out', // Use a smooth easing function
+                                                                    onComplete: () => {
+                                                                        // Create a smooth tween for scaling back down
+                                                                        self.tweens.add({
+                                                                            targets: self.player,
+                                                                            displayHeight: originalHeight,
+                                                                            displayWidth: originalwidth,
+                                                                            duration: duration,
+                                                                            ease: 'Sine.inOut', // Use a smooth easing function
+                                                                        });
+
+                                                                        self.time.delayedCall(400, () => {
+                                                                            self.player.clearTint(); // Clear the tint after the scale animation
+                                                                        });
+                                                                    }
+                                                                });
+                                                            }
+
+                                                        });
+
+
+
+                                                        explodeLeft.alpha = 0
+                                                        //animation for bomb
+                                                        self.tweens.add({
+                                                            targets: explodeLeft,
+                                                            alpha: 1,
+                                                            duration: bombDur, // Duration of the animation in milliseconds
+                                                            ease: 'Linear', //Easing function ('Linear', 'EaseInOut')
+                                                            onComplete: function () {
+                                                                // Add a delay before destroying the explosion
+                                                                self.time.delayedCall(400, function () { // 500 milliseconds (0.5 seconds) delay
+                                                                    explodeLeft.destroy();
+                                                                }, [], self); // The last self argument ensures that the context of the destroy function is correct.
+                                                            }
+                                                        })
                                                     }
 
-                                                    if (self.unbrkWallList.some(bomb => bomb.x ===gridX + (bombnum * self.wallDim) && bomb.y === gridY) && rightExplode == true){
+                                                    if (self.unbrkWallList.some(bomb => bomb.x === gridX + (bombnum * self.wallDim) && bomb.y === gridY) && rightExplode == true) {
                                                         rightExplode = false
                                                     }
 
                                                     if (rightExplode == true) {
-                                                    // Add right bomb
-                                                    let explodeRight = self.physics.add.group({ immovable: true }).create(gridX + (bombnum * self.wallDim), gridY, 'explode');
-                                                    explodeRight.body.setSize(self.bombSize, self.bombSize);
-                                                    explodeRight.setDisplaySize(self.bombSize, self.bombSize);
+                                                        // Add right bomb
+                                                        let explodeRight = self.physics.add.group({ immovable: true }).create(gridX + (bombnum * self.wallDim), gridY, 'explode');
+                                                        explodeRight.body.setSize(self.bombSize, self.bombSize);
+                                                        explodeRight.setDisplaySize(self.bombSize, self.bombSize);
 
-                                                    self.physics.add.overlap(explodeRight, self.player, function (explode, player) {
-                                                        if (!explode.hasDamaged) {
-                                                            self.life-=1
-                                                            console.log(self.life);
-                                                            explode.hasDamaged = true
-                                                        }
-                                                        
-                                                    });
-                                                        
-                                                    explodeRight.alpha = 0
-                                                    //animation for bomb
-                                                    self.tweens.add({
-                                                        targets: explodeRight,
-                                                        alpha: 1,
-                                                        duration: bombDur, // Duration of the animation in milliseconds
-                                                        ease: 'Linear', //Easing function ('Linear', 'EaseInOut')
-                                                        onComplete: function () {
-                                                        // Add a delay before destroying the explosion
-                                                        self.time.delayedCall(700, function () { // 500 milliseconds (0.5 seconds) delay
-                                                            explodeRight.destroy();
-                                                        }, [], self); // The last self argument ensures that the context of the destroy function is correct.
-                                                        }
-                                                    })
+                                                        self.physics.add.overlap(explodeRight, self.player, function (explode, player) {
+                                                            if (!explode.hasDamaged) {
+                                                                self.life -= 1
+                                                                console.log(self.life);
+                                                                explode.hasDamaged = true
+
+
+                                                                self.player.setTint(0xff0000); // Set tint to red
+
+                                                                const originalHeight = self.player.displayHeight;
+                                                                const originalwidth = self.player.displayWidth;
+                                                                const targetHeight = originalHeight * 1.1;
+                                                                const targetWidth = originalwidth * 1.1;// Increase size by 20% (adjust as needed)
+                                                                const duration = 200; // Duration of the scaling animation in milliseconds
+
+                                                                // Create a smooth tween for scaling up
+                                                                self.tweens.add({
+                                                                    targets: self.player,
+                                                                    displayHeight: targetHeight,
+                                                                    displayWidth: targetWidth,
+                                                                    duration: duration,
+                                                                    ease: 'Sine.out', // Use a smooth easing function
+                                                                    onComplete: () => {
+                                                                        // Create a smooth tween for scaling back down
+                                                                        self.tweens.add({
+                                                                            targets: self.player,
+                                                                            displayHeight: originalHeight,
+                                                                            displayWidth: originalwidth,
+                                                                            duration: duration,
+                                                                            ease: 'Sine.inOut', // Use a smooth easing function
+                                                                        });
+
+                                                                        self.time.delayedCall(400, () => {
+                                                                            self.player.clearTint(); // Clear the tint after the scale animation
+                                                                        });
+                                                                    }
+                                                                });
+                                                            }
+
+                                                        });
+
+                                                        explodeRight.alpha = 0
+                                                        //animation for bomb
+                                                        self.tweens.add({
+                                                            targets: explodeRight,
+                                                            alpha: 1,
+                                                            duration: bombDur, // Duration of the animation in milliseconds
+                                                            ease: 'Linear', //Easing function ('Linear', 'EaseInOut')
+                                                            onComplete: function () {
+                                                                // Add a delay before destroying the explosion
+                                                                self.time.delayedCall(400, function () { // 500 milliseconds (0.5 seconds) delay
+                                                                    explodeRight.destroy();
+                                                                }, [], self); // The last self argument ensures that the context of the destroy function is correct.
+                                                            }
+                                                        })
                                                     }
 
-                                                    if (self.unbrkWallList.some(bomb => bomb.x ===gridX && bomb.y === gridY + (bombnum * self.wallDim)) && bottomExplode == true){
+                                                    if (self.unbrkWallList.some(bomb => bomb.x === gridX && bomb.y === gridY + (bombnum * self.wallDim)) && bottomExplode == true) {
                                                         bottomExplode = false
                                                     }
 
                                                     if (bottomExplode == true) {
-                                                                                                            // Add bottom bomb
-                                                    let explodeBottom = self.physics.add.group({ immovable: true }).create(gridX, gridY + (bombnum * self.wallDim), 'explode');
-                                                    explodeBottom.body.setSize(self.bombSize, self.bombSize);
-                                                    explodeBottom.setDisplaySize(self.bombSize, self.bombSize);
+                                                        // Add bottom bomb
+                                                        let explodeBottom = self.physics.add.group({ immovable: true }).create(gridX, gridY + (bombnum * self.wallDim), 'explode');
+                                                        explodeBottom.body.setSize(self.bombSize, self.bombSize);
+                                                        explodeBottom.setDisplaySize(self.bombSize, self.bombSize);
 
-                                                    self.physics.add.overlap(explodeBottom, self.player, function (explode, player) {
-                                                        if (!explode.hasDamaged) {
-                                                            self.life-=1
-                                                            console.log(self.life);
-                                                            explode.hasDamaged = true
-                                                        }
-                                                        
-                                                    });
-                                                        
-                                                    explodeBottom.alpha = 0
-                                                    //animation for bomb
-                                                    self.tweens.add({
-                                                        targets: explodeBottom,
-                                                        alpha: 1,
-                                                        duration: bombDur, // Duration of the animation in milliseconds
-                                                        ease: 'Linear', //Easing function ('Linear', 'EaseInOut')
-                                                        onComplete: function () {
-                                                        // Add a delay before destroying the explosion
-                                                        self.time.delayedCall(700, function () { // 500 milliseconds (0.5 seconds) delay
-                                                            explodeBottom.destroy();
-                                                        }, [], self); // The last self argument ensures that the context of the destroy function is correct.
-                                                        }
-                                                    })
+                                                        self.physics.add.overlap(explodeBottom, self.player, function (explode, player) {
+                                                            if (!explode.hasDamaged) {
+                                                                self.life -= 1
+                                                                console.log(self.life);
+                                                                explode.hasDamaged = true
+
+                                                                self.player.setTint(0xff0000); // Set tint to red
+
+                                                                const originalHeight = self.player.displayHeight;
+                                                                const originalwidth = self.player.displayWidth;
+                                                                const targetHeight = originalHeight * 1.1;
+                                                                const targetWidth = originalwidth * 1.1;// Increase size by 20% (adjust as needed)
+                                                                const duration = 200; // Duration of the scaling animation in milliseconds
+
+                                                                // Create a smooth tween for scaling up
+                                                                self.tweens.add({
+                                                                    targets: self.player,
+                                                                    displayHeight: targetHeight,
+                                                                    displayWidth: targetWidth,
+                                                                    duration: duration,
+                                                                    ease: 'Sine.out', // Use a smooth easing function
+                                                                    onComplete: () => {
+                                                                        // Create a smooth tween for scaling back down
+                                                                        self.tweens.add({
+                                                                            targets: self.player,
+                                                                            displayHeight: originalHeight,
+                                                                            displayWidth: originalwidth,
+                                                                            duration: duration,
+                                                                            ease: 'Sine.inOut', // Use a smooth easing function
+                                                                        });
+
+                                                                        self.time.delayedCall(400, () => {
+                                                                            self.player.clearTint(); // Clear the tint after the scale animation
+                                                                        });
+                                                                    }
+                                                                });
+                                                            }
+
+                                                        });
+
+                                                        explodeBottom.alpha = 0
+                                                        //animation for bomb
+                                                        self.tweens.add({
+                                                            targets: explodeBottom,
+                                                            alpha: 1,
+                                                            duration: bombDur, // Duration of the animation in milliseconds
+                                                            ease: 'Linear', //Easing function ('Linear', 'EaseInOut')
+                                                            onComplete: function () {
+                                                                // Add a delay before destroying the explosion
+                                                                self.time.delayedCall(400, function () { // 500 milliseconds (0.5 seconds) delay
+                                                                    explodeBottom.destroy();
+                                                                }, [], self); // The last self argument ensures that the context of the destroy function is correct.
+                                                            }
+                                                        })
                                                     }
 
                                                     bombDur += 50
@@ -518,28 +644,28 @@ function PhaserGame() {
 
 
                             },
-                                this.handleExplosionCollision = function () {
-                                    self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.brkWallGroup, (explode, wall) => {
-                                        //when explosion overlaps with breakable wall
-                                        wall.destroy();
-                                        //remove destroyed wall from brkWallList
-                                        self.brkWallList = self.brkWallList.filter(item => !(item.x === wall.x && item.y === wall.y));
-                                    });
-                                
-                                    /*self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.player, (explode, player) => {
-    
-                                        self.life -= 1
-                                        console.log(self.life)
-                                        
-                                    });*/
-                                    self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.ghostGroup, (explode, ghost) => {
-                                        //when explosion overlaps with breakable wall
-                                        ghost.destroy();
-                                        //remove destroyed wall from brkWallList
-                                        
-                                    });
+                            this.handleExplosionCollision = function () {
+                                self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.brkWallGroup, (explode, wall) => {
+                                    //when explosion overlaps with breakable wall
+                                    wall.destroy();
+                                    //remove destroyed wall from brkWallList
+                                    self.brkWallList = self.brkWallList.filter(item => !(item.x === wall.x && item.y === wall.y));
+                                });
+
+                                /*self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.player, (explode, player) => {
+ 
+                                    self.life -= 1
+                                    console.log(self.life)
+                                    
+                                });*/
+                                self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.ghostGroup, (explode, ghost) => {
+                                    //when explosion overlaps with breakable wall
+                                    ghost.destroy();
+                                    //remove destroyed wall from brkWallList
+
+                                });
                             },
-                            this.enemyWallCollide = function (enemy,wall) {
+                            this.enemyWallCollide = function (enemy, wall) {
                                 const direction = ['u', 'd', 'l', 'r']
                                 let randomNum = Math.floor(Math.random() * 4);
                                 switch (direction[randomNum]) {
@@ -561,9 +687,9 @@ function PhaserGame() {
                                         break
                                 }
                             }
-                            
 
-                            
+
+
 
 
                         this.createBackgrounds();
@@ -574,12 +700,12 @@ function PhaserGame() {
                         this.physics.add.collider(this.player, this.rightwall);
                         this.physics.add.collider(this.player, this.bottomwall);
                         this.physics.add.collider(this.player, this.brkWallGroup);
-                        
-                        this.physics.add.collider(this.ghostGroup, this.outsidewall,this.enemyWallCollide,null, this);
-                        this.physics.add.collider(this.ghostGroup, this.topwall,this.enemyWallCollide,null, this);
-                        this.physics.add.collider(this.ghostGroup, this.rightwall,this.enemyWallCollide,null, this);
-                        this.physics.add.collider(this.ghostGroup, this.bottomwall,this.enemyWallCollide,null, this);
-                        this.physics.add.collider(this.ghostGroup, this.brkWallGroup,this.enemyWallCollide,null, this);
+
+                        this.physics.add.collider(this.ghostGroup, this.outsidewall, this.enemyWallCollide, null, this);
+                        this.physics.add.collider(this.ghostGroup, this.topwall, this.enemyWallCollide, null, this);
+                        this.physics.add.collider(this.ghostGroup, this.rightwall, this.enemyWallCollide, null, this);
+                        this.physics.add.collider(this.ghostGroup, this.bottomwall, this.enemyWallCollide, null, this);
+                        this.physics.add.collider(this.ghostGroup, this.brkWallGroup, this.enemyWallCollide, null, this);
                         //this.physics.add.collider(this.player, this.bombGroup)
                         this.cursors = this.input.keyboard.createCursorKeys();
                         self.cameras.main.scrollX = -300
@@ -590,7 +716,7 @@ function PhaserGame() {
                         this.handlePlayerMovement();
                         this.handleCameraMovement();
                         this.handleExplosionCollision()
-                        
+
                     }
                 },
                 parent: gameRef.current,
