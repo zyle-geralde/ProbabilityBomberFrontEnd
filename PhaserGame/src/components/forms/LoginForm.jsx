@@ -32,10 +32,9 @@ class LoginForm extends Component {
               />
             </div>
 
-            <a href="">New User?</a>
-            <a href="">Forgot Password?</a>
-            <button onClick={this.props.onLogin}>Login</button>
-            <button onClick={this.props.onForgotPassword}>Forgot Password</button>
+            <a onClick={this.props.onForgotPassword} 
+              style={{ cursor: 'pointer' }}>Forgot Password?</a>
+            <button onClick={this.props.onLogin} class='login-btn'>Login</button>
             </div>
           </div>
           

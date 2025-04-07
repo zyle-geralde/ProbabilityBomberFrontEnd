@@ -51,7 +51,7 @@ class RegisterForm extends Component {
                 placeholder="Password"
               />
             </div>
-            <button onClick={this.props.onRegister}>Register</button>
+            <button onClick={this.props.onRegister} class='login-btn'>Register</button>
             </div>
           </div>
 

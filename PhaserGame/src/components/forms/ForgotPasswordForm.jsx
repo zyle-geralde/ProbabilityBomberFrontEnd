@@ -19,7 +19,7 @@ class ForgotPasswordForm extends Component{
                 <div id="body-container">
                     <div id="body-section">
                         <h2>Forgot Password?</h2>
-                        <p>Enter the email address you registered this website, and we will send you an email message with password reset information. </p>
+                        <p stlye=''>Enter the email address you registered this website, and we will send you an email message with password reset information. </p>
                         <input
                         type="email"
                         name="email"
@@ -28,7 +28,7 @@ class ForgotPasswordForm extends Component{
                         placeholder="Email"
                         />
 
-                        <button onClick={this.props.onForgotPassword}>Confirm</button>
+                        <button onClick={this.props.onForgotPassword} class='login-btn'>Confirm</button>
                     </div>
                 </div>
                 
