@@ -1,0 +1,32 @@
+.level-selector {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 12px;
+    max-height: 560px;
+    height: auto;
+    overflow-y: auto;
+    padding-right: 8px;
+    scrollbar-width: none; 
+    -ms-overflow-style: none;
+  }
+
+  .level-selector::-webkit-scrollbar {
+    display: none;
+  }
+  
+  
+  .level-btn {
+    width: 200px;
+    height: 100px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #888;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  
+  .level-btn:hover {
+    background-color: #eee;
+  }
+  

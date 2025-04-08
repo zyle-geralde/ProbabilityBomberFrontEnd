@@ -1,0 +1,62 @@
+.highscore-table-container {
+    flex: 1;
+    background-color: #fff;
+    padding: 2rem;
+  }
+  
+  .sort-buttons {
+    margin-bottom: 1rem;
+  }
+  
+  .sort-buttons button {
+    margin-right: 10px;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+  
+  .highscore-table {
+    color: black;
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .highscore-table th,
+  .highscore-table td {
+    padding: 8px 12px;
+    border: 1px solid #000000;
+    text-align: center;
+  }
+  
+  .highscore-title {
+    text-align: center;
+    color: black;
+    font-size: 100px;
+    font-weight: bold;
+  }
+  
+  .table-wrapper {
+    max-height: 300px; 
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+  }
+
+  .table-wrapper::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
+  
+  .highscore-table thead th {
+    background-color: #333;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 10px 12px;
+  }
+  
+  .highscore-table tbody {
+    background-color: white;
+  }
+  

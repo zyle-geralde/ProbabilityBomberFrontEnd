@@ -1,0 +1,8 @@
+.main-container {
+    display: flex;
+    margin: 1rem 10rem 1rem 10rem;
+    padding: 20px;
+    justify-content: center;
+    gap: 1rem;
+  }
+  

@@ -4,6 +4,9 @@ import { Component } from "react";
 
 import * as AuthController from './controllers/AuthController';
 
+import HomePage from './pages/Homepage'
+import BeginnerStageMenu from './pages/BeginnerStage'
+
 import ViewStates from './enums/ViewStates';
 
 import LoginForm from './components/forms/LoginForm';  // import LoginForm component
@@ -23,7 +26,7 @@ class App extends Component {
       password: '',
       error: null,
       userData: null,
-      currentView: ViewStates.REGISTER,  // Can be 'login', 'register', or 'profile'
+      currentView: ViewStates.HOME,  // Can be 'login', 'register', or 'profile'
     };
   }
 
@@ -92,6 +95,10 @@ class App extends Component {
             <Route path="/phaserGame" element={<PhaserGame />} />
           </Routes>
         )}
+          <Routes>
+            <Route path="/homePage" element={<HomePage />} />
+            <Route path="/homePage/beginnerStage" element={<BeginnerStageMenu />} />
+          </Routes>
       </Router>
     );
   }
