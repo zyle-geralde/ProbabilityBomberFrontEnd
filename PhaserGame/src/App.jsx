@@ -26,7 +26,7 @@ class App extends Component {
       password: '',
       error: null,
       userData: null,
-      currentView: ViewStates.HOME,  // Can be 'login', 'register', or 'profile'
+      currentView: ViewStates.GAME,  // Can be 'login', 'register', or 'profile'
     };
   }
 
