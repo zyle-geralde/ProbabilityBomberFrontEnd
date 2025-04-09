@@ -23,8 +23,17 @@ function PhaserGame() {
                         this.load.image('unbrkwall', 'images/unbreakable_wall.png');
                         this.load.image('brkwall', 'images/brick-wall.png')
                         this.load.image('bomb', 'images/bomb.png')
+                        this.load.image('bombItem', 'images/bombItem.png')
+                        this.load.image('explodeItem', 'images/explodeItem.png')
+                        this.load.image('shieldItem', 'images/shieldItem.png')
+                        this.load.image('bootsItem', 'images/bootsItem.png')
+                        this.load.image('heartItem', 'images/heartItem.png')
+                        this.load.image('deathItem', 'images/deathItem.png')
                         this.load.image('explode', 'images/explode.png')
                         this.load.image('ghost', 'images/ghost.png')
+                        this.load.image('heart', 'images/heart.png')
+                        this.load.image('death', 'images/defence.png')
+                        this.load.image('boots', 'images/speed.png')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 30,
                             frameHeight: 50,
@@ -36,21 +45,26 @@ function PhaserGame() {
                         this.wallGroup = null;
                         this.player = null;
                         this.playerHit = false
+                        this.shield = false
+                        this.curse = false
+                        this.life = 4
+                        this.speed = 150;
+                        this.bombRange = 1
+                        this.bombLimit = 1
+                        this.itemSize = 45
                         this.ghostGroup = this.physics.add.group()
                         this.enemies = [];
-                        this.enemySpeed = 50
+                        this.enemySpeed = 30
                         this.enemySizeX = 64 + 120;
                         this.enemySizeY = 64 + 160;
                         this.numberOfEnemies = 4
                         this.deployedEnemies = 0;
-                        this.life = 4
                         this.cursors = null;
                         this.wallDim = 64;
                         this.cols = 15;//odd
                         this.rows = 8;//even
                         this.totalWallWidth = this.cols * this.wallDim;
                         this.totalWallHeight = this.rows * this.wallDim;
-                        this.speed = 150;
                         this.cameraSpeed = 150;
                         this.outsidewall = null;
                         this.topwall = null;
@@ -58,12 +72,12 @@ function PhaserGame() {
                         this.bottomwall = null;
                         this.bombSize = 50;
                         this.bombLoc = []
-                        this.bombLimit = 1
                         this.bombDuration = 300
                         this.bombrepeat = 4
-                        this.bombRange = 1
                         this.unbrkWallList = []
                         this.brkWallList = []
+                        this.ItemList = []
+                        this.ItemGroup = this.physics.add.group()
                         this.brkWallGroup = null
                         this.bombGroup = null
 
@@ -124,12 +138,52 @@ function PhaserGame() {
                                             else {
                                                 let randnum = Math.random() < 0.50 ? 1 : 0;
                                                 if (randnum == 1) {
+                                                    //place item
+
+                                                    let rendnumItem = Math.random() < 0.35 ? 1 : 0;
+                                                    if (rendnumItem == 1) {
+                                                        let itemnum = Math.floor(Math.random() * 6) + 1;
+                                                        let itempick
+                                                        switch (itemnum) {
+                                                            case 1:
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'heartItem')
+                                                                break
+                                                            case 2:
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bootsItem')
+                                                                break
+                                                            case 3: 
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'shieldItem')
+                                                                break
+                                                            case 4: 
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'deathItem')
+                                                                break
+                                                            case 5: 
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem')
+                                                                break
+                                                            case 6: 
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'explodeItem')
+                                                                break
+                                                        }
+                                                        self.ItemList.push({ "x": adjusttopwall, "y": insidewall })
+                                                        itempick.body.setSize(self.itemSize, self.itemSize);
+                                                        itempick.setDisplaySize(self.itemSize, self.itemSize);
+                                                        self.tweens.add({
+                                                            targets: itempick,
+                                                            y: itempick.y - 5, // move up by 10 pixels
+                                                            duration: 800,      // time in ms
+                                                            yoyo: true,         // come back down
+                                                            repeat: -1,         // infinite loop
+                                                            ease: 'Sine.easeInOut'
+                                                        });
+                                                    }
+
                                                     let innerWall = self.brkWallGroup.create(adjusttopwall, insidewall, 'brkwall');
                                                     self.brkWallList.push({ "x": adjusttopwall, "y": insidewall })
                                                     insidewall += self.wallDim;
                                                     innerWall.body.setSize(self.wallDim, self.wallDim);
                                                     innerWall.setDisplaySize(self.wallDim, self.wallDim);
                                                     putWall = false;
+                                                    
                                                 }
                                                 else {
                                                     let randEnemynum = Math.random() < 0.20 ? 1 : 0;
@@ -145,6 +199,44 @@ function PhaserGame() {
                                         } else {
                                             let randnum = Math.random() < 0.50 ? 1 : 0;
                                             if (randnum == 1) {
+
+                                                let rendnumItem = Math.random() < 0.35 ? 1 : 0;
+                                                    if (rendnumItem == 1) {
+                                                        let itemnum = Math.floor(Math.random() * 6) + 1;
+                                                        let itempick
+                                                        switch (itemnum) {
+                                                            case 1:
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'heartItem')
+                                                                break
+                                                            case 2:
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bootsItem')
+                                                                break
+                                                            case 3: 
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'shieldItem')
+                                                                break
+                                                            case 4: 
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'deathItem')
+                                                                break
+                                                            case 5: 
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem')
+                                                                break
+                                                            case 6: 
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'explodeItem')
+                                                                break
+                                                        }
+                                                        self.ItemList.push({ "x": adjusttopwall, "y": insidewall })
+                                                        itempick.body.setSize(self.itemSize, self.itemSize);
+                                                        itempick.setDisplaySize(self.itemSize, self.itemSize);
+                                                        self.tweens.add({
+                                                            targets: itempick,
+                                                            y: itempick.y - 5, // move up by 10 pixels
+                                                            duration: 800,      // time in ms
+                                                            yoyo: true,         // come back down
+                                                            repeat: -1,         // infinite loop
+                                                            ease: 'Sine.easeInOut'
+                                                        });
+                                                }
+                                                
                                                 let innerWall = self.brkWallGroup.create(adjusttopwall, insidewall, 'brkwall');
                                                 self.brkWallList.push({ "x": adjusttopwall, "y": insidewall })
                                                 insidewall += self.wallDim;
@@ -172,6 +264,44 @@ function PhaserGame() {
 
                                             let randnum = Math.random() < 0.50 ? 1 : 0;
                                             if (randnum == 1) {
+
+                                                let rendnumItem = Math.random() < 0.35 ? 1 : 0;
+                                                    if (rendnumItem == 1) {
+                                                        let itemnum = Math.floor(Math.random() * 6) + 1;
+                                                        let itempick
+                                                        switch (itemnum) {
+                                                            case 1:
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'heartItem')
+                                                                break
+                                                            case 2:
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bootsItem')
+                                                                break
+                                                            case 3: 
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'shieldItem')
+                                                                break
+                                                            case 4: 
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'deathItem')
+                                                                break
+                                                            case 5: 
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem')
+                                                                break
+                                                            case 6: 
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'explodeItem')
+                                                                break
+                                                        }
+                                                        self.ItemList.push({ "x": adjusttopwall, "y": insidewall })
+                                                        itempick.body.setSize(self.itemSize, self.itemSize);
+                                                        itempick.setDisplaySize(self.itemSize, self.itemSize);
+                                                        self.tweens.add({
+                                                            targets: itempick,
+                                                            y: itempick.y - 5, // move up by 10 pixels
+                                                            duration: 800,      // time in ms
+                                                            yoyo: true,         // come back down
+                                                            repeat: -1,         // infinite loop
+                                                            ease: 'Sine.easeInOut'
+                                                        });
+                                                }
+                                                
                                                 let innerWall = self.brkWallGroup.create(adjusttopwall, insidewall, 'brkwall');
                                                 self.brkWallList.push({ "x": adjusttopwall, "y": insidewall })
                                                 insidewall += self.wallDim;
