@@ -1,63 +1,48 @@
 import React, { useState } from 'react';
 import './HighScoreTable.css';
+import LeaderboardUser from './LeaderboardUser';
 
 function HighScoreTable() {
-  const [sortBy, setSortBy] = useState('highScore');
-
-  const highScores = [
-    { player: 'Alice', score: 1500, time: 45 },
-    { player: 'Bob', score: 1400, time: 38 },
-    { player: 'Charlie', score: 1350, time: 42 },
-  ];
-
-  const sortedScores = [...highScores].sort((a, b) => {
-    if (sortBy === 'highScore') {
-      return b.score - a.score;
-    } else {
-      return a.time - b.time;
-    }
-  });
-
-  // Create an array with the top 10 scores, filling missing spots with placeholders
-  const top10Scores = [
-    ...sortedScores,
-    ...Array(10 - sortedScores.length).fill({
-      player: '-',
-      score: '-',
-      time: '-',
-    }),
+  const leaderboardData = [
+    { rank: 1, name: 'Saniel', nickname: 'Mitchel', score: '20/20', time: '00:36' },
+    { rank: 2, name: 'Chavez', nickname: 'Francis Benedict', score: '20/20', time: '00:52' },
+    { rank: 3, name: 'Lee', nickname: 'Jeretty', score: '20/20', time: '00:54' },
+    { rank: 4, name: 'Navarro', nickname: 'Mikhail James', score: '20/20', time: '01:39' },
+    { rank: 5, name: 'Abellana', nickname: 'Paul Thomas', score: '20/20', time: '02:42' },
+    { rank: 6, name: 'Ejares', nickname: 'Nicole', score: '20/20', time: '04:58' },
+    { rank: 7, name: 'Catubig', nickname: 'Nina Margarette', score: '20/20', time: '09:52' },
+    { rank: 8, name: 'Pepito', nickname: '', score: '18/20', time: '09:58' },
+    // Add more data as needed
   ];
 
   return (
-    <div className="highscore-table-container">
-        <div className="highscore-title">TOP HIGH SCORE</div>
-        <div className="sort-buttons">
-            <button onClick={() => setSortBy('highScore')}>Sort by High Score</button>
-            <button onClick={() => setSortBy('fastestTime')}>Sort by Fastest Time</button>
-        </div>
-
-        <div className="table-wrapper">
-            <table className="highscore-table">
-            <thead>
-                <tr>
-                <th>Player</th>
-                <th>Score</th>
-                <th>Time (s)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {top10Scores.slice(0, 10).map((row, index) => (
-                <tr key={index}>
-                    <td>{row.player}</td>
-                    <td>{row.score}</td>
-                    <td>{row.time}</td>
-                </tr>
-                ))}
-            </tbody>
-            </table>
-        </div>
-        </div>
+    <div className="high-score-activity-container">
+      <div className="high-score-title">
+        <h1>LEADER BOARD</h1>
+      </div>
+      <div className="activity-header">
+        <h2>Bayes Theorem (20 points)</h2>
+      </div>
+      <div className="leaderboard-header">
+          <span className="user-rank">Rank</span> 
+          <span className="user-name">Name</span> 
+          <span className="total-score">Total Score</span>
+          <span className="total-time">Total Time</span>
+      </div>
+      <ul className="leaderboard-list">
+        {leaderboardData.map((entry) => (
+          <LeaderboardUser
+            key={entry.name}
+            rank={entry.rank}
+            name={entry.name}
+            score={entry.score}
+            time={entry.time}
+          />
+        ))}
+      </ul>
+    </div>
   );
 }
+
 
 export default HighScoreTable;

@@ -6,6 +6,7 @@ const ViewStates = Object.freeze({
     FORGOT_PASSWORD: 'forgot_password',
     PASSWORD_RESET_LINK: 'password_reset_link',
     GAME: 'game',
+    HOME: 'home',
   });
   
   export default ViewStates;  
