@@ -167,6 +167,7 @@ function PhaserGame() {
                                                         self.ItemList.push({ "x": adjusttopwall, "y": insidewall })
                                                         itempick.body.setSize(self.itemSize, self.itemSize);
                                                         itempick.setDisplaySize(self.itemSize, self.itemSize);
+                                                        itempick.captured = false
                                                         self.tweens.add({
                                                             targets: itempick,
                                                             y: itempick.y - 5, // move up by 10 pixels
@@ -227,6 +228,7 @@ function PhaserGame() {
                                                         self.ItemList.push({ "x": adjusttopwall, "y": insidewall })
                                                         itempick.body.setSize(self.itemSize, self.itemSize);
                                                         itempick.setDisplaySize(self.itemSize, self.itemSize);
+                                                        itempick.captured = false
                                                         self.tweens.add({
                                                             targets: itempick,
                                                             y: itempick.y - 5, // move up by 10 pixels
@@ -292,6 +294,7 @@ function PhaserGame() {
                                                         self.ItemList.push({ "x": adjusttopwall, "y": insidewall })
                                                         itempick.body.setSize(self.itemSize, self.itemSize);
                                                         itempick.setDisplaySize(self.itemSize, self.itemSize);
+                                                        itempick.captured = false
                                                         self.tweens.add({
                                                             targets: itempick,
                                                             y: itempick.y - 5, // move up by 10 pixels
@@ -874,11 +877,24 @@ function PhaserGame() {
                                     // Your actual response to deep overlap here
                                 }
                             },
-                            this.ItemPlayerCollide = function (players,items) {
-                                self.tweens.killTweensOf(items);
+                            this.ItemPlayerCollide = function (players, items) {
+                                if (items.captured == false) {
+                                    self.tweens.killTweensOf(items);
                             
-                                items.destroy();
-                                self.ItemList = self.ItemList.filter(item => !(item.x === items.x && item.y === items.y));
+                            
+                                    self.tweens.add({
+                                        targets: items,
+                                        alpha: 0, // move up by 10 pixels
+                                        duration: 100,      // time in ms
+                                        ease: 'Linear',
+                                        onComplete: function () {
+                                            items.destroy();
+                                            self.ItemList = self.ItemList.filter(item => !(item.x === items.x && item.y === items.y));
+                                        }
+                                    });
+                                    items.captured = true
+                                    
+                                }
 
                             }
 
