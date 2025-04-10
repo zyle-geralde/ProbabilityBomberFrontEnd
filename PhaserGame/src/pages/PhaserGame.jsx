@@ -873,6 +873,13 @@ function PhaserGame() {
                                     }
                                     // Your actual response to deep overlap here
                                 }
+                            },
+                            this.ItemPlayerCollide = function (players,items) {
+                                self.tweens.killTweensOf(items);
+                            
+                                items.destroy();
+                                self.ItemList = self.ItemList.filter(item => !(item.x === items.x && item.y === items.y));
+
                             }
 
 
@@ -894,6 +901,7 @@ function PhaserGame() {
                         this.physics.add.collider(this.ghostGroup, this.bottomwall, this.enemyWallCollide, null, this);
                         this.physics.add.collider(this.ghostGroup, this.brkWallGroup, this.enemyWallCollide, null, this);
                         this.physics.add.overlap(this.ghostGroup, this.player, this.ghostPlayerCollide, null, this);
+                        this.physics.add.overlap(this.ItemGroup, this.player, this.ItemPlayerCollide, null, this);
                         //this.physics.add.collider(this.player, this.bombGroup)
                         this.cursors = this.input.keyboard.createCursorKeys();
                         self.cameras.main.scrollX = -300
