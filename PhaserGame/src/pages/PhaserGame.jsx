@@ -32,7 +32,7 @@ function PhaserGame() {
                         this.load.image('explode', 'images/explode.png')
                         this.load.image('ghost', 'images/ghost.png')
                         this.load.image('heart', 'images/heart.png')
-                        this.load.image('death', 'images/defence.png')
+                        this.load.image('shield', 'images/defence.png')
                         this.load.image('boots', 'images/speed.png')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 30,
@@ -46,11 +46,12 @@ function PhaserGame() {
                         this.player = null;
                         this.playerHit = false
                         this.shield = false
-                        this.curse = false
+                        this.shieldHold;
                         this.life = 4
                         this.speed = 150;
+                        this.isSpeed = false
                         this.bombRange = 1
-                        this.bombLimit = 6
+                        this.bombLimit = 1
                         this.itemSize = 45
                         this.ghostGroup = this.physics.add.group()
                         this.enemies = [];
@@ -140,7 +141,7 @@ function PhaserGame() {
                                                 if (randnum == 1) {
                                                     //place item
 
-                                                    let rendnumItem = Math.random() < 0.35 ? 1 : 0;
+                                                    let rendnumItem = Math.random() < 1 ? 1 : 0;
                                                     if (rendnumItem == 1) {
                                                         let itemnum = Math.floor(Math.random() * 6) + 1;
                                                         let itempick
@@ -158,8 +159,8 @@ function PhaserGame() {
                                                                 itempick.type = 'shieldItem'
                                                                 break
                                                             case 4:
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'deathItem')
-                                                                itempick.type = 'deathItem'
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'heartItem')
+                                                                itempick.type = 'heartItem'
                                                                 break
                                                             case 5:
                                                                 itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem')
@@ -207,7 +208,7 @@ function PhaserGame() {
                                             let randnum = Math.random() < 0.50 ? 1 : 0;
                                             if (randnum == 1) {
 
-                                                let rendnumItem = Math.random() < 0.35 ? 1 : 0;
+                                                let rendnumItem = Math.random() < 1? 1 : 0;
                                                 if (rendnumItem == 1) {
                                                     let itemnum = Math.floor(Math.random() * 6) + 1;
                                                     let itempick
@@ -225,8 +226,8 @@ function PhaserGame() {
                                                             itempick.type = 'shieldItem'
                                                             break
                                                         case 4:
-                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'deathItem')
-                                                            itempick.type = 'deathItem'
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem')
+                                                            itempick.type = 'bombItem'
                                                             break
                                                         case 5:
                                                             itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem')
@@ -279,7 +280,7 @@ function PhaserGame() {
                                             let randnum = Math.random() < 0.50 ? 1 : 0;
                                             if (randnum == 1) {
 
-                                                let rendnumItem = Math.random() < 0.35 ? 1 : 0;
+                                                let rendnumItem = Math.random() < 1 ? 1 : 0;
                                                 if (rendnumItem == 1) {
                                                     let itemnum = Math.floor(Math.random() * 6) + 1;
                                                     let itempick
@@ -297,8 +298,8 @@ function PhaserGame() {
                                                             itempick.type = 'shieldItem'
                                                             break
                                                         case 4:
-                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'deathItem')
-                                                            itempick.type = 'deathItem'
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'shieldItem')
+                                                            itempick.type = 'shieldItem'
                                                             break
                                                         case 5:
                                                             itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem')
@@ -403,23 +404,47 @@ function PhaserGame() {
                                 if (self.cursors.left.isDown) {
                                     self.player.setVelocityX(-self.speed);
                                     self.player.setVelocityY(0);
+                                    if (self.shieldHold) {
+                                        self.shieldHold.x = self.player.x
+                                        self.shieldHold.y = self.player.y
+                                    }
+
                                     self.player.anims.play('left', true);
                                 } else if (self.cursors.right.isDown) {
                                     self.player.setVelocityX(self.speed);
                                     self.player.setVelocityY(0);
+                                    if (self.shieldHold) {
+                                        self.shieldHold.x = self.player.x
+                                        self.shieldHold.y = self.player.y
+                                    }
+                                    
                                     self.player.anims.play('right', true);
                                 } else if (self.cursors.up.isDown) {
                                     self.player.setVelocityY(-self.speed);
                                     self.player.setVelocityX(0);
+                                    if (self.shieldHold) {
+                                        self.shieldHold.x = self.player.x
+                                        self.shieldHold.y = self.player.y
+                                    }
+                                    
                                     self.player.anims.play('right', true);
                                 } else if (self.cursors.down.isDown) {
                                     self.player.setVelocityY(self.speed);
                                     self.player.setVelocityX(0);
+                                    if (self.shieldHold) {
+                                        self.shieldHold.x = self.player.x
+                                        self.shieldHold.y = self.player.y
+                                    }
                                     self.player.anims.play('left', true);
                                 }
                                 else {
                                     self.player.setVelocityX(0);
                                     self.player.setVelocityY(0);
+                                    if (self.shieldHold) {
+                                        self.shieldHold.x = self.player.x
+                                        self.shieldHold.y = self.player.y
+                                    }
+                                    
                                     self.player.anims.play('stopright');
                                 }
 
@@ -913,7 +938,7 @@ function PhaserGame() {
                                     self.tweens.add({
                                         targets: items,
                                         alpha: 0, // move up by 10 pixels
-                                        duration: 100,      // time in ms
+                                        duration: 300,      // time in ms
                                         ease: 'Linear',
                                         onComplete: function () {
                                             items.destroy();
@@ -922,58 +947,79 @@ function PhaserGame() {
                                     });
                                     switch (items.type) {
                                         case 'heartItem':
-                                    
-                                        case 'bootsItem':
+                                            self.life += 1
+                                            console.log(self.life)
+                                            break
                                     
                                         case 'bombItem':
+                                            self.bombLimit+=1
+                                            break
                                     
                                         case 'explodeItem':
-                                            console.log("E");
-                                            self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
-                                            self.player.setDisplaySize(self.wallDim - 15, self.wallDim - 3);
-                                    
-                                            const originalHeightD = self.player.displayHeight;
-                                            const originalWidthD = self.player.displayWidth;
-                                            const targetHeightD = originalHeightD * 1.1;
-                                            const targetWidthD = originalWidthD * 1.1;
-                                    
-                                            self.player.clearTint();
-                                            self.player.setAlpha(1);
-                                    
-                                            self.tweens.add({
-                                                targets: self.player,
-                                                alpha: 1,
-                                                duration: 300,
-                                                displayHeight: targetHeightD,
-                                                displayWidth: targetWidthD,
-                                                ease: 'Linear',
-                                                yoyo: true,
-                                                repeat: 2,
-                                                onUpdate: function () {
-                                                    self.player.setTint(0xFFFAC7); // Yellow tint
-                                                },
-                                                onComplete: function () {
-                                                    self.player.clearTint();
-                                                    self.player.setAlpha(1);
-                                                    self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
-                                                    self.player.setDisplaySize(self.wallDim - 15, self.wallDim - 3);
-                                                }
-                                            });
-                                            break;
-                                    
-                                        case 'shieldItem':
+                                            self.bombRange+=1
+                                            break
+                                        case 'bootsItem':
+                                            if (self.isSpeed === false) {
+                                                self.isSpeed = true; // Corrected from `==` to `=`
+                                                self.speed += 100;
                                             
+                                                // Store the timer reference so we can cancel it if needed
+                                                self.speedTimer = self.time.delayedCall(5000, function () {
+                                                    self.speed -= 100;
+                                                    self.isSpeed = false;
+                                                    self.speedTimer = null; // Clear the reference
+                                                }, [], self);
+                                            } else {
+                                                // If already speeding, reset the timer
+                                                if (self.speedTimer) {
+                                                    self.speedTimer.remove(false); // Cancel the existing timer
+                                                }
+                                            
+                                                self.speedTimer = self.time.delayedCall(5000, function () {
+                                                    self.speed -= 100;
+                                                    self.isSpeed = false;
+                                                    self.speedTimer = null;
+                                                }, [], self);
+                                            }
+                                            break;
+                                        case 'shieldItem':
+                                            if (self.shield == true) {
+                                                self.tweens.killTweensOf(self.shieldHold);
+                                                self.shieldHold.destroy()
+                                            }
+                                            self.shieldHold = self.physics.add.sprite(players.x, players.y,'shield')
+                                            self.shieldHold.body.setSize(self.wallDim - 20, self.wallDim - 20);
+                                            self.shieldHold.setDisplaySize(self.wallDim - 20, self.wallDim - 20);
+                                            self.shield = true
+
+                                            self.tweens.add({
+                                                targets: self.shieldHold,
+                                                alpha: { from: 1, to: 0.5 },//opacity
+                                                duration: self.bombDuration,
+                                                ease: 'Linear',
+                                                yoyo: true,// Allow alternate
+                                                repeat: self.bombrepeat + 4, // Infinite loop
+                                                onComplete: function () {
+                                                    self.shield = false
+                                                    self.shieldHold.destroy()
+                                                }
+                                            })
                                             break;
                                     
-                                        case 'deathItem':
-
-                                            break;
                                     }
                                     
                                     items.captured = true
 
                                 }
 
+                            },
+                            this.stopShield = function (player, wall) {
+                                if (self.shieldHold) {
+                                    self.shield = true
+                                    console.log("NoGo")
+                                
+                            }
+                            console.log("Go")
                             }
 
 
