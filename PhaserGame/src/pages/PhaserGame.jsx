@@ -208,7 +208,7 @@ function PhaserGame() {
                                             let randnum = Math.random() < 0.50 ? 1 : 0;
                                             if (randnum == 1) {
 
-                                                let rendnumItem = Math.random() < 1? 1 : 0;
+                                                let rendnumItem = Math.random() < 1 ? 1 : 0;
                                                 if (rendnumItem == 1) {
                                                     let itemnum = Math.floor(Math.random() * 6) + 1;
                                                     let itempick
@@ -417,7 +417,7 @@ function PhaserGame() {
                                         self.shieldHold.x = self.player.x
                                         self.shieldHold.y = self.player.y
                                     }
-                                    
+
                                     self.player.anims.play('right', true);
                                 } else if (self.cursors.up.isDown) {
                                     self.player.setVelocityY(-self.speed);
@@ -426,7 +426,7 @@ function PhaserGame() {
                                         self.shieldHold.x = self.player.x
                                         self.shieldHold.y = self.player.y
                                     }
-                                    
+
                                     self.player.anims.play('right', true);
                                 } else if (self.cursors.down.isDown) {
                                     self.player.setVelocityY(self.speed);
@@ -444,7 +444,7 @@ function PhaserGame() {
                                         self.shieldHold.x = self.player.x
                                         self.shieldHold.y = self.player.y
                                     }
-                                    
+
                                     self.player.anims.play('stopright');
                                 }
 
@@ -875,6 +875,7 @@ function PhaserGame() {
                                 }
                             },
                             this.ghostPlayerCollide = function (ghost, player) {
+
                                 const ghostBounds = ghost.getBounds();
                                 const playerBounds = player.getBounds();
 
@@ -887,44 +888,51 @@ function PhaserGame() {
 
                                 if (Math.abs(overlapX) >= 10 && Math.abs(overlapY) >= 10) {
                                     if (self.playerHit == false) {
-                                        self.life -= 1
-                                        self.playerHit = true
-                                        self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
-                                        self.player.setDisplaySize(self.wallDim - 15, self.wallDim - 3);
-                                        self.time.delayedCall(1500, function () { // 500 milliseconds (0.5 seconds) delay
-                                            self.playerHit = false
-                                        }, [], self);
-                                        self.player.setTint(0xff0000); // Set tint to red
+                                        if (self.shield == true) {
 
-                                        const originalHeight = self.player.displayHeight;
-                                        const originalwidth = self.player.displayWidth;
-                                        const targetHeight = originalHeight * 1.1;
-                                        const targetWidth = originalwidth * 1.1;// Increase size by 20% (adjust as needed)
-                                        const duration = 200; // Duration of the scaling animation in milliseconds
+                                        }
+                                        else {
+                                            self.life -= 1
 
-                                        // Create a smooth tween for scaling up
-                                        self.tweens.add({
-                                            targets: self.player,
-                                            displayHeight: targetHeight,
-                                            displayWidth: targetWidth,
-                                            duration: duration,
-                                            ease: 'Sine.out', // Use a smooth easing function
-                                            onComplete: () => {
-                                                // Create a smooth tween for scaling back down
-                                                self.tweens.add({
-                                                    targets: self.player,
-                                                    displayHeight: originalHeight,
-                                                    displayWidth: originalwidth,
-                                                    duration: duration,
-                                                    ease: 'Sine.inOut', // Use a smooth easing function
-                                                });
+                                            self.playerHit = true;
+                                            self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
+                                            self.player.setDisplaySize(self.wallDim - 15, self.wallDim - 3);
+                                            self.time.delayedCall(1500, function () { // 500 milliseconds (0.5 seconds) delay
+                                                self.playerHit = false
+                                            }, [], self);
+                                            self.player.setTint(0xff0000); // Set tint to red
 
-                                                self.time.delayedCall(400, () => {
-                                                    self.player.clearTint(); // Clear the tint after the scale animation
-                                                });
-                                            }
-                                        });
-                                        console.log(self.life)
+                                            const originalHeight = self.player.displayHeight;
+                                            const originalwidth = self.player.displayWidth;
+                                            const targetHeight = originalHeight * 1.1;
+                                            const targetWidth = originalwidth * 1.1;// Increase size by 20% (adjust as needed)
+                                            const duration = 200; // Duration of the scaling animation in milliseconds
+
+                                            // Create a smooth tween for scaling-up
+                                            self.tweens.add({
+                                                targets: self.player,
+                                                displayHeight: targetHeight,
+                                                displayWidth: targetWidth,
+                                                duration: duration,
+                                                ease: 'Sine.out', // Use a smooth easing function
+                                                onComplete: () => {
+                                                    // Create a smooth tween for scaling back down
+                                                    self.tweens.add({
+                                                        targets: self.player,
+                                                        displayHeight: originalHeight,
+                                                        displayWidth: originalwidth,
+                                                        duration: duration,
+                                                        ease: 'Sine.inOut', // Use a smooth easing function
+                                                    });
+
+                                                    self.time.delayedCall(400, () => {
+                                                        self.player.clearTint(); // Clear the tint after the scale animation
+                                                    });
+                                                }
+                                            });
+                                            console.log(self.life)
+                                        }
+
 
                                     }
                                     // Your actual response to deep overlap here
@@ -950,19 +958,19 @@ function PhaserGame() {
                                             self.life += 1
                                             console.log(self.life)
                                             break
-                                    
+
                                         case 'bombItem':
-                                            self.bombLimit+=1
+                                            self.bombLimit += 1
                                             break
-                                    
+
                                         case 'explodeItem':
-                                            self.bombRange+=1
+                                            self.bombRange += 1
                                             break
                                         case 'bootsItem':
                                             if (self.isSpeed === false) {
                                                 self.isSpeed = true; // Corrected from `==` to `=`
                                                 self.speed += 100;
-                                            
+
                                                 // Store the timer reference so we can cancel it if needed
                                                 self.speedTimer = self.time.delayedCall(5000, function () {
                                                     self.speed -= 100;
@@ -974,7 +982,7 @@ function PhaserGame() {
                                                 if (self.speedTimer) {
                                                     self.speedTimer.remove(false); // Cancel the existing timer
                                                 }
-                                            
+
                                                 self.speedTimer = self.time.delayedCall(5000, function () {
                                                     self.speed -= 100;
                                                     self.isSpeed = false;
@@ -987,7 +995,7 @@ function PhaserGame() {
                                                 self.tweens.killTweensOf(self.shieldHold);
                                                 self.shieldHold.destroy()
                                             }
-                                            self.shieldHold = self.physics.add.sprite(players.x, players.y,'shield')
+                                            self.shieldHold = self.physics.add.sprite(players.x, players.y, 'shield')
                                             self.shieldHold.body.setSize(self.wallDim - 20, self.wallDim - 20);
                                             self.shieldHold.setDisplaySize(self.wallDim - 20, self.wallDim - 20);
                                             self.shield = true
@@ -1005,9 +1013,9 @@ function PhaserGame() {
                                                 }
                                             })
                                             break;
-                                    
+
                                     }
-                                    
+
                                     items.captured = true
 
                                 }
@@ -1017,9 +1025,9 @@ function PhaserGame() {
                                 if (self.shieldHold) {
                                     self.shield = true
                                     console.log("NoGo")
-                                
-                            }
-                            console.log("Go")
+
+                                }
+                                console.log("Go")
                             }
 
 
@@ -1044,7 +1052,7 @@ function PhaserGame() {
                         this.physics.add.overlap(this.ItemGroup, this.player, this.ItemPlayerCollide, null, this);
                         //this.physics.add.collider(this.player, this.bombGroup)
                         this.cursors = this.input.keyboard.createCursorKeys();
-                        self.cameras.main.scrollX = -300
+                        self.cameras.main.scrollX = -300;
                     },
                     update: function () {
                         //run later
