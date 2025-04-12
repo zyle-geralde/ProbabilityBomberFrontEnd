@@ -556,7 +556,11 @@ function PhaserGame() {
                                                         explodeTop.hasDamaged = false
                                                         self.physics.add.overlap(explodeTop, self.player, function (explode, player) {
                                                             if (!explode.hasDamaged) {
-                                                                self.life -= 1
+                                                                if (self.shield == true) {
+                                                                    
+                                                                }
+                                                                else {
+                                                                    self.life -= 1
                                                                 console.log(self.life);
                                                                 explode.hasDamaged = true
 
@@ -592,6 +596,7 @@ function PhaserGame() {
                                                                         });
                                                                     }
                                                                 });
+                                                                }
 
                                                             }
                                                         });
@@ -625,7 +630,11 @@ function PhaserGame() {
 
                                                         self.physics.add.overlap(explodeLeft, self.player, function (explode, player) {
                                                             if (!explode.hasDamaged) {
-                                                                self.life -= 1
+                                                                if (self.shield == true) {
+                                                                    
+                                                                }
+                                                                else {
+                                                                    self.life -= 1
                                                                 console.log(self.life);
                                                                 explode.hasDamaged = true
 
@@ -662,6 +671,8 @@ function PhaserGame() {
                                                                         });
                                                                     }
                                                                 });
+                                                                }
+
                                                             }
 
                                                         });
@@ -696,7 +707,11 @@ function PhaserGame() {
 
                                                         self.physics.add.overlap(explodeRight, self.player, function (explode, player) {
                                                             if (!explode.hasDamaged) {
-                                                                self.life -= 1
+                                                                if (self.shield == true) {
+                                                                    
+                                                                }
+                                                                else {
+                                                                    self.life -= 1
                                                                 console.log(self.life);
                                                                 explode.hasDamaged = true
 
@@ -733,6 +748,7 @@ function PhaserGame() {
                                                                         });
                                                                     }
                                                                 });
+                                                                }
                                                             }
 
                                                         });
@@ -765,7 +781,11 @@ function PhaserGame() {
 
                                                         self.physics.add.overlap(explodeBottom, self.player, function (explode, player) {
                                                             if (!explode.hasDamaged) {
-                                                                self.life -= 1
+                                                                if (self.shield == true) {
+                                                                    
+                                                                }
+                                                                else {
+                                                                    self.life -= 1
                                                                 console.log(self.life);
                                                                 explode.hasDamaged = true
 
@@ -801,6 +821,7 @@ function PhaserGame() {
                                                                         });
                                                                     }
                                                                 });
+                                                                }
                                                             }
 
                                                         });
@@ -832,6 +853,7 @@ function PhaserGame() {
 
                             },
                             this.handleExplosionCollision = function () {
+                                
                                 self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.brkWallGroup, (explode, wall) => {
                                     //when explosion overlaps with breakable wall
                                     wall.destroy();
