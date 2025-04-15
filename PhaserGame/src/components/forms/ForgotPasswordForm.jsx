@@ -31,8 +31,12 @@ class ForgotPasswordForm extends Component{
                         <button onClick={this.props.onForgotPassword} class='login-btn'>Confirm</button>
                     </div>
                 </div>
-                
+
+                <footer>
+                    <p>&copy; 2025 Dela Peña Solutions. All rights reserved.</p>
+                </footer>
             </div>
+
         );
     }
 }

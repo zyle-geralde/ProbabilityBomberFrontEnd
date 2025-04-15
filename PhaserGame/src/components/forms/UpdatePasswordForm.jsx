@@ -11,6 +11,10 @@ class UpdatePasswordForm extends Component{
                 placeholder="New Password"
               />
                 <button onClick={this.props.onUpdate}>Confirm</button>
+
+                <footer>
+                  <p>&copy; 2025 Dela Peña Solutions. All rights reserved.</p>
+                </footer>
             </div>
         );
     }

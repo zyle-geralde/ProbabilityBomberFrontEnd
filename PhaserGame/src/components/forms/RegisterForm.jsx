@@ -60,6 +60,9 @@ class RegisterForm extends Component {
         
         
         {this.props.error && <p>Error: {this.props.error}</p>}
+        <footer>
+          <p>&copy; 2025 Dela Peña Solutions. All rights reserved.</p>
+        </footer>
       </div>
     );
   }
