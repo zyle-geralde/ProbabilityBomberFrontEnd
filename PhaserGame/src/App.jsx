@@ -26,7 +26,7 @@ class App extends Component {
       password: '',
       error: null,
       userData: null,
-      currentView: ViewStates.GAME,  // Can be 'login', 'register', or 'profile'
+      currentView: ViewStates.HOME,  // Can be 'login', 'register', or 'profile'
     };
   }
 
@@ -95,10 +95,13 @@ class App extends Component {
             <Route path="/phaserGame" element={<PhaserGame />} />
           </Routes>
         )}
+        {currentView === ViewStates.HOME && (
           <Routes>
             <Route path="/homePage" element={<HomePage />} />
             <Route path="/homePage/beginnerStage" element={<BeginnerStageMenu />} />
           </Routes>
+        )}
+
       </Router>
     );
   }

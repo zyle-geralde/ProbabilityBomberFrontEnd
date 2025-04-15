@@ -16,10 +16,13 @@
   cursor: pointer;
   border-radius: 4px;
   transition: 0.2s;
+  font-size: large;
+  font-weight: bold;
 }
 
 .level-btn:hover {
-  background-color: #eee;
+  background-color: #88343B;
+  color: white;
 }
 
 .level-btn.selected {

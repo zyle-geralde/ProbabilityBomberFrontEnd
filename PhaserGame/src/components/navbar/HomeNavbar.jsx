@@ -32,8 +32,8 @@ function HomeNavbar({ username = "Guest" }) {
         </div>
       </nav>
       
-      {/* Spacer to push content below fixed navbar */}
-      <div className="navbar-spacer"></div>
+      {/* Spacer to push content below fixed navbar
+      <div className="navbar-spacer"></div> */}
     </>
   );
 }
