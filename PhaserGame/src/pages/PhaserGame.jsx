@@ -19,9 +19,9 @@ function PhaserGame() {
                 },
                 scene: {
                     preload: function () {
-                        this.load.image('ground', 'images/image 52.png');
-                        this.load.image('unbrkwall', 'images/unbreakable_wall.png');
-                        this.load.image('brkwall', 'images/brick-wall.png')
+                        this.load.image('ground', 'images/background-whiteArtboard 1.png');
+                        this.load.image('unbrkwall', 'images/unbreakable-WallArtboard 1.png');
+                        this.load.image('brkwall', 'images/breakable-WallArtboard 1.png')
                         this.load.image('bomb', 'images/bomb.png')
                         this.load.image('bombItem', 'images/bombItem.png')
                         this.load.image('explodeItem', 'images/explodeItem.png')
