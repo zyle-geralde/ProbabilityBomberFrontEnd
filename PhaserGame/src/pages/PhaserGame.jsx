@@ -455,6 +455,8 @@ function PhaserGame() {
                                         });
                                     }
                                     messageSymb.isDrop = false
+                                    messageSymb.captured = false
+                                    messageSymb.type = "prob"
 
                                     self.probabilitySymbols.add(messageSymb)
 
@@ -1163,6 +1165,40 @@ function PhaserGame() {
                                 }
 
                             },
+                            this.ProbPlayerCollide = function (player, prob) {
+                            
+                                const probBounds = prob.getBounds();
+                                const playerBounds = player.getBounds();
+
+                                // Calculate overlap in X and Y
+                                const overlapX = Math.max(0, Math.min(probBounds.right, playerBounds.right) - Math.max(probBounds.left, playerBounds.left));
+                                const overlapY = Math.max(0, Math.min(probBounds.bottom, playerBounds.bottom) - Math.max(probBounds.top, playerBounds.top));
+
+                                // You can choose to check either axis or both
+                                // You could also use Math.max or both axes separately
+
+                                if (Math.abs(overlapX) >= 20 && Math.abs(overlapY) >= 10) { 
+                                    
+                                    if (prob.captured == false && prob.isDrop == true) {
+                                        self.tweens.killTweensOf(prob);
+    
+    
+                                        self.tweens.add({
+                                            targets: prob,
+                                            alpha: 0, // move up by 10 pixels
+                                            duration: 300,      // time in ms
+                                            ease: 'Linear',
+                                            onComplete: function () {
+                                                prob.destroy();
+                                                //destroy the positon in the list
+                                                //self.ItemList = self.ItemList.filter(item => !(item.x === items.x && item.y === items.y));
+                                            }
+                                        });
+                                        prob.captured = true
+                                    }
+                                }
+                                
+                            }
                             this.stopShield = function (player, wall) {
                                 if (self.shieldHold) {
                                     self.shield = true
@@ -1192,6 +1228,7 @@ function PhaserGame() {
                         this.physics.add.collider(this.ghostGroup, this.brkWallGroup, this.enemyWallCollide, null, this);
                         this.physics.add.overlap(this.ghostGroup, this.player, this.ghostPlayerCollide, null, this);
                         this.physics.add.overlap(this.ItemGroup, this.player, this.ItemPlayerCollide, null, this);
+                        this.physics.add.overlap(this.probabilitySymbols,this.player,this.ProbPlayerCollide,null,this)
                         //this.physics.add.collider(this.player, this.bombGroup)
                         this.cursors = this.input.keyboard.createCursorKeys();
                         self.cameras.main.scrollX = -300;
