@@ -613,6 +613,7 @@ function PhaserGame() {
                                                                 }
                                                                 else {
                                                                     self.life -= 1
+                                                                    self.lifeDesc.setText(self.life+'')
                                                                 console.log(self.life);
                                                                 explode.hasDamaged = true
 
@@ -687,6 +688,7 @@ function PhaserGame() {
                                                                 }
                                                                 else {
                                                                     self.life -= 1
+                                                                    self.lifeDesc.setText(self.life+'')
                                                                 console.log(self.life);
                                                                 explode.hasDamaged = true
 
@@ -764,6 +766,7 @@ function PhaserGame() {
                                                                 }
                                                                 else {
                                                                     self.life -= 1
+                                                                    self.lifeDesc.setText(self.life+'')
                                                                 console.log(self.life);
                                                                 explode.hasDamaged = true
 
@@ -838,6 +841,7 @@ function PhaserGame() {
                                                                 }
                                                                 else {
                                                                     self.life -= 1
+                                                                    self.lifeDesc.setText(self.life+'')
                                                                 console.log(self.life);
                                                                 explode.hasDamaged = true
 
@@ -967,6 +971,7 @@ function PhaserGame() {
                                         }
                                         else {
                                             self.life -= 1
+                                            self.lifeDesc.setText(self.life+'')
 
                                             self.playerHit = true;
                                             self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
@@ -1031,14 +1036,17 @@ function PhaserGame() {
                                         case 'heartItem':
                                             self.life += 1
                                             console.log(self.life)
+                                            self.lifeDesc.setText(self.life+'')
                                             break
 
                                         case 'bombItem':
                                             self.bombLimit += 1
+                                            self.bombDesc.setText(self.bombLimit+'')
                                             break
 
                                         case 'explodeItem':
                                             self.bombRange += 1
+                                            self.explodeDesc.setText(self.bombRange+'')
                                             break
                                         case 'bootsItem':
                                             if (self.isSpeed === false) {
