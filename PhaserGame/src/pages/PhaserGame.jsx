@@ -35,10 +35,8 @@ function PhaserGame() {
                         this.load.image('shield', 'images/defence.png')
                         this.load.image('boots', 'images/speed.png')
                         this.load.image('heartFixed', 'images/heartFixed.png')
-                        this.load.image('speedFixed', 'images/speedFixed.png')
                         this.load.image('explodeFixed', 'images/explodeFixed.png')
                         this.load.image('bombFixed', 'images/bombFixed.png')
-                        this.load.image('shieldFixed', 'images/shieldFixed.png')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 30,
                             frameHeight: 50,
@@ -90,6 +88,11 @@ function PhaserGame() {
                         this.brkWallGroup = null
                         this.bombGroup = null
 
+                        //for item label
+                        this.lifeDesc = null
+                        this.bombDesc = null
+                        this.explodeDesc = null
+
                         const self = this;
 
                         this.createBackgrounds = function () {
@@ -97,31 +100,45 @@ function PhaserGame() {
                             self.add.sprite(-500, -500, 'ground').setOrigin(0, 0);
                         },
                         this.createHolder = function () {
-
-                            const fixedImage = self.add.image(80, 100, 'heartFixed');
+                            
+                            //Adding fixed images
+                            const fixedImage = self.add.image(80, 200, 'heartFixed');
                             fixedImage.setDisplaySize(self.holdItemDim, self.holdItemDim )
                             fixedImage.setSize(self.holdItemDim,self.holdItemDim)
                             fixedImage.setScrollFactor(0);
 
-                            const fixedImage2 = self.add.image(80, 200, 'speedFixed');
-                            fixedImage2.setDisplaySize(self.holdItemDim, self.holdItemDim )
-                            fixedImage2.setSize(self.holdItemDim,self.holdItemDim)
-                            fixedImage2.setScrollFactor(0);
-
-                            const fixedImage3 = self.add.image(80, 300, 'shieldFixed');
-                            fixedImage3.setDisplaySize(self.holdItemDim, self.holdItemDim )
-                            fixedImage3.setSize(self.holdItemDim,self.holdItemDim)
-                            fixedImage3.setScrollFactor(0);
-
-                            const fixedImage4 = self.add.image(80, 400, 'bombFixed');
+                            const fixedImage4 = self.add.image(80, 300, 'bombFixed');
                             fixedImage4.setDisplaySize(self.holdItemDim, self.holdItemDim )
                             fixedImage4.setSize(self.holdItemDim,self.holdItemDim)
                             fixedImage4.setScrollFactor(0);
 
-                            const fixedImage5 = self.add.image(80, 500, 'explodeFixed');
+                            const fixedImage5 = self.add.image(80, 400, 'explodeFixed');
                             fixedImage5.setDisplaySize(self.holdItemDim, self.holdItemDim )
                             fixedImage5.setSize(self.holdItemDim,self.holdItemDim)
                             fixedImage5.setScrollFactor(0);
+
+                            //Adding textCount
+                            self.lifeDesc = self.add.text(135, 175, self.life+'', {
+                                fontSize: '60px',
+                                fill: '#000000',
+                                fontStyle: "bold"
+                            });
+                            self.lifeDesc.setScrollFactor(0);
+
+                            self.bombDesc = self.add.text(135, 275, self.bombLimit+'', {
+                                fontSize: '60px',
+                                fill: '#000000',
+                                fontStyle: "bold"
+                            });
+                            self.bombDesc.setScrollFactor(0);
+
+                            self.explodeDesc = self.add.text(135, 375, self.bombRange+'', {
+                                fontSize: '60px',
+                                fill: '#000000',
+                                fontStyle: "bold"
+                            });
+                            self.explodeDesc.setScrollFactor(0);
+
                         }
 
                         this.createWalls = function () {
