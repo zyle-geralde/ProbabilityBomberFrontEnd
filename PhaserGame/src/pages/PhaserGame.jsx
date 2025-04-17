@@ -189,7 +189,7 @@ function PhaserGame() {
                                                 putWall = false;
                                             }
                                             else {
-                                                let randnum = Math.random() < 0.50 ? 1 : 0;
+                                                let randnum = Math.random() < 0.65 ? 1 : 0;
                                                 if (randnum == 1) {
                                                     //place item
 
@@ -257,7 +257,7 @@ function PhaserGame() {
 
                                             }
                                         } else {
-                                            let randnum = Math.random() < 0.50 ? 1 : 0;
+                                            let randnum = Math.random() < 0.65 ? 1 : 0;
                                             if (randnum == 1) {
 
                                                 let rendnumItem = Math.random() < 1 ? 1 : 0;
@@ -329,7 +329,7 @@ function PhaserGame() {
                                         let insidewall = self.wallDim;
                                         for (let bb = 0; bb <= self.rows - 2; bb++) {
 
-                                            let randnum = Math.random() < 0.50 ? 1 : 0;
+                                            let randnum = Math.random() < 0.65 ? 1 : 0;
                                             if (randnum == 1) {
 
                                                 let rendnumItem = Math.random() < 1 ? 1 : 0;
