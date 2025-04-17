@@ -7,7 +7,7 @@ function HomePage() {
   return (
     <>
     <HomeNavbar />
-    <div className="main-container">
+    <div className="main-container home-container">
       <CharacterOverview />
       <LevelSelector />
     </div>

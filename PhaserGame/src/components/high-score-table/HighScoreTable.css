@@ -1,62 +1,144 @@
-.highscore-table-container {
-    flex: 1;
-    background-color: #fff;
-    padding: 2rem;
+/* HighScoreTableActivity.css */
+.high-score-activity-container {
+    background-color: #f7f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: solid 1px rgba(66, 65, 65, 0.167);
   }
   
-  .sort-buttons {
-    margin-bottom: 1rem;
+  .activity-header h2 {
+    color: #333;
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    text-align: left;
   }
-  
-  .sort-buttons button {
-    margin-right: 10px;
-    padding: 6px 12px;
-    cursor: pointer;
-  }
-  
-  .highscore-table {
-    color: black;
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .highscore-table th,
-  .highscore-table td {
-    padding: 8px 12px;
-    border: 1px solid #000000;
+
+  .high-score-title{
+    color: #333;
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    text-align: left;
+    background-color: rgb(255, 254, 254);
+    border: solid 1px rgba(66, 65, 65, 0.167);
+    padding: 5px;
     text-align: center;
   }
   
-  .highscore-title {
+  .leaderboard-header {
+    display: grid;
+    grid-template-columns: 40px 1fr auto auto;
+    gap: 10px;
+    padding: 10px 0;
+    color: #777;
+    font-size: 0.9em;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+  }
+  
+  .leaderboard-header span {
+    text-align: left;
+  }
+  
+  .leaderboard-header .total-score {
     text-align: center;
-    color: black;
-    font-size: 100px;
+  }
+  
+  .leaderboard-header .total-time {
+    text-align: center;
+  }
+  
+  .leaderboard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .leaderboard-item {
+    display: grid;
+    grid-template-columns: 30px 1fr auto auto;
+    gap: 10px;
+    padding: 10px 0;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .leaderboard-item:last-child {
+    border-bottom: none;
+  }
+  
+  .rank-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .rank-1 {
+    background-color: #ffc107; /* Gold */
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8em;
+  }
+  
+  .rank-2 {
+    background-color: #6c757d; /* Silver/Gray */
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8em;
+  }
+  
+  .rank-3 {
+    background-color: #d4ac0d; /* Bronze-ish */
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8em;
+  }
+  
+  .user-info {
+    text-align: left;
+  }
+  
+  .user-info .name {
+    font-weight: bold;
+    color: #333;
+    display: block;
+    font-size: 0.95em;
+  }
+  
+  .user-info .nickname {
+    color: #777;
+    font-size: 0.85em;
+    display: block;
+  }
+  
+  .score {
+    text-align: center;
+    color: #28a745; /* Green for score */
     font-weight: bold;
   }
   
-  .table-wrapper {
-    max-height: 300px; 
-    overflow-y: auto;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none;  /* IE and Edge */
+  .time {
+    text-align: center;
+    color: #007bff; 
   }
-
-  .table-wrapper::-webkit-scrollbar {
-    display: none; /* Chrome, Safari */
-  }
-  
-  .highscore-table thead th {
-    background-color: #333;
-    color: white;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    padding: 10px 12px;
-  }
-  
-  .highscore-table tbody {
-    background-color: white;
-  }
-  
