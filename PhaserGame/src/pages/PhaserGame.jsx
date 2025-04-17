@@ -1170,12 +1170,8 @@ function PhaserGame() {
                                 const probBounds = prob.getBounds();
                                 const playerBounds = player.getBounds();
 
-                                // Calculate overlap in X and Y
                                 const overlapX = Math.max(0, Math.min(probBounds.right, playerBounds.right) - Math.max(probBounds.left, playerBounds.left));
                                 const overlapY = Math.max(0, Math.min(probBounds.bottom, playerBounds.bottom) - Math.max(probBounds.top, playerBounds.top));
-
-                                // You can choose to check either axis or both
-                                // You could also use Math.max or both axes separately
 
                                 if (Math.abs(overlapX) >= 20 && Math.abs(overlapY) >= 10) { 
                                     
