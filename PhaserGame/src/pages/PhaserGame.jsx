@@ -67,6 +67,8 @@ function PhaserGame() {
                         this.deployedEnemies = 0;
                         this.cursors = null;
                         this.wallDim = 64;
+                        this.wallDimy = this.wallDim + 200
+                        this.wallDimx = this.wallDim + 100
                         this.holdItemDim = 74
                         this.cols = 15;//odd
                         this.rows = 8;//even
@@ -136,7 +138,7 @@ function PhaserGame() {
                                 let wall = self.outsidewall.create(0, adjustwall, 'unbrkwall');
                                 self.unbrkWallList.push({ "x": 0, "y": adjustwall })
                                 adjustwall += self.wallDim;
-                                wall.body.setSize(self.wallDim, self.wallDim);
+                                wall.body.setSize(self.wallDimx, self.wallDimy);
                                 wall.setDisplaySize(self.wallDim, self.wallDim);
                             }
                         }
@@ -150,7 +152,7 @@ function PhaserGame() {
                                 let wall = self.topwall.create(adjusttopwall, 0, 'unbrkwall');
                                 self.unbrkWallList.push({ "x": adjusttopwall, "y": 0 })
                                 adjusttopwall += self.wallDim;
-                                wall.body.setSize(self.wallDim, self.wallDim);
+                                wall.body.setSize(self.wallDimx, self.wallDimy);
                                 wall.setDisplaySize(self.wallDim, self.wallDim);
 
                                 if (nn >= 1 && nn <= self.cols - 3 && !skipColumn) {
@@ -165,7 +167,7 @@ function PhaserGame() {
                                                 let innerWall = self.topwall.create(adjusttopwall, insidewall, 'unbrkwall');
                                                 self.unbrkWallList.push({ "x": adjusttopwall, "y": insidewall })
                                                 insidewall += self.wallDim;
-                                                innerWall.body.setSize(self.wallDim, self.wallDim);
+                                                innerWall.body.setSize(self.wallDimx, self.wallDimy);
                                                 innerWall.setDisplaySize(self.wallDim, self.wallDim);
                                                 putWall = false;
                                             }
@@ -221,7 +223,7 @@ function PhaserGame() {
                                                     let innerWall = self.brkWallGroup.create(adjusttopwall, insidewall, 'brkwall');
                                                     self.brkWallList.push({ "x": adjusttopwall, "y": insidewall })
                                                     insidewall += self.wallDim;
-                                                    innerWall.body.setSize(self.wallDim, self.wallDim);
+                                                    innerWall.body.setSize(self.wallDimx, self.wallDimy);
                                                     innerWall.setDisplaySize(self.wallDim, self.wallDim);
                                                     putWall = false;
 
@@ -288,7 +290,7 @@ function PhaserGame() {
                                                 let innerWall = self.brkWallGroup.create(adjusttopwall, insidewall, 'brkwall');
                                                 self.brkWallList.push({ "x": adjusttopwall, "y": insidewall })
                                                 insidewall += self.wallDim;
-                                                innerWall.body.setSize(self.wallDim, self.wallDim);
+                                                innerWall.body.setSize(self.wallDimx, self.wallDimy);
                                                 innerWall.setDisplaySize(self.wallDim, self.wallDim);
                                                 putWall = true
                                             }
@@ -360,7 +362,7 @@ function PhaserGame() {
                                                 let innerWall = self.brkWallGroup.create(adjusttopwall, insidewall, 'brkwall');
                                                 self.brkWallList.push({ "x": adjusttopwall, "y": insidewall })
                                                 insidewall += self.wallDim;
-                                                innerWall.body.setSize(self.wallDim, self.wallDim);
+                                                innerWall.body.setSize(self.wallDimx, self.wallDimy);
                                                 innerWall.setDisplaySize(self.wallDim, self.wallDim);
                                             }
                                             else {
@@ -384,7 +386,7 @@ function PhaserGame() {
                                     let wall = self.rightwall.create(self.totalWallWidth - self.wallDim, adjustrightwall, 'unbrkwall');
                                     self.unbrkWallList.push({ "x": self.totalWallWidth - self.wallDim, "y": adjustrightwall })
                                     adjustrightwall += self.wallDim;
-                                    wall.body.setSize(self.wallDim, self.wallDim);
+                                    wall.body.setSize(self.wallDimx, self.wallDimy);
                                     wall.setDisplaySize(self.wallDim, self.wallDim);
                                 }
                             },
@@ -395,7 +397,7 @@ function PhaserGame() {
                                     let wall = self.bottomwall.create(adjustbottomwall, self.totalWallHeight, 'unbrkwall');
                                     self.unbrkWallList.push({ "x": adjustbottomwall, "y": self.totalWallHeight })
                                     adjustbottomwall += self.wallDim;
-                                    wall.body.setSize(self.wallDim, self.wallDim);
+                                    wall.body.setSize(self.wallDimx, self.wallDimy);
                                     wall.setDisplaySize(self.wallDim, self.wallDim);
                                 }
                             },
