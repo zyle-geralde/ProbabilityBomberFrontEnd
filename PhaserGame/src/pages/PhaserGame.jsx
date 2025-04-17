@@ -418,6 +418,40 @@ function PhaserGame() {
                                     wall.setDisplaySize(self.wallDim, self.wallDim);
                                 }
                             },
+                            this.createProbAnswers = function () {
+                                for (var bb of self.brkWallList) {
+                                    console.log(bb)
+                                    let probSymb = "3"
+                                    if (probSymb.length == 1) {
+                                        self.add.text(bb.x-10, bb.y-15, probSymb, {
+                                            fontSize: '32px',
+                                            fill: '#000000',
+                                            fontStyle: "bold",
+                                            stroke: '#ffffff',      
+                                            strokeThickness: 4
+                                        });
+                                    }
+                                    else if (probSymb.length == 2) {
+                                        self.add.text(bb.x-20, bb.y-15, probSymb, {
+                                            fontSize: '32px',
+                                            fill: '#000000',
+                                            fontStyle: "bold",
+                                            stroke: '#ffffff',      
+                                            strokeThickness: 4
+                                        });
+                                    }
+                                    else if (probSymb.length == 3) {
+                                        self.add.text(bb.x-25, bb.y-15, probSymb, {
+                                            fontSize: '28px',
+                                            fill: '#000000',
+                                            fontStyle: "bold",
+                                            stroke: '#ffffff',      
+                                            strokeThickness: 4
+                                        });
+                                    }
+
+                                }
+                            }
                             this.createPlayer = function () {
                                 self.player = self.physics.add.sprite(60, 450, 'character');
                                 //self.player.setScale(48 / 30, 70 / 50);
@@ -1116,6 +1150,7 @@ function PhaserGame() {
                         this.createBackgrounds();
                         this.createWalls();
                         this.createPlayer();
+                        this.createProbAnswers()
                         this.createHolder()
 
                         this.physics.add.collider(this.player, this.outsidewall);
