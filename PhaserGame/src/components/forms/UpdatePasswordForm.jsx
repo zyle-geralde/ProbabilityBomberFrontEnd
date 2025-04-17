@@ -1,19 +1,15 @@
-import React, {Component} from "react";
-
-class UpdatePasswordForm extends Component{
-    render(){
-        return(
-            <div>
-              <input
-                type="password"
-                name="password"
-                onChange={this.props.onChange}
-                placeholder="New Password"
-              />
-                <button onClick={this.props.onUpdate}>Confirm</button>
-            </div>
-        );
-    }
+function UpdatePasswordForm ({ onChange, onUpdate, error }) {
+  return(
+    <div>
+      <input
+        type="password"
+        name="password"
+        onChange={onChange}
+        placeholder="New Password"
+        />
+        <button onClick={onUpdate}>Confirm</button>
+        {error && <p>Error: {error}</p>}
+    </div>
+  );
 }
-
 export default UpdatePasswordForm;
