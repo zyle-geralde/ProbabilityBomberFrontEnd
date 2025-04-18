@@ -12,7 +12,9 @@ export const loginUser = async ({ email, password, role, setUserData, setError, 
     const userData = response.data.userData;
     console.log("User Data: ", userData);
 
+    localStorage.setItem("userData", JSON.stringify(userData)); // ✅ persist
     setUserData(userData);
+    
     if(role == 'student'){
       navigate(ViewStates.STUDENT_PROFILE);
     } else if (role == 'teacher'){

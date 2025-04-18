@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import PhaserGame from './pages/PhaserGame'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import * as AuthController from './controllers/AuthController';
 
@@ -9,14 +9,13 @@ import HomePage from './pages/Homepage'
 import BeginnerStageMenu from './pages/BeginnerStage'
 
 import ViewStates from './enums/ViewStates';
-import LoginForm from './components/forms/LoginForm';  // import LoginForm component
-import RegisterForm from './components/forms/RegisterForm';  // import RegisterForm component
-import Password from './components/forms/UpdatePasswordForm';  // import Password component
-import ForgotPassword from './components/forms/ForgotPasswordForm';  // import ForgotPassword component
-import Profile from './components/views/ProfileComponent';  // import Profile component
-import StudentProfile from './components/views/StudentProfileComponent';  // import Profile component
-import TeacherProfile from './components/views/TeacherProfileComponent';  // import Profile component
-import PasswordResetLink from './components/views/PasswordResetLinkComponent';  // import Profile component
+import LoginForm from './components/forms/LoginForm';
+import RegisterForm from './components/forms/RegisterForm';
+import Password from './components/forms/UpdatePasswordForm';
+import ForgotPassword from './components/forms/ForgotPasswordForm';
+import StudentProfile from './components/views/StudentProfileComponent'; 
+import TeacherProfile from './components/views/TeacherProfileComponent';
+import PasswordResetLink from './components/views/PasswordResetLinkComponent';
 
 export function App() {
   const navigate = useNavigate();
@@ -27,6 +26,13 @@ export function App() {
   const [role, setRole] = useState('');
   const [error, setError] = useState(null);
   const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("userData");
+    if (storedUser) {
+      setUserData(JSON.parse(storedUser));
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -84,22 +90,16 @@ export function App() {
             />
           }
         />
-        {/* <Route
-          path="/profile"
-          element={
-            <Profile
-              userData={userData}
-              onUpdatePassword={() => navigate(ViewStates.REGISTER)}
-            />
-          }
-        /> */}
         <Route
           path="/teacher_profile"
           element={
+            userData ? (
             <TeacherProfile
-              userData={userData}
-              onUpdatePassword={() => navigate(ViewStates.REGISTER)}
-            />
+            userData={userData}
+            onUpdatePassword={() => navigate(ViewStates.REGISTER)}
+            />) : (
+              <p>Loading...</p>
+            )
           }
         />
         <Route
