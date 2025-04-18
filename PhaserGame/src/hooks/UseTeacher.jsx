@@ -7,9 +7,9 @@ export function useTeacherClasses(){
     useEffect(() => {
         async function fetchClasses() {
           try {
-            const data = await TeacherController.getTeacherClasses();
-            console.log(data.data.classes)
-            setClasses(data.data.classes);
+            const response = await TeacherController.getTeacherClasses();
+            console.log(response.data.classes)
+            setClasses(response?.data?.classes || []);
           } catch (error) {
             console.error("Hook Error:", error);
           } finally {
@@ -27,9 +27,9 @@ export function useShowStudents(className){
     useEffect(() => {
         async function fetchStudents() {
             try {
-                const data = await TeacherController.getStudentsClass(className);
-                console.log(data.data.studentsName)
-                setStudents(data.data.studentsName);
+                const response = await TeacherController.getStudentsClass(className);
+                console.log(response.data.studentsName)
+                setStudents(response?.data?.studentsName || []);
             } catch (error) {
                 console.error("Hook Error:", error);
             } finally {
