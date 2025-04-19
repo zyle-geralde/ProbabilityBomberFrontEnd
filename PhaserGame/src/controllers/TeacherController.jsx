@@ -17,3 +17,21 @@ export const getStudentsClass = async (className) => {
         throw error;
     }
 }
+export const deleteStudentFromClass = async (className, studentName) => {
+    try {
+        const response = await TeacherService.removeStudentFromClassService(className, studentName);
+        return response;
+    } catch (error) {
+        console.error("TeacherController Error:", error);
+        throw error;
+    }
+}
+export const addStudentToClass = async (className, studentName) => {
+    try {
+        await TeacherService.addStudentToClassService(className, studentName);
+        return true;
+    } catch (error) {
+        console.error("TeacherController Error:", error);
+        throw error;
+    }
+}

@@ -13,9 +13,9 @@ import LoginForm from './components/forms/LoginForm';
 import RegisterForm from './components/forms/RegisterForm';
 import Password from './components/forms/UpdatePasswordForm';
 import ForgotPassword from './components/forms/ForgotPasswordForm';
-import StudentProfile from './components/views/StudentProfileComponent'; 
-import TeacherProfile from './components/views/TeacherProfileComponent';
-import PasswordResetLink from './components/views/PasswordResetLinkComponent';
+import StudentProfile from './components/views/StudentProfile'; 
+import TeacherProfile from './components/views/teacher/TeacherProfile';
+import PasswordResetLink from './components/views/PasswordResetLink';
 
 export function App() {
   const navigate = useNavigate();
