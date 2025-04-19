@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import TeacherClasses from './TeacherClasses';
 
 function TeacherProfile({ userData, onUpdatePassword }) {

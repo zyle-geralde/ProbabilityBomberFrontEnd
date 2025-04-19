@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { useTeacherClasses } from '../../hooks/UseTeacher';
-import ClassStudents from './ClassStudents';
+import RemoveStudentFromClass from './removeStudentFromClass';
+import { useTeacherClasses } from '../../../hooks/UseTeacher';
+import AddStudentToClass from '../../forms/AddStudentToClass';
 
 function TeacherClasses() {
   const { classes, loading } = useTeacherClasses();
@@ -20,8 +21,10 @@ function TeacherClasses() {
           ))}
         </ul>
       )}
-
-      {selectedClass && <ClassStudents className={selectedClass} />}
+      <hr />
+      {selectedClass && <RemoveStudentFromClass className={selectedClass} />}
+      <hr />
+      {selectedClass && <AddStudentToClass className={selectedClass} />}
     </div>
   );
 }
