@@ -96,7 +96,7 @@ export function App() {
             userData ? (
             <TeacherProfile
             userData={userData}
-            onUpdatePassword={() => navigate(ViewStates.REGISTER)}
+            onUpdatePassword={() => navigate(ViewStates.PASSWORD)}
             />) : (
               <p>Loading...</p>
             )

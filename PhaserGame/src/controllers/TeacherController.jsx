@@ -35,3 +35,22 @@ export const addStudentToClass = async (className, studentName) => {
         throw error;
     }
 }
+
+export const createClassForTeacher = async ( className ) => {
+    try {
+        await TeacherService.createClassForTeacherService(className);
+        return true;
+    } catch (error) {
+        console.error("TeacherController Error:", error);
+        throw error;
+    }
+}
+export const removeClassFromTeacher =  async ( className ) => {
+    try {
+        await TeacherService.removeClassFromTeacherService(className);
+        return true;
+    } catch (error) {
+        console.error("TeacherController Error:", error);
+        throw error;
+    }
+}
