@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import * as TeacherController from '../controllers/TeacherController';
 
-export function useTeacherClasses(){
+export function useTeacherClasses(refreshKey, success){
   const [classes, setClasses] = useState([]);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     async function fetchClasses() {
       try {
@@ -17,13 +18,14 @@ export function useTeacherClasses(){
       }
     }
     fetchClasses();
-  }, []);
+  }, [refreshKey, success]);
   return { classes, loading };
 }
 
 export function useShowStudents(className, refreshKey){
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     async function fetchStudents() {
       try {
@@ -67,7 +69,6 @@ export function useAddStudentToClass(className, studentName){
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  
   useEffect(() => {
     async function addStudent() {
       try {
@@ -82,4 +83,58 @@ export function useAddStudentToClass(className, studentName){
     addStudent();
   }, [className, studentName]);
   return {success, loading};
+}
+
+export function useCreateClassForTeacher(className){
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (className){
+      async function removeClass() {
+        setLoading(true);
+        try {
+          const response = await TeacherController.createClassForTeacher(className);
+          setSuccess(response);
+        } catch (error) {
+          console.error("Hook Error:", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+      removeClass();
+    }
+  }, [className]);
+
+  const reset = () => {
+    setSuccess(false);
+  };
+
+  return {success, loading, reset};
+}
+
+export function useRemoveClassFromTeacher(className){
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (className){
+      async function addStudent() {
+        setLoading(true);
+        try {
+          const response = await TeacherController.removeClassFromTeacher(className);
+          setSuccess(response);
+        } catch (error) {
+          console.error("Hook Error:", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+      addStudent();
+    }
+  }, [className]);
+  const reset = () => {
+    setSuccess(false);
+  };
+  return {success, loading, reset};
 }

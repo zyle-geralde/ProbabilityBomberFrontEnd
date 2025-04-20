@@ -36,3 +36,23 @@ export const addStudentToClassService = async(className, studentName) => {
         throw error;
     }
 }
+export const createClassForTeacherService = async(className ) => {
+    try {
+        const payload = { className };
+        console.log("Payload being sent:", payload);
+        return api.post('/teacher/create_class/', payload);
+    } catch (error) {
+        console.error("Service Error: ", error);
+        throw error;
+    }
+}
+export const removeClassFromTeacherService = async(className) => {
+    try {
+        const payload = { className };
+        console.log("Payload being sent:", payload);
+        return api.post('/teacher/remove_class/', payload);
+    } catch (error) {
+        console.error("Service Error: ", error);
+        throw error;
+    }
+}
