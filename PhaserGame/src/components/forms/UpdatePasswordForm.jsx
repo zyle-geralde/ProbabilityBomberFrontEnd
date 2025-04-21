@@ -1,19 +1,20 @@
-import React, {Component} from "react";
+function UpdatePasswordForm({ onChange, onUpdate, error }) {
+  return (
+    <div>
+      <input
+        type="password"
+        name="password"
+        onChange={onChange}
+        placeholder="New Password"
+      />
+      <button onClick={onUpdate}>Confirm</button>
+      {error && <p>Error: {error}</p>}
 
-class UpdatePasswordForm extends Component{
-    render(){
-        return(
-            <div>
-              <input
-                type="password"
-                name="password"
-                onChange={this.props.onChange}
-                placeholder="New Password"
-              />
-                <button onClick={this.props.onUpdate}>Confirm</button>
-            </div>
-        );
-    }
+      <footer>
+        <p>&copy; 2025 Dela Peña Solutions. All rights reserved.</p>
+      </footer>
+    </div>
+  );
 }
 
 export default UpdatePasswordForm;

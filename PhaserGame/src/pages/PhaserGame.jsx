@@ -19,9 +19,9 @@ function PhaserGame() {
                 },
                 scene: {
                     preload: function () {
-                        this.load.image('ground', 'images/image 52.png');
-                        this.load.image('unbrkwall', 'images/unbreakable_wall.png');
-                        this.load.image('brkwall', 'images/brick-wall.png')
+                        this.load.image('ground', 'images/background-whiteArtboard 1.png');
+                        this.load.image('unbrkwall', 'images/unbreakable-WallArtboard 1.png');
+                        this.load.image('brkwall', 'images/breakable-WallArtboard 1.png')
                         this.load.image('bomb', 'images/bomb.png')
                         this.load.image('bombItem', 'images/bombItem.png')
                         this.load.image('explodeItem', 'images/explodeItem.png')
@@ -32,8 +32,11 @@ function PhaserGame() {
                         this.load.image('explode', 'images/explode.png')
                         this.load.image('ghost', 'images/ghost.png')
                         this.load.image('heart', 'images/heart.png')
-                        this.load.image('death', 'images/defence.png')
+                        this.load.image('shield', 'images/defence.png')
                         this.load.image('boots', 'images/speed.png')
+                        this.load.image('heartFixed', 'images/heartFixed.png')
+                        this.load.image('explodeFixed', 'images/explodeFixed.png')
+                        this.load.image('bombFixed', 'images/bombFixed.png')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 42,
                             frameHeight: 72,
@@ -46,9 +49,10 @@ function PhaserGame() {
                         this.player = null;
                         this.playerHit = false
                         this.shield = false
-                        this.curse = false
+                        this.shieldHold;
                         this.life = 4
                         this.speed = 150;
+                        this.isSpeed = false
                         this.bombRange = 1
                         this.bombLimit = 1
                         this.itemSize = 45
@@ -61,6 +65,9 @@ function PhaserGame() {
                         this.deployedEnemies = 0;
                         this.cursors = null;
                         this.wallDim = 64;
+                        this.wallDimy = this.wallDim + 200
+                        this.wallDimx = this.wallDim + 100
+                        this.holdItemDim = 74
                         this.cols = 15;//odd
                         this.rows = 8;//even
                         this.totalWallWidth = this.cols * this.wallDim;
@@ -81,12 +88,62 @@ function PhaserGame() {
                         this.brkWallGroup = null
                         this.bombGroup = null
 
+                        //for item label
+                        this.lifeDesc = null
+                        this.bombDesc = null
+                        this.explodeDesc = null
+
+                        //probability symbols
+                        this.probabilitySymbols = this.physics.add.group()
+                        this.probabilitySymbolsList = []
+
                         const self = this;
 
                         this.createBackgrounds = function () {
                             //add background
                             self.add.sprite(-500, -500, 'ground').setOrigin(0, 0);
-                        }
+                        },
+                            this.createHolder = function () {
+
+                                //Adding fixed images
+                                const fixedImage = self.add.image(80, 200, 'heartFixed');
+                                fixedImage.setDisplaySize(self.holdItemDim, self.holdItemDim)
+                                fixedImage.setSize(self.holdItemDim, self.holdItemDim)
+                                fixedImage.setScrollFactor(0);
+
+                                const fixedImage4 = self.add.image(80, 300, 'bombFixed');
+                                fixedImage4.setDisplaySize(self.holdItemDim, self.holdItemDim)
+                                fixedImage4.setSize(self.holdItemDim, self.holdItemDim)
+                                fixedImage4.setScrollFactor(0);
+
+                                const fixedImage5 = self.add.image(80, 400, 'explodeFixed');
+                                fixedImage5.setDisplaySize(self.holdItemDim, self.holdItemDim)
+                                fixedImage5.setSize(self.holdItemDim, self.holdItemDim)
+                                fixedImage5.setScrollFactor(0);
+
+                                //Adding textCount
+                                self.lifeDesc = self.add.text(135, 175, self.life + '', {
+                                    fontSize: '60px',
+                                    fill: '#000000',
+                                    fontStyle: "bold"
+                                });
+                                self.lifeDesc.setScrollFactor(0);
+
+                                self.bombDesc = self.add.text(135, 275, self.bombLimit + '', {
+                                    fontSize: '60px',
+                                    fill: '#000000',
+                                    fontStyle: "bold"
+                                });
+                                self.bombDesc.setScrollFactor(0);
+
+                                self.explodeDesc = self.add.text(135, 375, self.bombRange + '', {
+                                    fontSize: '60px',
+                                    fill: '#000000',
+                                    fontStyle: "bold"
+                                });
+                                self.explodeDesc.setScrollFactor(0);
+
+                            }
 
                         this.createWalls = function () {
                             self.wallGroup = this.physics.add.group();
@@ -102,7 +159,7 @@ function PhaserGame() {
                                 let wall = self.outsidewall.create(0, adjustwall, 'unbrkwall');
                                 self.unbrkWallList.push({ "x": 0, "y": adjustwall })
                                 adjustwall += self.wallDim;
-                                wall.body.setSize(self.wallDim, self.wallDim);
+                                wall.body.setSize(self.wallDimx, self.wallDimy);
                                 wall.setDisplaySize(self.wallDim, self.wallDim);
                             }
                         }
@@ -116,7 +173,7 @@ function PhaserGame() {
                                 let wall = self.topwall.create(adjusttopwall, 0, 'unbrkwall');
                                 self.unbrkWallList.push({ "x": adjusttopwall, "y": 0 })
                                 adjusttopwall += self.wallDim;
-                                wall.body.setSize(self.wallDim, self.wallDim);
+                                wall.body.setSize(self.wallDimx, self.wallDimy);
                                 wall.setDisplaySize(self.wallDim, self.wallDim);
 
                                 if (nn >= 1 && nn <= self.cols - 3 && !skipColumn) {
@@ -131,42 +188,49 @@ function PhaserGame() {
                                                 let innerWall = self.topwall.create(adjusttopwall, insidewall, 'unbrkwall');
                                                 self.unbrkWallList.push({ "x": adjusttopwall, "y": insidewall })
                                                 insidewall += self.wallDim;
-                                                innerWall.body.setSize(self.wallDim, self.wallDim);
+                                                innerWall.body.setSize(self.wallDimx, self.wallDimy);
                                                 innerWall.setDisplaySize(self.wallDim, self.wallDim);
                                                 putWall = false;
                                             }
                                             else {
-                                                let randnum = Math.random() < 0.50 ? 1 : 0;
+                                                let randnum = Math.random() < 0.65 ? 1 : 0;
                                                 if (randnum == 1) {
                                                     //place item
 
-                                                    let rendnumItem = Math.random() < 0.35 ? 1 : 0;
+                                                    let rendnumItem = Math.random() < 1 ? 1 : 0;
                                                     if (rendnumItem == 1) {
                                                         let itemnum = Math.floor(Math.random() * 6) + 1;
                                                         let itempick
                                                         switch (itemnum) {
                                                             case 1:
                                                                 itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'heartItem')
+                                                                itempick.type = 'heartItem'
                                                                 break
                                                             case 2:
                                                                 itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bootsItem')
+                                                                itempick.type = 'bootsItem'
                                                                 break
-                                                            case 3: 
+                                                            case 3:
                                                                 itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'shieldItem')
+                                                                itempick.type = 'shieldItem'
                                                                 break
-                                                            case 4: 
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'deathItem')
+                                                            case 4:
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'heartItem')
+                                                                itempick.type = 'heartItem'
                                                                 break
-                                                            case 5: 
+                                                            case 5:
                                                                 itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem')
+                                                                itempick.type = 'bombItem'
                                                                 break
-                                                            case 6: 
+                                                            case 6:
                                                                 itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'explodeItem')
+                                                                itempick.type = 'explodeItem'
                                                                 break
                                                         }
                                                         self.ItemList.push({ "x": adjusttopwall, "y": insidewall })
                                                         itempick.body.setSize(self.itemSize, self.itemSize);
                                                         itempick.setDisplaySize(self.itemSize, self.itemSize);
+                                                        itempick.captured = false
                                                         self.tweens.add({
                                                             targets: itempick,
                                                             y: itempick.y - 5, // move up by 10 pixels
@@ -180,14 +244,14 @@ function PhaserGame() {
                                                     let innerWall = self.brkWallGroup.create(adjusttopwall, insidewall, 'brkwall');
                                                     self.brkWallList.push({ "x": adjusttopwall, "y": insidewall })
                                                     insidewall += self.wallDim;
-                                                    innerWall.body.setSize(self.wallDim, self.wallDim);
+                                                    innerWall.body.setSize(self.wallDimx, self.wallDimy);
                                                     innerWall.setDisplaySize(self.wallDim, self.wallDim);
                                                     putWall = false;
-                                                    
+
                                                 }
                                                 else {
                                                     let randEnemynum = Math.random() < 0.20 ? 1 : 0;
-                                                    if (randEnemynum == 1 && self.deployedEnemies <= self.numberOfEnemies && nn>=2) {
+                                                    if (randEnemynum == 1 && self.deployedEnemies <= self.numberOfEnemies && nn >= 2) {
                                                         self.createEnemy(adjusttopwall, insidewall)
                                                         self.deployedEnemies += 1
                                                     }
@@ -197,56 +261,63 @@ function PhaserGame() {
 
                                             }
                                         } else {
-                                            let randnum = Math.random() < 0.50 ? 1 : 0;
+                                            let randnum = Math.random() < 0.65 ? 1 : 0;
                                             if (randnum == 1) {
 
-                                                let rendnumItem = Math.random() < 0.35 ? 1 : 0;
-                                                    if (rendnumItem == 1) {
-                                                        let itemnum = Math.floor(Math.random() * 6) + 1;
-                                                        let itempick
-                                                        switch (itemnum) {
-                                                            case 1:
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'heartItem')
-                                                                break
-                                                            case 2:
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bootsItem')
-                                                                break
-                                                            case 3: 
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'shieldItem')
-                                                                break
-                                                            case 4: 
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'deathItem')
-                                                                break
-                                                            case 5: 
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem')
-                                                                break
-                                                            case 6: 
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'explodeItem')
-                                                                break
-                                                        }
-                                                        self.ItemList.push({ "x": adjusttopwall, "y": insidewall })
-                                                        itempick.body.setSize(self.itemSize, self.itemSize);
-                                                        itempick.setDisplaySize(self.itemSize, self.itemSize);
-                                                        self.tweens.add({
-                                                            targets: itempick,
-                                                            y: itempick.y - 5, // move up by 10 pixels
-                                                            duration: 800,      // time in ms
-                                                            yoyo: true,         // come back down
-                                                            repeat: -1,         // infinite loop
-                                                            ease: 'Sine.easeInOut'
-                                                        });
+                                                let rendnumItem = Math.random() < 1 ? 1 : 0;
+                                                if (rendnumItem == 1) {
+                                                    let itemnum = Math.floor(Math.random() * 6) + 1;
+                                                    let itempick
+                                                    switch (itemnum) {
+                                                        case 1:
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'heartItem')
+                                                            itempick.type = 'heartItem'
+                                                            break
+                                                        case 2:
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bootsItem')
+                                                            itempick.type = 'bootsItem'
+                                                            break
+                                                        case 3:
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'shieldItem')
+                                                            itempick.type = 'shieldItem'
+                                                            break
+                                                        case 4:
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem')
+                                                            itempick.type = 'bombItem'
+                                                            break
+                                                        case 5:
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem')
+                                                            itempick.type = 'bombItem'
+                                                            break
+                                                        case 6:
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'explodeItem')
+                                                            itempick.type = 'explodeItem'
+                                                            break
+                                                    }
+                                                    self.ItemList.push({ "x": adjusttopwall, "y": insidewall })
+                                                    itempick.body.setSize(self.itemSize, self.itemSize);
+                                                    itempick.setDisplaySize(self.itemSize, self.itemSize);
+                                                    itempick.captured = false
+                                                    self.tweens.add({
+                                                        targets: itempick,
+                                                        y: itempick.y - 5, // move up by 10 pixels
+                                                        duration: 800,      // time in ms
+                                                        yoyo: true,         // come back down
+                                                        repeat: -1,         // infinite loop
+                                                        ease: 'Sine.easeInOut'
+                                                    });
                                                 }
-                                                
+
                                                 let innerWall = self.brkWallGroup.create(adjusttopwall, insidewall, 'brkwall');
                                                 self.brkWallList.push({ "x": adjusttopwall, "y": insidewall })
                                                 insidewall += self.wallDim;
-                                                innerWall.body.setSize(self.wallDim, self.wallDim);
+                                                innerWall.body.setSize(self.wallDimx, self.wallDimy);
                                                 innerWall.setDisplaySize(self.wallDim, self.wallDim);
                                                 putWall = true
                                             }
                                             else {
                                                 let randEnemynum = Math.random() < 0.20 ? 1 : 0;
-                                                if (randEnemynum == 1 && self.deployedEnemies <= self.numberOfEnemies && nn>=2) {
+                                                if (randEnemynum == 1 && self.deployedEnemies <= self.numberOfEnemies && nn >= 2) {
                                                     self.createEnemy(adjusttopwall, insidewall)
                                                     self.deployedEnemies += 1
                                                 }
@@ -262,55 +333,62 @@ function PhaserGame() {
                                         let insidewall = self.wallDim;
                                         for (let bb = 0; bb <= self.rows - 2; bb++) {
 
-                                            let randnum = Math.random() < 0.50 ? 1 : 0;
+                                            let randnum = Math.random() < 0.65 ? 1 : 0;
                                             if (randnum == 1) {
 
-                                                let rendnumItem = Math.random() < 0.35 ? 1 : 0;
-                                                    if (rendnumItem == 1) {
-                                                        let itemnum = Math.floor(Math.random() * 6) + 1;
-                                                        let itempick
-                                                        switch (itemnum) {
-                                                            case 1:
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'heartItem')
-                                                                break
-                                                            case 2:
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bootsItem')
-                                                                break
-                                                            case 3: 
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'shieldItem')
-                                                                break
-                                                            case 4: 
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'deathItem')
-                                                                break
-                                                            case 5: 
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem')
-                                                                break
-                                                            case 6: 
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'explodeItem')
-                                                                break
-                                                        }
-                                                        self.ItemList.push({ "x": adjusttopwall, "y": insidewall })
-                                                        itempick.body.setSize(self.itemSize, self.itemSize);
-                                                        itempick.setDisplaySize(self.itemSize, self.itemSize);
-                                                        self.tweens.add({
-                                                            targets: itempick,
-                                                            y: itempick.y - 5, // move up by 10 pixels
-                                                            duration: 800,      // time in ms
-                                                            yoyo: true,         // come back down
-                                                            repeat: -1,         // infinite loop
-                                                            ease: 'Sine.easeInOut'
-                                                        });
+                                                let rendnumItem = Math.random() < 1 ? 1 : 0;
+                                                if (rendnumItem == 1) {
+                                                    let itemnum = Math.floor(Math.random() * 6) + 1;
+                                                    let itempick
+                                                    switch (itemnum) {
+                                                        case 1:
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'heartItem')
+                                                            itempick.type = 'heartItem'
+                                                            break
+                                                        case 2:
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bootsItem')
+                                                            itempick.type = 'bootsItem'
+                                                            break
+                                                        case 3:
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'shieldItem')
+                                                            itempick.type = 'shieldItem'
+                                                            break
+                                                        case 4:
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'shieldItem')
+                                                            itempick.type = 'shieldItem'
+                                                            break
+                                                        case 5:
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem')
+                                                            itempick.type = 'bombItem'
+                                                            break
+                                                        case 6:
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'explodeItem')
+                                                            itempick.type = 'explodeItem'
+                                                            break
+                                                    }
+                                                    self.ItemList.push({ "x": adjusttopwall, "y": insidewall })
+                                                    itempick.body.setSize(self.itemSize, self.itemSize);
+                                                    itempick.setDisplaySize(self.itemSize, self.itemSize);
+                                                    itempick.captured = false
+                                                    self.tweens.add({
+                                                        targets: itempick,
+                                                        y: itempick.y - 5, // move up by 10 pixels
+                                                        duration: 800,      // time in ms
+                                                        yoyo: true,         // come back down
+                                                        repeat: -1,         // infinite loop
+                                                        ease: 'Sine.easeInOut'
+                                                    });
                                                 }
-                                                
+
                                                 let innerWall = self.brkWallGroup.create(adjusttopwall, insidewall, 'brkwall');
                                                 self.brkWallList.push({ "x": adjusttopwall, "y": insidewall })
                                                 insidewall += self.wallDim;
-                                                innerWall.body.setSize(self.wallDim, self.wallDim);
+                                                innerWall.body.setSize(self.wallDimx, self.wallDimy);
                                                 innerWall.setDisplaySize(self.wallDim, self.wallDim);
                                             }
                                             else {
                                                 let randEnemynum = Math.random() < 0.20 ? 1 : 0;
-                                                if (randEnemynum == 1 && self.deployedEnemies <= self.numberOfEnemies && nn>=2) {
+                                                if (randEnemynum == 1 && self.deployedEnemies <= self.numberOfEnemies && nn >= 2) {
                                                     self.createEnemy(adjusttopwall, insidewall)
                                                     self.deployedEnemies += 1
                                                 }
@@ -329,7 +407,7 @@ function PhaserGame() {
                                     let wall = self.rightwall.create(self.totalWallWidth - self.wallDim, adjustrightwall, 'unbrkwall');
                                     self.unbrkWallList.push({ "x": self.totalWallWidth - self.wallDim, "y": adjustrightwall })
                                     adjustrightwall += self.wallDim;
-                                    wall.body.setSize(self.wallDim, self.wallDim);
+                                    wall.body.setSize(self.wallDimx, self.wallDimy);
                                     wall.setDisplaySize(self.wallDim, self.wallDim);
                                 }
                             },
@@ -340,36 +418,76 @@ function PhaserGame() {
                                     let wall = self.bottomwall.create(adjustbottomwall, self.totalWallHeight, 'unbrkwall');
                                     self.unbrkWallList.push({ "x": adjustbottomwall, "y": self.totalWallHeight })
                                     adjustbottomwall += self.wallDim;
-                                    wall.body.setSize(self.wallDim, self.wallDim);
+                                    wall.body.setSize(self.wallDimx, self.wallDimy);
                                     wall.setDisplaySize(self.wallDim, self.wallDim);
                                 }
                             },
-                            this.createPlayer = function () {
-                                self.player = self.physics.add.sprite(60, 450, 'character');
-                                //self.player.setScale(48 / 30, 70 / 50);
-                                // self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
-                                self.player.setDisplaySize(self.wallDim - 10, self.wallDim - 10);
-                                self.player.setCollideWorldBounds(true);
+                            this.createProbAnswers = function () {
+                                for (var bb of self.brkWallList) {
+                                    console.log(bb)
+                                    let messageSymb = null
+                                    let probSymb = "357"
+                                    if (probSymb.length == 1) {
+                                        messageSymb = self.add.text(bb.x - 10, bb.y - 15, probSymb, {
+                                            fontSize: '32px',
+                                            fill: '#800000',
+                                            fontStyle: "bold",
+                                            stroke: '#000000',
+                                            strokeThickness: 4
+                                        });
+                                    }
+                                    else if (probSymb.length == 2) {
+                                        messageSymb = self.add.text(bb.x - 20, bb.y - 15, probSymb, {
+                                            fontSize: '32px',
+                                            fill: '#800000',
+                                            fontStyle: "bold",
+                                            stroke: '#000000',
+                                            strokeThickness: 4
+                                        });
+                                    }
+                                    else if (probSymb.length == 3) {
+                                        messageSymb = self.add.text(bb.x - 25, bb.y - 15, probSymb, {
+                                            fontSize: '28px',
+                                            fill: '#800000',
+                                            fontStyle: "bold",
+                                            stroke: '#000000',
+                                            strokeThickness: 4
+                                        });
+                                    }
+                                    messageSymb.isDrop = false
+                                    messageSymb.captured = false
+                                    messageSymb.type = "prob"
 
-                                self.anims.create({
-                                    key: 'left',
-                                    frames: self.anims.generateFrameNumbers('character', { start: 3, end: 5 }),
-                                    frameRate: 10,
-                                    repeat: -1,
-                                });
-                                self.anims.create({
-                                    key: 'right',
-                                    frames: self.anims.generateFrameNumbers('character', { start: 0, end: 2 }),
-                                    frameRate: 10,
-                                    repeat: -1,
-                                });
-                                self.anims.create({
-                                    key: 'stopright',
-                                    frames: [{ key: 'character', frame: 0 }],
-                                    frameRate: 10,
-                                    repeat: -1,
-                                });
-                            },
+                                    self.probabilitySymbols.add(messageSymb)
+
+                                }
+                            }
+                        this.createPlayer = function () {
+                            self.player = self.physics.add.sprite(60, 450, 'character');
+                            //self.player.setScale(48 / 30, 70 / 50);
+                            self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
+                            self.player.setDisplaySize(self.wallDim - 15, self.wallDim - 3);
+                            self.player.setCollideWorldBounds(true);
+
+                            self.anims.create({
+                                key: 'left',
+                                frames: self.anims.generateFrameNumbers('character', { start: 3, end: 5 }),
+                                frameRate: 10,
+                                repeat: -1,
+                            });
+                            self.anims.create({
+                                key: 'right',
+                                frames: self.anims.generateFrameNumbers('character', { start: 0, end: 2 }),
+                                frameRate: 10,
+                                repeat: -1,
+                            });
+                            self.anims.create({
+                                key: 'stopright',
+                                frames: [{ key: 'character', frame: 0 }],
+                                frameRate: 10,
+                                repeat: -1,
+                            });
+                        },
                             this.createEnemy = function (x, y) {
                                 let enemy = self.ghostGroup.create(x, y, 'ghost')
                                 enemy.body.setSize(self.enemySizeX, self.enemySizeY);
@@ -382,23 +500,47 @@ function PhaserGame() {
                                 if (self.cursors.left.isDown) {
                                     self.player.setVelocityX(-self.speed);
                                     self.player.setVelocityY(0);
+                                    if (self.shieldHold) {
+                                        self.shieldHold.x = self.player.x
+                                        self.shieldHold.y = self.player.y
+                                    }
+
                                     self.player.anims.play('left', true);
                                 } else if (self.cursors.right.isDown) {
                                     self.player.setVelocityX(self.speed);
                                     self.player.setVelocityY(0);
+                                    if (self.shieldHold) {
+                                        self.shieldHold.x = self.player.x
+                                        self.shieldHold.y = self.player.y
+                                    }
+
                                     self.player.anims.play('right', true);
                                 } else if (self.cursors.up.isDown) {
                                     self.player.setVelocityY(-self.speed);
                                     self.player.setVelocityX(0);
+                                    if (self.shieldHold) {
+                                        self.shieldHold.x = self.player.x
+                                        self.shieldHold.y = self.player.y
+                                    }
+
                                     self.player.anims.play('right', true);
                                 } else if (self.cursors.down.isDown) {
                                     self.player.setVelocityY(self.speed);
                                     self.player.setVelocityX(0);
+                                    if (self.shieldHold) {
+                                        self.shieldHold.x = self.player.x
+                                        self.shieldHold.y = self.player.y
+                                    }
                                     self.player.anims.play('left', true);
                                 }
                                 else {
                                     self.player.setVelocityX(0);
                                     self.player.setVelocityY(0);
+                                    if (self.shieldHold) {
+                                        self.shieldHold.x = self.player.x
+                                        self.shieldHold.y = self.player.y
+                                    }
+
                                     self.player.anims.play('stopright');
                                 }
 
@@ -510,40 +652,48 @@ function PhaserGame() {
                                                         explodeTop.hasDamaged = false
                                                         self.physics.add.overlap(explodeTop, self.player, function (explode, player) {
                                                             if (!explode.hasDamaged) {
-                                                                self.life -= 1
-                                                                console.log(self.life);
-                                                                explode.hasDamaged = true
+                                                                if (self.shield == true) {
 
-                                                                self.player.setTint(0xff0000); // Set tint to red
+                                                                }
+                                                                else {
+                                                                    self.life -= 1
+                                                                    self.lifeDesc.setText(self.life + '')
+                                                                    console.log(self.life);
+                                                                    explode.hasDamaged = true
 
-                                                                const originalHeight = self.player.displayHeight;
-                                                                const originalwidth = self.player.displayWidth;
-                                                                const targetHeight = originalHeight * 1.1;
-                                                                const targetWidth = originalwidth * 1.1;// Increase size by 20% (adjust as needed)
-                                                                const duration = 200; // Duration of the scaling animation in milliseconds
+                                                                    self.player.setTint(0xff0000); // Set tint to red
+                                                                    self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
+                                                                    self.player.setDisplaySize(self.wallDim - 15, self.wallDim - 3);
 
-                                                                // Create a smooth tween for scaling up
-                                                                self.tweens.add({
-                                                                    targets: self.player,
-                                                                    displayHeight: targetHeight,
-                                                                    displayWidth: targetWidth,
-                                                                    duration: duration,
-                                                                    ease: 'Sine.out', // Use a smooth easing function
-                                                                    onComplete: () => {
-                                                                        // Create a smooth tween for scaling back down
-                                                                        self.tweens.add({
-                                                                            targets: self.player,
-                                                                            displayHeight: originalHeight,
-                                                                            displayWidth: originalwidth,
-                                                                            duration: duration,
-                                                                            ease: 'Sine.inOut', // Use a smooth easing function
-                                                                        });
+                                                                    const originalHeight = self.player.displayHeight;
+                                                                    const originalwidth = self.player.displayWidth;
+                                                                    const targetHeight = originalHeight * 1.1;
+                                                                    const targetWidth = originalwidth * 1.1;// Increase size by 20% (adjust as needed)
+                                                                    const duration = 200; // Duration of the scaling animation in milliseconds
 
-                                                                        self.time.delayedCall(400, () => {
-                                                                            self.player.clearTint(); // Clear the tint after the scale animation
-                                                                        });
-                                                                    }
-                                                                });
+                                                                    // Create a smooth tween for scaling up
+                                                                    self.tweens.add({
+                                                                        targets: self.player,
+                                                                        displayHeight: targetHeight,
+                                                                        displayWidth: targetWidth,
+                                                                        duration: duration,
+                                                                        ease: 'Sine.out', // Use a smooth easing function
+                                                                        onComplete: () => {
+                                                                            // Create a smooth tween for scaling back down
+                                                                            self.tweens.add({
+                                                                                targets: self.player,
+                                                                                displayHeight: originalHeight,
+                                                                                displayWidth: originalwidth,
+                                                                                duration: duration,
+                                                                                ease: 'Sine.inOut', // Use a smooth easing function
+                                                                            });
+
+                                                                            self.time.delayedCall(400, () => {
+                                                                                self.player.clearTint(); // Clear the tint after the scale animation
+                                                                            });
+                                                                        }
+                                                                    });
+                                                                }
 
                                                             }
                                                         });
@@ -577,41 +727,50 @@ function PhaserGame() {
 
                                                         self.physics.add.overlap(explodeLeft, self.player, function (explode, player) {
                                                             if (!explode.hasDamaged) {
-                                                                self.life -= 1
-                                                                console.log(self.life);
-                                                                explode.hasDamaged = true
+                                                                if (self.shield == true) {
+
+                                                                }
+                                                                else {
+                                                                    self.life -= 1
+                                                                    self.lifeDesc.setText(self.life + '')
+                                                                    console.log(self.life);
+                                                                    explode.hasDamaged = true
 
 
-                                                                self.player.setTint(0xff0000); // Set tint to red
+                                                                    self.player.setTint(0xff0000); // Set tint to red
+                                                                    self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
+                                                                    self.player.setDisplaySize(self.wallDim - 15, self.wallDim - 3);
 
-                                                                const originalHeight = self.player.displayHeight;
-                                                                const originalwidth = self.player.displayWidth;
-                                                                const targetHeight = originalHeight * 1.1;
-                                                                const targetWidth = originalwidth * 1.1;// Increase size by 20% (adjust as needed)
-                                                                const duration = 200; // Duration of the scaling animation in milliseconds
+                                                                    const originalHeight = self.player.displayHeight;
+                                                                    const originalwidth = self.player.displayWidth;
+                                                                    const targetHeight = originalHeight * 1.1;
+                                                                    const targetWidth = originalwidth * 1.1;// Increase size by 20% (adjust as needed)
+                                                                    const duration = 200; // Duration of the scaling animation in milliseconds
 
-                                                                // Create a smooth tween for scaling up
-                                                                self.tweens.add({
-                                                                    targets: self.player,
-                                                                    displayHeight: targetHeight,
-                                                                    displayWidth: targetWidth,
-                                                                    duration: duration,
-                                                                    ease: 'Sine.out', // Use a smooth easing function
-                                                                    onComplete: () => {
-                                                                        // Create a smooth tween for scaling back down
-                                                                        self.tweens.add({
-                                                                            targets: self.player,
-                                                                            displayHeight: originalHeight,
-                                                                            displayWidth: originalwidth,
-                                                                            duration: duration,
-                                                                            ease: 'Sine.inOut', // Use a smooth easing function
-                                                                        });
+                                                                    // Create a smooth tween for scaling up
+                                                                    self.tweens.add({
+                                                                        targets: self.player,
+                                                                        displayHeight: targetHeight,
+                                                                        displayWidth: targetWidth,
+                                                                        duration: duration,
+                                                                        ease: 'Sine.out', // Use a smooth easing function
+                                                                        onComplete: () => {
+                                                                            // Create a smooth tween for scaling back down
+                                                                            self.tweens.add({
+                                                                                targets: self.player,
+                                                                                displayHeight: originalHeight,
+                                                                                displayWidth: originalwidth,
+                                                                                duration: duration,
+                                                                                ease: 'Sine.inOut', // Use a smooth easing function
+                                                                            });
 
-                                                                        self.time.delayedCall(400, () => {
-                                                                            self.player.clearTint(); // Clear the tint after the scale animation
-                                                                        });
-                                                                    }
-                                                                });
+                                                                            self.time.delayedCall(400, () => {
+                                                                                self.player.clearTint(); // Clear the tint after the scale animation
+                                                                            });
+                                                                        }
+                                                                    });
+                                                                }
+
                                                             }
 
                                                         });
@@ -646,41 +805,49 @@ function PhaserGame() {
 
                                                         self.physics.add.overlap(explodeRight, self.player, function (explode, player) {
                                                             if (!explode.hasDamaged) {
-                                                                self.life -= 1
-                                                                console.log(self.life);
-                                                                explode.hasDamaged = true
+                                                                if (self.shield == true) {
+
+                                                                }
+                                                                else {
+                                                                    self.life -= 1
+                                                                    self.lifeDesc.setText(self.life + '')
+                                                                    console.log(self.life);
+                                                                    explode.hasDamaged = true
 
 
-                                                                self.player.setTint(0xff0000); // Set tint to red
+                                                                    self.player.setTint(0xff0000); // Set tint to red
+                                                                    self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
+                                                                    self.player.setDisplaySize(self.wallDim - 15, self.wallDim - 3);
 
-                                                                const originalHeight = self.player.displayHeight;
-                                                                const originalwidth = self.player.displayWidth;
-                                                                const targetHeight = originalHeight * 1.1;
-                                                                const targetWidth = originalwidth * 1.1;// Increase size by 20% (adjust as needed)
-                                                                const duration = 200; // Duration of the scaling animation in milliseconds
+                                                                    const originalHeight = self.player.displayHeight;
+                                                                    const originalwidth = self.player.displayWidth;
+                                                                    const targetHeight = originalHeight * 1.1;
+                                                                    const targetWidth = originalwidth * 1.1;// Increase size by 20% (adjust as needed)
+                                                                    const duration = 200; // Duration of the scaling animation in milliseconds
 
-                                                                // Create a smooth tween for scaling up
-                                                                self.tweens.add({
-                                                                    targets: self.player,
-                                                                    displayHeight: targetHeight,
-                                                                    displayWidth: targetWidth,
-                                                                    duration: duration,
-                                                                    ease: 'Sine.out', // Use a smooth easing function
-                                                                    onComplete: () => {
-                                                                        // Create a smooth tween for scaling back down
-                                                                        self.tweens.add({
-                                                                            targets: self.player,
-                                                                            displayHeight: originalHeight,
-                                                                            displayWidth: originalwidth,
-                                                                            duration: duration,
-                                                                            ease: 'Sine.inOut', // Use a smooth easing function
-                                                                        });
+                                                                    // Create a smooth tween for scaling up
+                                                                    self.tweens.add({
+                                                                        targets: self.player,
+                                                                        displayHeight: targetHeight,
+                                                                        displayWidth: targetWidth,
+                                                                        duration: duration,
+                                                                        ease: 'Sine.out', // Use a smooth easing function
+                                                                        onComplete: () => {
+                                                                            // Create a smooth tween for scaling back down
+                                                                            self.tweens.add({
+                                                                                targets: self.player,
+                                                                                displayHeight: originalHeight,
+                                                                                displayWidth: originalwidth,
+                                                                                duration: duration,
+                                                                                ease: 'Sine.inOut', // Use a smooth easing function
+                                                                            });
 
-                                                                        self.time.delayedCall(400, () => {
-                                                                            self.player.clearTint(); // Clear the tint after the scale animation
-                                                                        });
-                                                                    }
-                                                                });
+                                                                            self.time.delayedCall(400, () => {
+                                                                                self.player.clearTint(); // Clear the tint after the scale animation
+                                                                            });
+                                                                        }
+                                                                    });
+                                                                }
                                                             }
 
                                                         });
@@ -713,40 +880,48 @@ function PhaserGame() {
 
                                                         self.physics.add.overlap(explodeBottom, self.player, function (explode, player) {
                                                             if (!explode.hasDamaged) {
-                                                                self.life -= 1
-                                                                console.log(self.life);
-                                                                explode.hasDamaged = true
+                                                                if (self.shield == true) {
 
-                                                                self.player.setTint(0xff0000); // Set tint to red
+                                                                }
+                                                                else {
+                                                                    self.life -= 1
+                                                                    self.lifeDesc.setText(self.life + '')
+                                                                    console.log(self.life);
+                                                                    explode.hasDamaged = true
 
-                                                                const originalHeight = self.player.displayHeight;
-                                                                const originalwidth = self.player.displayWidth;
-                                                                const targetHeight = originalHeight * 1.1;
-                                                                const targetWidth = originalwidth * 1.1;// Increase size by 20% (adjust as needed)
-                                                                const duration = 200; // Duration of the scaling animation in milliseconds
+                                                                    self.player.setTint(0xff0000); // Set tint to red
+                                                                    self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
+                                                                    self.player.setDisplaySize(self.wallDim - 15, self.wallDim - 3);
 
-                                                                // Create a smooth tween for scaling up
-                                                                self.tweens.add({
-                                                                    targets: self.player,
-                                                                    displayHeight: targetHeight,
-                                                                    displayWidth: targetWidth,
-                                                                    duration: duration,
-                                                                    ease: 'Sine.out', // Use a smooth easing function
-                                                                    onComplete: () => {
-                                                                        // Create a smooth tween for scaling back down
-                                                                        self.tweens.add({
-                                                                            targets: self.player,
-                                                                            displayHeight: originalHeight,
-                                                                            displayWidth: originalwidth,
-                                                                            duration: duration,
-                                                                            ease: 'Sine.inOut', // Use a smooth easing function
-                                                                        });
+                                                                    const originalHeight = self.player.displayHeight;
+                                                                    const originalwidth = self.player.displayWidth;
+                                                                    const targetHeight = originalHeight * 1.1;
+                                                                    const targetWidth = originalwidth * 1.1;// Increase size by 20% (adjust as needed)
+                                                                    const duration = 200; // Duration of the scaling animation in milliseconds
 
-                                                                        self.time.delayedCall(400, () => {
-                                                                            self.player.clearTint(); // Clear the tint after the scale animation
-                                                                        });
-                                                                    }
-                                                                });
+                                                                    // Create a smooth tween for scaling up
+                                                                    self.tweens.add({
+                                                                        targets: self.player,
+                                                                        displayHeight: targetHeight,
+                                                                        displayWidth: targetWidth,
+                                                                        duration: duration,
+                                                                        ease: 'Sine.out', // Use a smooth easing function
+                                                                        onComplete: () => {
+                                                                            // Create a smooth tween for scaling back down
+                                                                            self.tweens.add({
+                                                                                targets: self.player,
+                                                                                displayHeight: originalHeight,
+                                                                                displayWidth: originalwidth,
+                                                                                duration: duration,
+                                                                                ease: 'Sine.inOut', // Use a smooth easing function
+                                                                            });
+
+                                                                            self.time.delayedCall(400, () => {
+                                                                                self.player.clearTint(); // Clear the tint after the scale animation
+                                                                            });
+                                                                        }
+                                                                    });
+                                                                }
                                                             }
 
                                                         });
@@ -778,6 +953,7 @@ function PhaserGame() {
 
                             },
                             this.handleExplosionCollision = function () {
+
                                 self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.brkWallGroup, (explode, wall) => {
                                     //when explosion overlaps with breakable wall
                                     wall.destroy();
@@ -792,11 +968,29 @@ function PhaserGame() {
                                     
                                 });*/
                                 self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.ghostGroup, (explode, ghost) => {
-                                    //when explosion overlaps with breakable wall
+                                    //when explosion overlaps with ghost
                                     ghost.destroy();
-                                    //remove destroyed wall from brkWallList
+
 
                                 });
+                                self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.probabilitySymbols, (explode, probSymbol) => {
+                                    //when explosion overlaps with ghost
+                                    if (probSymbol.isDrop == false) {
+                                        self.tweens.add({
+                                            targets: probSymbol,
+                                            alpha: 0.5,            // minimum opacity
+                                            duration: 1000,
+                                            yoyo: true,
+                                            repeat: -1,
+                                            ease: 'Sine.easeInOut'
+                                        });
+
+                                        probSymbol.isDrop = true
+                                    }
+
+
+                                });
+
                             },
                             this.enemyWallCollide = function (enemy, wall) {
                                 const direction = ['u', 'd', 'l', 'r']
@@ -821,6 +1015,7 @@ function PhaserGame() {
                                 }
                             },
                             this.ghostPlayerCollide = function (ghost, player) {
+
                                 const ghostBounds = ghost.getBounds();
                                 const playerBounds = player.getBounds();
 
@@ -833,55 +1028,189 @@ function PhaserGame() {
 
                                 if (Math.abs(overlapX) >= 10 && Math.abs(overlapY) >= 10) {
                                     if (self.playerHit == false) {
-                                        self.life -= 1
-                                        self.playerHit = true
-                                        self.time.delayedCall(1500, function () { // 500 milliseconds (0.5 seconds) delay
-                                            self.playerHit = false
-                                        }, [], self);
-                                        self.player.setTint(0xff0000); // Set tint to red
+                                        if (self.shield == true) {
 
-                                        const originalHeight = self.player.displayHeight;
-                                        const originalwidth = self.player.displayWidth;
-                                        const targetHeight = originalHeight * 1.1;
-                                        const targetWidth = originalwidth * 1.1;// Increase size by 20% (adjust as needed)
-                                        const duration = 200; // Duration of the scaling animation in milliseconds
+                                        }
+                                        else {
+                                            self.life -= 1
+                                            self.lifeDesc.setText(self.life + '')
 
-                                        // Create a smooth tween for scaling up
-                                        self.tweens.add({
-                                            targets: self.player,
-                                            displayHeight: targetHeight,
-                                            displayWidth: targetWidth,
-                                            duration: duration,
-                                            ease: 'Sine.out', // Use a smooth easing function
-                                            onComplete: () => {
-                                                // Create a smooth tween for scaling back down
-                                                self.tweens.add({
-                                                    targets: self.player,
-                                                    displayHeight: originalHeight,
-                                                    displayWidth: originalwidth,
-                                                    duration: duration,
-                                                    ease: 'Sine.inOut', // Use a smooth easing function
-                                                });
+                                            self.playerHit = true;
+                                            self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
+                                            self.player.setDisplaySize(self.wallDim - 15, self.wallDim - 3);
+                                            self.time.delayedCall(1500, function () { // 500 milliseconds (0.5 seconds) delay
+                                                self.playerHit = false
+                                            }, [], self);
+                                            self.player.setTint(0xff0000); // Set tint to red
 
-                                                self.time.delayedCall(400, () => {
-                                                    self.player.clearTint(); // Clear the tint after the scale animation
-                                                });
-                                            }
-                                        });
-                                        console.log(self.life)
+                                            const originalHeight = self.player.displayHeight;
+                                            const originalwidth = self.player.displayWidth;
+                                            const targetHeight = originalHeight * 1.1;
+                                            const targetWidth = originalwidth * 1.1;// Increase size by 20% (adjust as needed)
+                                            const duration = 200; // Duration of the scaling animation in milliseconds
+
+                                            // Create a smooth tween for scaling-up
+                                            self.tweens.add({
+                                                targets: self.player,
+                                                displayHeight: targetHeight,
+                                                displayWidth: targetWidth,
+                                                duration: duration,
+                                                ease: 'Sine.out', // Use a smooth easing function
+                                                onComplete: () => {
+                                                    // Create a smooth tween for scaling back down
+                                                    self.tweens.add({
+                                                        targets: self.player,
+                                                        displayHeight: originalHeight,
+                                                        displayWidth: originalwidth,
+                                                        duration: duration,
+                                                        ease: 'Sine.inOut', // Use a smooth easing function
+                                                    });
+
+                                                    self.time.delayedCall(400, () => {
+                                                        self.player.clearTint(); // Clear the tint after the scale animation
+                                                    });
+                                                }
+                                            });
+                                            console.log(self.life)
+                                        }
+
 
                                     }
                                     // Your actual response to deep overlap here
                                 }
+                            },
+                            this.ItemPlayerCollide = function (players, items) {
+                                if (items.captured == false) {
+                                    self.tweens.killTweensOf(items);
+
+
+                                    self.tweens.add({
+                                        targets: items,
+                                        alpha: 0, // move up by 10 pixels
+                                        duration: 300,      // time in ms
+                                        ease: 'Linear',
+                                        onComplete: function () {
+                                            items.destroy();
+                                            self.ItemList = self.ItemList.filter(item => !(item.x === items.x && item.y === items.y));
+                                        }
+                                    });
+                                    switch (items.type) {
+                                        case 'heartItem':
+                                            self.life += 1
+                                            console.log(self.life)
+                                            self.lifeDesc.setText(self.life + '')
+                                            break
+
+                                        case 'bombItem':
+                                            self.bombLimit += 1
+                                            self.bombDesc.setText(self.bombLimit + '')
+                                            break
+
+                                        case 'explodeItem':
+                                            self.bombRange += 1
+                                            self.explodeDesc.setText(self.bombRange + '')
+                                            break
+                                        case 'bootsItem':
+                                            if (self.isSpeed === false) {
+                                                self.isSpeed = true; // Corrected from `==` to `=`
+                                                self.speed += 100;
+
+                                                // Store the timer reference so we can cancel it if needed
+                                                self.speedTimer = self.time.delayedCall(5000, function () {
+                                                    self.speed -= 100;
+                                                    self.isSpeed = false;
+                                                    self.speedTimer = null; // Clear the reference
+                                                }, [], self);
+                                            } else {
+                                                // If already speeding, reset the timer
+                                                if (self.speedTimer) {
+                                                    self.speedTimer.remove(false); // Cancel the existing timer
+                                                }
+
+                                                self.speedTimer = self.time.delayedCall(5000, function () {
+                                                    self.speed -= 100;
+                                                    self.isSpeed = false;
+                                                    self.speedTimer = null;
+                                                }, [], self);
+                                            }
+                                            break;
+                                        case 'shieldItem':
+                                            if (self.shield == true) {
+                                                self.tweens.killTweensOf(self.shieldHold);
+                                                self.shieldHold.destroy()
+                                            }
+                                            self.shieldHold = self.physics.add.sprite(players.x, players.y, 'shield')
+                                            self.shieldHold.body.setSize(self.wallDim - 20, self.wallDim - 20);
+                                            self.shieldHold.setDisplaySize(self.wallDim - 20, self.wallDim - 20);
+                                            self.shield = true
+
+                                            self.tweens.add({
+                                                targets: self.shieldHold,
+                                                alpha: { from: 1, to: 0.5 },//opacity
+                                                duration: self.bombDuration,
+                                                ease: 'Linear',
+                                                yoyo: true,// Allow alternate
+                                                repeat: self.bombrepeat + 4, // Infinite loop
+                                                onComplete: function () {
+                                                    self.shield = false
+                                                    self.shieldHold.destroy()
+                                                }
+                                            })
+                                            break;
+
+                                    }
+
+                                    items.captured = true
+
+                                }
+
+                            },
+                            this.ProbPlayerCollide = function (player, prob) {
+                            
+                                const probBounds = prob.getBounds();
+                                const playerBounds = player.getBounds();
+
+                                const overlapX = Math.max(0, Math.min(probBounds.right, playerBounds.right) - Math.max(probBounds.left, playerBounds.left));
+                                const overlapY = Math.max(0, Math.min(probBounds.bottom, playerBounds.bottom) - Math.max(probBounds.top, playerBounds.top));
+
+                                if (Math.abs(overlapX) >= 20 && Math.abs(overlapY) >= 10) { 
+                                    
+                                    if (prob.captured == false && prob.isDrop == true) {
+                                        self.tweens.killTweensOf(prob);
+    
+    
+                                        self.tweens.add({
+                                            targets: prob,
+                                            alpha: 0, // move up by 10 pixels
+                                            duration: 300,      // time in ms
+                                            ease: 'Linear',
+                                            onComplete: function () {
+                                                prob.destroy();
+                                                //destroy the positon in the list
+                                                //self.ItemList = self.ItemList.filter(item => !(item.x === items.x && item.y === items.y));
+                                            }
+                                        });
+                                        prob.captured = true
+                                    }
+                                }
+                                
                             }
+                            this.stopShield = function (player, wall) {
+                                if (self.shieldHold) {
+                                    self.shield = true
+                                    console.log("NoGo")
 
-
-
+                                }
+                                console.log("Go")
+                            }
 
 
                         this.createBackgrounds();
                         this.createWalls();
                         this.createPlayer();
+                        this.createProbAnswers()
+                        this.createHolder()
+
                         this.physics.add.collider(this.player, this.outsidewall);
                         this.physics.add.collider(this.player, this.topwall);
                         this.physics.add.collider(this.player, this.rightwall);
@@ -894,9 +1223,11 @@ function PhaserGame() {
                         this.physics.add.collider(this.ghostGroup, this.bottomwall, this.enemyWallCollide, null, this);
                         this.physics.add.collider(this.ghostGroup, this.brkWallGroup, this.enemyWallCollide, null, this);
                         this.physics.add.overlap(this.ghostGroup, this.player, this.ghostPlayerCollide, null, this);
+                        this.physics.add.overlap(this.ItemGroup, this.player, this.ItemPlayerCollide, null, this);
+                        this.physics.add.overlap(this.probabilitySymbols,this.player,this.ProbPlayerCollide,null,this)
                         //this.physics.add.collider(this.player, this.bombGroup)
                         this.cursors = this.input.keyboard.createCursorKeys();
-                        self.cameras.main.scrollX = -300
+                        self.cameras.main.scrollX = -300;
                     },
                     update: function () {
                         //run later
