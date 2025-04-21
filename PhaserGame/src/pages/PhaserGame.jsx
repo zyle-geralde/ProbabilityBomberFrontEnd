@@ -35,8 +35,8 @@ function PhaserGame() {
                         this.load.image('death', 'images/defence.png')
                         this.load.image('boots', 'images/speed.png')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
-                            frameWidth: 30,
-                            frameHeight: 50,
+                            frameWidth: 42,
+                            frameHeight: 72,
                         });
                     },
                     create: function () {
@@ -347,8 +347,8 @@ function PhaserGame() {
                             this.createPlayer = function () {
                                 self.player = self.physics.add.sprite(60, 450, 'character');
                                 //self.player.setScale(48 / 30, 70 / 50);
-                                self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
-                                self.player.setDisplaySize(self.wallDim - 15, self.wallDim - 3);
+                                // self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
+                                self.player.setDisplaySize(self.wallDim - 10, self.wallDim - 10);
                                 self.player.setCollideWorldBounds(true);
 
                                 self.anims.create({
