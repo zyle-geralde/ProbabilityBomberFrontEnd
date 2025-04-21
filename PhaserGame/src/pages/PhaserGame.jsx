@@ -151,10 +151,11 @@ function PhaserGame() {
                             self.createTopWall();
                             self.createRightWall();
                             self.createBottomWall();
+
                         }
                         this.createLeftWall = function () {
                             self.outsidewall = self.physics.add.group({ immovable: true });
-                            let adjustwall = self.wallDim;
+                            let adjustwall = self.wallDim ;
                             for (let nn = 0; nn < self.rows; nn++) {
                                 let wall = self.outsidewall.create(0, adjustwall, 'unbrkwall');
                                 self.unbrkWallList.push({ "x": 0, "y": adjustwall })
@@ -170,14 +171,14 @@ function PhaserGame() {
 
                             self.brkWallGroup = self.physics.add.group({ immovable: true })
                             for (let nn = 0; nn < self.cols; nn++) {
-                                let wall = self.topwall.create(adjusttopwall, 0, 'unbrkwall');
-                                self.unbrkWallList.push({ "x": adjusttopwall, "y": 0 })
+                                let wall = self.topwall.create(adjusttopwall, 0 , 'unbrkwall');
+                                self.unbrkWallList.push({ "x": adjusttopwall, "y": 0  })
                                 adjusttopwall += self.wallDim;
                                 wall.body.setSize(self.wallDimx, self.wallDimy);
                                 wall.setDisplaySize(self.wallDim, self.wallDim);
 
                                 if (nn >= 1 && nn <= self.cols - 3 && !skipColumn) {
-                                    let insidewall = self.wallDim;
+                                    let insidewall = self.wallDim ;
                                     let putWall = true;
 
                                     for (let bb = 0; bb <= self.rows - 2; bb++) {
@@ -330,7 +331,7 @@ function PhaserGame() {
                                     skipColumn = true;
                                 } else {
                                     if (nn != 0 && nn <= self.cols - 3 && skipColumn) {
-                                        let insidewall = self.wallDim;
+                                        let insidewall = self.wallDim ;
                                         for (let bb = 0; bb <= self.rows - 2; bb++) {
 
                                             let randnum = Math.random() < 0.65 ? 1 : 0;
@@ -402,7 +403,7 @@ function PhaserGame() {
                         },
                             this.createRightWall = function () {
                                 self.rightwall = self.physics.add.group({ immovable: true });
-                                let adjustrightwall = self.wallDim;
+                                let adjustrightwall = self.wallDim ;
                                 for (let nn = 0; nn < self.rows; nn++) {
                                     let wall = self.rightwall.create(self.totalWallWidth - self.wallDim, adjustrightwall, 'unbrkwall');
                                     self.unbrkWallList.push({ "x": self.totalWallWidth - self.wallDim, "y": adjustrightwall })
@@ -415,7 +416,7 @@ function PhaserGame() {
                                 self.bottomwall = self.physics.add.group({ immovable: true });
                                 let adjustbottomwall = 0;
                                 for (let nn = 0; nn < self.cols; nn++) {
-                                    let wall = self.bottomwall.create(adjustbottomwall, self.totalWallHeight, 'unbrkwall');
+                                    let wall = self.bottomwall.create(adjustbottomwall, self.totalWallHeight , 'unbrkwall');
                                     self.unbrkWallList.push({ "x": adjustbottomwall, "y": self.totalWallHeight })
                                     adjustbottomwall += self.wallDim;
                                     wall.body.setSize(self.wallDimx, self.wallDimy);
@@ -428,7 +429,7 @@ function PhaserGame() {
                                     let messageSymb = null
                                     let probSymb = "357"
                                     if (probSymb.length == 1) {
-                                        messageSymb = self.add.text(bb.x - 10, bb.y - 15, probSymb, {
+                                        messageSymb = self.add.text(bb.x - 10, bb.y - 15 , probSymb, {
                                             fontSize: '32px',
                                             fill: '#800000',
                                             fontStyle: "bold",
@@ -437,7 +438,7 @@ function PhaserGame() {
                                         });
                                     }
                                     else if (probSymb.length == 2) {
-                                        messageSymb = self.add.text(bb.x - 20, bb.y - 15, probSymb, {
+                                        messageSymb = self.add.text(bb.x - 20, bb.y - 15 , probSymb, {
                                             fontSize: '32px',
                                             fill: '#800000',
                                             fontStyle: "bold",
@@ -446,7 +447,7 @@ function PhaserGame() {
                                         });
                                     }
                                     else if (probSymb.length == 3) {
-                                        messageSymb = self.add.text(bb.x - 25, bb.y - 15, probSymb, {
+                                        messageSymb = self.add.text(bb.x - 25, bb.y - 15 , probSymb, {
                                             fontSize: '28px',
                                             fill: '#800000',
                                             fontStyle: "bold",
@@ -463,7 +464,7 @@ function PhaserGame() {
                                 }
                             }
                         this.createPlayer = function () {
-                            self.player = self.physics.add.sprite(60, 450, 'character');
+                            self.player = self.physics.add.sprite(60, 450 , 'character');
                             //self.player.setScale(48 / 30, 70 / 50);
                             self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
                             self.player.setDisplaySize(self.wallDim - 15, self.wallDim - 3);
@@ -554,7 +555,7 @@ function PhaserGame() {
                                     self.cameras.main.scrollX -= self.cameraSpeed * self.game.loop.delta / 1000;
                                 } else if (self.cursors.right.isDown && self.player.x > self.cameras.main.scrollX + self.cameras.main.width - 500) {
                                     self.cameras.main.scrollX += self.cameraSpeed * self.game.loop.delta / 1000;
-                                } else if (self.cursors.up.isDown && self.player.y < self.cameras.main.scrollY + 300) {
+                                } else if (self.cursors.up.isDown && self.player.y < self.cameras.main.scrollY + 500) {
                                     self.cameras.main.scrollY -= self.cameraSpeed * self.game.loop.delta / 1000;
                                 } else if (self.cursors.down.isDown && self.player.y > self.cameras.main.scrollY + self.cameras.main.height - 300) {
                                     self.cameras.main.scrollY += self.cameraSpeed * self.game.loop.delta / 1000;
@@ -1228,6 +1229,7 @@ function PhaserGame() {
                         //this.physics.add.collider(this.player, this.bombGroup)
                         this.cursors = this.input.keyboard.createCursorKeys();
                         self.cameras.main.scrollX = -300;
+                        self.cameras.main.scrollY = -200;
                     },
                     update: function () {
                         //run later
