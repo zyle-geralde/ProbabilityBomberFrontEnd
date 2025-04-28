@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import TeacherClasses from './TeacherClasses';
 import CreateClass from '../../forms/CreateClass'
+import './TeacherProfile.css';
 
 function TeacherProfile({ userData, onUpdatePassword }) {
   const [refreshKey, setRefreshKey] = useState(0);
@@ -8,17 +9,36 @@ function TeacherProfile({ userData, onUpdatePassword }) {
   const formattedDate = createdDate.toLocaleString();
 
   return (
-    <div>
-      <h1>User Profile</h1>
-      <p>Email: {userData.email}</p>
-      <p>Name: {userData.name}</p>
-      <p>Created At: {formattedDate}</p>
-      <button onClick={onUpdatePassword}>Update Password</button>
-      <hr />
-      <CreateClass setRefreshKey={setRefreshKey}/>
-      <hr />
-      <TeacherClasses refreshKey={refreshKey}/>
+    <div class="grid-container">
+        <div class="item1">
+            <nav>
+                <div class="nav-items">
+                    <a href="#">Home</a>
+                    <a href="#">Users</a>
+                    <a href="#">Ranking</a>
+                    <a href="#">Topics</a>
+                    <a href="#">Settings</a>
+                </div>
+            </nav>
+        </div>
+
+        <div class="item2">
+        <h1>User Profile</h1>
+        <ul>
+            <li>Email: {userData.email}</li>
+            <li>Name: {userData.name}</li>
+            <li>Created at: {formattedDate}</li>
+            <li><button onClick={onUpdatePassword}>Update Password</button></li>
+        </ul>
+        <hr />
+        <CreateClass setRefreshKey={setRefreshKey}/>
+        <hr />
+        <TeacherClasses refreshKey={refreshKey}/>
+
+        <div class="item5"><p>&copy; 2025 Groupo ni Zyle. All rights reserved.</p></div>
+        
     </div>
+  </div>
   );
 }
 export default TeacherProfile;

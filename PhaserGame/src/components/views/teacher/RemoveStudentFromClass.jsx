@@ -24,21 +24,43 @@ function RemoveStudentFromClass({ className }) {
 
   return (
     <div>
-      <h3>Students in {className}</h3>
       {loadingStudents ? (
         <p>Loading students...</p>
       ) : (
-        <ul>
-          {students.map((student, index) => (
-            <li key={index}>
-              {student}
-              <button onClick={() => handleRemove(student)} disabled={removing && selectedStudent === student}>
-                {removing && student === selectedStudent ? "Deleting..." : "Delete"}
-              </button>
-            </li>
-          ))}
-        </ul>
+        <table>
+          <thead>
+              <tr>
+                  <th>Students in {className}</th>
+                  <th>Score 1</th>
+                  <th>Score 2</th>
+                  <th>Action</th>
+              </tr>
+          </thead>
+          <tbody>
+            {students.map((student, index) => (
+                <tr key={index}>
+                  <td>{student}</td>
+                  <td>95</td>
+                  <td>95</td>
+                  <td><button onClick={() => handleRemove(student)} disabled={removing && selectedStudent === student}>
+                    {removing && student === selectedStudent ? "Deleting..." : "Delete"}
+                  </button></td>
+                </tr>
+              ))}
+              <tr><td>Alice Johnson</td><td>88</td><td>92</td><td><button>Drop Student</button></td></tr>
+              <tr><td>Brian Smith</td><td>75</td><td>81</td><td><button>Drop Student</button></td></tr>
+              <tr><td>Carla Martinez</td><td>90</td><td>85</td><td><button>Drop Student</button></td></tr>
+              <tr><td>Daniel Wu</td><td>67</td><td>73</td><td><button>Drop Student</button></td></tr>
+              <tr><td>Ella Brown</td><td>95</td><td>97</td><td><button>Drop Student</button></td></tr>
+              <tr><td>Felix Turner</td><td>78</td><td>80</td><td><button>Drop Student</button></td></tr>
+              <tr><td>Grace Lee</td><td>84</td><td>88</td><td><button>Drop Student</button></td></tr>
+              <tr><td>Henry Adams</td><td>72</td><td>69</td><td><button>Drop Student</button></td></tr>
+              <tr><td>Isabella Wright</td><td>91</td><td>93</td><td><button>Drop Student</button></td></tr>
+              <tr><td>Jack Patel</td><td>83</td><td>86</td><td><button>Drop Student</button></td></tr>
+          </tbody>
+      </table>
       )}
+      
     </div>
   );
 }
