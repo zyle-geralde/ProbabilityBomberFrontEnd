@@ -97,6 +97,11 @@ function PhaserGame() {
                         this.probabilitySymbols = this.physics.add.group()
                         this.probabilitySymbolsList = []
 
+                        //for displayText
+                        this.messageText = null
+                        this.container = null // Initial position, can be changed
+                        this.background = null
+
                         const self = this;
 
                         this.createBackgrounds = function () {
@@ -143,6 +148,141 @@ function PhaserGame() {
                                 });
                                 self.explodeDesc.setScrollFactor(0);
 
+
+                                //Events Container
+                                const containerWidth = 700;
+                                const containerHeight = 100;
+                                const gameWidth = this.game.config.width;
+
+                                const containerX = (gameWidth - containerWidth) / 2; // Fixed X position
+                                const containerY = 50; // Fixed Y position
+                                const padding = 10; // Adjust this value for the desired padding
+
+                                // Create a background for the container with padding
+                                const backgroundWidth = containerWidth + 2 * padding;
+                                const backgroundHeight = containerHeight + 2 * padding;
+                                const backgroundX = containerX - padding;
+                                const backgroundY = containerY - padding;
+                                const containerBackground = this.add.graphics();
+                                containerBackground.fillStyle(0x450b01, 0.7);
+                                containerBackground.fillRect(backgroundX, backgroundY, backgroundWidth, backgroundHeight);
+                                containerBackground.setScrollFactor(0);
+                                containerBackground.setDepth(0);
+
+                                const longText = this.add.text(
+                                    containerX + padding, // Add padding to the text's X position
+                                    containerY + padding, // Add padding to the text's Y position
+                                    'Event A- Roll a 3 or 4 on a dice\n' +
+                                    'Event B- Roll a 5 or 6 on a dice\n' +
+                                    'Event C- draw an even number on the dice\n',
+                                    { font: '20px Arial', fill: '#fff', wordWrap: { width: containerWidth - padding } }
+                                );
+                                longText.setScrollFactor(0);
+                                longText.setDepth(2);
+
+                                const mask = this.add.graphics();
+                                mask.fillRect(containerX, containerY, containerWidth, containerHeight);
+                                // Mask remains the original container size
+                                mask.setScrollFactor(0);
+                                mask.setDepth(1);
+
+                                longText.mask = new Phaser.Display.Masks.GeometryMask(this, mask);
+
+                                const scrollContainer = this.add.zone(containerX, containerY, containerWidth, containerHeight) // Input zone matches the mask size
+                                    .setOrigin(0)
+                                    .setInteractive()
+                                    .setScrollFactor(0);
+                                scrollContainer.setDepth(2);
+
+                                let startY = 0;
+
+                                scrollContainer.on('pointerdown', (pointer) => {
+                                    startY = pointer.y - longText.y;
+                                });
+
+                                scrollContainer.on('pointermove', (pointer) => {
+                                    if (pointer.isDown) {
+                                        longText.y = pointer.y - startY;
+                                        longText.y = Phaser.Math.Clamp(
+                                            longText.y,
+                                            containerY + padding - (longText.height - containerHeight + padding), // Adjust the lower clamp
+                                            containerY + padding // Adjust the upper clamp
+                                        );
+                                    }
+                                });
+
+                                //Answer container
+                                const answercontainerWidth = 500;
+                                const answercontainerHeight = 50;
+                                const answergameWidth = this.game.config.width;
+
+                                const answercontainerX = (answergameWidth - answercontainerWidth) / 2;
+                                const answercontainerY = 180;
+                                const answerpadding = 10;
+
+                                const answerbackgroundWidth = answercontainerWidth + 2 * answerpadding;
+                                const answerbackgroundHeight = answercontainerHeight + 2 * answerpadding;
+                                const answerbackgroundX = answercontainerX - answerpadding;
+                                const answerbackgroundY = answercontainerY - answerpadding;
+
+                                const answercontainerBackground = this.add.graphics();
+                                answercontainerBackground.fillStyle(0x450b01, 0.7);
+                                answercontainerBackground.fillRect(answerbackgroundX, answerbackgroundY, answerbackgroundWidth, answerbackgroundHeight);
+                                answercontainerBackground.setScrollFactor(0);
+                                answercontainerBackground.setDepth(0);
+
+                                const answerlongText = this.add.text(
+                                    answercontainerX + answerpadding,
+                                    answercontainerY + answerpadding,
+                                    `P(A | H djanfsdjkfnakjs) = 56/45`,
+                                    {
+                                        font: '25px Arial',
+                                        fill: '#fff'
+                                        // Remove wordWrap to allow horizontal overflow
+                                    }
+                                );
+
+                                answerlongText.setScrollFactor(0);
+                            answerlongText.setDepth(2);
+                            
+                            const answerTextFits = answerlongText.width <= answercontainerWidth;
+                            answerlongText.x = answerTextFits
+                                ? answercontainerX + (answercontainerWidth - answerlongText.width) / 2 // center
+                                : answercontainerX + answerpadding; // scrollable start position
+
+                                const answermask = this.add.graphics();
+                                answermask.fillRect(answercontainerX, answercontainerY, answercontainerWidth, answercontainerHeight);
+                                answermask.setScrollFactor(0);
+                                answermask.setDepth(1);
+
+                                answerlongText.mask = new Phaser.Display.Masks.GeometryMask(this, answermask);
+
+                                const answerscrollContainer = this.add.zone(answercontainerX, answercontainerY, answercontainerWidth, answercontainerHeight)
+                                    .setOrigin(0)
+                                    .setInteractive()
+                                    .setScrollFactor(0);
+                                answerscrollContainer.setDepth(2);
+
+                                let answerstartX = 0;
+
+                                answerscrollContainer.on('pointerdown', (pointer) => {
+                                    answerstartX = pointer.x - answerlongText.x;
+                                });
+
+                                answerscrollContainer.on('pointermove', (pointer) => {
+                                    if (pointer.isDown) {
+                                        answerlongText.x = pointer.x - answerstartX;
+
+                                        const maxX = answercontainerX + answerpadding;
+                                        const minX = answercontainerX + answerpadding - (answerlongText.width - answercontainerWidth + answerpadding);
+
+                                        answerlongText.x = Phaser.Math.Clamp(answerlongText.x, minX, maxX);
+
+                                    }
+                                });
+
+
+
                             }
 
                         this.createWalls = function () {
@@ -155,7 +295,7 @@ function PhaserGame() {
                         }
                         this.createLeftWall = function () {
                             self.outsidewall = self.physics.add.group({ immovable: true });
-                            let adjustwall = self.wallDim ;
+                            let adjustwall = self.wallDim;
                             for (let nn = 0; nn < self.rows; nn++) {
                                 let wall = self.outsidewall.create(0, adjustwall, 'unbrkwall');
                                 self.unbrkWallList.push({ "x": 0, "y": adjustwall })
@@ -171,14 +311,14 @@ function PhaserGame() {
 
                             self.brkWallGroup = self.physics.add.group({ immovable: true })
                             for (let nn = 0; nn < self.cols; nn++) {
-                                let wall = self.topwall.create(adjusttopwall, 0 , 'unbrkwall');
-                                self.unbrkWallList.push({ "x": adjusttopwall, "y": 0  })
+                                let wall = self.topwall.create(adjusttopwall, 0, 'unbrkwall');
+                                self.unbrkWallList.push({ "x": adjusttopwall, "y": 0 })
                                 adjusttopwall += self.wallDim;
                                 wall.body.setSize(self.wallDimx, self.wallDimy);
                                 wall.setDisplaySize(self.wallDim, self.wallDim);
 
                                 if (nn >= 1 && nn <= self.cols - 3 && !skipColumn) {
-                                    let insidewall = self.wallDim ;
+                                    let insidewall = self.wallDim;
                                     let putWall = true;
 
                                     for (let bb = 0; bb <= self.rows - 2; bb++) {
@@ -331,7 +471,7 @@ function PhaserGame() {
                                     skipColumn = true;
                                 } else {
                                     if (nn != 0 && nn <= self.cols - 3 && skipColumn) {
-                                        let insidewall = self.wallDim ;
+                                        let insidewall = self.wallDim;
                                         for (let bb = 0; bb <= self.rows - 2; bb++) {
 
                                             let randnum = Math.random() < 0.65 ? 1 : 0;
@@ -403,7 +543,7 @@ function PhaserGame() {
                         },
                             this.createRightWall = function () {
                                 self.rightwall = self.physics.add.group({ immovable: true });
-                                let adjustrightwall = self.wallDim ;
+                                let adjustrightwall = self.wallDim;
                                 for (let nn = 0; nn < self.rows; nn++) {
                                     let wall = self.rightwall.create(self.totalWallWidth - self.wallDim, adjustrightwall, 'unbrkwall');
                                     self.unbrkWallList.push({ "x": self.totalWallWidth - self.wallDim, "y": adjustrightwall })
@@ -416,7 +556,7 @@ function PhaserGame() {
                                 self.bottomwall = self.physics.add.group({ immovable: true });
                                 let adjustbottomwall = 0;
                                 for (let nn = 0; nn < self.cols; nn++) {
-                                    let wall = self.bottomwall.create(adjustbottomwall, self.totalWallHeight , 'unbrkwall');
+                                    let wall = self.bottomwall.create(adjustbottomwall, self.totalWallHeight, 'unbrkwall');
                                     self.unbrkWallList.push({ "x": adjustbottomwall, "y": self.totalWallHeight })
                                     adjustbottomwall += self.wallDim;
                                     wall.body.setSize(self.wallDimx, self.wallDimy);
@@ -429,7 +569,7 @@ function PhaserGame() {
                                     let messageSymb = null
                                     let probSymb = "357"
                                     if (probSymb.length == 1) {
-                                        messageSymb = self.add.text(bb.x - 10, bb.y - 15 , probSymb, {
+                                        messageSymb = self.add.text(bb.x - 10, bb.y - 15, probSymb, {
                                             fontSize: '32px',
                                             fill: '#800000',
                                             fontStyle: "bold",
@@ -438,7 +578,7 @@ function PhaserGame() {
                                         });
                                     }
                                     else if (probSymb.length == 2) {
-                                        messageSymb = self.add.text(bb.x - 20, bb.y - 15 , probSymb, {
+                                        messageSymb = self.add.text(bb.x - 20, bb.y - 15, probSymb, {
                                             fontSize: '32px',
                                             fill: '#800000',
                                             fontStyle: "bold",
@@ -447,7 +587,7 @@ function PhaserGame() {
                                         });
                                     }
                                     else if (probSymb.length == 3) {
-                                        messageSymb = self.add.text(bb.x - 25, bb.y - 15 , probSymb, {
+                                        messageSymb = self.add.text(bb.x - 25, bb.y - 15, probSymb, {
                                             fontSize: '28px',
                                             fill: '#800000',
                                             fontStyle: "bold",
@@ -464,7 +604,7 @@ function PhaserGame() {
                                 }
                             }
                         this.createPlayer = function () {
-                            self.player = self.physics.add.sprite(60, 450 , 'character');
+                            self.player = self.physics.add.sprite(60, 70, 'character');
                             //self.player.setScale(48 / 30, 70 / 50);
                             self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
                             self.player.setDisplaySize(self.wallDim - 15, self.wallDim - 3);
@@ -955,7 +1095,7 @@ function PhaserGame() {
                             },
                             this.handleExplosionCollision = function () {
 
-                                self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.brkWallGroup, (explode, wall) => {
+                                self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture && child.texture.key === 'explode')), self.brkWallGroup, (explode, wall) => {
                                     //when explosion overlaps with breakable wall
                                     wall.destroy();
                                     //remove destroyed wall from brkWallList
@@ -968,13 +1108,13 @@ function PhaserGame() {
                                     console.log(self.life)
                                     
                                 });*/
-                                self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.ghostGroup, (explode, ghost) => {
+                                self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture && child.texture.key === 'explode')), self.ghostGroup, (explode, ghost) => {
                                     //when explosion overlaps with ghost
                                     ghost.destroy();
 
 
                                 });
-                                self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.probabilitySymbols, (explode, probSymbol) => {
+                                self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture && child.texture.key === 'explode')), self.probabilitySymbols, (explode, probSymbol) => {
                                     //when explosion overlaps with ghost
                                     if (probSymbol.isDrop == false) {
                                         self.tweens.add({
@@ -1167,19 +1307,19 @@ function PhaserGame() {
 
                             },
                             this.ProbPlayerCollide = function (player, prob) {
-                            
+
                                 const probBounds = prob.getBounds();
                                 const playerBounds = player.getBounds();
 
                                 const overlapX = Math.max(0, Math.min(probBounds.right, playerBounds.right) - Math.max(probBounds.left, playerBounds.left));
                                 const overlapY = Math.max(0, Math.min(probBounds.bottom, playerBounds.bottom) - Math.max(probBounds.top, playerBounds.top));
 
-                                if (Math.abs(overlapX) >= 20 && Math.abs(overlapY) >= 10) { 
-                                    
+                                if (Math.abs(overlapX) >= 20 && Math.abs(overlapY) >= 10) {
+
                                     if (prob.captured == false && prob.isDrop == true) {
                                         self.tweens.killTweensOf(prob);
-    
-    
+
+
                                         self.tweens.add({
                                             targets: prob,
                                             alpha: 0, // move up by 10 pixels
@@ -1194,16 +1334,16 @@ function PhaserGame() {
                                         prob.captured = true
                                     }
                                 }
-                                
-                            }
-                            this.stopShield = function (player, wall) {
-                                if (self.shieldHold) {
-                                    self.shield = true
-                                    console.log("NoGo")
 
-                                }
-                                console.log("Go")
                             }
+                        this.stopShield = function (player, wall) {
+                            if (self.shieldHold) {
+                                self.shield = true
+                                console.log("NoGo")
+
+                            }
+                            console.log("Go")
+                        }
 
 
                         this.createBackgrounds();
@@ -1211,6 +1351,7 @@ function PhaserGame() {
                         this.createPlayer();
                         this.createProbAnswers()
                         this.createHolder()
+
 
                         this.physics.add.collider(this.player, this.outsidewall);
                         this.physics.add.collider(this.player, this.topwall);
@@ -1225,11 +1366,11 @@ function PhaserGame() {
                         this.physics.add.collider(this.ghostGroup, this.brkWallGroup, this.enemyWallCollide, null, this);
                         this.physics.add.overlap(this.ghostGroup, this.player, this.ghostPlayerCollide, null, this);
                         this.physics.add.overlap(this.ItemGroup, this.player, this.ItemPlayerCollide, null, this);
-                        this.physics.add.overlap(this.probabilitySymbols,this.player,this.ProbPlayerCollide,null,this)
+                        this.physics.add.overlap(this.probabilitySymbols, this.player, this.ProbPlayerCollide, null, this)
                         //this.physics.add.collider(this.player, this.bombGroup)
                         this.cursors = this.input.keyboard.createCursorKeys();
                         self.cameras.main.scrollX = -300;
-                        self.cameras.main.scrollY = -200;
+                        self.cameras.main.scrollY = -500;
                     },
                     update: function () {
                         //run later
