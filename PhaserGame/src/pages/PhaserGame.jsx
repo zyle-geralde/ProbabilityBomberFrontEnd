@@ -1124,14 +1124,14 @@ function PhaserGame() {
                                 self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture && child.texture.key === 'explode')), self.probabilitySymbols, (explode, probSymbol) => {
                                     //when explosion overlaps with ghost
                                     if (probSymbol.isDrop == false) {
-                                        self.tweens.add({
+                                        /*self.tweens.add({
                                             targets: probSymbol,
                                             alpha: 0.5,            // minimum opacity
-                                            duration: 1000,
+                                            duration: 200,
                                             yoyo: true,
                                             repeat: -1,
                                             ease: 'Sine.easeInOut'
-                                        });
+                                        });*/
 
                                         probSymbol.isDrop = true
                                     }
@@ -1389,23 +1389,7 @@ function PhaserGame() {
                                                 self.probNumeratorHold.alpha = 1
                                                 self.probDenominatorHold.alpha = 1
 
-                                                self.tweens.add({
-                                                    targets: self.probNumeratorHold,
-                                                    alpha: 0.5,            // minimum opacity
-                                                    duration: 1000,
-                                                    yoyo: true,
-                                                    repeat: -1,
-                                                    ease: 'Sine.easeInOut'
-                                                });
 
-                                                self.tweens.add({
-                                                    targets: self.probDenominatorHold,
-                                                    alpha: 0.5,            // minimum opacity
-                                                    duration: 1000,
-                                                    yoyo: true,
-                                                    repeat: -1,
-                                                    ease: 'Sine.easeInOut'
-                                                });
         
                                                 self.probNumeratorHold.isDrop = true
                                                 self.probNumeratorHold.captured = false
