@@ -102,6 +102,13 @@ function PhaserGame() {
                         this.container = null // Initial position, can be changed
                         this.background = null
 
+                        //for probanswer
+                        this.numerator = "__ "
+                        this.denominator = " __"
+                        this.questionIndex = 0
+                        this.questionsList = [{ ansNumerator: 357, ansDenominator: 356, events: ["EVENT A: hello world\n", "EVENT B: Hi world\n", "EVENT C: Hello again\n"], probQuestion: "P( (A|B)/D ) = " }, { ansNumerator: 356, ansDenominator: 357, events: ["EVENT A: hello world2\n", "EVENT B: Hi world2", "EVENT C: Hello again2"], probQuestion: "P( A|B ) = " }]
+                        let answerlongText;
+
                         const self = this;
 
                         this.createBackgrounds = function () {
@@ -172,9 +179,7 @@ function PhaserGame() {
                                 const longText = this.add.text(
                                     containerX + padding, // Add padding to the text's X position
                                     containerY + padding, // Add padding to the text's Y position
-                                    'Event A- Roll a 3 or 4 on a dice\n' +
-                                    'Event B- Roll a 5 or 6 on a dice\n' +
-                                    'Event C- draw an even number on the dice\n',
+                                    (self.questionsList[self.questionIndex].events).join(''),
                                     { font: '20px Arial', fill: '#fff', wordWrap: { width: containerWidth - padding } }
                                 );
                                 longText.setScrollFactor(0);
@@ -231,10 +236,10 @@ function PhaserGame() {
                                 answercontainerBackground.setScrollFactor(0);
                                 answercontainerBackground.setDepth(0);
 
-                                const answerlongText = this.add.text(
+                                answerlongText = this.add.text(
                                     answercontainerX + answerpadding,
                                     answercontainerY + answerpadding,
-                                    `P(A | H djanfsdjkfnakjs) = 56/45`,
+                                    `${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null?" ":self.numerator} / ${self.denominator == null?" ":self.denominator}`,
                                     {
                                         font: '25px Arial',
                                         fill: '#fff'
@@ -1316,17 +1321,30 @@ function PhaserGame() {
 
                                 if (Math.abs(overlapX) >= 20 && Math.abs(overlapY) >= 10) {
 
-                                    if (prob.captured == false && prob.isDrop == true) {
+                                    if (prob.captured == false && prob.isDrop == true && (self.numerator == "__ " || self.denominator == " __")) {
                                         self.tweens.killTweensOf(prob);
 
 
                                         self.tweens.add({
                                             targets: prob,
-                                            alpha: 0, // move up by 10 pixels
+                                            alpha: 0,
                                             duration: 300,      // time in ms
                                             ease: 'Linear',
                                             onComplete: function () {
-                                                prob.destroy();
+                                                if (self.numerator == "__ ") {
+                                                    self.numerator = prob.text
+                                                    answerlongText.text = `${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`
+                                                    self.tweens.killTweensOf(prob);
+
+                                                }
+                                                else if (self.denominator == " __") {
+                                                    self.denominator = prob.text
+                                                    answerlongText.text = `${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`
+                                                    self.tweens.killTweensOf(prob);
+                                                }
+                                                else {
+                                                    
+                                                }
                                                 //destroy the positon in the list
                                                 //self.ItemList = self.ItemList.filter(item => !(item.x === items.x && item.y === items.y));
                                             }
