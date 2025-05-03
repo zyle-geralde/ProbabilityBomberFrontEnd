@@ -1449,15 +1449,36 @@ function PhaserGame() {
                                                 longText.setStyle({ fill: '#f74a4a' });
                                                 self.numerator = "__ ";
                                                 self.denominator = " __";
-                                                self.probNumeratorHold.alpha = 1
-                                                self.probDenominatorHold.alpha = 1
-        
-                                                self.probNumeratorHold.isDrop = true
-                                                self.probNumeratorHold.captured = false
-                                                self.probDenominatorHold.isDrop = true
-                                                self.probDenominatorHold.captured = false
+                                                self.probNumeratorHold.destroy()
+                                                self.probDenominatorHold.destroy()
 
-                                                answerlongText.text = `${self.questionsList[self.questionIndex].probQuestion} ${self.numerator || " "} / ${self.denominator || " "}`;
+                                                //change score
+                                                self.score += 1
+                                                self.holdScore.setText('SCORE:' + self.score + '/' + self.perfectScore)
+
+                                                //remove the question from the list
+                                                if (self.questionsList.length != 0) {
+                                                    self.questionsList.splice(self.questionIndex, 1);
+
+                                                    if (self.questionIndex == self.perfectScore - 1) {
+                                                        self.questionIndex -=1
+                                                    }
+
+                                                    if (self.questionsList.length != 0) {
+                                                        longText.setText((self.questionsList[self.questionIndex].events).join(''))
+
+                                                        answerlongText.setText(`${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`)
+                                                    }
+                                                    else {
+                                                        longText.setText("")
+                                                        answerlongText.setText("")
+                                                    }
+                                                    
+                                                }
+
+                                                //change
+                                                
+
                                             });
                                     }
                                     else {
