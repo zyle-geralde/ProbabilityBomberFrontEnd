@@ -107,7 +107,7 @@ function PhaserGame() {
                         this.denominator = " __"
                         this.probNumeratorHold = null
                         this.probDenominatorHold = null
-                        this.questionIndex = 0
+                        this.questionIndex = 2
                         this.questionsList = [
                             { ansNumerator: 357, ansDenominator: 357, events: ["EVENT A: hello world\n", "EVENT B: Hi world\n", "EVENT C: Hello again\n"], probQuestion: "P( (A|B)/D ) = " },
                             { ansNumerator: 357, ansDenominator: 357, events: ["EVENT A: hello world2\n", "EVENT B: Hi world2\n", "EVENT C: Hello again2\n"], probQuestion: "P( A|B ) = " },
@@ -1439,9 +1439,17 @@ function PhaserGame() {
                             this.validateAnswer = function () {
                                 if (self.numerator != "__ " && self.denominator != " __") {
                                     if (self.numerator == self.questionsList[self.questionIndex].ansNumerator && self.denominator == self.questionsList[self.questionIndex].ansDenominator) {
-                                            // Set to #4af756 immediately
+                                        // Set to #4af756 immediately
                                         answerlongText.setStyle({ fill: '#4af756' });
                                         longText.setStyle({ fill: '#4af756' });
+                                        //change score
+                                        self.score += 1
+                                        self.holdScore.setText('SCORE:' + self.score + '/' + self.perfectScore)
+                                        
+                                        if (self.score == self.perfectScore) {
+                                            this.input.keyboard.removeAllListeners();
+                                            this.input.keyboard.enabled = false;
+                                        }
 
                                             // Wait 1 second then set back to #f74a4a
                                             self.time.delayedCall(1500, () => {
@@ -1452,15 +1460,11 @@ function PhaserGame() {
                                                 self.probNumeratorHold.destroy()
                                                 self.probDenominatorHold.destroy()
 
-                                                //change score
-                                                self.score += 1
-                                                self.holdScore.setText('SCORE:' + self.score + '/' + self.perfectScore)
-
                                                 //remove the question from the list
                                                 if (self.questionsList.length != 0) {
                                                     self.questionsList.splice(self.questionIndex, 1);
 
-                                                    if (self.questionIndex == self.perfectScore - 1) {
+                                                    if (self.questionIndex == self.questionsList.length) {
                                                         self.questionIndex -=1
                                                     }
 
