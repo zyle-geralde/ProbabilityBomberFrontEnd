@@ -107,15 +107,15 @@ function PhaserGame() {
                         this.denominator = " __"
                         this.probNumeratorHold = null
                         this.probDenominatorHold = null
-                        this.questionIndex = 2
+                        this.questionIndex = 0
                         this.questionsList = [
-                            { ansNumerator: 357, ansDenominator: 357, events: ["EVENT A: hello world\n", "EVENT B: Hi world\n", "EVENT C: Hello again\n"], probQuestion: "P( (A|B)/D ) = " },
-                            { ansNumerator: 357, ansDenominator: 357, events: ["EVENT A: hello world2\n", "EVENT B: Hi world2\n", "EVENT C: Hello again2\n"], probQuestion: "P( A|B ) = " },
-                            { ansNumerator: 357, ansDenominator: 357, events: ["EVENT A: hello world3\n", "EVENT B: Hi world3\n", "EVENT C: Hello again3\n"], probQuestion: "P( A ) = " },
-                            { ansNumerator: 357, ansDenominator: 357, events: ["EVENT A: hello world4\n", "EVENT B: Hi world4\n", "EVENT C: Hello again4\n"], probQuestion: "P( B ) = " },
-                            { ansNumerator: 357, ansDenominator: 357, events: ["EVENT A: hello world5\n", "EVENT B: Hi world5\n", "EVENT C: Hello again5\n"], probQuestion: "P( C ) = " }
+                            { ansNumerator: 1, ansDenominator: 11, events: ["EVENT A: hello world\n", "EVENT B: Hi world\n", "EVENT C: Hello again\n"], probQuestion: "P( (A|B)/D ) = " },
+                            { ansNumerator: 2, ansDenominator: 22, events: ["EVENT A: hello world2\n", "EVENT B: Hi world2\n", "EVENT C: Hello again2\n"], probQuestion: "P( A|B ) = " },
+                            { ansNumerator: 3, ansDenominator: 33, events: ["EVENT A: hello world3\n", "EVENT B: Hi world3\n", "EVENT C: Hello again3\n"], probQuestion: "P( A ) = " },
+                            { ansNumerator: 4, ansDenominator: 44, events: ["EVENT A: hello world4\n", "EVENT B: Hi world4\n", "EVENT C: Hello again4\n"], probQuestion: "P( B ) = " },
+                            { ansNumerator: 5, ansDenominator: 55, events: ["EVENT A: hello world5\n", "EVENT B: Hi world5\n", "EVENT C: Hello again5\n"], probQuestion: "P( C ) = " }
                         ]
-                        
+
                         let answerlongText;
                         let longText;
                         this.score = 0
@@ -167,8 +167,8 @@ function PhaserGame() {
                                     fontStyle: "bold"
                                 });
                                 self.explodeDesc.setScrollFactor(0);
-                            
-                                self.holdScore = self.add.text(45, 75, 'SCORE:'+self.score + '/' + self.perfectScore, {
+
+                                self.holdScore = self.add.text(45, 75, 'SCORE:' + self.score + '/' + self.perfectScore, {
                                     fontSize: '50px',
                                     fill: '#4af756',
                                     fontStyle: "bold",
@@ -202,11 +202,13 @@ function PhaserGame() {
                                     containerX + padding, // Add padding to the text's X position
                                     containerY + padding, // Add padding to the text's Y position
                                     (self.questionsList[self.questionIndex].events).join(''),
-                                    {   fontSize: '20px',
+                                    {
+                                        fontSize: '20px',
                                         fill: '#f74a4a',
                                         fontStyle: "bold",
                                         stroke: '#000000',
-                                        strokeThickness: 10, wordWrap: { width: containerWidth - padding } }
+                                        strokeThickness: 10, wordWrap: { width: containerWidth - padding }
+                                    }
                                 );
                                 longText.setScrollFactor(0);
                                 longText.setDepth(2);
@@ -598,10 +600,48 @@ function PhaserGame() {
                                 }
                             },
                             this.createProbAnswers = function () {
+                                //get unique indecies to store values
+                                let indices = [];
+                            let total = self.brkWallList.length;
+                            console.log("TOTAL"+total)
+
+                                while (indices.length < self.perfectScore * 2 && indices.length < total) {
+                                    let rand = Math.floor(Math.random() * total);
+                                    if (!indices.includes(rand)) {
+                                        indices.push(rand);
+                                    }
+                                }
+                                //list of json answers
+                                let answerList = []
+                                for (var elem of self.questionsList) {
+                                    answerList.push(elem.ansNumerator)
+                                    answerList.push(elem.ansDenominator)
+                                }
+
+                                for (let i = answerList.length - 1; i > 0; i--) {
+                                    let j = Math.floor(Math.random() * (i + 1));
+                                    [answerList[i], answerList[j]] = [answerList[j], answerList[i]];
+                                }
+
+                                var countme = 0
                                 for (var bb of self.brkWallList) {
                                     console.log(bb)
+                                    let rand;
+                                    let bias = Math.random();
+
+                                    if (bias < 0.7) {
+                                        rand = Math.floor(Math.random() * 20) + 1;
+                                    } else {
+                                        rand = Math.floor(Math.random() * (999 - 20)) + 21;
+                                    }
+                                    let probSymb = rand+""
+                                    if (indices.includes(countme)) {
+                                        let indexCount = indices.indexOf(countme);
+
+                                        probSymb = answerList[indexCount]+""
+                                        
+                                    }
                                     let messageSymb = null
-                                    let probSymb = "357"
                                     if (probSymb.length == 1) {
                                         messageSymb = self.add.text(bb.x - 10, bb.y - 15, probSymb, {
                                             fontSize: '32px',
@@ -634,6 +674,7 @@ function PhaserGame() {
                                     messageSymb.type = "prob"
 
                                     self.probabilitySymbols.add(messageSymb)
+                                    countme++;
 
                                 }
                             }
@@ -723,7 +764,7 @@ function PhaserGame() {
                                 if (Phaser.Input.Keyboard.JustDown(self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A))) {
                                     self.dropBomb()
                                 }
-                            
+
                             },
                             this.handleCameraMovement = function () {
                                 if (self.cursors.left.isDown && self.player.x < self.cameras.main.scrollX + 500) {
@@ -1398,8 +1439,8 @@ function PhaserGame() {
                                     if (Phaser.Input.Keyboard.JustDown(self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S))) {
                                         if (prob.captured == false && prob.isDrop == true && (self.numerator == "__ " || self.denominator == " __")) {
                                             self.tweens.killTweensOf(prob);
-    
-    
+
+
                                             self.tweens.add({
                                                 targets: prob,
                                                 alpha: 0,
@@ -1411,18 +1452,18 @@ function PhaserGame() {
                                                         answerlongText.text = `${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`
                                                         self.probNumeratorHold = prob
                                                         self.tweens.killTweensOf(prob);
-    
+
                                                     }
                                                     else if (self.denominator == " __") {
                                                         self.denominator = prob.text
                                                         answerlongText.text = `${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`
                                                         self.probDenominatorHold = prob
                                                         self.tweens.killTweensOf(prob);
-    
+
                                                         self.validateAnswer()
                                                     }
                                                     else {
-    
+
                                                     }
                                                     //destroy the positon in the list
                                                     //self.ItemList = self.ItemList.filter(item => !(item.x === items.x && item.y === items.y));
@@ -1431,9 +1472,9 @@ function PhaserGame() {
                                             prob.captured = true
                                         }
                                     }
-                                    else { 
-                                        
-                                    }                                    
+                                    else {
+
+                                    }
                                 }
                             },
                             this.validateAnswer = function () {
@@ -1445,45 +1486,45 @@ function PhaserGame() {
                                         //change score
                                         self.score += 1
                                         self.holdScore.setText('SCORE:' + self.score + '/' + self.perfectScore)
-                                        
+
                                         if (self.score == self.perfectScore) {
                                             this.input.keyboard.removeAllListeners();
                                             this.input.keyboard.enabled = false;
                                         }
 
-                                            // Wait 1 second then set back to #f74a4a
-                                            self.time.delayedCall(1500, () => {
-                                                answerlongText.setStyle({ fill: '#f74a4a' });
-                                                longText.setStyle({ fill: '#f74a4a' });
-                                                self.numerator = "__ ";
-                                                self.denominator = " __";
-                                                self.probNumeratorHold.destroy()
-                                                self.probDenominatorHold.destroy()
+                                        // Wait 1 second then set back to #f74a4a
+                                        self.time.delayedCall(1500, () => {
+                                            answerlongText.setStyle({ fill: '#f74a4a' });
+                                            longText.setStyle({ fill: '#f74a4a' });
+                                            self.numerator = "__ ";
+                                            self.denominator = " __";
+                                            self.probNumeratorHold.destroy()
+                                            self.probDenominatorHold.destroy()
 
-                                                //remove the question from the list
-                                                if (self.questionsList.length != 0) {
-                                                    self.questionsList.splice(self.questionIndex, 1);
+                                            //remove the question from the list
+                                            if (self.questionsList.length != 0) {
+                                                self.questionsList.splice(self.questionIndex, 1);
 
-                                                    if (self.questionIndex == self.questionsList.length) {
-                                                        self.questionIndex -=1
-                                                    }
-
-                                                    if (self.questionsList.length != 0) {
-                                                        longText.setText((self.questionsList[self.questionIndex].events).join(''))
-
-                                                        answerlongText.setText(`${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`)
-                                                    }
-                                                    else {
-                                                        longText.setText("")
-                                                        answerlongText.setText("")
-                                                    }
-                                                    
+                                                if (self.questionIndex == self.questionsList.length) {
+                                                    self.questionIndex -= 1
                                                 }
 
-                                                //change
-                                                
+                                                if (self.questionsList.length != 0) {
+                                                    longText.setText((self.questionsList[self.questionIndex].events).join(''))
 
-                                            });
+                                                    answerlongText.setText(`${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`)
+                                                }
+                                                else {
+                                                    longText.setText("")
+                                                    answerlongText.setText("")
+                                                }
+
+                                            }
+
+                                            //change
+
+
+                                        });
                                     }
                                     else {
                                         let colorObject = { t: 0 };
@@ -1497,21 +1538,23 @@ function PhaserGame() {
                                             repeat: 1,
                                             onUpdate: function () {
                                                 let t = colorObject.t;
-                                        
+
                                                 let r = Math.round(247 + (128 - 247) * t);
                                                 let g = Math.round(74 + (0 - 74) * t);
                                                 let b = Math.round(74 + (0 - 74) * t);
-                                        
-                                                let color = (r << 16) + (g << 8) + b;
-                                                answerlongText.setTint(color);
-                                                longText.setTint(color)
+
+                                                let color = `rgb(${r},${g},${b})`; 
+
+                                                
+                                                answerlongText.setStyle({ fill: color });
+                                                longText.setStyle({ fill: color });
                                             },
                                             onComplete: function () {
                                                 self.numerator = "__ ";
                                                 self.denominator = " __";
                                                 self.probNumeratorHold.alpha = 1
                                                 self.probDenominatorHold.alpha = 1
-        
+
                                                 self.probNumeratorHold.isDrop = true
                                                 self.probNumeratorHold.captured = false
                                                 self.probDenominatorHold.isDrop = true
