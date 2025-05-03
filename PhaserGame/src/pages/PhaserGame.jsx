@@ -108,7 +108,7 @@ function PhaserGame() {
                         this.probNumeratorHold = null
                         this.probDenominatorHold = null
                         this.questionIndex = 0
-                        this.questionsList = [{ ansNumerator: 357, ansDenominator: 357, events: ["EVENT A: hello world\n", "EVENT B: Hi world\n", "EVENT C: Hello again\n"], probQuestion: "P( (A|B)/D ) = " }, { ansNumerator: 356, ansDenominator: 357, events: ["EVENT A: hello world2\n", "EVENT B: Hi world2", "EVENT C: Hello again2"], probQuestion: "P( A|B ) = " }]
+                        this.questionsList = [{ ansNumerator: 357, ansDenominator: 356, events: ["EVENT A: hello world\n", "EVENT B: Hi world\n", "EVENT C: Hello again\n"], probQuestion: "P( (A|B)/D ) = " }, { ansNumerator: 356, ansDenominator: 357, events: ["EVENT A: hello world2\n", "EVENT B: Hi world2", "EVENT C: Hello again2"], probQuestion: "P( A|B ) = " }]
                         let answerlongText;
                         this.score = 0
 
@@ -704,6 +704,7 @@ function PhaserGame() {
                                 if (Phaser.Input.Keyboard.JustDown(self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A))) {
                                     self.dropBomb()
                                 }
+                            
                             },
                             this.handleCameraMovement = function () {
                                 if (self.cursors.left.isDown && self.player.x < self.cameras.main.scrollX + 500) {
@@ -1321,8 +1322,7 @@ function PhaserGame() {
                                 }
 
                             },
-                            this.ProbPlayerCollide = function (player, prob) {
-
+                            this.getProbSymbol = function (player, prob) {
                                 const probBounds = prob.getBounds();
                                 const playerBounds = player.getBounds();
 
@@ -1367,6 +1367,55 @@ function PhaserGame() {
                                     }
                                 }
 
+                            },
+                            this.ProbPlayerCollide = function (player, prob) {
+                                const probBounds = prob.getBounds();
+                                const playerBounds = player.getBounds();
+
+                                const overlapX = Math.max(0, Math.min(probBounds.right, playerBounds.right) - Math.max(probBounds.left, playerBounds.left));
+                                const overlapY = Math.max(0, Math.min(probBounds.bottom, playerBounds.bottom) - Math.max(probBounds.top, playerBounds.top));
+
+                                if (Math.abs(overlapX) >= 20 && Math.abs(overlapY) >= 10) {
+                                    if (Phaser.Input.Keyboard.JustDown(self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S))) {
+                                        if (prob.captured == false && prob.isDrop == true && (self.numerator == "__ " || self.denominator == " __")) {
+                                            self.tweens.killTweensOf(prob);
+    
+    
+                                            self.tweens.add({
+                                                targets: prob,
+                                                alpha: 0,
+                                                duration: 300,      // time in ms
+                                                ease: 'Linear',
+                                                onComplete: function () {
+                                                    if (self.numerator == "__ ") {
+                                                        self.numerator = prob.text
+                                                        answerlongText.text = `${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`
+                                                        self.probNumeratorHold = prob
+                                                        self.tweens.killTweensOf(prob);
+    
+                                                    }
+                                                    else if (self.denominator == " __") {
+                                                        self.denominator = prob.text
+                                                        answerlongText.text = `${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`
+                                                        self.probDenominatorHold = prob
+                                                        self.tweens.killTweensOf(prob);
+    
+                                                        self.validateAnswer()
+                                                    }
+                                                    else {
+    
+                                                    }
+                                                    //destroy the positon in the list
+                                                    //self.ItemList = self.ItemList.filter(item => !(item.x === items.x && item.y === items.y));
+                                                }
+                                            });
+                                            prob.captured = true
+                                        }
+                                    }
+                                    else { 
+                                        
+                                    }                                    
+                                }
                             },
                             this.validateAnswer = function () {
                                 if (self.numerator != "__ " && self.denominator != " __") {
