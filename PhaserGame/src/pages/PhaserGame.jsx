@@ -108,8 +108,9 @@ function PhaserGame() {
                         this.probNumeratorHold = null
                         this.probDenominatorHold = null
                         this.questionIndex = 0
-                        this.questionsList = [{ ansNumerator: 357, ansDenominator: 356, events: ["EVENT A: hello world\n", "EVENT B: Hi world\n", "EVENT C: Hello again\n"], probQuestion: "P( (A|B)/D ) = " }, { ansNumerator: 356, ansDenominator: 357, events: ["EVENT A: hello world2\n", "EVENT B: Hi world2", "EVENT C: Hello again2"], probQuestion: "P( A|B ) = " }]
+                        this.questionsList = [{ ansNumerator: 357, ansDenominator: 357, events: ["EVENT A: hello world\n", "EVENT B: Hi world\n", "EVENT C: Hello again\n"], probQuestion: "P( (A|B)/D ) = " }, { ansNumerator: 356, ansDenominator: 357, events: ["EVENT A: hello world2\n", "EVENT B: Hi world2", "EVENT C: Hello again2"], probQuestion: "P( A|B ) = " }]
                         let answerlongText;
+                        this.score = 0
 
                         const self = this;
 
@@ -182,7 +183,11 @@ function PhaserGame() {
                                     containerX + padding, // Add padding to the text's X position
                                     containerY + padding, // Add padding to the text's Y position
                                     (self.questionsList[self.questionIndex].events).join(''),
-                                    { font: '20px Arial', fill: '#fff', wordWrap: { width: containerWidth - padding } }
+                                    {   fontSize: '20px',
+                                        fill: '#f74a4a',
+                                        fontStyle: "bold",
+                                        stroke: '#000000',
+                                        strokeThickness: 10, wordWrap: { width: containerWidth - padding } }
                                 );
                                 longText.setScrollFactor(0);
                                 longText.setDepth(2);
@@ -219,7 +224,7 @@ function PhaserGame() {
                                 });
 
                                 //Answer container
-                                const answercontainerWidth = 500;
+                                const answercontainerWidth = 700;
                                 const answercontainerHeight = 50;
                                 const answergameWidth = this.game.config.width;
 
@@ -243,8 +248,11 @@ function PhaserGame() {
                                     answercontainerY + answerpadding,
                                     `${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`,
                                     {
-                                        font: '25px Arial',
-                                        fill: '#fff'
+                                        fontSize: '28px',
+                                        fill: '#f74a4a',
+                                        fontStyle: "bold",
+                                        stroke: '#000000',
+                                        strokeThickness: 10
                                         // Remove wordWrap to allow horizontal overflow
                                     }
                                 );
@@ -1371,15 +1379,14 @@ function PhaserGame() {
                                             duration: 200,
                                             ease: 'Linear',
                                             yoyo: true,
-                                            repeat:2,
+                                            repeat: 2,
                                             onUpdate: function () {
                                                 let t = colorObject.t;
-
-                                                // White (255,255,255) to Red (255,0,0)
-                                                let r = 255;
-                                                let g = Math.round(255 * (1 - t));
-                                                let b = Math.round(255 * (1 - t));
-
+                                        
+                                                let r = Math.round(247 + (128 - 247) * t);
+                                                let g = Math.round(74 + (0 - 74) * t);
+                                                let b = Math.round(74 + (0 - 74) * t);
+                                        
                                                 let color = (r << 16) + (g << 8) + b;
                                                 answerlongText.setTint(color);
                                             },
@@ -1388,8 +1395,6 @@ function PhaserGame() {
                                                 self.denominator = " __";
                                                 self.probNumeratorHold.alpha = 1
                                                 self.probDenominatorHold.alpha = 1
-
-
         
                                                 self.probNumeratorHold.isDrop = true
                                                 self.probNumeratorHold.captured = false
