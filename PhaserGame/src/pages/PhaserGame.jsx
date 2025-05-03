@@ -105,6 +105,8 @@ function PhaserGame() {
                         //for probanswer
                         this.numerator = "__ "
                         this.denominator = " __"
+                        this.probNumeratorHold = null
+                        this.probDenominatorHold = null
                         this.questionIndex = 0
                         this.questionsList = [{ ansNumerator: 357, ansDenominator: 356, events: ["EVENT A: hello world\n", "EVENT B: Hi world\n", "EVENT C: Hello again\n"], probQuestion: "P( (A|B)/D ) = " }, { ansNumerator: 356, ansDenominator: 357, events: ["EVENT A: hello world2\n", "EVENT B: Hi world2", "EVENT C: Hello again2"], probQuestion: "P( A|B ) = " }]
                         let answerlongText;
@@ -239,7 +241,7 @@ function PhaserGame() {
                                 answerlongText = this.add.text(
                                     answercontainerX + answerpadding,
                                     answercontainerY + answerpadding,
-                                    `${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null?" ":self.numerator} / ${self.denominator == null?" ":self.denominator}`,
+                                    `${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`,
                                     {
                                         font: '25px Arial',
                                         fill: '#fff'
@@ -248,12 +250,12 @@ function PhaserGame() {
                                 );
 
                                 answerlongText.setScrollFactor(0);
-                            answerlongText.setDepth(2);
-                            
-                            const answerTextFits = answerlongText.width <= answercontainerWidth;
-                            answerlongText.x = answerTextFits
-                                ? answercontainerX + (answercontainerWidth - answerlongText.width) / 2 // center
-                                : answercontainerX + answerpadding; // scrollable start position
+                                answerlongText.setDepth(2);
+
+                                const answerTextFits = answerlongText.width <= answercontainerWidth;
+                                answerlongText.x = answerTextFits
+                                    ? answercontainerX + (answercontainerWidth - answerlongText.width) / 2 // center
+                                    : answercontainerX + answerpadding; // scrollable start position
 
                                 const answermask = this.add.graphics();
                                 answermask.fillRect(answercontainerX, answercontainerY, answercontainerWidth, answercontainerHeight);
@@ -1334,16 +1336,20 @@ function PhaserGame() {
                                                 if (self.numerator == "__ ") {
                                                     self.numerator = prob.text
                                                     answerlongText.text = `${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`
+                                                    self.probNumeratorHold = prob
                                                     self.tweens.killTweensOf(prob);
 
                                                 }
                                                 else if (self.denominator == " __") {
                                                     self.denominator = prob.text
                                                     answerlongText.text = `${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`
+                                                    self.probDenominatorHold = prob
                                                     self.tweens.killTweensOf(prob);
+
+                                                    self.validateAnswer()
                                                 }
                                                 else {
-                                                    
+
                                                 }
                                                 //destroy the positon in the list
                                                 //self.ItemList = self.ItemList.filter(item => !(item.x === items.x && item.y === items.y));
@@ -1353,6 +1359,67 @@ function PhaserGame() {
                                     }
                                 }
 
+                            },
+                            this.validateAnswer = function () {
+                                if (self.numerator != "__ " && self.denominator != " __") {
+                                    if (self.numerator != self.questionsList[self.questionIndex].ansNumerator || self.denominator != self.questionsList[self.questionIndex].ansDenominator) {
+                                        let colorObject = { t: 0 };
+
+                                        self.tweens.add({
+                                            targets: colorObject,
+                                            t: 1,
+                                            duration: 200,
+                                            ease: 'Linear',
+                                            yoyo: true,
+                                            repeat:2,
+                                            onUpdate: function () {
+                                                let t = colorObject.t;
+
+                                                // White (255,255,255) to Red (255,0,0)
+                                                let r = 255;
+                                                let g = Math.round(255 * (1 - t));
+                                                let b = Math.round(255 * (1 - t));
+
+                                                let color = (r << 16) + (g << 8) + b;
+                                                answerlongText.setTint(color);
+                                            },
+                                            onComplete: function () {
+                                                self.numerator = "__ ";
+                                                self.denominator = " __";
+                                                self.probNumeratorHold.alpha = 1
+                                                self.probDenominatorHold.alpha = 1
+
+                                                self.tweens.add({
+                                                    targets: self.probNumeratorHold,
+                                                    alpha: 0.5,            // minimum opacity
+                                                    duration: 1000,
+                                                    yoyo: true,
+                                                    repeat: -1,
+                                                    ease: 'Sine.easeInOut'
+                                                });
+
+                                                self.tweens.add({
+                                                    targets: self.probDenominatorHold,
+                                                    alpha: 0.5,            // minimum opacity
+                                                    duration: 1000,
+                                                    yoyo: true,
+                                                    repeat: -1,
+                                                    ease: 'Sine.easeInOut'
+                                                });
+        
+                                                self.probNumeratorHold.isDrop = true
+                                                self.probNumeratorHold.captured = false
+                                                self.probDenominatorHold.isDrop = true
+                                                self.probDenominatorHold.captured = false
+
+                                                answerlongText.text = `${self.questionsList[self.questionIndex].probQuestion} ${self.numerator || " "} / ${self.denominator || " "}`;
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        console.log("same")
+                                    }
+                                }
                             }
                         this.stopShield = function (player, wall) {
                             if (self.shieldHold) {
@@ -1395,7 +1462,8 @@ function PhaserGame() {
                         this.handleCollisions();
                         this.handlePlayerMovement();
                         this.handleCameraMovement();
-                        this.handleExplosionCollision()
+                        this.handleExplosionCollision();
+                        //this.validateAnswer();
 
                     }
                 },
