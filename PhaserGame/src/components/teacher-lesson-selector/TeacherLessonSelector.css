@@ -1,0 +1,20 @@
+.teacher-lesson-selector-container{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    /* padding: 1em; */
+}
+
+.lesson-button{
+    padding: 1em;
+    border: 1px solid black;
+    box-shadow: 5px 5px black;
+    font-weight: bold;
+    font-size: large;
+    cursor: pointer;
+}
+
+.lesson-button:hover{
+    background-color: #EDC211;
+    color: white;
+}

@@ -1,0 +1,46 @@
+.level-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1em;
+}
+
+.level-stat{
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.level-container-right{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1em;
+}
+
+.level-start-btn{
+    padding: 0.5em 1em 0.5em 1em;
+    border: 1px solid black;
+    box-shadow: 4px 4px black;
+    background-color: #38ca79;
+    color: white;
+    cursor: pointer;
+
+}
+
+.level-start-btn:hover{
+    background-color: #37a166;
+}
+
+.level-score-container{
+    text-align: center;
+}
+
+.level-score-label{
+    font-size: 0.9rem;
+    color: #777;
+}

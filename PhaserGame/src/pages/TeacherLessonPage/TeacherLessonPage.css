@@ -1,0 +1,21 @@
+.teacher-lesson-page-container {
+    display: grid;
+    grid-template-areas: 
+        "selector lessoncards";
+    grid-template-columns: 1fr 3fr;
+    gap: 16px;
+    padding: 2em;
+    column-gap: 4em;
+}
+
+.selector-area {
+    grid-area: selector;
+}
+
+.lesson-card-area {
+    grid-area: lessoncards;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+  

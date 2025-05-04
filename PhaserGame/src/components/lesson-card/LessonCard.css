@@ -1,0 +1,38 @@
+.lesson-container{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #000000;
+    box-shadow: 5px 5px #000000;
+}
+
+.top-container.seperator{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 1em;
+    border-bottom: 2px solid black;
+}
+
+.lesson-container-left{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1em;
+    margin-left: 1em;;
+}
+
+.topic-title-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 0.5em 0;
+}
+
+.quiz-card-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 1em;
+}
