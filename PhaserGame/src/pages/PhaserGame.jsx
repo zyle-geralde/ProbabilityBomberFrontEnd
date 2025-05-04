@@ -122,6 +122,11 @@ function PhaserGame() {
                         this.holdScore = 0
                         this.perfectScore = 5
 
+                        //keypress
+                        this.keyX = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
+                        this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+                        this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+
                         const self = this;
 
                         this.createBackgrounds = function () {
@@ -602,8 +607,8 @@ function PhaserGame() {
                             this.createProbAnswers = function () {
                                 //get unique indecies to store values
                                 let indices = [];
-                            let total = self.brkWallList.length;
-                            console.log("TOTAL"+total)
+                                let total = self.brkWallList.length;
+                                console.log("TOTAL" + total)
 
                                 while (indices.length < self.perfectScore * 2 && indices.length < total) {
                                     let rand = Math.floor(Math.random() * total);
@@ -634,12 +639,12 @@ function PhaserGame() {
                                     } else {
                                         rand = Math.floor(Math.random() * (999 - 20)) + 21;
                                     }
-                                    let probSymb = rand+""
+                                    let probSymb = rand + ""
                                     if (indices.includes(countme)) {
                                         let indexCount = indices.indexOf(countme);
 
-                                        probSymb = answerList[indexCount]+""
-                                        
+                                        probSymb = answerList[indexCount] + ""
+
                                     }
                                     let messageSymb = null
                                     if (probSymb.length == 1) {
@@ -759,12 +764,67 @@ function PhaserGame() {
 
                                     self.player.anims.play('stopright');
                                 }
-
-                                //detect Single keypress
                                 if (Phaser.Input.Keyboard.JustDown(self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A))) {
-                                    self.dropBomb()
+                                    console.log("GO")
+                                    this.dropBomb()
                                 }
+                                //detect Single keypress
+                                if (Phaser.Input.Keyboard.JustDown(self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z))) {
+                                    self.numerator = "__ ";
+                                    self.denominator = " __";
+                                    if (self.probNumeratorHold != null) {
+                                        self.probNumeratorHold.alpha = 1
+                                        self.probNumeratorHold.isDrop = true
+                                        self.probNumeratorHold.captured = false
+                                    }
+                                    if (self.probDenominatorHold != null) {
+                                        self.probDenominatorHold.alpha = 1
+                                        self.probDenominatorHold.isDrop = true
+                                        self.probDenominatorHold.captured = false
+                                    }
 
+
+
+                                    if (self.questionIndex == 0) {
+                                        self.questionIndex = self.questionsList.length - 1;
+                                    }
+                                    else {
+                                        self.questionIndex -= 1
+                                    }
+
+                                    longText.setText((self.questionsList[self.questionIndex].events).join(''))
+
+                                    answerlongText.setText(`${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`)
+
+                                }
+                                if (Phaser.Input.Keyboard.JustDown(self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X))) {
+                                    self.numerator = "__ ";
+                                    self.denominator = " __";
+                                    if (self.probNumeratorHold != null) {
+                                        self.probNumeratorHold.alpha = 1
+                                        self.probNumeratorHold.isDrop = true
+                                        self.probNumeratorHold.captured = false
+                                    }
+                                    if (self.probDenominatorHold != null) {
+                                        self.probDenominatorHold.alpha = 1
+                                        self.probDenominatorHold.isDrop = true
+                                        self.probDenominatorHold.captured = false
+                                    }
+
+
+
+                                    if (self.questionIndex == self.questionsList.length - 1) {
+                                        self.questionIndex = 0
+                                    }
+                                    else {
+                                        self.questionIndex += 1
+                                    }
+
+                                    longText.setText((self.questionsList[self.questionIndex].events).join(''))
+
+                                    answerlongText.setText(`${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`)
+
+                                }
                             },
                             this.handleCameraMovement = function () {
                                 if (self.cursors.left.isDown && self.player.x < self.cameras.main.scrollX + 500) {
@@ -1480,6 +1540,9 @@ function PhaserGame() {
                             this.validateAnswer = function () {
                                 if (self.numerator != "__ " && self.denominator != " __") {
                                     if (self.numerator == self.questionsList[self.questionIndex].ansNumerator && self.denominator == self.questionsList[self.questionIndex].ansDenominator) {
+                                        self.keyX.enabled = false;
+                                        self.keyZ.enabled = false;
+                                        self.keyA.enabled = false;
                                         // Set to #4af756 immediately
                                         answerlongText.setStyle({ fill: '#4af756' });
                                         longText.setStyle({ fill: '#4af756' });
@@ -1488,8 +1551,8 @@ function PhaserGame() {
                                         self.holdScore.setText('SCORE:' + self.score + '/' + self.perfectScore)
 
                                         if (self.score == self.perfectScore) {
-                                            this.input.keyboard.removeAllListeners();
-                                            this.input.keyboard.enabled = false;
+                                            self.input.keyboard.removeAllListeners();
+                                            self.input.keyboard.enabled = false;
                                         }
 
                                         // Wait 1 second then set back to #f74a4a
@@ -1520,6 +1583,9 @@ function PhaserGame() {
                                                 }
 
                                             }
+                                            self.keyX.enabled = true;
+                                            self.keyZ.enabled = true;
+                                            self.keyA.enabled = true;
 
                                             //change
 
@@ -1527,6 +1593,10 @@ function PhaserGame() {
                                         });
                                     }
                                     else {
+                                        self.keyX.enabled = false;
+                                        self.keyZ.enabled = false;
+                                        self.keyA.enabled = false;
+
                                         let colorObject = { t: 0 };
 
                                         self.tweens.add({
@@ -1543,9 +1613,9 @@ function PhaserGame() {
                                                 let g = Math.round(74 + (0 - 74) * t);
                                                 let b = Math.round(74 + (0 - 74) * t);
 
-                                                let color = `rgb(${r},${g},${b})`; 
+                                                let color = `rgb(${r},${g},${b})`;
 
-                                                
+
                                                 answerlongText.setStyle({ fill: color });
                                                 longText.setStyle({ fill: color });
                                             },
@@ -1561,6 +1631,10 @@ function PhaserGame() {
                                                 self.probDenominatorHold.captured = false
 
                                                 answerlongText.text = `${self.questionsList[self.questionIndex].probQuestion} ${self.numerator || " "} / ${self.denominator || " "}`;
+
+                                                self.keyX.enabled = true;
+                                                self.keyZ.enabled = true;
+                                                self.keyA.enabled = true;
                                             }
                                         });
                                     }
@@ -1588,6 +1662,7 @@ function PhaserGame() {
                         this.physics.add.collider(this.player, this.rightwall);
                         this.physics.add.collider(this.player, this.bottomwall);
                         this.physics.add.collider(this.player, this.brkWallGroup);
+                        //this.physics.add.collider(this.player, this.bombGroup)//handleCollision alternative
 
                         this.physics.add.collider(this.ghostGroup, this.outsidewall, this.enemyWallCollide, null, this);
                         this.physics.add.collider(this.ghostGroup, this.topwall, this.enemyWallCollide, null, this);
@@ -1601,10 +1676,12 @@ function PhaserGame() {
                         this.cursors = this.input.keyboard.createCursorKeys();
                         self.cameras.main.scrollX = -300;
                         self.cameras.main.scrollY = -500;
+
+
                     },
                     update: function () {
                         //run later
-                        this.handleCollisions();
+                        //this.handleCollisions();
                         this.handlePlayerMovement();
                         this.handleCameraMovement();
                         this.handleExplosionCollision();
