@@ -128,6 +128,17 @@ function PhaserGame() {
                         this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
                         this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
 
+                        //win display
+                        let youPassedBack
+                        let mainGreeting
+                        let subGreeting
+                        let circleBackground
+                        let scoreArc
+                        let scoreLabel
+                        let scoreLabel2
+                        let scoreLabel3
+                        let proceedButton
+
                         const self = this;
 
                         this.createBackgrounds = function () {
@@ -325,154 +336,14 @@ function PhaserGame() {
 
                                 //WIN OR Lose Board
 
-                                const youPassedBack = self.add.graphics();
+                                youPassedBack = self.add.graphics();
                                 youPassedBack.fillStyle(0x000000, 0.8);
                                 youPassedBack.fillRect(0, 0, this.game.config.width, this.game.config.height);
                                 youPassedBack.setScrollFactor(0);
                                 youPassedBack.setDepth(3);
                                 youPassedBack.alpha = 0
 
-                                let greetings = self.score >= Math.round(self.perfectScore * 0.60) ? "Congratulations" : "Nice Try";
-                                let mainGreeting = self.add.text(
-                                    this.cameras.main.width / 2,
-                                    75,
-                                    greetings,
-                                    {
-                                        fontSize: '80px',
-                                        fill: 'rgba(0, 0, 0, 0)', // transparent fill
-                                        fontStyle: 'bold',
-                                        stroke: greetings === "Congratulations" ? '#ffcc70' : '#a9a9a9', // Warm gold for Congratulations, light gray for Nice Try
-                                        strokeThickness: greetings === "Congratulations" ? 3 : 2, // Thicker stroke for Congratulations
-                                        shadow: {
-                                            offsetX: 3,
-                                            offsetY: 3,
-                                            color: greetings === "Congratulations" ? '#ff8c42' : '#696969', // Deep orange/coral glow for Congratulations, dark gray for Nice Try
-                                            blur: 5,
-                                            stroke: true,
-                                            fill: false
-                                        },
-                                        align: 'center'
-                                    }
-                                ).setOrigin(0.5);
 
-                                //GREETING
-                                mainGreeting.setScrollFactor(0);
-                                mainGreeting.setDepth(4);
-                                mainGreeting.alpha = 0
-
-                                let subgreet = self.score >= Math.round(self.perfectScore * 0.60) ? "You passed" : "You failed";
-                                let subGreeting = self.add.text(
-                                    this.cameras.main.width / 2,
-                                    160,
-                                    subgreet,
-                                    {
-                                        fontSize: '60px',
-                                        fill: 'rgba(0, 0, 0, 0)', // transparent fill
-                                        fontStyle: 'bold',
-                                        stroke: subgreet === "You passed" ? '#ffcc70' : '#a9a9a9', // Warm gold for Congratulations, light gray for Nice Try
-                                        strokeThickness: subgreet === "You passed" ? 2 : 1, // Thicker stroke for Congratulations
-                                        shadow: {
-                                            offsetX: 3,
-                                            offsetY: 3,
-                                            color: subgreet === "You passed" ? '#ff8c42' : '#696969', // Deep orange/coral glow for Congratulations, dark gray for Nice Try
-                                            blur: 5,
-                                            stroke: true,
-                                            fill: false
-                                        },
-                                        align: 'center'
-                                    }
-                                ).setOrigin(0.5);
-                                subGreeting.setScrollFactor(0);
-                                subGreeting.setDepth(4);
-                                subGreeting.alpha = 0
-
-
-                                const scorePercentage = Phaser.Math.Clamp(self.score / self.perfectScore, 0, 1);
-                                const radius = 125;
-                                const centerX = this.cameras.main.width / 2;
-                                const centerY = 350;
-                                //scorePercentage.alpha = 0
-                                
-                                // Background circle
-                                const circleBackground = this.add.graphics();
-                                circleBackground.fillStyle(greetings == "Congratulations"?0x42f5ad:0xf54269, 0.1);
-                                circleBackground.fillCircle(centerX, centerY, radius);
-                                circleBackground.setScrollFactor(0);
-                                circleBackground.setDepth(4);
-
-                                circleBackground.alpha = 0
-                                // Score arc
-                                const scoreArc = this.add.graphics();
-                                scoreArc.lineStyle(12, greetings == "Congratulations"?0x42f5ad:0xf54269, 1); // green stroke
-                                scoreArc.beginPath();
-                                scoreArc.arc(centerX, centerY, radius, Phaser.Math.DegToRad(-90), Phaser.Math.DegToRad(-90 + 360 * scorePercentage), false);
-                                scoreArc.strokePath();
-                                scoreArc.setScrollFactor(0);
-                                scoreArc.setDepth(5);
-                            
-                                scoreArc.alpha = 0
-                                // Score label
-                                const scoreLabel = this.add.text(
-                                    centerX,
-                                    centerY - 50,
-                                    `${self.score}/${self.perfectScore}`,
-                                    {
-                                        fontSize: '48px',
-                                        fill: greetings == "Congratulations"?"#42f5ad":"#f54269",
-                                        fontStyle: 'bold'
-                                    }
-                                ).setOrigin(0.5);
-                                scoreLabel.setScrollFactor(0);
-                                scoreLabel.setDepth(6);
-                                scoreLabel.alpha = 0
-                                
-                                const scoreLabel2 = this.add.text(
-                                    centerX,
-                                    centerY+20,
-                                    `${Math.round(scorePercentage * 100)}%`,
-                                    {
-                                        fontSize: '27px',
-                                        fill: greetings == "Congratulations"?"#42f5ad":"#f54269",
-                                        fontStyle: 'bold'
-                                    }
-                                ).setOrigin(0.5);
-                                scoreLabel2.setScrollFactor(0);
-                                scoreLabel2.setDepth(6);
-                                scoreLabel2.alpha = 0
-                                
-                                const scoreLabel3 = this.add.text(
-                                    centerX,
-                                    centerY+60,
-                                    `RANK: ${1}`,
-                                    {
-                                        fontSize: '27px',
-                                        fill: greetings == "Congratulations"?"#42f5ad":"#f54269",
-                                        fontStyle: 'bold'
-                                    }
-                                ).setOrigin(0.5);
-                                scoreLabel3.setScrollFactor(0);
-                                scoreLabel3.setDepth(6);
-                                scoreLabel3.alpha = 0
-                                
-                                const proceedButton = this.add.text(this.cameras.main.width / 2, 540, 'PROCEED', {
-                                    fontSize: '32px',
-                                    fill: '#42f57b',
-                                    backgroundColor: 'rgba(0, 0, 0, 0)',
-                                    padding: {
-                                        left: 20,
-                                        right: 20,
-                                        top: 10,
-                                        bottom: 10
-                                    },
-                                    fontStyle: 'bold',
-                                    align: 'center',
-                                    /*stroke: '#42f57b',
-                                    strokeThickness: 2*/
-                                }).setOrigin(0.5).setInteractive();
-                                
-                                proceedButton.setScrollFactor(0);
-                                proceedButton.setDepth(5);
-                                proceedButton.alpha = 0;
                             }
 
                         this.createWalls = function () {
@@ -1119,6 +990,11 @@ function PhaserGame() {
                                                                             });
                                                                         }
                                                                     });
+                                                                    if (self.life <= 0) {
+                                                                        self.input.keyboard.removeAllListeners();
+                                                                        self.input.keyboard.enabled = false;
+                                                                        self.createWinDisplay()
+                                                                    }
                                                                 }
 
                                                             }
@@ -1195,6 +1071,12 @@ function PhaserGame() {
                                                                             });
                                                                         }
                                                                     });
+
+                                                                    if (self.life <= 0) {
+                                                                        self.input.keyboard.removeAllListeners();
+                                                                        self.input.keyboard.enabled = false;
+                                                                        self.createWinDisplay()
+                                                                    }
                                                                 }
 
                                                             }
@@ -1273,6 +1155,11 @@ function PhaserGame() {
                                                                             });
                                                                         }
                                                                     });
+                                                                    if (self.life <= 0) {
+                                                                        self.input.keyboard.removeAllListeners();
+                                                                        self.input.keyboard.enabled = false;
+                                                                        self.createWinDisplay()
+                                                                    }
                                                                 }
                                                             }
 
@@ -1347,6 +1234,11 @@ function PhaserGame() {
                                                                             });
                                                                         }
                                                                     });
+                                                                    if (self.life <= 0) {
+                                                                        self.input.keyboard.removeAllListeners();
+                                                                        self.input.keyboard.enabled = false;
+                                                                        self.createWinDisplay()
+                                                                    }
                                                                 }
                                                             }
 
@@ -1497,6 +1389,11 @@ function PhaserGame() {
                                                     });
                                                 }
                                             });
+                                            if (self.life <= 0) {
+                                                self.input.keyboard.removeAllListeners();
+                                                self.input.keyboard.enabled = false;
+                                                this.createWinDisplay()
+                                            }
                                             console.log(self.life)
                                         }
 
@@ -1713,6 +1610,7 @@ function PhaserGame() {
                                             self.probNumeratorHold.destroy()
                                             self.probDenominatorHold.destroy()
 
+                                            let enableKey = true
                                             //remove the question from the list
                                             if (self.questionsList.length != 0) {
                                                 self.questionsList.splice(self.questionIndex, 1);
@@ -1727,14 +1625,19 @@ function PhaserGame() {
                                                     answerlongText.setText(`${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`)
                                                 }
                                                 else {
+                                                    //making win display
+                                                    this.createWinDisplay()
+                                                    enableKey = false
                                                     longText.setText("")
                                                     answerlongText.setText("")
                                                 }
 
                                             }
-                                            self.keyX.enabled = true;
-                                            self.keyZ.enabled = true;
-                                            self.keyA.enabled = true;
+                                            if (enableKey) {
+                                                self.keyX.enabled = true;
+                                                self.keyZ.enabled = true;
+                                                self.keyA.enabled = true;
+                                            }
 
                                             //change
 
@@ -1788,6 +1691,157 @@ function PhaserGame() {
                                         });
                                     }
                                 }
+                            },
+                            this.createWinDisplay = function () {
+                                let greetings = self.score >= Math.round(self.perfectScore * 0.60) ? "Congratulations" : "Nice Try";
+                                mainGreeting = self.add.text(
+                                    this.cameras.main.width / 2,
+                                    75,
+                                    greetings,
+                                    {
+                                        fontSize: '80px',
+                                        fill: 'rgba(0, 0, 0, 0)', // transparent fill
+                                        fontStyle: 'bold',
+                                        stroke: greetings === "Congratulations" ? '#ffcc70' : '#a9a9a9', // Warm gold for Congratulations, light gray for Nice Try
+                                        strokeThickness: greetings === "Congratulations" ? 3 : 2, // Thicker stroke for Congratulations
+                                        shadow: {
+                                            offsetX: 3,
+                                            offsetY: 3,
+                                            color: greetings === "Congratulations" ? '#ff8c42' : '#696969', // Deep orange/coral glow for Congratulations, dark gray for Nice Try
+                                            blur: 5,
+                                            stroke: true,
+                                            fill: false
+                                        },
+                                        align: 'center'
+                                    }
+                                ).setOrigin(0.5);
+
+                                //GREETING
+                                mainGreeting.setScrollFactor(0);
+                                mainGreeting.setDepth(4);
+                                mainGreeting.alpha = 0
+
+                                let subgreet = self.score >= Math.round(self.perfectScore * 0.60) ? "You passed" : "You failed";
+                                subGreeting = self.add.text(
+                                    this.cameras.main.width / 2,
+                                    160,
+                                    subgreet,
+                                    {
+                                        fontSize: '60px',
+                                        fill: 'rgba(0, 0, 0, 0)', // transparent fill
+                                        fontStyle: 'bold',
+                                        stroke: subgreet === "You passed" ? '#ffcc70' : '#a9a9a9', // Warm gold for Congratulations, light gray for Nice Try
+                                        strokeThickness: subgreet === "You passed" ? 2 : 1, // Thicker stroke for Congratulations
+                                        shadow: {
+                                            offsetX: 3,
+                                            offsetY: 3,
+                                            color: subgreet === "You passed" ? '#ff8c42' : '#696969', // Deep orange/coral glow for Congratulations, dark gray for Nice Try
+                                            blur: 5,
+                                            stroke: true,
+                                            fill: false
+                                        },
+                                        align: 'center'
+                                    }
+                                ).setOrigin(0.5);
+                                subGreeting.setScrollFactor(0);
+                                subGreeting.setDepth(4);
+                                subGreeting.alpha = 0
+
+
+                                const scorePercentage = Phaser.Math.Clamp(self.score / self.perfectScore, 0, 1);
+                                const radius = 125;
+                                const centerX = this.cameras.main.width / 2;
+                                const centerY = 350;
+                                //scorePercentage.alpha = 0
+
+                                // Background circle
+                                circleBackground = this.add.graphics();
+                                circleBackground.fillStyle(greetings == "Congratulations" ? 0x42f5ad : 0xf54269, 0.1);
+                                circleBackground.fillCircle(centerX, centerY, radius);
+                                circleBackground.setScrollFactor(0);
+                                circleBackground.setDepth(4);
+
+                                circleBackground.alpha = 0
+                                // Score arc
+                                scoreArc = this.add.graphics();
+                                scoreArc.lineStyle(12, greetings == "Congratulations" ? 0x42f5ad : 0xf54269, 1); // green stroke
+                                scoreArc.beginPath();
+                                scoreArc.arc(centerX, centerY, radius, Phaser.Math.DegToRad(-90), Phaser.Math.DegToRad(-90 + 360 * scorePercentage), false);
+                                scoreArc.strokePath();
+                                scoreArc.setScrollFactor(0);
+                                scoreArc.setDepth(5);
+
+                                scoreArc.alpha = 0
+                                // Score label
+                                scoreLabel = this.add.text(
+                                    centerX,
+                                    centerY - 50,
+                                    `${self.score}/${self.perfectScore}`,
+                                    {
+                                        fontSize: '48px',
+                                        fill: greetings == "Congratulations" ? "#42f5ad" : "#f54269",
+                                        fontStyle: 'bold'
+                                    }
+                                ).setOrigin(0.5);
+                                scoreLabel.setScrollFactor(0);
+                                scoreLabel.setDepth(6);
+                                scoreLabel.alpha = 0
+
+                                scoreLabel2 = this.add.text(
+                                    centerX,
+                                    centerY + 20,
+                                    `${Math.round(scorePercentage * 100)}%`,
+                                    {
+                                        fontSize: '27px',
+                                        fill: greetings == "Congratulations" ? "#42f5ad" : "#f54269",
+                                        fontStyle: 'bold'
+                                    }
+                                ).setOrigin(0.5);
+                                scoreLabel2.setScrollFactor(0);
+                                scoreLabel2.setDepth(6);
+                                scoreLabel2.alpha = 0
+
+                                scoreLabel3 = this.add.text(
+                                    centerX,
+                                    centerY + 60,
+                                    `RANK: ${1}`,
+                                    {
+                                        fontSize: '27px',
+                                        fill: greetings == "Congratulations" ? "#42f5ad" : "#f54269",
+                                        fontStyle: 'bold'
+                                    }
+                                ).setOrigin(0.5);
+                                scoreLabel3.setScrollFactor(0);
+                                scoreLabel3.setDepth(6);
+                                scoreLabel3.alpha = 0
+
+                                proceedButton = this.add.text(this.cameras.main.width / 2, 540, 'PROCEED', {
+                                    fontSize: '32px',
+                                    fill: '#42f57b',
+                                    backgroundColor: 'rgba(0, 0, 0, 0)',
+                                    padding: {
+                                        left: 20,
+                                        right: 20,
+                                        top: 10,
+                                        bottom: 10
+                                    },
+                                    fontStyle: 'bold',
+                                    align: 'center',
+                                    /*stroke: '#42f57b',
+                                    strokeThickness: 2*/
+                                }).setOrigin(0.5).setInteractive();
+
+                                proceedButton.setScrollFactor(0);
+                                proceedButton.setDepth(5);
+                                proceedButton.alpha = 0;
+
+
+                                this.tweens.add({
+                                    targets: [youPassedBack, mainGreeting, subGreeting, circleBackground, scoreArc, scoreLabel, scoreLabel2, scoreLabel3, proceedButton],
+                                    alpha: 1,
+                                    duration: 500,
+                                    ease: 'Linear'
+                                });
                             }
                         this.stopShield = function (player, wall) {
                             if (self.shieldHold) {
