@@ -138,6 +138,7 @@ function PhaserGame() {
                         let scoreLabel2
                         let scoreLabel3
                         let proceedButton
+                        let displayedWin = false
 
                         const self = this;
 
@@ -993,7 +994,12 @@ function PhaserGame() {
                                                                     if (self.life <= 0) {
                                                                         self.input.keyboard.removeAllListeners();
                                                                         self.input.keyboard.enabled = false;
-                                                                        self.createWinDisplay()
+                                                                        self.gameTimer.paused = true;
+                                                                        if (displayedWin == false) {
+                                                                            self.createWinDisplay()
+                                                                            displayedWin = true
+                                                                        }
+                                                                        
                                                                     }
                                                                 }
 
@@ -1075,7 +1081,12 @@ function PhaserGame() {
                                                                     if (self.life <= 0) {
                                                                         self.input.keyboard.removeAllListeners();
                                                                         self.input.keyboard.enabled = false;
-                                                                        self.createWinDisplay()
+                                                                        self.gameTimer.paused = true;
+                                                                        if (displayedWin == false) {
+                                                                            self.createWinDisplay()
+                                                                            displayedWin = true
+                                                                        }
+                                                                        
                                                                     }
                                                                 }
 
@@ -1158,7 +1169,11 @@ function PhaserGame() {
                                                                     if (self.life <= 0) {
                                                                         self.input.keyboard.removeAllListeners();
                                                                         self.input.keyboard.enabled = false;
-                                                                        self.createWinDisplay()
+                                                                        self.gameTimer.paused = true;
+                                                                        if (displayedWin == false) {
+                                                                            self.createWinDisplay()
+                                                                            displayedWin = true
+                                                                        }
                                                                     }
                                                                 }
                                                             }
@@ -1237,7 +1252,11 @@ function PhaserGame() {
                                                                     if (self.life <= 0) {
                                                                         self.input.keyboard.removeAllListeners();
                                                                         self.input.keyboard.enabled = false;
-                                                                        self.createWinDisplay()
+                                                                        self.gameTimer.paused = true;
+                                                                        if (displayedWin == false) {
+                                                                            self.createWinDisplay()
+                                                                            displayedWin = true
+                                                                        }
                                                                     }
                                                                 }
                                                             }
@@ -1392,7 +1411,11 @@ function PhaserGame() {
                                             if (self.life <= 0) {
                                                 self.input.keyboard.removeAllListeners();
                                                 self.input.keyboard.enabled = false;
-                                                this.createWinDisplay()
+                                                self.gameTimer.paused = true;
+                                                if (displayedWin == false) {
+                                                    this.createWinDisplay()
+                                                    displayedWin = true
+                                                }
                                             }
                                             console.log(self.life)
                                         }
@@ -1626,7 +1649,12 @@ function PhaserGame() {
                                                 }
                                                 else {
                                                     //making win display
-                                                    this.createWinDisplay()
+                                                    self.gameTimer.paused = true;
+                                                    if (displayedWin == false) {
+                                                        this.createWinDisplay()
+                                                        displayedWin = true
+                                                    }
+                                                    
                                                     enableKey = false
                                                     longText.setText("")
                                                     answerlongText.setText("")
@@ -1842,6 +1870,30 @@ function PhaserGame() {
                                     duration: 500,
                                     ease: 'Linear'
                                 });
+                            },
+                            this.updateTimer = function () {
+                                this.timeLeft--;
+                                this.timerText.setText(this.formatTime(this.timeLeft));
+                            
+                                if (this.timeLeft <= 0) {
+                                    this.gameTimer.paused = true; // Stop the timer when it reaches 0
+                                    // Add logic here for what happens when the timer runs out (e.g., game over)
+                                    self.input.keyboard.removeAllListeners();
+                                    self.input.keyboard.enabled = false;
+                                    
+                                    if (displayedWin == false) {
+                                        self.createWinDisplay()
+                                        displayedWin = true
+                                    }
+                                }
+                            },
+                            this.formatTime = function(seconds) {
+                                // Minutes and seconds conversion
+                                const minutes = Math.floor(seconds / 60);
+                                const partInSeconds = seconds % 60;
+                                // Adds left zeros to seconds
+                                const partInSecondsPadded = partInSeconds.toString().padStart(2, '0');
+                                return `${minutes}:${partInSecondsPadded}`;
                             }
                         this.stopShield = function (player, wall) {
                             if (self.shieldHold) {
@@ -1858,6 +1910,33 @@ function PhaserGame() {
                         this.createPlayer();
                         this.createProbAnswers()
                         this.createHolder()
+
+                        /*this.gameTimer = this.time.addEvent({
+                            delay: 1000, // Time in milliseconds (e.g., 1000 for 1 second)
+                            callback: this.updateTimer, // Function to call each time the timer elapses
+                            callbackScope: this, // Scope (this context) for the callback
+                            loop: true // Set to false if you want it to run once
+                        });
+                        
+                        this.timerSeconds = 0; // Variable to store the timer value
+                        this.timerText = this.add.text(this.cameras.main.width - 300, 100, 'Time: 0', { fontSize: '32px', fill: '#000000' }).setScrollFactor(0); // Text to display the timer*/
+
+                        this.initialTime = 60; // 5 minutes in seconds
+                        this.timeLeft = this.initialTime;
+
+                        this.gameTimer = this.time.addEvent({
+                            delay: 1000,
+                            callback: this.updateTimer,
+                            callbackScope: this,
+                            loop: true
+                        });
+
+                        this.timerText = this.add.text(this.cameras.main.width - 300, 100, this.formatTime(this.timeLeft), { fontSize: '50px',
+                            fill: '#4af756',
+                            fontStyle: "bold",
+                            stroke: '#000000',
+                            strokeThickness: 10,}).setScrollFactor(0);
+
 
 
                         this.physics.add.collider(this.player, this.outsidewall);
