@@ -36,6 +36,19 @@
     background-color: #37a166;
 }
 
+.level-edit-btn{
+    padding: 0.5em 1em 0.5em 1em;
+    border: 1px solid black;
+    box-shadow: 4px 4px black;
+    background-color: #38ca79;
+    color: white;
+    cursor: pointer;
+}
+
+.level-edit-btn:hover{
+    background-color: #37a166;
+}
+
 .level-score-container{
     text-align: center;
 }
@@ -44,3 +57,39 @@
     font-size: 0.9rem;
     color: #777;
 }
+
+.level-title-container{
+    display: flex;
+    align-items: center;
+    width: 200px;
+    height: 100%;
+}
+
+.level-stats-container-students{
+    display: flex;
+    flex-direction: column; /* Stack the stats vertically for students */
+    gap: 0;
+}
+
+.level-stats-container{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.level-stat-t{
+    display: flex;
+    text-align: center;
+    flex-direction:column;
+}
+
+.level-stat-t p{
+    font-size: 0.7rem;
+    color: #777;
+}
+
+.bold-value {
+    font-weight: bold;
+    color: black;
+}
+

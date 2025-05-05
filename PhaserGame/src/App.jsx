@@ -16,7 +16,7 @@ import ForgotPassword from './components/forms/ForgotPasswordForm';
 import StudentProfile from './components/views/StudentProfile'; 
 import TeacherProfile from './components/views/teacher/TeacherProfile';
 import PasswordResetLink from './components/views/PasswordResetLink';
-import TeacherLessonPage from "./pages/TeacherLessonPage/TeacherLessonPage";
+import LessonPage from "./pages/LessonPage/LessonPage";
 
 export function App() {
   const navigate = useNavigate();
@@ -137,7 +137,7 @@ export function App() {
         <Route path="/homePage" element={<HomePage />} />
         <Route path="/homePage/beginnerStage" element={<BeginnerStageMenu />} />
         <Route path="/phaserGame" element={<PhaserGame />} />
-        <Route path="/TeacherPage" element={<TeacherLessonPage />} />
+        <Route path="/lessonPage" element={<LessonPage />} />
         
       </Routes>
     </div>
