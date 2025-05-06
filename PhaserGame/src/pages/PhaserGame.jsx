@@ -39,8 +39,8 @@ function PhaserGame() {
                         this.load.image('bombFixed', 'images/bombFixed.png')
                         this.load.image('winloseback', 'images/winloseback.jpg')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
-                            frameWidth: 30,
-                            frameHeight: 50,
+                            frameWidth: 42,
+                            frameHeight: 72,
                         });
                     },
                     create: function () {

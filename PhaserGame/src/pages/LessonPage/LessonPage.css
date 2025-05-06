@@ -1,0 +1,47 @@
+body{
+    background-color: #FFFAFA;
+}
+
+.teacher-lesson-page-container {
+    display: grid;
+    grid-template-areas: 
+        "selector lessoncards leaderboard";
+    grid-template-columns: 1fr 3fr 2fr;
+    gap: 16px;
+    padding: 2em;
+    column-gap: 4em;
+}
+
+.selector-area {
+    grid-area: selector;
+}
+
+.lesson-card-area {
+    grid-area: lessoncards;
+    display: flex;
+    flex-direction: column;
+    background-color: #f9f9f9;
+    padding: 1em;
+    border-radius: 15px;
+    border: 1px solid black;
+    box-shadow: 4px 4px black;
+    gap: 16px;
+    max-height: 500px;
+    height: 500px; /* Force the container to have a height of 500px */
+    overflow-y: auto; /* Allows scrolling when content exceeds the height */
+    scrollbar-width: none; /* Hides the scrollbar for Firefox */
+}
+
+/* For Webkit browsers like Chrome, Safari */
+.lesson-card-area::-webkit-scrollbar {
+    display: none; /* Hides the scrollbar completely */
+}
+
+.leaderboard-container {
+    grid-area: leaderboard;
+    background-color: #f9f9f9;
+    padding: 1em;
+    border-radius: 15px;
+    border: 1px solid black;
+    box-shadow: 4px 4px black;
+}

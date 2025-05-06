@@ -1,0 +1,87 @@
+main {
+width: 24rem;
+background-color: #ffffff;
+border: 2px solid #e4e4e4;
+display: flex;
+flex-direction: column;
+align-items: center;
+border-radius: 0.5rem;
+padding-bottom: 1rem;
+}
+
+
+
+#header {
+width: 100%;
+padding: 1rem 1rem 0.8rem;
+text-align: center;
+}
+
+h1 {
+font-family: "Rubik", sans-serif;
+font-size: 1.3rem;
+color: #141a39;
+text-transform: uppercase;
+margin: 0;
+}
+
+#leaderboard {
+width: 100%;
+position: relative;
+height: 400px; /* Force the container to have a height of 500px */
+overflow-y: auto; /* Allows scrolling when content exceeds the height */
+scrollbar-width: none; /* Hides the scrollbar for Firefox */
+}
+/* For Webkit browsers like Chrome, Safari */
+#leaderboard::-webkit-scrollbar {
+display: none; /* Hides the scrollbar completely */
+}
+
+table {
+width: 100%;
+border-collapse: collapse;
+table-layout: fixed;
+color: #141a39;
+}
+
+tr {
+transition: all 0.2s ease-in-out;
+}
+
+tr:nth-child(odd) {
+background-color: #f9f9f9;
+}
+
+tr:not(:first-child):hover {
+background-color: #fff;
+transform: scale(1.03);
+box-shadow: 0px 3px 8px 4px #e4e7fb;
+}
+
+tr:first-child {
+background-color: #f1ea2c;
+color: #000000;
+}
+
+td {
+font-family: "Rubik", sans-serif;
+font-size: 1rem;
+padding: 0.8rem;
+}
+
+.number {
+width: 2.5rem;
+font-size: 1.3rem;
+font-weight: bold;
+text-align: left;
+}
+
+.name {
+text-align: left;
+}
+
+.points {
+font-weight: bold;
+text-align: right;
+white-space: nowrap;
+}

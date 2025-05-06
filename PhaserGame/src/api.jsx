@@ -8,4 +8,27 @@ const api = axios.create({
   },
 });
 
+api.interceptors.response.use(
+  response => response,
+  error => {
+    // Global Error Logging
+    console.error("Global Axios Error: ", error);
+
+    // Optional: handle specific errors
+    if (error.response) {
+      if (error.response.status === 401) {
+        console.warn("Unauthorized - possibly expired token");
+        // Redirect:
+        window.location.href = '/login';
+      } else if (error.response.status >= 500) {
+        console.warn("Server error, try again later");
+      }
+    } else {
+      console.warn("No response from server (maybe network error)");
+    }
+
+    return Promise.reject(error); // Let your catch block handle it
+  }
+);
+
 export default api;

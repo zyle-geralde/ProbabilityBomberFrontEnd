@@ -9,16 +9,16 @@ export const firebaseLoginAndGetToken = async (email, password) => {
   return token;
 };
 
-export const loginWithToken = async (token) => {
-  return api.post('/auth/login/', null, {
+export const loginWithToken = async (token, role) => {
+  return api.post('/auth/login/', {role}, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 };
 
-export const registerUser = async (name, email, password) => {
-  return api.post('/auth/register/', { name, email, password });
+export const registerUser = async (name, email, password, role) => {
+  return api.post('/auth/register/', { name, email, password, role});
 };
 
 export const resetPassword = async (newPassword) => {
