@@ -37,6 +37,7 @@ function PhaserGame() {
                         this.load.image('heartFixed', 'images/heartFixed.png')
                         this.load.image('explodeFixed', 'images/explodeFixed.png')
                         this.load.image('bombFixed', 'images/bombFixed.png')
+                        this.load.image('winloseback', 'images/winloseback.jpg')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 42,
                             frameHeight: 72,
@@ -97,6 +98,48 @@ function PhaserGame() {
                         this.probabilitySymbols = this.physics.add.group()
                         this.probabilitySymbolsList = []
 
+                        //for displayText
+                        this.messageText = null
+                        this.container = null // Initial position, can be changed
+                        this.background = null
+
+                        //for probanswer
+                        this.numerator = "__ "
+                        this.denominator = " __"
+                        this.probNumeratorHold = null
+                        this.probDenominatorHold = null
+                        this.questionIndex = 0
+                        this.questionsList = [
+                            { ansNumerator: 1, ansDenominator: 11, events: ["EVENT A: hello world\n", "EVENT B: Hi world\n", "EVENT C: Hello again\n"], probQuestion: "P( (A|B)/D ) = " },
+                            { ansNumerator: 2, ansDenominator: 22, events: ["EVENT A: hello world2\n", "EVENT B: Hi world2\n", "EVENT C: Hello again2\n"], probQuestion: "P( A|B ) = " },
+                            { ansNumerator: 3, ansDenominator: 33, events: ["EVENT A: hello world3\n", "EVENT B: Hi world3\n", "EVENT C: Hello again3\n"], probQuestion: "P( A ) = " },
+                            { ansNumerator: 4, ansDenominator: 44, events: ["EVENT A: hello world4\n", "EVENT B: Hi world4\n", "EVENT C: Hello again4\n"], probQuestion: "P( B ) = " },
+                            { ansNumerator: 5, ansDenominator: 55, events: ["EVENT A: hello world5\n", "EVENT B: Hi world5\n", "EVENT C: Hello again5\n"], probQuestion: "P( C ) = " }
+                        ]
+
+                        let answerlongText;
+                        let longText;
+                        this.score = 0
+                        this.holdScore = 0
+                        this.perfectScore = 5
+
+                        //keypress
+                        this.keyX = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
+                        this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+                        this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+
+                        //win display
+                        let youPassedBack
+                        let mainGreeting
+                        let subGreeting
+                        let circleBackground
+                        let scoreArc
+                        let scoreLabel
+                        let scoreLabel2
+                        let scoreLabel3
+                        let proceedButton
+                        let displayedWin = false
+
                         const self = this;
 
                         this.createBackgrounds = function () {
@@ -143,6 +186,165 @@ function PhaserGame() {
                                 });
                                 self.explodeDesc.setScrollFactor(0);
 
+                                self.holdScore = self.add.text(45, 75, 'SCORE:' + self.score + '/' + self.perfectScore, {
+                                    fontSize: '50px',
+                                    fill: '#4af756',
+                                    fontStyle: "bold",
+                                    stroke: '#000000',
+                                    strokeThickness: 10,
+                                });
+                                self.holdScore.setScrollFactor(0);
+
+
+                                //Events Container
+                                const containerWidth = 700;
+                                const containerHeight = 100;
+                                const gameWidth = this.game.config.width;
+
+                                const containerX = (gameWidth - containerWidth) / 2; // Fixed X position
+                                const containerY = 50; // Fixed Y position
+                                const padding = 10; // Adjust this value for the desired padding
+
+                                // Create a background for the container with padding
+                                const backgroundWidth = containerWidth + 2 * padding;
+                                const backgroundHeight = containerHeight + 2 * padding;
+                                const backgroundX = containerX - padding;
+                                const backgroundY = containerY - padding;
+                                const containerBackground = this.add.graphics();
+                                containerBackground.fillStyle(0x450b01, 0.7);
+                                containerBackground.fillRect(backgroundX, backgroundY, backgroundWidth, backgroundHeight);
+                                containerBackground.setScrollFactor(0);
+                                containerBackground.setDepth(0);
+
+                                longText = this.add.text(
+                                    containerX + padding, // Add padding to the text's X position
+                                    containerY + padding, // Add padding to the text's Y position
+                                    (self.questionsList[self.questionIndex].events).join(''),
+                                    {
+                                        fontSize: '20px',
+                                        fill: '#f74a4a',
+                                        fontStyle: "bold",
+                                        stroke: '#000000',
+                                        strokeThickness: 10, wordWrap: { width: containerWidth - padding }
+                                    }
+                                );
+                                longText.setScrollFactor(0);
+                                longText.setDepth(2);
+
+                                const mask = this.add.graphics();
+                                mask.fillRect(containerX, containerY, containerWidth, containerHeight);
+                                // Mask remains the original container size
+                                mask.setScrollFactor(0);
+                                mask.setDepth(1);
+
+                                longText.mask = new Phaser.Display.Masks.GeometryMask(this, mask);
+
+                                const scrollContainer = this.add.zone(containerX, containerY, containerWidth, containerHeight) // Input zone matches the mask size
+                                    .setOrigin(0)
+                                    .setInteractive()
+                                    .setScrollFactor(0);
+                                scrollContainer.setDepth(2);
+
+                                let startY = 0;
+
+                                scrollContainer.on('pointerdown', (pointer) => {
+                                    startY = pointer.y - longText.y;
+                                });
+
+                                scrollContainer.on('pointermove', (pointer) => {
+                                    if (pointer.isDown) {
+                                        longText.y = pointer.y - startY;
+                                        longText.y = Phaser.Math.Clamp(
+                                            longText.y,
+                                            containerY + padding - (longText.height - containerHeight + padding), // Adjust the lower clamp
+                                            containerY + padding // Adjust the upper clamp
+                                        );
+                                    }
+                                });
+
+                                //Answer container
+                                const answercontainerWidth = 700;
+                                const answercontainerHeight = 50;
+                                const answergameWidth = this.game.config.width;
+
+                                const answercontainerX = (answergameWidth - answercontainerWidth) / 2;
+                                const answercontainerY = 180;
+                                const answerpadding = 10;
+
+                                const answerbackgroundWidth = answercontainerWidth + 2 * answerpadding;
+                                const answerbackgroundHeight = answercontainerHeight + 2 * answerpadding;
+                                const answerbackgroundX = answercontainerX - answerpadding;
+                                const answerbackgroundY = answercontainerY - answerpadding;
+
+                                const answercontainerBackground = this.add.graphics();
+                                answercontainerBackground.fillStyle(0x450b01, 0.7);
+                                answercontainerBackground.fillRect(answerbackgroundX, answerbackgroundY, answerbackgroundWidth, answerbackgroundHeight);
+                                answercontainerBackground.setScrollFactor(0);
+                                answercontainerBackground.setDepth(0);
+
+                                answerlongText = this.add.text(
+                                    answercontainerX + answerpadding,
+                                    answercontainerY + answerpadding,
+                                    `${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`,
+                                    {
+                                        fontSize: '28px',
+                                        fill: '#f74a4a',
+                                        fontStyle: "bold",
+                                        stroke: '#000000',
+                                        strokeThickness: 10
+                                        // Remove wordWrap to allow horizontal overflow
+                                    }
+                                );
+
+                                answerlongText.setScrollFactor(0);
+                                answerlongText.setDepth(2);
+
+                                const answerTextFits = answerlongText.width <= answercontainerWidth;
+                                answerlongText.x = answerTextFits
+                                    ? answercontainerX + (answercontainerWidth - answerlongText.width) / 2 // center
+                                    : answercontainerX + answerpadding; // scrollable start position
+
+                                const answermask = this.add.graphics();
+                                answermask.fillRect(answercontainerX, answercontainerY, answercontainerWidth, answercontainerHeight);
+                                answermask.setScrollFactor(0);
+                                answermask.setDepth(1);
+
+                                answerlongText.mask = new Phaser.Display.Masks.GeometryMask(this, answermask);
+
+                                const answerscrollContainer = this.add.zone(answercontainerX, answercontainerY, answercontainerWidth, answercontainerHeight)
+                                    .setOrigin(0)
+                                    .setInteractive()
+                                    .setScrollFactor(0);
+                                answerscrollContainer.setDepth(2);
+
+                                let answerstartX = 0;
+
+                                answerscrollContainer.on('pointerdown', (pointer) => {
+                                    answerstartX = pointer.x - answerlongText.x;
+                                });
+
+                                answerscrollContainer.on('pointermove', (pointer) => {
+                                    if (pointer.isDown) {
+                                        answerlongText.x = pointer.x - answerstartX;
+
+                                        const maxX = answercontainerX + answerpadding;
+                                        const minX = answercontainerX + answerpadding - (answerlongText.width - answercontainerWidth + answerpadding);
+
+                                        answerlongText.x = Phaser.Math.Clamp(answerlongText.x, minX, maxX);
+
+                                    }
+                                });
+
+                                //WIN OR Lose Board
+
+                                youPassedBack = self.add.graphics();
+                                youPassedBack.fillStyle(0x000000, 0.8);
+                                youPassedBack.fillRect(0, 0, this.game.config.width, this.game.config.height);
+                                youPassedBack.setScrollFactor(0);
+                                youPassedBack.setDepth(3);
+                                youPassedBack.alpha = 0
+
+
                             }
 
                         this.createWalls = function () {
@@ -151,6 +353,7 @@ function PhaserGame() {
                             self.createTopWall();
                             self.createRightWall();
                             self.createBottomWall();
+
                         }
                         this.createLeftWall = function () {
                             self.outsidewall = self.physics.add.group({ immovable: true });
@@ -423,10 +626,48 @@ function PhaserGame() {
                                 }
                             },
                             this.createProbAnswers = function () {
+                                //get unique indecies to store values
+                                let indices = [];
+                                let total = self.brkWallList.length;
+                                console.log("TOTAL" + total)
+
+                                while (indices.length < self.perfectScore * 2 && indices.length < total) {
+                                    let rand = Math.floor(Math.random() * total);
+                                    if (!indices.includes(rand)) {
+                                        indices.push(rand);
+                                    }
+                                }
+                                //list of json answers
+                                let answerList = []
+                                for (var elem of self.questionsList) {
+                                    answerList.push(elem.ansNumerator)
+                                    answerList.push(elem.ansDenominator)
+                                }
+
+                                for (let i = answerList.length - 1; i > 0; i--) {
+                                    let j = Math.floor(Math.random() * (i + 1));
+                                    [answerList[i], answerList[j]] = [answerList[j], answerList[i]];
+                                }
+
+                                var countme = 0
                                 for (var bb of self.brkWallList) {
                                     console.log(bb)
+                                    let rand;
+                                    let bias = Math.random();
+
+                                    if (bias < 0.7) {
+                                        rand = Math.floor(Math.random() * 20) + 1;
+                                    } else {
+                                        rand = Math.floor(Math.random() * (999 - 20)) + 21;
+                                    }
+                                    let probSymb = rand + ""
+                                    if (indices.includes(countme)) {
+                                        let indexCount = indices.indexOf(countme);
+
+                                        probSymb = answerList[indexCount] + ""
+
+                                    }
                                     let messageSymb = null
-                                    let probSymb = "357"
                                     if (probSymb.length == 1) {
                                         messageSymb = self.add.text(bb.x - 10, bb.y - 15, probSymb, {
                                             fontSize: '32px',
@@ -459,11 +700,12 @@ function PhaserGame() {
                                     messageSymb.type = "prob"
 
                                     self.probabilitySymbols.add(messageSymb)
+                                    countme++;
 
                                 }
                             }
                         this.createPlayer = function () {
-                            self.player = self.physics.add.sprite(60, 450, 'character');
+                            self.player = self.physics.add.sprite(60, 70, 'character');
                             //self.player.setScale(48 / 30, 70 / 50);
                             self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
                             self.player.setDisplaySize(self.wallDim - 15, self.wallDim - 3);
@@ -543,10 +785,66 @@ function PhaserGame() {
 
                                     self.player.anims.play('stopright');
                                 }
-
-                                //detect Single keypress
                                 if (Phaser.Input.Keyboard.JustDown(self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A))) {
-                                    self.dropBomb()
+                                    console.log("GO")
+                                    this.dropBomb()
+                                }
+                                //detect Single keypress
+                                if (Phaser.Input.Keyboard.JustDown(self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z))) {
+                                    self.numerator = "__ ";
+                                    self.denominator = " __";
+                                    if (self.probNumeratorHold != null) {
+                                        self.probNumeratorHold.alpha = 1
+                                        self.probNumeratorHold.isDrop = true
+                                        self.probNumeratorHold.captured = false
+                                    }
+                                    if (self.probDenominatorHold != null) {
+                                        self.probDenominatorHold.alpha = 1
+                                        self.probDenominatorHold.isDrop = true
+                                        self.probDenominatorHold.captured = false
+                                    }
+
+
+
+                                    if (self.questionIndex == 0) {
+                                        self.questionIndex = self.questionsList.length - 1;
+                                    }
+                                    else {
+                                        self.questionIndex -= 1
+                                    }
+
+                                    longText.setText((self.questionsList[self.questionIndex].events).join(''))
+
+                                    answerlongText.setText(`${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`)
+
+                                }
+                                if (Phaser.Input.Keyboard.JustDown(self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X))) {
+                                    self.numerator = "__ ";
+                                    self.denominator = " __";
+                                    if (self.probNumeratorHold != null) {
+                                        self.probNumeratorHold.alpha = 1
+                                        self.probNumeratorHold.isDrop = true
+                                        self.probNumeratorHold.captured = false
+                                    }
+                                    if (self.probDenominatorHold != null) {
+                                        self.probDenominatorHold.alpha = 1
+                                        self.probDenominatorHold.isDrop = true
+                                        self.probDenominatorHold.captured = false
+                                    }
+
+
+
+                                    if (self.questionIndex == self.questionsList.length - 1) {
+                                        self.questionIndex = 0
+                                    }
+                                    else {
+                                        self.questionIndex += 1
+                                    }
+
+                                    longText.setText((self.questionsList[self.questionIndex].events).join(''))
+
+                                    answerlongText.setText(`${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`)
+
                                 }
                             },
                             this.handleCameraMovement = function () {
@@ -554,7 +852,7 @@ function PhaserGame() {
                                     self.cameras.main.scrollX -= self.cameraSpeed * self.game.loop.delta / 1000;
                                 } else if (self.cursors.right.isDown && self.player.x > self.cameras.main.scrollX + self.cameras.main.width - 500) {
                                     self.cameras.main.scrollX += self.cameraSpeed * self.game.loop.delta / 1000;
-                                } else if (self.cursors.up.isDown && self.player.y < self.cameras.main.scrollY + 300) {
+                                } else if (self.cursors.up.isDown && self.player.y < self.cameras.main.scrollY + 500) {
                                     self.cameras.main.scrollY -= self.cameraSpeed * self.game.loop.delta / 1000;
                                 } else if (self.cursors.down.isDown && self.player.y > self.cameras.main.scrollY + self.cameras.main.height - 300) {
                                     self.cameras.main.scrollY += self.cameraSpeed * self.game.loop.delta / 1000;
@@ -693,6 +991,16 @@ function PhaserGame() {
                                                                             });
                                                                         }
                                                                     });
+                                                                    if (self.life <= 0) {
+                                                                        self.input.keyboard.removeAllListeners();
+                                                                        self.input.keyboard.enabled = false;
+                                                                        self.gameTimer.paused = true;
+                                                                        if (displayedWin == false) {
+                                                                            self.createWinDisplay()
+                                                                            displayedWin = true
+                                                                        }
+                                                                        
+                                                                    }
                                                                 }
 
                                                             }
@@ -769,6 +1077,17 @@ function PhaserGame() {
                                                                             });
                                                                         }
                                                                     });
+
+                                                                    if (self.life <= 0) {
+                                                                        self.input.keyboard.removeAllListeners();
+                                                                        self.input.keyboard.enabled = false;
+                                                                        self.gameTimer.paused = true;
+                                                                        if (displayedWin == false) {
+                                                                            self.createWinDisplay()
+                                                                            displayedWin = true
+                                                                        }
+                                                                        
+                                                                    }
                                                                 }
 
                                                             }
@@ -847,6 +1166,15 @@ function PhaserGame() {
                                                                             });
                                                                         }
                                                                     });
+                                                                    if (self.life <= 0) {
+                                                                        self.input.keyboard.removeAllListeners();
+                                                                        self.input.keyboard.enabled = false;
+                                                                        self.gameTimer.paused = true;
+                                                                        if (displayedWin == false) {
+                                                                            self.createWinDisplay()
+                                                                            displayedWin = true
+                                                                        }
+                                                                    }
                                                                 }
                                                             }
 
@@ -921,6 +1249,15 @@ function PhaserGame() {
                                                                             });
                                                                         }
                                                                     });
+                                                                    if (self.life <= 0) {
+                                                                        self.input.keyboard.removeAllListeners();
+                                                                        self.input.keyboard.enabled = false;
+                                                                        self.gameTimer.paused = true;
+                                                                        if (displayedWin == false) {
+                                                                            self.createWinDisplay()
+                                                                            displayedWin = true
+                                                                        }
+                                                                    }
                                                                 }
                                                             }
 
@@ -954,7 +1291,7 @@ function PhaserGame() {
                             },
                             this.handleExplosionCollision = function () {
 
-                                self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.brkWallGroup, (explode, wall) => {
+                                self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture && child.texture.key === 'explode')), self.brkWallGroup, (explode, wall) => {
                                     //when explosion overlaps with breakable wall
                                     wall.destroy();
                                     //remove destroyed wall from brkWallList
@@ -967,23 +1304,23 @@ function PhaserGame() {
                                     console.log(self.life)
                                     
                                 });*/
-                                self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.ghostGroup, (explode, ghost) => {
+                                self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture && child.texture.key === 'explode')), self.ghostGroup, (explode, ghost) => {
                                     //when explosion overlaps with ghost
                                     ghost.destroy();
 
 
                                 });
-                                self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture.key === 'explode')), self.probabilitySymbols, (explode, probSymbol) => {
+                                self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture && child.texture.key === 'explode')), self.probabilitySymbols, (explode, probSymbol) => {
                                     //when explosion overlaps with ghost
                                     if (probSymbol.isDrop == false) {
-                                        self.tweens.add({
+                                        /*self.tweens.add({
                                             targets: probSymbol,
                                             alpha: 0.5,            // minimum opacity
-                                            duration: 1000,
+                                            duration: 200,
                                             yoyo: true,
                                             repeat: -1,
                                             ease: 'Sine.easeInOut'
-                                        });
+                                        });*/
 
                                         probSymbol.isDrop = true
                                     }
@@ -1071,6 +1408,15 @@ function PhaserGame() {
                                                     });
                                                 }
                                             });
+                                            if (self.life <= 0) {
+                                                self.input.keyboard.removeAllListeners();
+                                                self.input.keyboard.enabled = false;
+                                                self.gameTimer.paused = true;
+                                                if (displayedWin == false) {
+                                                    this.createWinDisplay()
+                                                    displayedWin = true
+                                                }
+                                            }
                                             console.log(self.life)
                                         }
 
@@ -1165,27 +1511,43 @@ function PhaserGame() {
                                 }
 
                             },
-                            this.ProbPlayerCollide = function (player, prob) {
-                            
+                            this.getProbSymbol = function (player, prob) {
                                 const probBounds = prob.getBounds();
                                 const playerBounds = player.getBounds();
 
                                 const overlapX = Math.max(0, Math.min(probBounds.right, playerBounds.right) - Math.max(probBounds.left, playerBounds.left));
                                 const overlapY = Math.max(0, Math.min(probBounds.bottom, playerBounds.bottom) - Math.max(probBounds.top, playerBounds.top));
 
-                                if (Math.abs(overlapX) >= 20 && Math.abs(overlapY) >= 10) { 
-                                    
-                                    if (prob.captured == false && prob.isDrop == true) {
+                                if (Math.abs(overlapX) >= 20 && Math.abs(overlapY) >= 10) {
+
+                                    if (prob.captured == false && prob.isDrop == true && (self.numerator == "__ " || self.denominator == " __")) {
                                         self.tweens.killTweensOf(prob);
-    
-    
+
+
                                         self.tweens.add({
                                             targets: prob,
-                                            alpha: 0, // move up by 10 pixels
+                                            alpha: 0,
                                             duration: 300,      // time in ms
                                             ease: 'Linear',
                                             onComplete: function () {
-                                                prob.destroy();
+                                                if (self.numerator == "__ ") {
+                                                    self.numerator = prob.text
+                                                    answerlongText.text = `${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`
+                                                    self.probNumeratorHold = prob
+                                                    self.tweens.killTweensOf(prob);
+
+                                                }
+                                                else if (self.denominator == " __") {
+                                                    self.denominator = prob.text
+                                                    answerlongText.text = `${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`
+                                                    self.probDenominatorHold = prob
+                                                    self.tweens.killTweensOf(prob);
+
+                                                    self.validateAnswer()
+                                                }
+                                                else {
+
+                                                }
                                                 //destroy the positon in the list
                                                 //self.ItemList = self.ItemList.filter(item => !(item.x === items.x && item.y === items.y));
                                             }
@@ -1193,16 +1555,354 @@ function PhaserGame() {
                                         prob.captured = true
                                     }
                                 }
-                                
-                            }
-                            this.stopShield = function (player, wall) {
-                                if (self.shieldHold) {
-                                    self.shield = true
-                                    console.log("NoGo")
 
+                            },
+                            this.ProbPlayerCollide = function (player, prob) {
+                                const probBounds = prob.getBounds();
+                                const playerBounds = player.getBounds();
+
+                                const overlapX = Math.max(0, Math.min(probBounds.right, playerBounds.right) - Math.max(probBounds.left, playerBounds.left));
+                                const overlapY = Math.max(0, Math.min(probBounds.bottom, playerBounds.bottom) - Math.max(probBounds.top, playerBounds.top));
+
+                                if (Math.abs(overlapX) >= 20 && Math.abs(overlapY) >= 10) {
+                                    if (Phaser.Input.Keyboard.JustDown(self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S))) {
+                                        if (prob.captured == false && prob.isDrop == true && (self.numerator == "__ " || self.denominator == " __")) {
+                                            self.tweens.killTweensOf(prob);
+
+
+                                            self.tweens.add({
+                                                targets: prob,
+                                                alpha: 0,
+                                                duration: 300,      // time in ms
+                                                ease: 'Linear',
+                                                onComplete: function () {
+                                                    if (self.numerator == "__ ") {
+                                                        self.numerator = prob.text
+                                                        answerlongText.text = `${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`
+                                                        self.probNumeratorHold = prob
+                                                        self.tweens.killTweensOf(prob);
+
+                                                    }
+                                                    else if (self.denominator == " __") {
+                                                        self.denominator = prob.text
+                                                        answerlongText.text = `${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`
+                                                        self.probDenominatorHold = prob
+                                                        self.tweens.killTweensOf(prob);
+
+                                                        self.validateAnswer()
+                                                    }
+                                                    else {
+
+                                                    }
+                                                    //destroy the positon in the list
+                                                    //self.ItemList = self.ItemList.filter(item => !(item.x === items.x && item.y === items.y));
+                                                }
+                                            });
+                                            prob.captured = true
+                                        }
+                                    }
+                                    else {
+
+                                    }
                                 }
-                                console.log("Go")
+                            },
+                            this.validateAnswer = function () {
+                                if (self.numerator != "__ " && self.denominator != " __") {
+                                    if (self.numerator == self.questionsList[self.questionIndex].ansNumerator && self.denominator == self.questionsList[self.questionIndex].ansDenominator) {
+                                        self.keyX.enabled = false;
+                                        self.keyZ.enabled = false;
+                                        self.keyA.enabled = false;
+                                        // Set to #4af756 immediately
+                                        answerlongText.setStyle({ fill: '#4af756' });
+                                        longText.setStyle({ fill: '#4af756' });
+                                        //change score
+                                        self.score += 1
+                                        self.holdScore.setText('SCORE:' + self.score + '/' + self.perfectScore)
+
+                                        if (self.score == self.perfectScore) {
+                                            self.input.keyboard.removeAllListeners();
+                                            self.input.keyboard.enabled = false;
+                                        }
+
+                                        // Wait 1 second then set back to #f74a4a
+                                        self.time.delayedCall(1500, () => {
+                                            answerlongText.setStyle({ fill: '#f74a4a' });
+                                            longText.setStyle({ fill: '#f74a4a' });
+                                            self.numerator = "__ ";
+                                            self.denominator = " __";
+                                            self.probNumeratorHold.destroy()
+                                            self.probDenominatorHold.destroy()
+
+                                            let enableKey = true
+                                            //remove the question from the list
+                                            if (self.questionsList.length != 0) {
+                                                self.questionsList.splice(self.questionIndex, 1);
+
+                                                if (self.questionIndex == self.questionsList.length) {
+                                                    self.questionIndex -= 1
+                                                }
+
+                                                if (self.questionsList.length != 0) {
+                                                    longText.setText((self.questionsList[self.questionIndex].events).join(''))
+
+                                                    answerlongText.setText(`${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`)
+                                                }
+                                                else {
+                                                    //making win display
+                                                    self.gameTimer.paused = true;
+                                                    if (displayedWin == false) {
+                                                        this.createWinDisplay()
+                                                        displayedWin = true
+                                                    }
+                                                    
+                                                    enableKey = false
+                                                    longText.setText("")
+                                                    answerlongText.setText("")
+                                                }
+
+                                            }
+                                            if (enableKey) {
+                                                self.keyX.enabled = true;
+                                                self.keyZ.enabled = true;
+                                                self.keyA.enabled = true;
+                                            }
+
+                                            //change
+
+
+                                        });
+                                    }
+                                    else {
+                                        self.keyX.enabled = false;
+                                        self.keyZ.enabled = false;
+                                        self.keyA.enabled = false;
+
+                                        let colorObject = { t: 0 };
+
+                                        self.tweens.add({
+                                            targets: colorObject,
+                                            t: 1,
+                                            duration: 200,
+                                            ease: 'Linear',
+                                            yoyo: true,
+                                            repeat: 1,
+                                            onUpdate: function () {
+                                                let t = colorObject.t;
+
+                                                let r = Math.round(247 + (128 - 247) * t);
+                                                let g = Math.round(74 + (0 - 74) * t);
+                                                let b = Math.round(74 + (0 - 74) * t);
+
+                                                let color = `rgb(${r},${g},${b})`;
+
+
+                                                answerlongText.setStyle({ fill: color });
+                                                longText.setStyle({ fill: color });
+                                            },
+                                            onComplete: function () {
+                                                self.numerator = "__ ";
+                                                self.denominator = " __";
+                                                self.probNumeratorHold.alpha = 1
+                                                self.probDenominatorHold.alpha = 1
+
+                                                self.probNumeratorHold.isDrop = true
+                                                self.probNumeratorHold.captured = false
+                                                self.probDenominatorHold.isDrop = true
+                                                self.probDenominatorHold.captured = false
+
+                                                answerlongText.text = `${self.questionsList[self.questionIndex].probQuestion} ${self.numerator || " "} / ${self.denominator || " "}`;
+
+                                                self.keyX.enabled = true;
+                                                self.keyZ.enabled = true;
+                                                self.keyA.enabled = true;
+                                            }
+                                        });
+                                    }
+                                }
+                            },
+                            this.createWinDisplay = function () {
+                                let greetings = self.score >= Math.round(self.perfectScore * 0.60) ? "Congratulations" : "Nice Try";
+                                mainGreeting = self.add.text(
+                                    this.cameras.main.width / 2,
+                                    75,
+                                    greetings,
+                                    {
+                                        fontSize: '80px',
+                                        fill: 'rgba(0, 0, 0, 0)', // transparent fill
+                                        fontStyle: 'bold',
+                                        stroke: greetings === "Congratulations" ? '#ffcc70' : '#a9a9a9', // Warm gold for Congratulations, light gray for Nice Try
+                                        strokeThickness: greetings === "Congratulations" ? 3 : 2, // Thicker stroke for Congratulations
+                                        shadow: {
+                                            offsetX: 3,
+                                            offsetY: 3,
+                                            color: greetings === "Congratulations" ? '#ff8c42' : '#696969', // Deep orange/coral glow for Congratulations, dark gray for Nice Try
+                                            blur: 5,
+                                            stroke: true,
+                                            fill: false
+                                        },
+                                        align: 'center'
+                                    }
+                                ).setOrigin(0.5);
+
+                                //GREETING
+                                mainGreeting.setScrollFactor(0);
+                                mainGreeting.setDepth(4);
+                                mainGreeting.alpha = 0
+
+                                let subgreet = self.score >= Math.round(self.perfectScore * 0.60) ? "You passed" : "You failed";
+                                subGreeting = self.add.text(
+                                    this.cameras.main.width / 2,
+                                    160,
+                                    subgreet,
+                                    {
+                                        fontSize: '60px',
+                                        fill: 'rgba(0, 0, 0, 0)', // transparent fill
+                                        fontStyle: 'bold',
+                                        stroke: subgreet === "You passed" ? '#ffcc70' : '#a9a9a9', // Warm gold for Congratulations, light gray for Nice Try
+                                        strokeThickness: subgreet === "You passed" ? 2 : 1, // Thicker stroke for Congratulations
+                                        shadow: {
+                                            offsetX: 3,
+                                            offsetY: 3,
+                                            color: subgreet === "You passed" ? '#ff8c42' : '#696969', // Deep orange/coral glow for Congratulations, dark gray for Nice Try
+                                            blur: 5,
+                                            stroke: true,
+                                            fill: false
+                                        },
+                                        align: 'center'
+                                    }
+                                ).setOrigin(0.5);
+                                subGreeting.setScrollFactor(0);
+                                subGreeting.setDepth(4);
+                                subGreeting.alpha = 0
+
+
+                                const scorePercentage = Phaser.Math.Clamp(self.score / self.perfectScore, 0, 1);
+                                const radius = 125;
+                                const centerX = this.cameras.main.width / 2;
+                                const centerY = 350;
+                                //scorePercentage.alpha = 0
+
+                                // Background circle
+                                circleBackground = this.add.graphics();
+                                circleBackground.fillStyle(greetings == "Congratulations" ? 0x42f5ad : 0xf54269, 0.1);
+                                circleBackground.fillCircle(centerX, centerY, radius);
+                                circleBackground.setScrollFactor(0);
+                                circleBackground.setDepth(4);
+
+                                circleBackground.alpha = 0
+                                // Score arc
+                                scoreArc = this.add.graphics();
+                                scoreArc.lineStyle(12, greetings == "Congratulations" ? 0x42f5ad : 0xf54269, 1); // green stroke
+                                scoreArc.beginPath();
+                                scoreArc.arc(centerX, centerY, radius, Phaser.Math.DegToRad(-90), Phaser.Math.DegToRad(-90 + 360 * scorePercentage), false);
+                                scoreArc.strokePath();
+                                scoreArc.setScrollFactor(0);
+                                scoreArc.setDepth(5);
+
+                                scoreArc.alpha = 0
+                                // Score label
+                                scoreLabel = this.add.text(
+                                    centerX,
+                                    centerY - 50,
+                                    `${self.score}/${self.perfectScore}`,
+                                    {
+                                        fontSize: '48px',
+                                        fill: greetings == "Congratulations" ? "#42f5ad" : "#f54269",
+                                        fontStyle: 'bold'
+                                    }
+                                ).setOrigin(0.5);
+                                scoreLabel.setScrollFactor(0);
+                                scoreLabel.setDepth(6);
+                                scoreLabel.alpha = 0
+
+                                scoreLabel2 = this.add.text(
+                                    centerX,
+                                    centerY + 20,
+                                    `${Math.round(scorePercentage * 100)}%`,
+                                    {
+                                        fontSize: '27px',
+                                        fill: greetings == "Congratulations" ? "#42f5ad" : "#f54269",
+                                        fontStyle: 'bold'
+                                    }
+                                ).setOrigin(0.5);
+                                scoreLabel2.setScrollFactor(0);
+                                scoreLabel2.setDepth(6);
+                                scoreLabel2.alpha = 0
+
+                                scoreLabel3 = this.add.text(
+                                    centerX,
+                                    centerY + 60,
+                                    `RANK: ${1}`,
+                                    {
+                                        fontSize: '27px',
+                                        fill: greetings == "Congratulations" ? "#42f5ad" : "#f54269",
+                                        fontStyle: 'bold'
+                                    }
+                                ).setOrigin(0.5);
+                                scoreLabel3.setScrollFactor(0);
+                                scoreLabel3.setDepth(6);
+                                scoreLabel3.alpha = 0
+
+                                proceedButton = this.add.text(this.cameras.main.width / 2, 540, 'PROCEED', {
+                                    fontSize: '32px',
+                                    fill: '#42f57b',
+                                    backgroundColor: 'rgba(0, 0, 0, 0)',
+                                    padding: {
+                                        left: 20,
+                                        right: 20,
+                                        top: 10,
+                                        bottom: 10
+                                    },
+                                    fontStyle: 'bold',
+                                    align: 'center',
+                                    /*stroke: '#42f57b',
+                                    strokeThickness: 2*/
+                                }).setOrigin(0.5).setInteractive();
+
+                                proceedButton.setScrollFactor(0);
+                                proceedButton.setDepth(5);
+                                proceedButton.alpha = 0;
+
+
+                                this.tweens.add({
+                                    targets: [youPassedBack, mainGreeting, subGreeting, circleBackground, scoreArc, scoreLabel, scoreLabel2, scoreLabel3, proceedButton],
+                                    alpha: 1,
+                                    duration: 500,
+                                    ease: 'Linear'
+                                });
+                            },
+                            this.updateTimer = function () {
+                                this.timeLeft--;
+                                this.timerText.setText(this.formatTime(this.timeLeft));
+                            
+                                if (this.timeLeft <= 0) {
+                                    this.gameTimer.paused = true; // Stop the timer when it reaches 0
+                                    // Add logic here for what happens when the timer runs out (e.g., game over)
+                                    self.input.keyboard.removeAllListeners();
+                                    self.input.keyboard.enabled = false;
+                                    
+                                    if (displayedWin == false) {
+                                        self.createWinDisplay()
+                                        displayedWin = true
+                                    }
+                                }
+                            },
+                            this.formatTime = function(seconds) {
+                                // Minutes and seconds conversion
+                                const minutes = Math.floor(seconds / 60);
+                                const partInSeconds = seconds % 60;
+                                // Adds left zeros to seconds
+                                const partInSecondsPadded = partInSeconds.toString().padStart(2, '0');
+                                return `${minutes}:${partInSecondsPadded}`;
                             }
+                        this.stopShield = function (player, wall) {
+                            if (self.shieldHold) {
+                                self.shield = true
+                                console.log("NoGo")
+
+                            }
+                            console.log("Go")
+                        }
 
 
                         this.createBackgrounds();
@@ -1211,11 +1911,40 @@ function PhaserGame() {
                         this.createProbAnswers()
                         this.createHolder()
 
+                        /*this.gameTimer = this.time.addEvent({
+                            delay: 1000, // Time in milliseconds (e.g., 1000 for 1 second)
+                            callback: this.updateTimer, // Function to call each time the timer elapses
+                            callbackScope: this, // Scope (this context) for the callback
+                            loop: true // Set to false if you want it to run once
+                        });
+                        
+                        this.timerSeconds = 0; // Variable to store the timer value
+                        this.timerText = this.add.text(this.cameras.main.width - 300, 100, 'Time: 0', { fontSize: '32px', fill: '#000000' }).setScrollFactor(0); // Text to display the timer*/
+
+                        this.initialTime = 60; // 5 minutes in seconds
+                        this.timeLeft = this.initialTime;
+
+                        this.gameTimer = this.time.addEvent({
+                            delay: 1000,
+                            callback: this.updateTimer,
+                            callbackScope: this,
+                            loop: true
+                        });
+
+                        this.timerText = this.add.text(this.cameras.main.width - 300, 100, this.formatTime(this.timeLeft), { fontSize: '50px',
+                            fill: '#4af756',
+                            fontStyle: "bold",
+                            stroke: '#000000',
+                            strokeThickness: 10,}).setScrollFactor(0);
+
+
+
                         this.physics.add.collider(this.player, this.outsidewall);
                         this.physics.add.collider(this.player, this.topwall);
                         this.physics.add.collider(this.player, this.rightwall);
                         this.physics.add.collider(this.player, this.bottomwall);
                         this.physics.add.collider(this.player, this.brkWallGroup);
+                        //this.physics.add.collider(this.player, this.bombGroup)//handleCollision alternative
 
                         this.physics.add.collider(this.ghostGroup, this.outsidewall, this.enemyWallCollide, null, this);
                         this.physics.add.collider(this.ghostGroup, this.topwall, this.enemyWallCollide, null, this);
@@ -1224,17 +1953,21 @@ function PhaserGame() {
                         this.physics.add.collider(this.ghostGroup, this.brkWallGroup, this.enemyWallCollide, null, this);
                         this.physics.add.overlap(this.ghostGroup, this.player, this.ghostPlayerCollide, null, this);
                         this.physics.add.overlap(this.ItemGroup, this.player, this.ItemPlayerCollide, null, this);
-                        this.physics.add.overlap(this.probabilitySymbols,this.player,this.ProbPlayerCollide,null,this)
+                        this.physics.add.overlap(this.probabilitySymbols, this.player, this.ProbPlayerCollide, null, this)
                         //this.physics.add.collider(this.player, this.bombGroup)
                         this.cursors = this.input.keyboard.createCursorKeys();
                         self.cameras.main.scrollX = -300;
+                        self.cameras.main.scrollY = -500;
+
+
                     },
                     update: function () {
                         //run later
-                        this.handleCollisions();
+                        //this.handleCollisions();
                         this.handlePlayerMovement();
                         this.handleCameraMovement();
-                        this.handleExplosionCollision()
+                        this.handleExplosionCollision();
+                        //this.validateAnswer();
 
                     }
                 },
