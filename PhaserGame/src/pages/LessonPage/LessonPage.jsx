@@ -3,7 +3,7 @@ import './LessonPage.css';
 
 import ListOfLessons from '../../components/list-of-lessons/ListOfLessons';
 import HomeNavbar from '../../components/navbar/HomeNavbar';
-import TeacherLessonSelector from '../../components/teacher-lesson-selector/TeacherLessonSelector';
+import LessonSelector from '../../components/lesson-selector/LessonSelector';
 import Leaderboard from '../../components/high-score-table/Leaderboard';
 import { useUserContext } from '../../contexts/UserContext';
 
@@ -15,7 +15,7 @@ function LessonPage() {
       <HomeNavbar />
       <div className='teacher-lesson-page-container'>
         <div className="selector-area">
-          <TeacherLessonSelector 
+          <LessonSelector 
             selectedTab={selectedTab} 
             setSelectedTab={setSelectedTab} 
           />
@@ -23,9 +23,13 @@ function LessonPage() {
 
         <div className="main-content">
           <div className='lesson-card-area'>
-            {selectedTab === 'course' && (
-              <ListOfLessons /> 
-            )}
+            <div className='lesson-card-area-title'>Discrete Structures 2: Probabilities</div>
+            <div className='list-of-lessons'>
+              {selectedTab === 'course' && (
+                <ListOfLessons /> 
+              )}
+            </div>
+
           </div>
         </div>
 

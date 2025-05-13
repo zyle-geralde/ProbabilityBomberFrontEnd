@@ -1,0 +1,124 @@
+/* QuizSettingPage.css */
+
+  .quiz-settings-main-container {
+    background-color: #8A2D3B; /* Light gray */
+    padding: 20px;
+    margin: 20px;
+    border-radius: 8px;
+    height: 100%;
+    max-height: 1600px;
+    border: 1px solid black;
+    box-shadow: 4px 4px black;
+  }
+
+  .quiz-settings-title-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+  }
+  
+  .quiz-settings-main-container h2 {
+    color: white;
+    padding-left: 1em;
+    font-size: 26px;
+    font-weight: bold;
+  }
+  
+  .quiz-settings-main-container > div:first-child > div {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .quiz-settings-delete-quiz-button,
+  .quiz-settings-add-question-button {
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .quiz-settings-delete-quiz-button {
+    background-color: #e74c3c; /* Red */
+  }
+  
+  .quiz-settings-add-question-button {
+    background-color: #2ecc71; /* Green */
+  }
+  
+  .quiz-settings-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .quiz-settings-th,
+  .quiz-settings-td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .quiz-settings-th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .quiz-settings-table thead tr th:last-child { 
+    width: 200px; 
+  }
+
+  .quiz-table-scrollable{
+    height: 600px;
+    overflow-y: auto; 
+    scrollbar-width: none;
+    border-radius: 5px;
+    background-color: white;
+  }
+
+  .quiz-settings-th {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 1;
+  }
+  
+  
+  .quiz-settings-td:last-child {
+    text-align: center;
+  }
+  
+  .quiz-settings-input {
+    width: calc(100% - 30px); /* Adjust padding */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .quiz-settings-edit-button,
+  .quiz-settings-delete-row-button {
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 5px;
+  }
+  
+  .quiz-settings-edit-button {
+    background-color: #3498db; /* Blue */
+  }
+  
+  .quiz-settings-delete-row-button {
+    background-color: #e74c3c; /* Red */
+  }
+
+  .quiz-settings-footer{
+    height: 4px;
+  }
+  
+

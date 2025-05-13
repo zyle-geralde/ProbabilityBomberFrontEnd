@@ -1,4 +1,4 @@
-.teacher-lesson-selector-container{
+.lesson-selector-container{
     display: flex;
     flex-direction: column;
     gap: 1em;
@@ -10,14 +10,19 @@
     /* padding: 1em; */
 }
 
+.lesson-selector-container .title{
+    font-weight: bold;
+}
+
 .lesson-button{
     padding: 1em;
     border: 1px solid black;
     border-radius: 10px;
-    box-shadow: 3px 3px black;
-    font-weight: bold;
-    font-size: medium;
+    font-size: 1em;
     cursor: pointer;
+    text-align: left;
+    min-width: 250px;
+    min-height: 50px;
 }
 
 .lesson-button:hover{

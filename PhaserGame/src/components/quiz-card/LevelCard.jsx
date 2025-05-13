@@ -51,7 +51,6 @@ function LevelCard({
                             <div className='level-stat-value'>{avgTimeFinished}</div>
                             <p className='level-stat-label'>Avg Time Finished</p>
                         </div>
-                        <button className='level-edit-btn'>Edit</button>
                     </div>
                 ) : (
                     <>

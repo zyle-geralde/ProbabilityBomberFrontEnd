@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import './LessonCard.css';
 import QuizCard from '../quiz-card/QuizCard';
-import QuizCardTeacher from '../quiz-card/QuizCardTeacher';
+
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faFile } from '@fortawesome/free-solid-svg-icons';
 
 function LessonCard({ lesson }) {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -28,7 +28,14 @@ function LessonCard({ lesson }) {
                 </div>
             </div>
 
+
+
             {isExpanded && (
+                <>
+                <div className='lesson-file-resource'>
+                    <FontAwesomeIcon icon={faFile} className="lesson-file-icon"/>
+                    <a href='#' className='lesson-file-link'>Lesson Resource File</a>
+                </div>
                 <div className='quiz-card-container'>
                     {lesson.quizzes.map((quiz) => (
                         <QuizCard
@@ -37,7 +44,12 @@ function LessonCard({ lesson }) {
                             quizName={quiz.name}
                         />
                     ))}
+                    {/* {isTeacher && (
+                        
+                    )} */}
+                    <button className='add-quiz-btn'>Add Quiz</button>
                 </div>
+                </>
             )}
         </div>
     );

@@ -33,6 +33,9 @@ function QuizCard({ levelsCompleted = '-', quizName = 'Untitled Quiz' }) {
                     <button className='show-levels-btn' onClick={toggleLevels}>
                         {showLevels ? 'Hide Levels' : 'Show Levels'}
                     </button>
+                    <button className='edit-quiz-btn'>
+                        Edit
+                    </button>
                 </div>
             </div>
             

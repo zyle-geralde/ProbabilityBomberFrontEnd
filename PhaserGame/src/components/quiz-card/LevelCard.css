@@ -7,6 +7,7 @@
     border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 1em;
+    margin: 10px 10px 10px 10px;
 }
 
 .level-stat{
@@ -25,15 +26,16 @@
 .level-start-btn{
     padding: 0.5em 1em 0.5em 1em;
     border: 1px solid black;
-    box-shadow: 4px 4px black;
-    background-color: #38ca79;
-    color: white;
+    background-color: white;
+    border-radius: 10px;
+    color: black;
     cursor: pointer;
 
 }
 
 .level-start-btn:hover{
-    background-color: #37a166;
+    border: 1px solid #37a166;
+    color: #37a166;
 }
 
 .level-edit-btn{
@@ -62,7 +64,6 @@
     display: flex;
     align-items: center;
     width: 200px;
-    height: 100%;
 }
 
 .level-stats-container-students{

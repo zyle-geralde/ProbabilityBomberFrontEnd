@@ -1,87 +1,90 @@
-main {
-width: 24rem;
-background-color: #ffffff;
-border: 2px solid #e4e4e4;
-display: flex;
-flex-direction: column;
-align-items: center;
-border-radius: 0.5rem;
-padding-bottom: 1rem;
+
+.leaderboard-header {
+    width: 100%;
+    padding: 1rem 1rem 0.8rem;
+    text-align: center;
+    background-color: #8A2D3B;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
 }
 
-
-
-#header {
-width: 100%;
-padding: 1rem 1rem 0.8rem;
-text-align: center;
+.leaderboard-header h1 {
+    font-size: 2.5em;
+    color: #ffffff;
+    text-transform: uppercase;
+    margin: 0;
+    
 }
 
-h1 {
-font-family: "Rubik", sans-serif;
-font-size: 1.3rem;
-color: #141a39;
-text-transform: uppercase;
-margin: 0;
+.leaderboard-th-rank{
+    padding: 5px 10px;
+    width: 15%;
+}
+.leaderboard-th-name{
+    width: 70%;
+    text-align: left;   
+}
+.leaderboard-th-rank{
+    width: 15%;
 }
 
-#leaderboard {
-width: 100%;
-position: relative;
-height: 400px; /* Force the container to have a height of 500px */
-overflow-y: auto; /* Allows scrolling when content exceeds the height */
-scrollbar-width: none; /* Hides the scrollbar for Firefox */
-}
-/* For Webkit browsers like Chrome, Safari */
-#leaderboard::-webkit-scrollbar {
-display: none; /* Hides the scrollbar completely */
+.leaderboard-wrapper {
+    width: 100%;
+    position: relative;
+    height: 500px;
+    overflow-y: auto;
+    scrollbar-width: none;
 }
 
-table {
+/* Hide scrollbar for Webkit */
+.leaderboard-wrapper::-webkit-scrollbar {
+display: none;
+}
+
+.leaderboard-table {
 width: 100%;
 border-collapse: collapse;
 table-layout: fixed;
 color: #141a39;
 }
 
-tr {
+.leaderboard-table tr {
 transition: all 0.2s ease-in-out;
 }
 
-tr:nth-child(odd) {
-background-color: #f9f9f9;
+.leaderboard-table tr:nth-child(odd) {
+    background-color: #f9f9f9;
 }
 
-tr:not(:first-child):hover {
-background-color: #fff;
-transform: scale(1.03);
-box-shadow: 0px 3px 8px 4px #e4e7fb;
+.leaderboard-table tbody tr:first-child {
+    background-color: #f1ea2c;
+    color: #000000;
 }
 
-tr:first-child {
-background-color: #f1ea2c;
-color: #000000;
+.leaderboard-table thead th{
+    padding: 16px;
 }
 
-td {
+
+.leaderboard-table td {
 font-family: "Rubik", sans-serif;
 font-size: 1rem;
 padding: 0.8rem;
 }
 
-.number {
-width: 2.5rem;
-font-size: 1.3rem;
-font-weight: bold;
-text-align: left;
+.leaderboard-number {
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-align: center;
 }
 
-.name {
-text-align: left;
+.leaderboard-name {
+    text-align: left;
 }
 
-.points {
-font-weight: bold;
-text-align: right;
-white-space: nowrap;
+.leaderboard-points {
+    font-weight: bold;
+    text-align: center;
+    white-space: nowrap;
 }
+  

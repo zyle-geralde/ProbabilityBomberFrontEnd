@@ -1,47 +1,52 @@
 import React from 'react';
-import './Leaderboard.css'; // Assuming you save your CSS there
-
-// Modify the players array to have less than 10 entries
-const players = [
-  { rank: 1, name: 'Lee Taeyong', points: 258.244 },
-  { rank: 2, name: 'Mark Lee', points: 258.242 },
-  { rank: 3, name: 'Xiao Dejun', points: 258.223 },
-  { rank: 4, name: 'Qian Kun', points: 258.212 },
-  { rank: 5, name: 'Johnny Suh', points: 258.208 },
-];
-
-// Fill the remaining places up to 10 with placeholders
-const totalRanks = 10;
-const paddedPlayers = [
-  ...players,
-  ...Array.from({ length: totalRanks - players.length }).map(() => ({
-    rank: '',
-    name: '',
-    points: '',
-  })),
-];
+import './Leaderboard.css';
 
 const Leaderboard = () => {
+  const players = []; // Add players here as needed
+  const totalRanks = 10;
+
+  const paddedPlayers = [
+    ...players,
+    ...Array.from({ length: totalRanks - players.length }, (_, i) => ({
+      rank: '',
+      name: '',
+      points: '',
+    })),
+  ];
+
   return (
-    <main>
-      <div id="header">
+    <>
+      <div className="leaderboard-header">
         <h1>Leaderboard</h1>
       </div>
-      <div id="leaderboard">
+
+      <div className="leaderboard-wrapper">
         <div className="ribbon"></div>
-        <table>
+        <table className="leaderboard-table">
+          <thead>
+            <tr>
+              <th className="leaderboard-th-rank">Rank</th>
+              <th className="leaderboard-th-name">Name</th>
+              <th className="leaderboard-th-score">Score</th>
+            </tr>
+          </thead>
           <tbody>
-            {paddedPlayers.map((player, index) => (
-              <tr key={index} className={player.rank === 1 ? 'top-player' : ''}>
-                <td className="number">{player.rank || index + 1}</td>
-                <td className="name">{player.name || 'N/A'}</td>
-                <td className="points">{player.points ? player.points.toFixed(3) : 'N/A'}</td>
-              </tr>
-            ))}
+            {paddedPlayers.map((player, index) => {
+              const isTopPlayer = player.rank === 1;
+              return (
+                <tr key={index} className={isTopPlayer ? 'top-player' : ''}>
+                  <td className="leaderboard-number">{player.rank || index + 1}</td>
+                  <td className="leaderboard-name">{player.name || '-'}</td>
+                  <td className="leaderboard-points">
+                    {player.points ? parseFloat(player.points).toFixed(3) : '-'}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
-    </main>
+    </>
   );
 };
 

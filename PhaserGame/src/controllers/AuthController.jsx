@@ -14,7 +14,7 @@ export const loginUser = async ({ email, password, role, setUserData, setError, 
 
     localStorage.setItem("userData", JSON.stringify(userData));
     setUserData(userData);
-
+    
     if(role == 'student'){
       navigate(ViewStates.STUDENT_PROFILE);
     } else if (role == 'teacher'){

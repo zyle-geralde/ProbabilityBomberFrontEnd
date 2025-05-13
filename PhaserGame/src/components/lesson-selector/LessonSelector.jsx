@@ -1,9 +1,10 @@
 import React from 'react';
-import './TeacherLessonSelector.css';
+import './LessonSelector.css';
 
-function TeacherLessonSelector({ selectedTab, setSelectedTab }) {
+function LessonSelector({ selectedTab, setSelectedTab }) {
   return (
-    <div className="teacher-lesson-selector-container">
+    <div className="lesson-selector-container">
+      <div className="title">Activities</div>
       <button
         className={`lesson-button ${selectedTab === 'course' ? 'active' : ''}`}
         onClick={() => setSelectedTab('course')}
@@ -20,4 +21,4 @@ function TeacherLessonSelector({ selectedTab, setSelectedTab }) {
   );
 }
 
-export default TeacherLessonSelector;
+export default LessonSelector;
