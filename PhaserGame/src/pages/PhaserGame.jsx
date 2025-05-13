@@ -54,16 +54,35 @@ function PhaserGame() {
                             enemySizeY: 50 + 160,
                             bombSize: 40,
                             playerDisplaySizefirst: 50 - 15,
-                            playerDisplaySizesecond:  50 - 3,
+                            playerDisplaySizesecond: 50 - 3,
                             playerSizeFirst: 50,
                             playerSizeSecond: 50 + 15,
                             enemySize: 50,
-                            col:15,
+                            col: 15,
                             row: 8,
                             camScrollX: -400,
                             camScrollY: -270,
                         }
-                        
+
+                        const beginner_level = {
+                            itemSize: 40,
+                            wallDim: 50,
+                            wallDimx: 50 + 300,
+                            wallDimy: 50 + 400,
+                            enemySizeX: 50 + 120,
+                            enemySizeY: 50 + 160,
+                            bombSize: 40,
+                            playerDisplaySizefirst: 50 - 15,
+                            playerDisplaySizesecond: 50 - 3,
+                            playerSizeFirst: 50,
+                            playerSizeSecond: 50 + 15,
+                            enemySize: 50,
+                            col: 15,
+                            row: 8,
+                            camScrollX: -400,
+                            camScrollY: -270,
+                        }
+
                         this.game.canvas.willReadFrequently = true;
 
                         this.wallGroup = null;
@@ -416,39 +435,42 @@ function PhaserGame() {
                                                 putWall = false;
                                             }
                                             else {
-                                                let randnum = Math.random() < 0.65 ? 1 : 0;
+                                                let randnum = Math.random() < 0.70 ? 1 : 0;
                                                 if (randnum == 1) {
                                                     //place item
 
-                                                    let rendnumItem = Math.random() < 1 ? 1 : 0;
+                                                    let rendnumItem = Math.random() < 0.70 ? 1 : 0;
                                                     if (rendnumItem == 1) {
-                                                        let itemnum = Math.floor(Math.random() * 6) + 1;
-                                                        let itempick
+                                                        let itemnum = Math.floor(Math.random() * 11) + 1; // Increased the range for more distribution
+                                                        let itempick;
+
                                                         switch (itemnum) {
                                                             case 1:
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'heartItem')
-                                                                itempick.type = 'heartItem'
-                                                                break
                                                             case 2:
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bootsItem')
-                                                                itempick.type = 'bootsItem'
-                                                                break
                                                             case 3:
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'shieldItem')
-                                                                itempick.type = 'shieldItem'
-                                                                break
                                                             case 4:
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'heartItem')
-                                                                itempick.type = 'heartItem'
-                                                                break
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'heartItem');
+                                                                itempick.type = 'heartItem';
+                                                                break;
                                                             case 5:
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem')
-                                                                itempick.type = 'bombItem'
-                                                                break
                                                             case 6:
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'explodeItem')
-                                                                itempick.type = 'explodeItem'
-                                                                break
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bootsItem');
+                                                                itempick.type = 'bootsItem';
+                                                                break;
+                                                            case 7:
+                                                            case 8:
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'shieldItem');
+                                                                itempick.type = 'shieldItem';
+                                                                break;
+                                                            case 9:
+                                                            case 10:
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem');
+                                                                itempick.type = 'bombItem';
+                                                                break;
+                                                            case 11:
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'explodeItem');
+                                                                itempick.type = 'explodeItem';
+                                                                break;
                                                         }
                                                         self.ItemList.push({ "x": adjusttopwall, "y": insidewall })
                                                         itempick.body.setSize(self.itemSize, self.itemSize);
@@ -473,7 +495,7 @@ function PhaserGame() {
 
                                                 }
                                                 else {
-                                                    let randEnemynum = Math.random() < 0.20 ? 1 : 0;
+                                                    let randEnemynum = Math.random() < 0.80 ? 1 : 0;
                                                     if (randEnemynum == 1 && self.deployedEnemies <= self.numberOfEnemies && nn >= 2) {
                                                         self.createEnemy(adjusttopwall, insidewall)
                                                         self.deployedEnemies += 1
@@ -484,39 +506,42 @@ function PhaserGame() {
 
                                             }
                                         } else {
-                                            let randnum = Math.random() < 0.65 ? 1 : 0;
+                                            let randnum = Math.random() < 0.70 ? 1 : 0;
                                             if (randnum == 1) {
 
-                                                let rendnumItem = Math.random() < 1 ? 1 : 0;
-                                                if (rendnumItem == 1) {
-                                                    let itemnum = Math.floor(Math.random() * 6) + 1;
-                                                    let itempick
-                                                    switch (itemnum) {
-                                                        case 1:
-                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'heartItem')
-                                                            itempick.type = 'heartItem'
-                                                            break
-                                                        case 2:
-                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bootsItem')
-                                                            itempick.type = 'bootsItem'
-                                                            break
-                                                        case 3:
-                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'shieldItem')
-                                                            itempick.type = 'shieldItem'
-                                                            break
-                                                        case 4:
-                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem')
-                                                            itempick.type = 'bombItem'
-                                                            break
-                                                        case 5:
-                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem')
-                                                            itempick.type = 'bombItem'
-                                                            break
-                                                        case 6:
-                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'explodeItem')
-                                                            itempick.type = 'explodeItem'
-                                                            break
-                                                    }
+                                                let rendnumItem = Math.random() < 0.70 ? 1 : 0;
+                                                    if (rendnumItem == 1) {
+                                                        let itemnum = Math.floor(Math.random() * 11) + 1; // Increased the range for more distribution
+                                                        let itempick;
+
+                                                        switch (itemnum) {
+                                                            case 1:
+                                                            case 2:
+                                                            case 3:
+                                                            case 4:
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'heartItem');
+                                                                itempick.type = 'heartItem';
+                                                                break;
+                                                            case 5:
+                                                            case 6:
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bootsItem');
+                                                                itempick.type = 'bootsItem';
+                                                                break;
+                                                            case 7:
+                                                            case 8:
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'shieldItem');
+                                                                itempick.type = 'shieldItem';
+                                                                break;
+                                                            case 9:
+                                                            case 10:
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem');
+                                                                itempick.type = 'bombItem';
+                                                                break;
+                                                            case 11:
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'explodeItem');
+                                                                itempick.type = 'explodeItem';
+                                                                break;
+                                                        }
                                                     self.ItemList.push({ "x": adjusttopwall, "y": insidewall })
                                                     itempick.body.setSize(self.itemSize, self.itemSize);
                                                     itempick.setDisplaySize(self.itemSize, self.itemSize);
@@ -539,7 +564,7 @@ function PhaserGame() {
                                                 putWall = true
                                             }
                                             else {
-                                                let randEnemynum = Math.random() < 0.20 ? 1 : 0;
+                                                let randEnemynum = Math.random() < 0.80 ? 1 : 0;
                                                 if (randEnemynum == 1 && self.deployedEnemies <= self.numberOfEnemies && nn >= 2) {
                                                     self.createEnemy(adjusttopwall, insidewall)
                                                     self.deployedEnemies += 1
@@ -556,39 +581,42 @@ function PhaserGame() {
                                         let insidewall = self.wallDim;
                                         for (let bb = 0; bb <= self.rows - 2; bb++) {
 
-                                            let randnum = Math.random() < 0.65 ? 1 : 0;
+                                            let randnum = Math.random() < 0.70 ? 1 : 0;
                                             if (randnum == 1) {
 
-                                                let rendnumItem = Math.random() < 1 ? 1 : 0;
-                                                if (rendnumItem == 1) {
-                                                    let itemnum = Math.floor(Math.random() * 6) + 1;
-                                                    let itempick
-                                                    switch (itemnum) {
-                                                        case 1:
-                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'heartItem')
-                                                            itempick.type = 'heartItem'
-                                                            break
-                                                        case 2:
-                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bootsItem')
-                                                            itempick.type = 'bootsItem'
-                                                            break
-                                                        case 3:
-                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'shieldItem')
-                                                            itempick.type = 'shieldItem'
-                                                            break
-                                                        case 4:
-                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'shieldItem')
-                                                            itempick.type = 'shieldItem'
-                                                            break
-                                                        case 5:
-                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem')
-                                                            itempick.type = 'bombItem'
-                                                            break
-                                                        case 6:
-                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'explodeItem')
-                                                            itempick.type = 'explodeItem'
-                                                            break
-                                                    }
+                                                let rendnumItem = Math.random() < 0.70 ? 1 : 0;
+                                                    if (rendnumItem == 1) {
+                                                        let itemnum = Math.floor(Math.random() * 11) + 1; // Increased the range for more distribution
+                                                        let itempick;
+
+                                                        switch (itemnum) {
+                                                            case 1:
+                                                            case 2:
+                                                            case 3:
+                                                            case 4:
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'heartItem');
+                                                                itempick.type = 'heartItem';
+                                                                break;
+                                                            case 5:
+                                                            case 6:
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bootsItem');
+                                                                itempick.type = 'bootsItem';
+                                                                break;
+                                                            case 7:
+                                                            case 8:
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'shieldItem');
+                                                                itempick.type = 'shieldItem';
+                                                                break;
+                                                            case 9:
+                                                            case 10:
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem');
+                                                                itempick.type = 'bombItem';
+                                                                break;
+                                                            case 11:
+                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'explodeItem');
+                                                                itempick.type = 'explodeItem';
+                                                                break;
+                                                        }
                                                     self.ItemList.push({ "x": adjusttopwall, "y": insidewall })
                                                     itempick.body.setSize(self.itemSize, self.itemSize);
                                                     itempick.setDisplaySize(self.itemSize, self.itemSize);
@@ -610,7 +638,7 @@ function PhaserGame() {
                                                 innerWall.setDisplaySize(self.wallDim, self.wallDim);
                                             }
                                             else {
-                                                let randEnemynum = Math.random() < 0.20 ? 1 : 0;
+                                                let randEnemynum = Math.random() < 0.80 ? 1 : 0;
                                                 if (randEnemynum == 1 && self.deployedEnemies <= self.numberOfEnemies && nn >= 2) {
                                                     self.createEnemy(adjusttopwall, insidewall)
                                                     self.deployedEnemies += 1
@@ -1019,7 +1047,7 @@ function PhaserGame() {
                                                                             self.createWinDisplay()
                                                                             displayedWin = true
                                                                         }
-                                                                        
+
                                                                     }
                                                                 }
 
@@ -1106,7 +1134,7 @@ function PhaserGame() {
                                                                             self.createWinDisplay()
                                                                             displayedWin = true
                                                                         }
-                                                                        
+
                                                                     }
                                                                 }
 
@@ -1674,7 +1702,7 @@ function PhaserGame() {
                                                         this.createWinDisplay()
                                                         displayedWin = true
                                                     }
-                                                    
+
                                                     enableKey = false
                                                     longText.setText("")
                                                     answerlongText.setText("")
@@ -1894,20 +1922,20 @@ function PhaserGame() {
                             this.updateTimer = function () {
                                 this.timeLeft--;
                                 this.timerText.setText(this.formatTime(this.timeLeft));
-                            
+
                                 if (this.timeLeft <= 0) {
                                     this.gameTimer.paused = true; // Stop the timer when it reaches 0
                                     // Add logic here for what happens when the timer runs out (e.g., game over)
                                     self.input.keyboard.removeAllListeners();
                                     self.input.keyboard.enabled = false;
-                                    
+
                                     if (displayedWin == false) {
                                         self.createWinDisplay()
                                         displayedWin = true
                                     }
                                 }
                             },
-                            this.formatTime = function(seconds) {
+                            this.formatTime = function (seconds) {
                                 // Minutes and seconds conversion
                                 const minutes = Math.floor(seconds / 60);
                                 const partInSeconds = seconds % 60;
@@ -1951,11 +1979,13 @@ function PhaserGame() {
                             loop: true
                         });
 
-                        this.timerText = this.add.text(this.cameras.main.width - 300, 100, this.formatTime(this.timeLeft), { fontSize: '50px',
+                        this.timerText = this.add.text(this.cameras.main.width - 300, 100, this.formatTime(this.timeLeft), {
+                            fontSize: '50px',
                             fill: '#4af756',
                             fontStyle: "bold",
                             stroke: '#000000',
-                            strokeThickness: 10,}).setScrollFactor(0);
+                            strokeThickness: 10,
+                        }).setScrollFactor(0);
 
 
 
