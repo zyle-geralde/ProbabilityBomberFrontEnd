@@ -44,6 +44,26 @@ function PhaserGame() {
                         });
                     },
                     create: function () {
+
+                        const intermediate_level = {
+                            itemSize: 40,
+                            wallDim: 50,
+                            wallDimx: 50 + 300,
+                            wallDimy: 50 + 400,
+                            enemySizeX: 50 + 120,
+                            enemySizeY: 50 + 160,
+                            bombSize: 40,
+                            playerDisplaySizefirst: 50 - 15,
+                            playerDisplaySizesecond:  50 - 3,
+                            playerSizeFirst: 50,
+                            playerSizeSecond: 50 + 15,
+                            enemySize: 50,
+                            col:15,
+                            row: 8,
+                            camScrollX: -400,
+                            camScrollY: -270,
+                        }
+                        
                         this.game.canvas.willReadFrequently = true;
 
                         this.wallGroup = null;
@@ -60,17 +80,17 @@ function PhaserGame() {
                         this.ghostGroup = this.physics.add.group()
                         this.enemies = [];
                         this.enemySpeed = 30
-                        this.enemySizeX = 64 + 120;
-                        this.enemySizeY = 64 + 160;
+                        this.enemySizeX = this.wallDim + 120;
+                        this.enemySizeY = this.wallDim + 160;
                         this.numberOfEnemies = 4
                         this.deployedEnemies = 0;
                         this.cursors = null;
-                        this.wallDim = 64;
-                        this.wallDimy = this.wallDim + 200
-                        this.wallDimx = this.wallDim + 100
+                        this.wallDim = 60;
+                        this.wallDimy = this.wallDim + 400
+                        this.wallDimx = this.wallDim + 300
                         this.holdItemDim = 74
-                        this.cols = 15;//odd
-                        this.rows = 8;//even
+                        this.cols = 13;//odd
+                        this.rows = 6;//even
                         this.totalWallWidth = this.cols * this.wallDim;
                         this.totalWallHeight = this.rows * this.wallDim;
                         this.cameraSpeed = 150;
@@ -78,7 +98,7 @@ function PhaserGame() {
                         this.topwall = null;
                         this.rightwall = null;
                         this.bottomwall = null;
-                        this.bombSize = 50;
+                        this.bombSize = 45;
                         this.bombLoc = []
                         this.bombDuration = 300
                         this.bombrepeat = 4
@@ -198,11 +218,11 @@ function PhaserGame() {
 
                                 //Events Container
                                 const containerWidth = 700;
-                                const containerHeight = 100;
+                                const containerHeight = 130;
                                 const gameWidth = this.game.config.width;
 
                                 const containerX = (gameWidth - containerWidth) / 2; // Fixed X position
-                                const containerY = 50; // Fixed Y position
+                                const containerY = 20; // Fixed Y position
                                 const padding = 10; // Adjust this value for the desired padding
 
                                 // Create a background for the container with padding
@@ -221,7 +241,7 @@ function PhaserGame() {
                                     containerY + padding, // Add padding to the text's Y position
                                     (self.questionsList[self.questionIndex].events).join(''),
                                     {
-                                        fontSize: '20px',
+                                        fontSize: '18px',
                                         fill: '#f74a4a',
                                         fontStyle: "bold",
                                         stroke: '#000000',
@@ -287,7 +307,7 @@ function PhaserGame() {
                                     answercontainerY + answerpadding,
                                     `${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`,
                                     {
-                                        fontSize: '28px',
+                                        fontSize: '24px',
                                         fill: '#f74a4a',
                                         fontStyle: "bold",
                                         stroke: '#000000',
@@ -707,8 +727,8 @@ function PhaserGame() {
                         this.createPlayer = function () {
                             self.player = self.physics.add.sprite(60, 70, 'character');
                             //self.player.setScale(48 / 30, 70 / 50);
-                            self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
-                            self.player.setDisplaySize(self.wallDim - 15, self.wallDim - 3);
+                            self.player.body.setSize(self.wallDim - 10, self.wallDim + 15);
+                            self.player.setDisplaySize(self.wallDim - 20, self.wallDim - 8);
                             self.player.setCollideWorldBounds(true);
 
                             self.anims.create({
@@ -733,7 +753,7 @@ function PhaserGame() {
                             this.createEnemy = function (x, y) {
                                 let enemy = self.ghostGroup.create(x, y, 'ghost')
                                 enemy.body.setSize(self.enemySizeX, self.enemySizeY);
-                                enemy.setDisplaySize(self.bombSize, self.bombSize);
+                                enemy.setDisplaySize(self.bombSize + 5, self.bombSize + 5);
                                 enemy.setCollideWorldBounds(true);
                                 enemy.setVelocityY((self.enemySpeed))
                                 enemy.hitPlayer = false
@@ -847,7 +867,7 @@ function PhaserGame() {
 
                                 }
                             },
-                            this.handleCameraMovement = function () {
+                            /*this.handleCameraMovement = function () {
                                 if (self.cursors.left.isDown && self.player.x < self.cameras.main.scrollX + 500) {
                                     self.cameras.main.scrollX -= self.cameraSpeed * self.game.loop.delta / 1000;
                                 } else if (self.cursors.right.isDown && self.player.x > self.cameras.main.scrollX + self.cameras.main.width - 500) {
@@ -857,7 +877,7 @@ function PhaserGame() {
                                 } else if (self.cursors.down.isDown && self.player.y > self.cameras.main.scrollY + self.cameras.main.height - 300) {
                                     self.cameras.main.scrollY += self.cameraSpeed * self.game.loop.delta / 1000;
                                 }
-                            },
+                            },*/
                             this.handleCollisions = function () {
                                 this.physics.add.collider(this.player, this.bombGroup)
 
@@ -960,8 +980,8 @@ function PhaserGame() {
                                                                     explode.hasDamaged = true
 
                                                                     self.player.setTint(0xff0000); // Set tint to red
-                                                                    self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
-                                                                    self.player.setDisplaySize(self.wallDim - 15, self.wallDim - 3);
+                                                                    self.player.body.setSize(self.wallDim - 10, self.wallDim + 15);
+                                                                    self.player.setDisplaySize(self.wallDim - 20, self.wallDim - 8);
 
                                                                     const originalHeight = self.player.displayHeight;
                                                                     const originalwidth = self.player.displayWidth;
@@ -1046,8 +1066,8 @@ function PhaserGame() {
 
 
                                                                     self.player.setTint(0xff0000); // Set tint to red
-                                                                    self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
-                                                                    self.player.setDisplaySize(self.wallDim - 15, self.wallDim - 3);
+                                                                    self.player.body.setSize(self.wallDim - 10, self.wallDim + 15);
+                                                                    self.player.setDisplaySize(self.wallDim - 20, self.wallDim - 8);
 
                                                                     const originalHeight = self.player.displayHeight;
                                                                     const originalwidth = self.player.displayWidth;
@@ -1135,8 +1155,8 @@ function PhaserGame() {
 
 
                                                                     self.player.setTint(0xff0000); // Set tint to red
-                                                                    self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
-                                                                    self.player.setDisplaySize(self.wallDim - 15, self.wallDim - 3);
+                                                                    self.player.body.setSize(self.wallDim - 10, self.wallDim + 15);
+                                                                    self.player.setDisplaySize(self.wallDim - 20, self.wallDim - 8);
 
                                                                     const originalHeight = self.player.displayHeight;
                                                                     const originalwidth = self.player.displayWidth;
@@ -1218,8 +1238,8 @@ function PhaserGame() {
                                                                     explode.hasDamaged = true
 
                                                                     self.player.setTint(0xff0000); // Set tint to red
-                                                                    self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
-                                                                    self.player.setDisplaySize(self.wallDim - 15, self.wallDim - 3);
+                                                                    self.player.body.setSize(self.wallDim - 10, self.wallDim + 15);
+                                                                    self.player.setDisplaySize(self.wallDim - 20, self.wallDim - 8);
 
                                                                     const originalHeight = self.player.displayHeight;
                                                                     const originalwidth = self.player.displayWidth;
@@ -1373,8 +1393,8 @@ function PhaserGame() {
                                             self.lifeDesc.setText(self.life + '')
 
                                             self.playerHit = true;
-                                            self.player.body.setSize(self.wallDim - 15, self.wallDim - 3);
-                                            self.player.setDisplaySize(self.wallDim - 15, self.wallDim - 3);
+                                            self.player.body.setSize(self.wallDim - 10, self.wallDim + 15);
+                                            self.player.setDisplaySize(self.wallDim - 20, self.wallDim - 8);
                                             self.time.delayedCall(1500, function () { // 500 milliseconds (0.5 seconds) delay
                                                 self.playerHit = false
                                             }, [], self);
@@ -1921,7 +1941,7 @@ function PhaserGame() {
                         this.timerSeconds = 0; // Variable to store the timer value
                         this.timerText = this.add.text(this.cameras.main.width - 300, 100, 'Time: 0', { fontSize: '32px', fill: '#000000' }).setScrollFactor(0); // Text to display the timer*/
 
-                        this.initialTime = 60; // 5 minutes in seconds
+                        this.initialTime = 3000; // 5 minutes in seconds
                         this.timeLeft = this.initialTime;
 
                         this.gameTimer = this.time.addEvent({
@@ -1956,8 +1976,9 @@ function PhaserGame() {
                         this.physics.add.overlap(this.probabilitySymbols, this.player, this.ProbPlayerCollide, null, this)
                         //this.physics.add.collider(this.player, this.bombGroup)
                         this.cursors = this.input.keyboard.createCursorKeys();
-                        self.cameras.main.scrollX = -300;
-                        self.cameras.main.scrollY = -500;
+                        self.cameras.main.scrollX = -400;
+                        self.cameras.main.scrollY = -290;
+
 
 
                     },
@@ -1965,7 +1986,7 @@ function PhaserGame() {
                         //run later
                         //this.handleCollisions();
                         this.handlePlayerMovement();
-                        this.handleCameraMovement();
+                        //this.handleCameraMovement();
                         this.handleExplosionCollision();
                         //this.validateAnswer();
 
