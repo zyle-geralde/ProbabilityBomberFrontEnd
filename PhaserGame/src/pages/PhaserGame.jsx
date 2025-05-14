@@ -57,11 +57,11 @@ function PhaserGame() {
                             playerSizeFirst: 50,
                             playerSizeSecond: 50 + 15,
                             enemySize: 45,
-                            col: 15,
+                            col: 17,
                             row: 8,
-                            camScrollX: -420,
+                            camScrollX: -370,
                             camScrollY: -270,
-                            numberOfEnemies: 12
+                            numberOfEnemies: 20
                         }
 
                         let intermediate_level = {
@@ -81,7 +81,7 @@ function PhaserGame() {
                             row: 8,
                             camScrollX: -420,
                             camScrollY: -270,
-                            numberOfEnemies: 12
+                            numberOfEnemies: 14
                         }
 
                         let beginner_level = {
@@ -106,7 +106,7 @@ function PhaserGame() {
 
                         this.game.canvas.willReadFrequently = true;
 
-                        this.LevelIndicator = 2
+                        this.LevelIndicator = 3
 
                         this.wallGroup = null;
                         this.player = null;
@@ -118,21 +118,21 @@ function PhaserGame() {
                         this.isSpeed = false
                         this.bombRange = 1
                         this.bombLimit = 1
-                        this.itemSize = this.LevelIndicator == 1 ? beginner_level.itemSize : this.LevelIndicator == 2 ? intermediate_level.itemSize : 0
+                        this.itemSize = this.LevelIndicator == 1 ? beginner_level.itemSize : this.LevelIndicator == 2 ? intermediate_level.itemSize : advance_level.itemSize
                         this.ghostGroup = this.physics.add.group()
                         this.enemies = [];
                         this.enemySpeed = 30
-                        this.enemySizeX = this.LevelIndicator == 1 ? beginner_level.enemySizeX : this.LevelIndicator == 2 ? intermediate_level.enemySizeX : 0
-                        this.enemySizeY = this.LevelIndicator == 1 ? beginner_level.enemySizeY : this.LevelIndicator == 2 ? intermediate_level.enemySizeY : 0
-                        this.numberOfEnemies = this.LevelIndicator == 1 ? beginner_level.numberOfEnemies : this.LevelIndicator == 2 ? intermediate_level.numberOfEnemies : 0;
+                        this.enemySizeX = this.LevelIndicator == 1 ? beginner_level.enemySizeX : this.LevelIndicator == 2 ? intermediate_level.enemySizeX : advance_level.enemySizeX
+                        this.enemySizeY = this.LevelIndicator == 1 ? beginner_level.enemySizeY : this.LevelIndicator == 2 ? intermediate_level.enemySizeY : advance_level.enemySizeY
+                        this.numberOfEnemies = this.LevelIndicator == 1 ? beginner_level.numberOfEnemies : this.LevelIndicator == 2 ? intermediate_level.numberOfEnemies : advance_level.numberOfEnemies
                         this.deployedEnemies = 0;
                         this.cursors = null;
-                        this.wallDim = this.LevelIndicator == 1 ? beginner_level.wallDim : this.LevelIndicator == 2 ? intermediate_level.wallDim : 0;
-                        this.wallDimy = this.LevelIndicator == 1 ? beginner_level.wallDimy : this.LevelIndicator == 2 ? intermediate_level.wallDimy : 0
-                        this.wallDimx = this.LevelIndicator == 1 ? beginner_level.wallDimx : this.LevelIndicator == 2 ? intermediate_level.wallDimx : 0
+                        this.wallDim = this.LevelIndicator == 1 ? beginner_level.wallDim : this.LevelIndicator == 2 ? intermediate_level.wallDim : advance_level.wallDim;
+                        this.wallDimy = this.LevelIndicator == 1 ? beginner_level.wallDimy : this.LevelIndicator == 2 ? intermediate_level.wallDimy : advance_level.wallDimy
+                        this.wallDimx = this.LevelIndicator == 1 ? beginner_level.wallDimx : this.LevelIndicator == 2 ? intermediate_level.wallDimx : advance_level.wallDimx
                         this.holdItemDim = 74
-                        this.cols = this.LevelIndicator == 1 ? beginner_level.col : this.LevelIndicator == 2 ? intermediate_level.col : 0;//odd
-                        this.rows = this.LevelIndicator == 1 ? beginner_level.row : this.LevelIndicator == 2 ? intermediate_level.row : 0;//even
+                        this.cols = this.LevelIndicator == 1 ? beginner_level.col : this.LevelIndicator == 2 ? intermediate_level.col : advance_level.col;//odd
+                        this.rows = this.LevelIndicator == 1 ? beginner_level.row : this.LevelIndicator == 2 ? intermediate_level.row : advance_level.row;//even
                         this.totalWallWidth = this.cols * this.wallDim;
                         this.totalWallHeight = this.rows * this.wallDim;
                         this.cameraSpeed = 150;
@@ -140,7 +140,7 @@ function PhaserGame() {
                         this.topwall = null;
                         this.rightwall = null;
                         this.bottomwall = null;
-                        this.bombSize = this.LevelIndicator == 1 ? beginner_level.bombSize : this.LevelIndicator == 2 ? intermediate_level.bombSize : 0;
+                        this.bombSize = this.LevelIndicator == 1 ? beginner_level.bombSize : this.LevelIndicator == 2 ? intermediate_level.bombSize : advance_level.bombSize;
                         this.bombLoc = []
                         this.bombDuration = 300
                         this.bombrepeat = 4
@@ -778,8 +778,8 @@ function PhaserGame() {
                         this.createPlayer = function () {
                             self.player = self.physics.add.sprite(60, 70, 'character');
                             //self.player.setScale(48 / 30, 70 / 50);
-                            self.player.body.setSize(self.LevelIndicator == 1 ? beginner_level.playerSizeFirst : self.LevelIndicator == 2 ? intermediate_level.playerSizeFirst : 0, self.LevelIndicator == 1 ? beginner_level.playerSizeSecond : self.LevelIndicator == 2 ? intermediate_level.playerSizeSecond : 0);
-                            self.player.setDisplaySize(self.LevelIndicator == 1 ? beginner_level.playerDisplaySizefirst : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizefirst : 0, self.LevelIndicator == 1 ? beginner_level.playerDisplaySizesecond : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizesecond : 0);
+                            self.player.body.setSize(self.LevelIndicator == 1 ? beginner_level.playerSizeFirst : self.LevelIndicator == 2 ? intermediate_level.playerSizeFirst : advance_level.playerSizeFirst, self.LevelIndicator == 1 ? beginner_level.playerSizeSecond : self.LevelIndicator == 2 ? intermediate_level.playerSizeSecond : advance_level.playerSizeSecond);
+                            self.player.setDisplaySize(self.LevelIndicator == 1 ? beginner_level.playerDisplaySizefirst : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizefirst : advance_level.playerDisplaySizefirst, self.LevelIndicator == 1 ? beginner_level.playerDisplaySizesecond : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizesecond : advance_level.playerDisplaySizesecond);
                             self.player.setCollideWorldBounds(true);
 
                             self.anims.create({
@@ -804,7 +804,7 @@ function PhaserGame() {
                             this.createEnemy = function (x, y) {
                                 let enemy = self.ghostGroup.create(x, y, 'ghost')
                                 enemy.body.setSize(self.enemySizeX, self.enemySizeY);
-                                enemy.setDisplaySize(this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize : 0, this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize : 0);
+                                enemy.setDisplaySize(this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize : advance_level.enemySize, this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize : advance_level.enemySize);
                                 enemy.setCollideWorldBounds(true);
                                 enemy.setVelocityY((self.enemySpeed))
                                 enemy.hitPlayer = false
@@ -1031,8 +1031,8 @@ function PhaserGame() {
                                                                     explode.hasDamaged = true
 
                                                                     self.player.setTint(0xff0000); // Set tint to red
-                                                                    self.player.body.setSize(self.LevelIndicator == 1 ? beginner_level.playerSizeFirst : self.LevelIndicator == 2 ? intermediate_level.playerSizeFirst : 0, self.LevelIndicator == 1 ? beginner_level.playerSizeSecond : self.LevelIndicator == 2 ? intermediate_level.playerSizeSecond : 0);
-                                                                    self.player.setDisplaySize(self.LevelIndicator == 1 ? beginner_level.playerDisplaySizefirst : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizefirst : 0, self.LevelIndicator == 1 ? beginner_level.playerDisplaySizesecond : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizesecond : 0);
+                                                                    self.player.body.setSize(self.LevelIndicator == 1 ? beginner_level.playerSizeFirst : self.LevelIndicator == 2 ? intermediate_level.playerSizeFirst : advance_level.playerSizeFirst, self.LevelIndicator == 1 ? beginner_level.playerSizeSecond : self.LevelIndicator == 2 ? intermediate_level.playerSizeSecond : advance_level.playerSizeSecond);
+                                                                    self.player.setDisplaySize(self.LevelIndicator == 1 ? beginner_level.playerDisplaySizefirst : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizefirst : advance_level.playerDisplaySizefirst, self.LevelIndicator == 1 ? beginner_level.playerDisplaySizesecond : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizesecond : advance_level.playerDisplaySizesecond);
 
                                                                     const originalHeight = self.player.displayHeight;
                                                                     const originalwidth = self.player.displayWidth;
@@ -1117,8 +1117,8 @@ function PhaserGame() {
 
 
                                                                     self.player.setTint(0xff0000); // Set tint to red
-                                                                    self.player.body.setSize(self.LevelIndicator == 1 ? beginner_level.playerSizeFirst : self.LevelIndicator == 2 ? intermediate_level.playerSizeFirst : 0, self.LevelIndicator == 1 ? beginner_level.playerSizeSecond : self.LevelIndicator == 2 ? intermediate_level.playerSizeSecond : 0);
-                                                                    self.player.setDisplaySize(self.LevelIndicator == 1 ? beginner_level.playerDisplaySizefirst : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizefirst : 0, self.LevelIndicator == 1 ? beginner_level.playerDisplaySizesecond : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizesecond : 0);
+                                                                    self.player.body.setSize(self.LevelIndicator == 1 ? beginner_level.playerSizeFirst : self.LevelIndicator == 2 ? intermediate_level.playerSizeFirst : advance_level.playerSizeFirst, self.LevelIndicator == 1 ? beginner_level.playerSizeSecond : self.LevelIndicator == 2 ? intermediate_level.playerSizeSecond : advance_level.playerSizeSecond);
+                                                                    self.player.setDisplaySize(self.LevelIndicator == 1 ? beginner_level.playerDisplaySizefirst : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizefirst : advance_level.playerDisplaySizefirst, self.LevelIndicator == 1 ? beginner_level.playerDisplaySizesecond : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizesecond : advance_level.playerDisplaySizesecond);
 
                                                                     const originalHeight = self.player.displayHeight;
                                                                     const originalwidth = self.player.displayWidth;
@@ -1206,8 +1206,8 @@ function PhaserGame() {
 
 
                                                                     self.player.setTint(0xff0000); // Set tint to red
-                                                                    self.player.body.setSize(self.LevelIndicator == 1 ? beginner_level.playerSizeFirst : self.LevelIndicator == 2 ? intermediate_level.playerSizeFirst : 0, self.LevelIndicator == 1 ? beginner_level.playerSizeSecond : self.LevelIndicator == 2 ? intermediate_level.playerSizeSecond : 0);
-                                                                    self.player.setDisplaySize(self.LevelIndicator == 1 ? beginner_level.playerDisplaySizefirst : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizefirst : 0, self.LevelIndicator == 1 ? beginner_level.playerDisplaySizesecond : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizesecond : 0);
+                                                                    self.player.body.setSize(self.LevelIndicator == 1 ? beginner_level.playerSizeFirst : self.LevelIndicator == 2 ? intermediate_level.playerSizeFirst : advance_level.playerSizeFirst, self.LevelIndicator == 1 ? beginner_level.playerSizeSecond : self.LevelIndicator == 2 ? intermediate_level.playerSizeSecond : advance_level.playerSizeSecond);
+                                                                    self.player.setDisplaySize(self.LevelIndicator == 1 ? beginner_level.playerDisplaySizefirst : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizefirst : advance_level.playerDisplaySizefirst, self.LevelIndicator == 1 ? beginner_level.playerDisplaySizesecond : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizesecond : advance_level.playerDisplaySizesecond);
 
                                                                     const originalHeight = self.player.displayHeight;
                                                                     const originalwidth = self.player.displayWidth;
@@ -1289,8 +1289,8 @@ function PhaserGame() {
                                                                     explode.hasDamaged = true
 
                                                                     self.player.setTint(0xff0000); // Set tint to red
-                                                                    self.player.body.setSize(self.LevelIndicator == 1 ? beginner_level.playerSizeFirst : self.LevelIndicator == 2 ? intermediate_level.playerSizeFirst : 0, self.LevelIndicator == 1 ? beginner_level.playerSizeSecond : self.LevelIndicator == 2 ? intermediate_level.playerSizeSecond : 0);
-                                                                    self.player.setDisplaySize(self.LevelIndicator == 1 ? beginner_level.playerDisplaySizefirst : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizefirst : 0, self.LevelIndicator == 1 ? beginner_level.playerDisplaySizesecond : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizesecond : 0);
+                                                                    self.player.body.setSize(self.LevelIndicator == 1 ? beginner_level.playerSizeFirst : self.LevelIndicator == 2 ? intermediate_level.playerSizeFirst : advance_level.playerSizeFirst, self.LevelIndicator == 1 ? beginner_level.playerSizeSecond : self.LevelIndicator == 2 ? intermediate_level.playerSizeSecond : advance_level.playerSizeSecond);
+                                                                    self.player.setDisplaySize(self.LevelIndicator == 1 ? beginner_level.playerDisplaySizefirst : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizefirst : advance_level.playerDisplaySizefirst, self.LevelIndicator == 1 ? beginner_level.playerDisplaySizesecond : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizesecond : advance_level.playerDisplaySizesecond);
 
                                                                     const originalHeight = self.player.displayHeight;
                                                                     const originalwidth = self.player.displayWidth;
@@ -1444,8 +1444,8 @@ function PhaserGame() {
                                             self.lifeDesc.setText(self.life + '')
 
                                             self.playerHit = true;
-                                            self.player.body.setSize(self.LevelIndicator == 1 ? beginner_level.playerSizeFirst : self.LevelIndicator == 2 ? intermediate_level.playerSizeFirst : 0, self.LevelIndicator == 1 ? beginner_level.playerSizeSecond : self.LevelIndicator == 2 ? intermediate_level.playerSizeSecond : 0);
-                                            self.player.setDisplaySize(self.LevelIndicator == 1 ? beginner_level.playerDisplaySizefirst : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizefirst : 0, self.LevelIndicator == 1 ? beginner_level.playerDisplaySizesecond : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizesecond : 0);
+                                            self.player.body.setSize(self.LevelIndicator == 1 ? beginner_level.playerSizeFirst : self.LevelIndicator == 2 ? intermediate_level.playerSizeFirst : advance_level.playerSizeFirst, self.LevelIndicator == 1 ? beginner_level.playerSizeSecond : self.LevelIndicator == 2 ? intermediate_level.playerSizeSecond : advance_level.playerSizeSecond);
+                                            self.player.setDisplaySize(self.LevelIndicator == 1 ? beginner_level.playerDisplaySizefirst : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizefirst : advance_level.playerDisplaySizefirst, self.LevelIndicator == 1 ? beginner_level.playerDisplaySizesecond : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizesecond : advance_level.playerDisplaySizesecond);
                                             self.time.delayedCall(1500, function () { // 500 milliseconds (0.5 seconds) delay
                                                 self.playerHit = false
                                             }, [], self);
@@ -2029,8 +2029,8 @@ function PhaserGame() {
                         this.physics.add.overlap(this.probabilitySymbols, this.player, this.ProbPlayerCollide, null, this)
                         //this.physics.add.collider(this.player, this.bombGroup)
                         this.cursors = this.input.keyboard.createCursorKeys();
-                        self.cameras.main.scrollX = this.LevelIndicator == 1 ? beginner_level.camScrollX : this.LevelIndicator == 2 ? intermediate_level.camScrollX : 0;
-                        self.cameras.main.scrollY = this.LevelIndicator == 1 ? beginner_level.camScrollY : this.LevelIndicator == 2 ? intermediate_level.camScrollY : 0;
+                        self.cameras.main.scrollX = this.LevelIndicator == 1 ? beginner_level.camScrollX : this.LevelIndicator == 2 ? intermediate_level.camScrollX : advance_level.camScrollX;
+                        self.cameras.main.scrollY = this.LevelIndicator == 1 ? beginner_level.camScrollY : this.LevelIndicator == 2 ? intermediate_level.camScrollY : advance_level.camScrollY;
 
 
 
