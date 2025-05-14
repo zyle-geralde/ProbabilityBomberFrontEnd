@@ -44,46 +44,69 @@ function PhaserGame() {
                         });
                     },
                     create: function () {
-
-                        const intermediate_level = {
+                        let advance_level = {
                             itemSize: 40,
                             wallDim: 50,
                             wallDimx: 50 + 300,
                             wallDimy: 50 + 400,
-                            enemySizeX: 50 + 120,
-                            enemySizeY: 50 + 160,
+                            enemySizeX: 50 + 80,
+                            enemySizeY: 50 + 70,
                             bombSize: 40,
                             playerDisplaySizefirst: 50 - 15,
                             playerDisplaySizesecond: 50 - 3,
                             playerSizeFirst: 50,
                             playerSizeSecond: 50 + 15,
-                            enemySize: 50,
+                            enemySize: 45,
                             col: 15,
                             row: 8,
-                            camScrollX: -400,
+                            camScrollX: -420,
                             camScrollY: -270,
+                            numberOfEnemies: 12
                         }
 
-                        const beginner_level = {
+                        let intermediate_level = {
                             itemSize: 40,
                             wallDim: 50,
                             wallDimx: 50 + 300,
                             wallDimy: 50 + 400,
-                            enemySizeX: 50 + 120,
-                            enemySizeY: 50 + 160,
+                            enemySizeX: 50 + 80,
+                            enemySizeY: 50 + 70,
                             bombSize: 40,
                             playerDisplaySizefirst: 50 - 15,
                             playerDisplaySizesecond: 50 - 3,
                             playerSizeFirst: 50,
                             playerSizeSecond: 50 + 15,
-                            enemySize: 50,
+                            enemySize: 45,
                             col: 15,
                             row: 8,
-                            camScrollX: -400,
+                            camScrollX: -420,
                             camScrollY: -270,
+                            numberOfEnemies: 12
+                        }
+
+                        let beginner_level = {
+                            itemSize: 45,///
+                            wallDim: 60,///
+                            wallDimx: 60 + 300,///
+                            wallDimy: 60 + 400,///
+                            enemySizeX: 60 + 60,///
+                            enemySizeY: 60 + 60,///
+                            bombSize: 45,///
+                            playerDisplaySizefirst: 60 - 20,///
+                            playerDisplaySizesecond: 60 - 8,///
+                            playerSizeFirst: 60 - 10,///
+                            playerSizeSecond: 60 + 15,///
+                            enemySize: 50,///
+                            col: 13,///
+                            row: 6,///
+                            camScrollX: -400,///
+                            camScrollY: -290,///
+                            numberOfEnemies: 8
                         }
 
                         this.game.canvas.willReadFrequently = true;
+
+                        this.LevelIndicator = 2
 
                         this.wallGroup = null;
                         this.player = null;
@@ -95,21 +118,21 @@ function PhaserGame() {
                         this.isSpeed = false
                         this.bombRange = 1
                         this.bombLimit = 1
-                        this.itemSize = 45
+                        this.itemSize = this.LevelIndicator == 1 ? beginner_level.itemSize : this.LevelIndicator == 2 ? intermediate_level.itemSize : 0
                         this.ghostGroup = this.physics.add.group()
                         this.enemies = [];
                         this.enemySpeed = 30
-                        this.enemySizeX = this.wallDim + 120;
-                        this.enemySizeY = this.wallDim + 160;
-                        this.numberOfEnemies = 4
+                        this.enemySizeX = this.LevelIndicator == 1 ? beginner_level.enemySizeX : this.LevelIndicator == 2 ? intermediate_level.enemySizeX : 0
+                        this.enemySizeY = this.LevelIndicator == 1 ? beginner_level.enemySizeY : this.LevelIndicator == 2 ? intermediate_level.enemySizeY : 0
+                        this.numberOfEnemies = this.LevelIndicator == 1 ? beginner_level.numberOfEnemies : this.LevelIndicator == 2 ? intermediate_level.numberOfEnemies : 0;
                         this.deployedEnemies = 0;
                         this.cursors = null;
-                        this.wallDim = 60;
-                        this.wallDimy = this.wallDim + 400
-                        this.wallDimx = this.wallDim + 300
+                        this.wallDim = this.LevelIndicator == 1 ? beginner_level.wallDim : this.LevelIndicator == 2 ? intermediate_level.wallDim : 0;
+                        this.wallDimy = this.LevelIndicator == 1 ? beginner_level.wallDimy : this.LevelIndicator == 2 ? intermediate_level.wallDimy : 0
+                        this.wallDimx = this.LevelIndicator == 1 ? beginner_level.wallDimx : this.LevelIndicator == 2 ? intermediate_level.wallDimx : 0
                         this.holdItemDim = 74
-                        this.cols = 13;//odd
-                        this.rows = 6;//even
+                        this.cols = this.LevelIndicator == 1 ? beginner_level.col : this.LevelIndicator == 2 ? intermediate_level.col : 0;//odd
+                        this.rows = this.LevelIndicator == 1 ? beginner_level.row : this.LevelIndicator == 2 ? intermediate_level.row : 0;//even
                         this.totalWallWidth = this.cols * this.wallDim;
                         this.totalWallHeight = this.rows * this.wallDim;
                         this.cameraSpeed = 150;
@@ -117,7 +140,7 @@ function PhaserGame() {
                         this.topwall = null;
                         this.rightwall = null;
                         this.bottomwall = null;
-                        this.bombSize = 45;
+                        this.bombSize = this.LevelIndicator == 1 ? beginner_level.bombSize : this.LevelIndicator == 2 ? intermediate_level.bombSize : 0;
                         this.bombLoc = []
                         this.bombDuration = 300
                         this.bombrepeat = 4
@@ -225,7 +248,7 @@ function PhaserGame() {
                                 });
                                 self.explodeDesc.setScrollFactor(0);
 
-                                self.holdScore = self.add.text(45, 75, 'SCORE:' + self.score + '/' + self.perfectScore, {
+                                self.holdScore = self.add.text(this.cameras.main.width - 350, 35, 'SCORE:' + self.score + '/' + self.perfectScore, {
                                     fontSize: '50px',
                                     fill: '#4af756',
                                     fontStyle: "bold",
@@ -510,38 +533,38 @@ function PhaserGame() {
                                             if (randnum == 1) {
 
                                                 let rendnumItem = Math.random() < 0.70 ? 1 : 0;
-                                                    if (rendnumItem == 1) {
-                                                        let itemnum = Math.floor(Math.random() * 11) + 1; // Increased the range for more distribution
-                                                        let itempick;
+                                                if (rendnumItem == 1) {
+                                                    let itemnum = Math.floor(Math.random() * 11) + 1; // Increased the range for more distribution
+                                                    let itempick;
 
-                                                        switch (itemnum) {
-                                                            case 1:
-                                                            case 2:
-                                                            case 3:
-                                                            case 4:
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'heartItem');
-                                                                itempick.type = 'heartItem';
-                                                                break;
-                                                            case 5:
-                                                            case 6:
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bootsItem');
-                                                                itempick.type = 'bootsItem';
-                                                                break;
-                                                            case 7:
-                                                            case 8:
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'shieldItem');
-                                                                itempick.type = 'shieldItem';
-                                                                break;
-                                                            case 9:
-                                                            case 10:
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem');
-                                                                itempick.type = 'bombItem';
-                                                                break;
-                                                            case 11:
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'explodeItem');
-                                                                itempick.type = 'explodeItem';
-                                                                break;
-                                                        }
+                                                    switch (itemnum) {
+                                                        case 1:
+                                                        case 2:
+                                                        case 3:
+                                                        case 4:
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'heartItem');
+                                                            itempick.type = 'heartItem';
+                                                            break;
+                                                        case 5:
+                                                        case 6:
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bootsItem');
+                                                            itempick.type = 'bootsItem';
+                                                            break;
+                                                        case 7:
+                                                        case 8:
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'shieldItem');
+                                                            itempick.type = 'shieldItem';
+                                                            break;
+                                                        case 9:
+                                                        case 10:
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem');
+                                                            itempick.type = 'bombItem';
+                                                            break;
+                                                        case 11:
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'explodeItem');
+                                                            itempick.type = 'explodeItem';
+                                                            break;
+                                                    }
                                                     self.ItemList.push({ "x": adjusttopwall, "y": insidewall })
                                                     itempick.body.setSize(self.itemSize, self.itemSize);
                                                     itempick.setDisplaySize(self.itemSize, self.itemSize);
@@ -585,38 +608,38 @@ function PhaserGame() {
                                             if (randnum == 1) {
 
                                                 let rendnumItem = Math.random() < 0.70 ? 1 : 0;
-                                                    if (rendnumItem == 1) {
-                                                        let itemnum = Math.floor(Math.random() * 11) + 1; // Increased the range for more distribution
-                                                        let itempick;
+                                                if (rendnumItem == 1) {
+                                                    let itemnum = Math.floor(Math.random() * 11) + 1; // Increased the range for more distribution
+                                                    let itempick;
 
-                                                        switch (itemnum) {
-                                                            case 1:
-                                                            case 2:
-                                                            case 3:
-                                                            case 4:
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'heartItem');
-                                                                itempick.type = 'heartItem';
-                                                                break;
-                                                            case 5:
-                                                            case 6:
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bootsItem');
-                                                                itempick.type = 'bootsItem';
-                                                                break;
-                                                            case 7:
-                                                            case 8:
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'shieldItem');
-                                                                itempick.type = 'shieldItem';
-                                                                break;
-                                                            case 9:
-                                                            case 10:
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem');
-                                                                itempick.type = 'bombItem';
-                                                                break;
-                                                            case 11:
-                                                                itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'explodeItem');
-                                                                itempick.type = 'explodeItem';
-                                                                break;
-                                                        }
+                                                    switch (itemnum) {
+                                                        case 1:
+                                                        case 2:
+                                                        case 3:
+                                                        case 4:
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'heartItem');
+                                                            itempick.type = 'heartItem';
+                                                            break;
+                                                        case 5:
+                                                        case 6:
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bootsItem');
+                                                            itempick.type = 'bootsItem';
+                                                            break;
+                                                        case 7:
+                                                        case 8:
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'shieldItem');
+                                                            itempick.type = 'shieldItem';
+                                                            break;
+                                                        case 9:
+                                                        case 10:
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'bombItem');
+                                                            itempick.type = 'bombItem';
+                                                            break;
+                                                        case 11:
+                                                            itempick = self.ItemGroup.create(adjusttopwall, insidewall, 'explodeItem');
+                                                            itempick.type = 'explodeItem';
+                                                            break;
+                                                    }
                                                     self.ItemList.push({ "x": adjusttopwall, "y": insidewall })
                                                     itempick.body.setSize(self.itemSize, self.itemSize);
                                                     itempick.setDisplaySize(self.itemSize, self.itemSize);
@@ -755,8 +778,8 @@ function PhaserGame() {
                         this.createPlayer = function () {
                             self.player = self.physics.add.sprite(60, 70, 'character');
                             //self.player.setScale(48 / 30, 70 / 50);
-                            self.player.body.setSize(self.wallDim - 10, self.wallDim + 15);
-                            self.player.setDisplaySize(self.wallDim - 20, self.wallDim - 8);
+                            self.player.body.setSize(self.LevelIndicator == 1 ? beginner_level.playerSizeFirst : self.LevelIndicator == 2 ? intermediate_level.playerSizeFirst : 0, self.LevelIndicator == 1 ? beginner_level.playerSizeSecond : self.LevelIndicator == 2 ? intermediate_level.playerSizeSecond : 0);
+                            self.player.setDisplaySize(self.LevelIndicator == 1 ? beginner_level.playerDisplaySizefirst : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizefirst : 0, self.LevelIndicator == 1 ? beginner_level.playerDisplaySizesecond : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizesecond : 0);
                             self.player.setCollideWorldBounds(true);
 
                             self.anims.create({
@@ -781,7 +804,7 @@ function PhaserGame() {
                             this.createEnemy = function (x, y) {
                                 let enemy = self.ghostGroup.create(x, y, 'ghost')
                                 enemy.body.setSize(self.enemySizeX, self.enemySizeY);
-                                enemy.setDisplaySize(self.bombSize + 5, self.bombSize + 5);
+                                enemy.setDisplaySize(this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize : 0, this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize : 0);
                                 enemy.setCollideWorldBounds(true);
                                 enemy.setVelocityY((self.enemySpeed))
                                 enemy.hitPlayer = false
@@ -1008,8 +1031,8 @@ function PhaserGame() {
                                                                     explode.hasDamaged = true
 
                                                                     self.player.setTint(0xff0000); // Set tint to red
-                                                                    self.player.body.setSize(self.wallDim - 10, self.wallDim + 15);
-                                                                    self.player.setDisplaySize(self.wallDim - 20, self.wallDim - 8);
+                                                                    self.player.body.setSize(self.LevelIndicator == 1 ? beginner_level.playerSizeFirst : self.LevelIndicator == 2 ? intermediate_level.playerSizeFirst : 0, self.LevelIndicator == 1 ? beginner_level.playerSizeSecond : self.LevelIndicator == 2 ? intermediate_level.playerSizeSecond : 0);
+                                                                    self.player.setDisplaySize(self.LevelIndicator == 1 ? beginner_level.playerDisplaySizefirst : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizefirst : 0, self.LevelIndicator == 1 ? beginner_level.playerDisplaySizesecond : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizesecond : 0);
 
                                                                     const originalHeight = self.player.displayHeight;
                                                                     const originalwidth = self.player.displayWidth;
@@ -1094,8 +1117,8 @@ function PhaserGame() {
 
 
                                                                     self.player.setTint(0xff0000); // Set tint to red
-                                                                    self.player.body.setSize(self.wallDim - 10, self.wallDim + 15);
-                                                                    self.player.setDisplaySize(self.wallDim - 20, self.wallDim - 8);
+                                                                    self.player.body.setSize(self.LevelIndicator == 1 ? beginner_level.playerSizeFirst : self.LevelIndicator == 2 ? intermediate_level.playerSizeFirst : 0, self.LevelIndicator == 1 ? beginner_level.playerSizeSecond : self.LevelIndicator == 2 ? intermediate_level.playerSizeSecond : 0);
+                                                                    self.player.setDisplaySize(self.LevelIndicator == 1 ? beginner_level.playerDisplaySizefirst : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizefirst : 0, self.LevelIndicator == 1 ? beginner_level.playerDisplaySizesecond : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizesecond : 0);
 
                                                                     const originalHeight = self.player.displayHeight;
                                                                     const originalwidth = self.player.displayWidth;
@@ -1183,8 +1206,8 @@ function PhaserGame() {
 
 
                                                                     self.player.setTint(0xff0000); // Set tint to red
-                                                                    self.player.body.setSize(self.wallDim - 10, self.wallDim + 15);
-                                                                    self.player.setDisplaySize(self.wallDim - 20, self.wallDim - 8);
+                                                                    self.player.body.setSize(self.LevelIndicator == 1 ? beginner_level.playerSizeFirst : self.LevelIndicator == 2 ? intermediate_level.playerSizeFirst : 0, self.LevelIndicator == 1 ? beginner_level.playerSizeSecond : self.LevelIndicator == 2 ? intermediate_level.playerSizeSecond : 0);
+                                                                    self.player.setDisplaySize(self.LevelIndicator == 1 ? beginner_level.playerDisplaySizefirst : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizefirst : 0, self.LevelIndicator == 1 ? beginner_level.playerDisplaySizesecond : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizesecond : 0);
 
                                                                     const originalHeight = self.player.displayHeight;
                                                                     const originalwidth = self.player.displayWidth;
@@ -1266,8 +1289,8 @@ function PhaserGame() {
                                                                     explode.hasDamaged = true
 
                                                                     self.player.setTint(0xff0000); // Set tint to red
-                                                                    self.player.body.setSize(self.wallDim - 10, self.wallDim + 15);
-                                                                    self.player.setDisplaySize(self.wallDim - 20, self.wallDim - 8);
+                                                                    self.player.body.setSize(self.LevelIndicator == 1 ? beginner_level.playerSizeFirst : self.LevelIndicator == 2 ? intermediate_level.playerSizeFirst : 0, self.LevelIndicator == 1 ? beginner_level.playerSizeSecond : self.LevelIndicator == 2 ? intermediate_level.playerSizeSecond : 0);
+                                                                    self.player.setDisplaySize(self.LevelIndicator == 1 ? beginner_level.playerDisplaySizefirst : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizefirst : 0, self.LevelIndicator == 1 ? beginner_level.playerDisplaySizesecond : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizesecond : 0);
 
                                                                     const originalHeight = self.player.displayHeight;
                                                                     const originalwidth = self.player.displayWidth;
@@ -1421,8 +1444,8 @@ function PhaserGame() {
                                             self.lifeDesc.setText(self.life + '')
 
                                             self.playerHit = true;
-                                            self.player.body.setSize(self.wallDim - 10, self.wallDim + 15);
-                                            self.player.setDisplaySize(self.wallDim - 20, self.wallDim - 8);
+                                            self.player.body.setSize(self.LevelIndicator == 1 ? beginner_level.playerSizeFirst : self.LevelIndicator == 2 ? intermediate_level.playerSizeFirst : 0, self.LevelIndicator == 1 ? beginner_level.playerSizeSecond : self.LevelIndicator == 2 ? intermediate_level.playerSizeSecond : 0);
+                                            self.player.setDisplaySize(self.LevelIndicator == 1 ? beginner_level.playerDisplaySizefirst : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizefirst : 0, self.LevelIndicator == 1 ? beginner_level.playerDisplaySizesecond : self.LevelIndicator == 2 ? intermediate_level.playerDisplaySizesecond : 0);
                                             self.time.delayedCall(1500, function () { // 500 milliseconds (0.5 seconds) delay
                                                 self.playerHit = false
                                             }, [], self);
@@ -2006,8 +2029,8 @@ function PhaserGame() {
                         this.physics.add.overlap(this.probabilitySymbols, this.player, this.ProbPlayerCollide, null, this)
                         //this.physics.add.collider(this.player, this.bombGroup)
                         this.cursors = this.input.keyboard.createCursorKeys();
-                        self.cameras.main.scrollX = -400;
-                        self.cameras.main.scrollY = -290;
+                        self.cameras.main.scrollX = this.LevelIndicator == 1 ? beginner_level.camScrollX : this.LevelIndicator == 2 ? intermediate_level.camScrollX : 0;
+                        self.cameras.main.scrollY = this.LevelIndicator == 1 ? beginner_level.camScrollY : this.LevelIndicator == 2 ? intermediate_level.camScrollY : 0;
 
 
 
