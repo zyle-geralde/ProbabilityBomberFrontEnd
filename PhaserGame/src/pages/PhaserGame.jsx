@@ -815,6 +815,7 @@ function PhaserGame() {
                                     enemy.setCollideWorldBounds(true);
                                     enemy.setVelocityY((self.enemySpeed))
                                     enemy.hitPlayer = false
+                                    enemy.movement = 1
                                 }
                                 else if (self.LevelIndicator == 2) {
                                     let enemyChoice = Math.round(Math.random());
@@ -829,18 +830,20 @@ function PhaserGame() {
                                         enemy.setCollideWorldBounds(true);
                                         enemy.setVelocityY((self.enemySpeed))
                                         enemy.hitPlayer = false
+                                        enemy.movement = 1
                                     }
                                     else {
                                         enemy = self.ghostGroup.create(x, y, 'fastenemy')
                                         enemy.enemyType = "fast"
                                         enemy.body.setSize(self.enemySizeX + 450, self.enemySizeY + 450);
-                                        enemy.setDisplaySize(this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize - 5 : advance_level.enemySize, this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize - 5: advance_level.enemySize);
+                                        enemy.setDisplaySize(this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize - 5 : advance_level.enemySize, this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize - 5 : advance_level.enemySize);
                                         enemy.setCollideWorldBounds(true);
                                         enemy.setVelocityY((self.fastEnemySpeed))
                                         enemy.hitPlayer = false
+                                        enemy.movement = 1
                                     }
                                 }
-                                else{
+                                else {
                                     let enemyChoice = Math.floor(Math.random() * 3)
 
                                     let enemy = null
@@ -853,24 +856,39 @@ function PhaserGame() {
                                         enemy.setCollideWorldBounds(true);
                                         enemy.setVelocityY((self.enemySpeed))
                                         enemy.hitPlayer = false
+                                        enemy.movement = 1
                                     }
                                     else if (enemyChoice == 1) {
                                         enemy = self.ghostGroup.create(x, y, 'fastenemy')
                                         enemy.enemyType = "fast"
                                         enemy.body.setSize(self.enemySizeX + 450, self.enemySizeY + 450);
-                                        enemy.setDisplaySize(this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize - 5 : advance_level.enemySize, this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize - 5: advance_level.enemySize);
+                                        enemy.setDisplaySize(this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize - 5 : advance_level.enemySize, this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize - 5 : advance_level.enemySize);
                                         enemy.setCollideWorldBounds(true);
                                         enemy.setVelocityY((self.fastEnemySpeed))
                                         enemy.hitPlayer = false
+                                        enemy.movement = 1
                                     }
                                     else {
                                         enemy = self.ghostGroup.create(x, y, 'advanceenemy')
                                         enemy.enemyType = "advance"
                                         enemy.body.setSize(self.enemySizeX + 450, self.enemySizeY + 450);
-                                        enemy.setDisplaySize(this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize - 5 : advance_level.enemySize, this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize - 5: advance_level.enemySize);
+                                        enemy.setDisplaySize(this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize - 5 : advance_level.enemySize, this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize - 5 : advance_level.enemySize);
                                         enemy.setCollideWorldBounds(true);
                                         enemy.setVelocityY((self.enemySpeed))
                                         enemy.hitPlayer = false
+                                        enemy.movement = 1
+
+                                        //Unpredictable Movement
+                                        enemy.directionTimer = this.time.addEvent({
+                                            delay: 4000, // 5000 milliseconds = 5 seconds
+                                            callback: () => {
+                                                this.enemyWallCollide(enemy,null); // Call a function to change direction
+                                            },
+                                            callbackScope: self, // Set the scope to 'this' so you can access class properties
+                                            loop: true, // Repeat the timer indefinitely
+                                        });
+
+
                                     }
                                 }
 
@@ -1468,22 +1486,27 @@ function PhaserGame() {
                             },
                             this.enemyWallCollide = function (enemy, wall) {
                                 const direction = ['u', 'd', 'l', 'r']
-                                let randomNum = Math.floor(Math.random() * 4);
+                                let randomNum = enemy.movement
+                                while (randomNum == enemy.movement) {
+                                    randomNum = Math.floor(Math.random() * 4);
+                                }
+                                enemy.movement = randomNum
+                                
                                 switch (direction[randomNum]) {
                                     case direction[0]:
-                                        enemy.setVelocityY(enemy.enemyType == "fast"?-self.fastEnemySpeed:-self.enemySpeed)
+                                        enemy.setVelocityY(enemy.enemyType == "fast" ? -self.fastEnemySpeed : -self.enemySpeed)
                                         enemy.setVelocityX(0)
                                         break
                                     case direction[1]:
-                                        enemy.setVelocityY(enemy.enemyType == "fast"?self.fastEnemySpeed:self.enemySpeed)
+                                        enemy.setVelocityY(enemy.enemyType == "fast" ? self.fastEnemySpeed : self.enemySpeed)
                                         enemy.setVelocityX(0)
                                         break
                                     case direction[2]:
-                                        enemy.setVelocityX(enemy.enemyType == "fast"?-self.fastEnemySpeed:-self.enemySpeed)
+                                        enemy.setVelocityX(enemy.enemyType == "fast" ? -self.fastEnemySpeed : -self.enemySpeed)
                                         enemy.setVelocityY(0)
                                         break
                                     case direction[3]:
-                                        enemy.setVelocityX(enemy.enemyType == "fast"?self.fastEnemySpeed:self.enemySpeed)
+                                        enemy.setVelocityX(enemy.enemyType == "fast" ? self.fastEnemySpeed : self.enemySpeed)
                                         enemy.setVelocityY(0)
                                         break
                                 }
@@ -2048,7 +2071,7 @@ function PhaserGame() {
                         this.createProbAnswers()
                         this.createHolder()
 
-                        this.ghostGroup.setDepth(3); 
+                        this.ghostGroup.setDepth(3);
 
                         /*this.gameTimer = this.time.addEvent({
                             delay: 1000, // Time in milliseconds (e.g., 1000 for 1 second)
@@ -2087,6 +2110,7 @@ function PhaserGame() {
                         this.physics.add.collider(this.player, this.brkWallGroup);
                         //this.physics.add.collider(this.player, this.bombGroup)//handleCollision alternative
 
+                        
                         this.physics.add.collider(this.ghostGroup, this.outsidewall, this.enemyWallCollide, null, this);
                         this.physics.add.collider(this.ghostGroup, this.topwall, this.enemyWallCollide, null, this);
                         this.physics.add.collider(this.ghostGroup, this.rightwall, this.enemyWallCollide, null, this);
