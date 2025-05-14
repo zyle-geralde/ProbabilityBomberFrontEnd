@@ -816,6 +816,14 @@ function PhaserGame() {
                                     enemy.setVelocityY((self.enemySpeed))
                                     enemy.hitPlayer = false
                                     enemy.movement = 1
+                                    enemy.directionTimer = this.time.addEvent({
+                                            delay: 4000, // 5000 milliseconds = 5 seconds
+                                            callback: () => {
+                                                this.enemyWallCollide(enemy,null); // Call a function to change direction
+                                            },
+                                            callbackScope: self, // Set the scope to 'this' so you can access class properties
+                                            loop: true, // Repeat the timer indefinitely
+                                        });
                                 }
                                 else if (self.LevelIndicator == 2) {
                                     let enemyChoice = Math.round(Math.random());
@@ -831,6 +839,14 @@ function PhaserGame() {
                                         enemy.setVelocityY((self.enemySpeed))
                                         enemy.hitPlayer = false
                                         enemy.movement = 1
+                                        enemy.directionTimer = this.time.addEvent({
+                                            delay: 4000, // 5000 milliseconds = 5 seconds
+                                            callback: () => {
+                                                this.enemyWallCollide(enemy,null); // Call a function to change direction
+                                            },
+                                            callbackScope: self, // Set the scope to 'this' so you can access class properties
+                                            loop: true, // Repeat the timer indefinitely
+                                        });
                                     }
                                     else {
                                         enemy = self.ghostGroup.create(x, y, 'fastenemy')
@@ -841,6 +857,14 @@ function PhaserGame() {
                                         enemy.setVelocityY((self.fastEnemySpeed))
                                         enemy.hitPlayer = false
                                         enemy.movement = 1
+                                        enemy.directionTimer = this.time.addEvent({
+                                            delay: 4000, // 5000 milliseconds = 5 seconds
+                                            callback: () => {
+                                                this.enemyWallCollide(enemy,null); // Call a function to change direction
+                                            },
+                                            callbackScope: self, // Set the scope to 'this' so you can access class properties
+                                            loop: true, // Repeat the timer indefinitely
+                                        });
                                     }
                                 }
                                 else {
@@ -857,6 +881,14 @@ function PhaserGame() {
                                         enemy.setVelocityY((self.enemySpeed))
                                         enemy.hitPlayer = false
                                         enemy.movement = 1
+                                        enemy.directionTimer = this.time.addEvent({
+                                            delay: 4000, // 5000 milliseconds = 5 seconds
+                                            callback: () => {
+                                                this.enemyWallCollide(enemy,null); // Call a function to change direction
+                                            },
+                                            callbackScope: self, // Set the scope to 'this' so you can access class properties
+                                            loop: true, // Repeat the timer indefinitely
+                                        });
                                     }
                                     else if (enemyChoice == 1) {
                                         enemy = self.ghostGroup.create(x, y, 'fastenemy')
@@ -867,6 +899,14 @@ function PhaserGame() {
                                         enemy.setVelocityY((self.fastEnemySpeed))
                                         enemy.hitPlayer = false
                                         enemy.movement = 1
+                                        enemy.directionTimer = this.time.addEvent({
+                                            delay: 4000, // 5000 milliseconds = 5 seconds
+                                            callback: () => {
+                                                this.enemyWallCollide(enemy,null); // Call a function to change direction
+                                            },
+                                            callbackScope: self, // Set the scope to 'this' so you can access class properties
+                                            loop: true, // Repeat the timer indefinitely
+                                        });
                                     }
                                     else {
                                         enemy = self.ghostGroup.create(x, y, 'advanceenemy')
@@ -1462,6 +1502,10 @@ function PhaserGame() {
                                 self.physics.overlap(self.physics.add.group(self.children.list.filter(child => child.texture && child.texture.key === 'explode')), self.ghostGroup, (explode, ghost) => {
                                     //when explosion overlaps with ghost
                                     ghost.destroy();
+                                    if (ghost.directionTimer) {
+                                        ghost.directionTimer.remove();
+                                    }
+                                    
 
 
                                 });
