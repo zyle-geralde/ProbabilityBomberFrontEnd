@@ -817,13 +817,13 @@ function PhaserGame() {
                                     enemy.hitPlayer = false
                                     enemy.movement = 1
                                     enemy.directionTimer = this.time.addEvent({
-                                            delay: 4000, // 5000 milliseconds = 5 seconds
-                                            callback: () => {
-                                                this.enemyWallCollide(enemy,null); // Call a function to change direction
-                                            },
-                                            callbackScope: self, // Set the scope to 'this' so you can access class properties
-                                            loop: true, // Repeat the timer indefinitely
-                                        });
+                                        delay: 4000, // 5000 milliseconds = 5 seconds
+                                        callback: () => {
+                                            this.enemyWallCollide(enemy, null); // Call a function to change direction
+                                        },
+                                        callbackScope: self, // Set the scope to 'this' so you can access class properties
+                                        loop: true, // Repeat the timer indefinitely
+                                    });
                                 }
                                 else if (self.LevelIndicator == 2) {
                                     let enemyChoice = Math.round(Math.random());
@@ -842,7 +842,7 @@ function PhaserGame() {
                                         enemy.directionTimer = this.time.addEvent({
                                             delay: 4000, // 5000 milliseconds = 5 seconds
                                             callback: () => {
-                                                this.enemyWallCollide(enemy,null); // Call a function to change direction
+                                                this.enemyWallCollide(enemy, null); // Call a function to change direction
                                             },
                                             callbackScope: self, // Set the scope to 'this' so you can access class properties
                                             loop: true, // Repeat the timer indefinitely
@@ -860,7 +860,7 @@ function PhaserGame() {
                                         enemy.directionTimer = this.time.addEvent({
                                             delay: 4000, // 5000 milliseconds = 5 seconds
                                             callback: () => {
-                                                this.enemyWallCollide(enemy,null); // Call a function to change direction
+                                                this.enemyWallCollide(enemy, null); // Call a function to change direction
                                             },
                                             callbackScope: self, // Set the scope to 'this' so you can access class properties
                                             loop: true, // Repeat the timer indefinitely
@@ -884,7 +884,7 @@ function PhaserGame() {
                                         enemy.directionTimer = this.time.addEvent({
                                             delay: 4000, // 5000 milliseconds = 5 seconds
                                             callback: () => {
-                                                this.enemyWallCollide(enemy,null); // Call a function to change direction
+                                                this.enemyWallCollide(enemy, null); // Call a function to change direction
                                             },
                                             callbackScope: self, // Set the scope to 'this' so you can access class properties
                                             loop: true, // Repeat the timer indefinitely
@@ -902,7 +902,7 @@ function PhaserGame() {
                                         enemy.directionTimer = this.time.addEvent({
                                             delay: 4000, // 5000 milliseconds = 5 seconds
                                             callback: () => {
-                                                this.enemyWallCollide(enemy,null); // Call a function to change direction
+                                                this.enemyWallCollide(enemy, null); // Call a function to change direction
                                             },
                                             callbackScope: self, // Set the scope to 'this' so you can access class properties
                                             loop: true, // Repeat the timer indefinitely
@@ -920,9 +920,9 @@ function PhaserGame() {
 
                                         //Unpredictable Movement
                                         enemy.directionTimer = this.time.addEvent({
-                                            delay: 4000, // 5000 milliseconds = 5 seconds
+                                            delay: 5000, // 5000 milliseconds = 5 seconds
                                             callback: () => {
-                                                this.enemyWallCollide(enemy,null); // Call a function to change direction
+                                                this.enemyWallCollide(enemy, null); // Call a function to change direction
                                             },
                                             callbackScope: self, // Set the scope to 'this' so you can access class properties
                                             loop: true, // Repeat the timer indefinitely
@@ -1505,7 +1505,7 @@ function PhaserGame() {
                                     if (ghost.directionTimer) {
                                         ghost.directionTimer.remove();
                                     }
-                                    
+
 
 
                                 });
@@ -1535,7 +1535,24 @@ function PhaserGame() {
                                     randomNum = Math.floor(Math.random() * 4);
                                 }
                                 enemy.movement = randomNum
-                                
+
+                                const newDelay = Math.floor(Math.random() * (6000 - 3000 + 1)) + 3000; // Between 3000ms (3s) and 5000ms (5s)
+
+                                // Stop the existing timer
+                                if (enemy.directionTimer) {
+                                    enemy.directionTimer.remove();
+                                }
+
+                                // Start a new timer with the new delay
+                                enemy.directionTimer = this.time.addEvent({
+                                    delay: newDelay,
+                                    callback: () => {
+                                        this.enemyWallCollide(enemy,null)
+                                    },
+                                    callbackScope: self,
+                                    loop: true,
+                                });
+
                                 switch (direction[randomNum]) {
                                     case direction[0]:
                                         enemy.setVelocityY(enemy.enemyType == "fast" ? -self.fastEnemySpeed : -self.enemySpeed)
@@ -2154,7 +2171,7 @@ function PhaserGame() {
                         this.physics.add.collider(this.player, this.brkWallGroup);
                         //this.physics.add.collider(this.player, this.bombGroup)//handleCollision alternative
 
-                        
+
                         this.physics.add.collider(this.ghostGroup, this.outsidewall, this.enemyWallCollide, null, this);
                         this.physics.add.collider(this.ghostGroup, this.topwall, this.enemyWallCollide, null, this);
                         this.physics.add.collider(this.ghostGroup, this.rightwall, this.enemyWallCollide, null, this);
