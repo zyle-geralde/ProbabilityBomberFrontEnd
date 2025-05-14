@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './LessonCard.css';
+import { useUserContext } from '../../contexts/UserContext';
 import QuizCard from '../quiz-card/QuizCard';
 
 
@@ -7,11 +8,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faFile } from '@fortawesome/free-solid-svg-icons';
 
 function LessonCard({ lesson }) {
+    const { isTeacher } = useUserContext(); 
     const [isExpanded, setIsExpanded] = useState(false);
+    const [showForm, setShowForm] = useState(false);
+    const [newQuizTitle, setNewQuizTitle] = useState('');
 
-    const toggleQuizCard = () => {
-        setIsExpanded(prev => !prev);
+    const toggleQuizCard = () => setIsExpanded(prev => !prev);
+
+    const handleAddQuizClick = () => setShowForm(true);
+
+    const handleCancel = () => {
+        setShowForm(false);
+        setNewQuizTitle('');
     };
+
+    const handleSave = () => {
+        setShowForm(false);
+        console.log('New Quiz Title:', newQuizTitle);
+    }
 
     return (
         <div className="lesson-container">
@@ -29,7 +43,7 @@ function LessonCard({ lesson }) {
             </div>
 
 
-
+            {/*Expands a quiz card when clicked*/}
             {isExpanded && (
                 <>
                 <div className='lesson-file-resource'>
@@ -47,9 +61,30 @@ function LessonCard({ lesson }) {
                     {/* {isTeacher && (
                         
                     )} */}
-                    <button className='add-quiz-btn'>Add Quiz</button>
+                    {isTeacher && (
+                        <button className='add-quiz-btn' onClick={handleAddQuizClick}>Add Quiz</button>
+                    )}
                 </div>
                 </>
+            )}
+            
+            {/*Show the form to add a new quiz*/}
+            {showForm && (
+                <div className="overlay">
+                    <div className="overlay-form">
+                        <button className="close-btn" onClick={handleCancel}>&times;</button>
+                        <h3>Add New Quiz</h3>
+                        <input
+                            type="text"
+                            placeholder="Enter quiz title"
+                            value={newQuizTitle}
+                            onChange={(e) => setNewQuizTitle(e.target.value)}
+                        />
+                        <div className="form-buttons">
+                            <button onClick={handleSave}>Save</button>
+                        </div>
+                    </div>
+                </div>
             )}
         </div>
     );
