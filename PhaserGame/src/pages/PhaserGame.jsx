@@ -39,6 +39,7 @@ function PhaserGame() {
                         this.load.image('bombFixed', 'images/bombFixed.png')
                         this.load.image('winloseback', 'images/winloseback.jpg')
                         this.load.image('fastenemy', 'images/fastenemy.png')
+                        this.load.image('advanceenemy', 'images/advanceenemy.png')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 42,
                             frameHeight: 72,
@@ -107,7 +108,7 @@ function PhaserGame() {
 
                         this.game.canvas.willReadFrequently = true;
 
-                        this.LevelIndicator = 2// 1->beginner, 2->intermediate, 3 ->advance
+                        this.LevelIndicator = 3// 1->beginner, 2->intermediate, 3 ->advance
 
                         this.wallGroup = null;
                         this.player = null;
@@ -121,6 +122,8 @@ function PhaserGame() {
                         this.bombLimit = 1
                         this.itemSize = this.LevelIndicator == 1 ? beginner_level.itemSize : this.LevelIndicator == 2 ? intermediate_level.itemSize : advance_level.itemSize
                         this.ghostGroup = this.physics.add.group()
+                        this.advanceGroup = this.physics.add.group()
+                        this.notAdvanceGroup = this.physics.add.group()
                         this.enemies = [];
                         this.enemySpeed = 40
                         this.fastEnemySpeed = 60
@@ -834,6 +837,39 @@ function PhaserGame() {
                                         enemy.setDisplaySize(this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize - 5 : advance_level.enemySize, this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize - 5: advance_level.enemySize);
                                         enemy.setCollideWorldBounds(true);
                                         enemy.setVelocityY((self.fastEnemySpeed))
+                                        enemy.hitPlayer = false
+                                    }
+                                }
+                                else{
+                                    let enemyChoice = Math.floor(Math.random() * 3)
+
+                                    let enemy = null
+                                    if (enemyChoice == 0) {
+
+                                        enemy = self.ghostGroup.create(x, y, 'ghost')
+                                        enemy.enemyType = "ghost"
+                                        enemy.body.setSize(self.enemySizeX, self.enemySizeY);
+                                        enemy.setDisplaySize(this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize : advance_level.enemySize, this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize : advance_level.enemySize);
+                                        enemy.setCollideWorldBounds(true);
+                                        enemy.setVelocityY((self.enemySpeed))
+                                        enemy.hitPlayer = false
+                                    }
+                                    else if (enemyChoice == 1) {
+                                        enemy = self.ghostGroup.create(x, y, 'fastenemy')
+                                        enemy.enemyType = "fast"
+                                        enemy.body.setSize(self.enemySizeX + 450, self.enemySizeY + 450);
+                                        enemy.setDisplaySize(this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize - 5 : advance_level.enemySize, this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize - 5: advance_level.enemySize);
+                                        enemy.setCollideWorldBounds(true);
+                                        enemy.setVelocityY((self.fastEnemySpeed))
+                                        enemy.hitPlayer = false
+                                    }
+                                    else {
+                                        enemy = self.ghostGroup.create(x, y, 'advanceenemy')
+                                        enemy.enemyType = "advance"
+                                        enemy.body.setSize(self.enemySizeX + 450, self.enemySizeY + 450);
+                                        enemy.setDisplaySize(this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize - 5 : advance_level.enemySize, this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize - 5: advance_level.enemySize);
+                                        enemy.setCollideWorldBounds(true);
+                                        enemy.setVelocityY((self.enemySpeed))
                                         enemy.hitPlayer = false
                                     }
                                 }
@@ -2012,6 +2048,8 @@ function PhaserGame() {
                         this.createProbAnswers()
                         this.createHolder()
 
+                        this.ghostGroup.setDepth(3); 
+
                         /*this.gameTimer = this.time.addEvent({
                             delay: 1000, // Time in milliseconds (e.g., 1000 for 1 second)
                             callback: this.updateTimer, // Function to call each time the timer elapses
@@ -2053,7 +2091,7 @@ function PhaserGame() {
                         this.physics.add.collider(this.ghostGroup, this.topwall, this.enemyWallCollide, null, this);
                         this.physics.add.collider(this.ghostGroup, this.rightwall, this.enemyWallCollide, null, this);
                         this.physics.add.collider(this.ghostGroup, this.bottomwall, this.enemyWallCollide, null, this);
-                        this.physics.add.collider(this.ghostGroup, this.brkWallGroup, this.enemyWallCollide, null, this);
+                        this.physics.add.collider(this.ghostGroup.getChildren().filter(enemy => enemy.enemyType !== "advance"), this.brkWallGroup, this.enemyWallCollide, null, this);
                         this.physics.add.overlap(this.ghostGroup, this.player, this.ghostPlayerCollide, null, this);
                         this.physics.add.overlap(this.ItemGroup, this.player, this.ItemPlayerCollide, null, this);
                         this.physics.add.overlap(this.probabilitySymbols, this.player, this.ProbPlayerCollide, null, this)
