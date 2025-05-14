@@ -38,6 +38,7 @@ function PhaserGame() {
                         this.load.image('explodeFixed', 'images/explodeFixed.png')
                         this.load.image('bombFixed', 'images/bombFixed.png')
                         this.load.image('winloseback', 'images/winloseback.jpg')
+                        this.load.image('fastenemy', 'images/fastenemy.png')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 42,
                             frameHeight: 72,
@@ -106,7 +107,7 @@ function PhaserGame() {
 
                         this.game.canvas.willReadFrequently = true;
 
-                        this.LevelIndicator = 3
+                        this.LevelIndicator = 2// 1->beginner, 2->intermediate, 3 ->advance
 
                         this.wallGroup = null;
                         this.player = null;
@@ -121,7 +122,8 @@ function PhaserGame() {
                         this.itemSize = this.LevelIndicator == 1 ? beginner_level.itemSize : this.LevelIndicator == 2 ? intermediate_level.itemSize : advance_level.itemSize
                         this.ghostGroup = this.physics.add.group()
                         this.enemies = [];
-                        this.enemySpeed = 30
+                        this.enemySpeed = 40
+                        this.fastEnemySpeed = 60
                         this.enemySizeX = this.LevelIndicator == 1 ? beginner_level.enemySizeX : this.LevelIndicator == 2 ? intermediate_level.enemySizeX : advance_level.enemySizeX
                         this.enemySizeY = this.LevelIndicator == 1 ? beginner_level.enemySizeY : this.LevelIndicator == 2 ? intermediate_level.enemySizeY : advance_level.enemySizeY
                         this.numberOfEnemies = this.LevelIndicator == 1 ? beginner_level.numberOfEnemies : this.LevelIndicator == 2 ? intermediate_level.numberOfEnemies : advance_level.numberOfEnemies
@@ -802,12 +804,40 @@ function PhaserGame() {
                             });
                         },
                             this.createEnemy = function (x, y) {
-                                let enemy = self.ghostGroup.create(x, y, 'ghost')
-                                enemy.body.setSize(self.enemySizeX, self.enemySizeY);
-                                enemy.setDisplaySize(this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize : advance_level.enemySize, this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize : advance_level.enemySize);
-                                enemy.setCollideWorldBounds(true);
-                                enemy.setVelocityY((self.enemySpeed))
-                                enemy.hitPlayer = false
+                                if (self.LevelIndicator == 1) {
+                                    let enemy = self.ghostGroup.create(x, y, 'ghost')
+                                    enemy.enemyType = "ghost"
+                                    enemy.body.setSize(self.enemySizeX, self.enemySizeY);
+                                    enemy.setDisplaySize(this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize : advance_level.enemySize, this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize : advance_level.enemySize);
+                                    enemy.setCollideWorldBounds(true);
+                                    enemy.setVelocityY((self.enemySpeed))
+                                    enemy.hitPlayer = false
+                                }
+                                else if (self.LevelIndicator == 2) {
+                                    let enemyChoice = Math.round(Math.random());
+
+                                    let enemy = null
+                                    if (enemyChoice == 0) {
+
+                                        enemy = self.ghostGroup.create(x, y, 'ghost')
+                                        enemy.enemyType = "ghost"
+                                        enemy.body.setSize(self.enemySizeX, self.enemySizeY);
+                                        enemy.setDisplaySize(this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize : advance_level.enemySize, this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize : advance_level.enemySize);
+                                        enemy.setCollideWorldBounds(true);
+                                        enemy.setVelocityY((self.enemySpeed))
+                                        enemy.hitPlayer = false
+                                    }
+                                    else {
+                                        enemy = self.ghostGroup.create(x, y, 'fastenemy')
+                                        enemy.enemyType = "fast"
+                                        enemy.body.setSize(self.enemySizeX + 450, self.enemySizeY + 450);
+                                        enemy.setDisplaySize(this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize - 5 : advance_level.enemySize, this.LevelIndicator == 1 ? beginner_level.enemySize : this.LevelIndicator == 2 ? intermediate_level.enemySize - 5: advance_level.enemySize);
+                                        enemy.setCollideWorldBounds(true);
+                                        enemy.setVelocityY((self.fastEnemySpeed))
+                                        enemy.hitPlayer = false
+                                    }
+                                }
+
                             },
                             this.handlePlayerMovement = function () {
                                 if (self.cursors.left.isDown) {
@@ -1405,19 +1435,19 @@ function PhaserGame() {
                                 let randomNum = Math.floor(Math.random() * 4);
                                 switch (direction[randomNum]) {
                                     case direction[0]:
-                                        enemy.setVelocityY(-self.enemySpeed)
+                                        enemy.setVelocityY(enemy.enemyType == "fast"?-self.fastEnemySpeed:-self.enemySpeed)
                                         enemy.setVelocityX(0)
                                         break
                                     case direction[1]:
-                                        enemy.setVelocityY(self.enemySpeed)
+                                        enemy.setVelocityY(enemy.enemyType == "fast"?self.fastEnemySpeed:self.enemySpeed)
                                         enemy.setVelocityX(0)
                                         break
                                     case direction[2]:
-                                        enemy.setVelocityX(-self.enemySpeed)
+                                        enemy.setVelocityX(enemy.enemyType == "fast"?-self.fastEnemySpeed:-self.enemySpeed)
                                         enemy.setVelocityY(0)
                                         break
                                     case direction[3]:
-                                        enemy.setVelocityX(self.enemySpeed)
+                                        enemy.setVelocityX(enemy.enemyType == "fast"?self.fastEnemySpeed:self.enemySpeed)
                                         enemy.setVelocityY(0)
                                         break
                                 }
