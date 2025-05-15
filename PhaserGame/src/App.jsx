@@ -5,9 +5,6 @@ import { useEffect, useState } from "react";
 
 import * as AuthController from './controllers/AuthController';
 
-import HomePage from './pages/Homepage'
-import BeginnerStageMenu from './pages/BeginnerStage'
-
 import ViewStates from './enums/ViewStates';
 import LoginForm from './components/forms/LoginForm';
 import RegisterForm from './components/forms/RegisterForm';
@@ -16,6 +13,8 @@ import ForgotPassword from './components/forms/ForgotPasswordForm';
 import StudentProfile from './components/views/StudentProfile'; 
 import TeacherProfile from './components/views/teacher/TeacherProfile';
 import PasswordResetLink from './components/views/PasswordResetLink';
+import LessonPage from "./pages/LessonPage/LessonPage";
+import QuizSettingPage from "./pages/QuizSettingPage/QuizSettingPage";
 
 export function App() {
   const navigate = useNavigate();
@@ -133,9 +132,10 @@ export function App() {
             />
           }
         />
-        <Route path="/homePage" element={<HomePage />} />
-        <Route path="/homePage/beginnerStage" element={<BeginnerStageMenu />} />
         <Route path="/phaserGame" element={<PhaserGame />} />
+        <Route path="/lessonPage" element={<LessonPage />} />
+        <Route path="/viewQuiz" element={<QuizSettingPage />} />
+        
       </Routes>
     </div>
   );

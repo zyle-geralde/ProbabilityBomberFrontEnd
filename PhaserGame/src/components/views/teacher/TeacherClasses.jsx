@@ -10,6 +10,8 @@ function TeacherClasses({refreshKey}) {
   const {success, loading:removing, reset } = useRemoveClassFromTeacher(deleteSelectedClass);
   const { classes, loading } = useTeacherClasses(refreshKey, success);
 
+  // <button onClick={ () => setDeleteSelectedClass(cls) }>Delete</button> :: replace later
+
   useEffect(() => {
     if (success) {
       setDeleteSelectedClass(null); // optional: clear selected
@@ -18,26 +20,27 @@ function TeacherClasses({refreshKey}) {
   }, [success]);
 
   return (
-    <div>
+    <div class="item3">
       <h2>My Classes</h2>
       {loading || removing ? (
         <p>Loading classes...</p>
       ) : (
-        <ul>
+        <div class="class-tabs">
           {classes.map((cls, idx) => (
-            <li key={idx}>
-              <h2>{cls}</h2>
-              <button onClick={ () => setSelectedClass(cls) }>Show Students</button>
-              <button onClick={ () => setDeleteSelectedClass(cls) }>Delete</button>
-            </li>
+            <button key={idx} onClick={ () => setSelectedClass(cls) }>{cls}</button>
           ))}
-        </ul>
+        </div>
       )}
+      
+
+      <div class="class-info-container">
+        {selectedClass && <RemoveStudentFromClass className={selectedClass} />}
+      </div>
       <hr />
-      {selectedClass && <RemoveStudentFromClass className={selectedClass} />}
+      
       <hr />
       {selectedClass && <AddStudentToClass className={selectedClass} />}
-    </div>
+  </div>
   );
 }
 export default TeacherClasses;

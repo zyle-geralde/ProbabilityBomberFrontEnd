@@ -1,0 +1,161 @@
+.lesson-container{
+    display: flex;
+    flex-direction: column;
+    border: 0.5px solid #000;
+    border-radius: 8px;
+    
+    /* box-shadow: 3px 3px #e4e4e4; */
+}
+
+.top-container.seperator{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-height: 72px;
+}
+
+.lesson-container-left{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+    margin-left: 16px;
+    gap: 1em;
+}
+
+.topic-title-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 0.5em 0;
+}
+
+.quiz-card-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px 10px;
+    row-gap: 16px;
+    padding: 16px 8px;
+}
+
+.topic-number{
+    font-size: 12px;
+    color: #777
+}
+
+.add-quiz-btn{
+    height: 72px;
+    width: 100%;
+    border-radius: 15px;
+    border: 2px dashed rgba(0, 0, 0, 0.1);
+    font-size: 20px;
+    font-weight: 300;
+    color:#525252;
+}
+
+.add-quiz-btn:hover {
+    background-color: rgba(0, 0, 0, 0.03); 
+    border-color: rgba(0, 0, 0, 0.2);      
+    color: #000;                           
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.lesson-file-resource{
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    padding: 10px;
+    padding-top: 16px;
+    padding-left: 2em;
+}
+
+.lesson-file-icon{
+    font-size: 2em;
+    color: #000;
+}
+
+.lesson-file-link{
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    font-size: large;
+    color: #000;
+}
+
+.lesson-file-link:hover{
+    color: #FACE2F;
+}
+
+
+
+/* Form Overlay CSS*/
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.overlay-form {
+    position: relative; 
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.overlay-form h3{
+    text-align: left;
+    margin-bottom: 1em;
+}
+
+.overlay-form input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.form-buttons{
+    display: flex;
+    justify-content: flex-end;
+    
+}
+
+.form-buttons button {
+    padding: 0.5rem 1rem;
+    border: 1px solid black;
+    cursor: pointer;
+    border-radius: 15px;
+    background-color: white;
+    color: black;
+}
+
+.form-buttons button:first-child:hover{
+    border: 1px solid #039f27;
+    color: #039f27;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+}
