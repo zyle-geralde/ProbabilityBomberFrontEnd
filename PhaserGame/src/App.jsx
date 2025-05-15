@@ -135,6 +135,7 @@ export function App() {
         <Route path="/phaserGame" element={<PhaserGame />} />
         <Route path="/lessonPage" element={<LessonPage />} />
         <Route path="/viewQuiz" element={<QuizSettingPage />} />
+        <Route path="/addQuiz" element={<QuizSettingPage />} />
         
       </Routes>
     </div>
