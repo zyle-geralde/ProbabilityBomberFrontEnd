@@ -1,0 +1,31 @@
+.lesson-selector-container{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: 1em;
+    background-color: #f9f9f9;
+    border: 1px solid black;
+    border-radius: 15px;
+    box-shadow: 4px 4px black;
+    /* padding: 1em; */
+}
+
+.lesson-selector-container .title{
+    font-weight: bold;
+}
+
+.lesson-button{
+    padding: 1em;
+    border: 1px solid black;
+    border-radius: 10px;
+    font-size: 1em;
+    cursor: pointer;
+    text-align: left;
+    min-width: 250px;
+    min-height: 50px;
+}
+
+.lesson-button:hover{
+    background-color: #EDC211;
+    color: white;
+}

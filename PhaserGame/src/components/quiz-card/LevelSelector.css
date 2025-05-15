@@ -1,0 +1,4 @@
+.level-selector-container{
+    display: flex;
+    flex-direction: column;
+}

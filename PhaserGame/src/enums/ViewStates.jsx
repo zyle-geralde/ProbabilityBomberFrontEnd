@@ -2,7 +2,7 @@ const ViewStates = Object.freeze({
   LOGIN: '/login',
   REGISTER: '/register',
   PROFILE: '/profile',
-  STUDENT_PROFILE: '/student_profile',
+  STUDENT_PROFILE: '/lessonPage',
   TEACHER_PROFILE: '/teacher_profile',
   PASSWORD: '/password',
   FORGOT_PASSWORD: '/forgot_password',
