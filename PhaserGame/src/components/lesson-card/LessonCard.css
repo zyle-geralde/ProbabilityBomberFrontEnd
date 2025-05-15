@@ -54,6 +54,12 @@
     font-size: 20px;
     font-weight: 300;
     color:#525252;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
 .add-quiz-btn:hover {

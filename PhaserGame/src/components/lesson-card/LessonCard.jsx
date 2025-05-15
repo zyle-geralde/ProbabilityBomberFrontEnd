@@ -64,7 +64,7 @@ function LessonCard({ lesson }) {
                         
                     )} */}
                     {isTeacher && (
-                        <button className='add-quiz-btn' onClick={handleAddQuizClick}>Add Quiz</button>
+                        <a className='add-quiz-btn' href = "/addQuiz">Add Quiz</a>
                     )}
                 </div>
                 </>

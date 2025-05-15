@@ -28,13 +28,13 @@ function QuizCard({ levelsCompleted = '-', quizName = 'Untitled Quiz',lessons })
                 </div>
                 <div className='quiz-container-right'>
                     <button className='show-levels-btn' onClick={toggleLevels}>
-                        {showLevels ? 'Hide Levels' : 'Show Levels'}
+                        {showLevels ? 'Hide Quizzes' : 'Show Quizzes'}
                     </button>
-                    {isTeacher && (
+                    {/*isTeacher && (
                         <button className='edit-quiz-btn'>
                             Edit
                         </button>
-                    )}
+                    )*/}
 
                 </div>
             </div>

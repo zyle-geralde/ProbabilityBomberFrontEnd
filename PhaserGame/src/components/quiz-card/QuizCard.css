@@ -38,11 +38,11 @@
     padding: 1em;
     border: 1px solid black;
     max-width: 120px;
-    max-height: 40px;
     border-radius: 15px;
     background-color: #ffffff;
     color:black;
     cursor: pointer;
+    font-size: 13px;
 }
 
 .show-levels-btn:hover{
