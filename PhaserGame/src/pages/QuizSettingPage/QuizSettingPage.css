@@ -17,7 +17,19 @@
     align-items: center;
     padding: 10px 0;
   }
+
+  .quiz-settings-title-edit{
+    display: flex;
+    gap: 1em;
+  }
   
+
+  .quiz-settings-special-btns-container{
+    display: flex;
+    justify-content: flex-end;
+    gap: 1em;
+    padding: 0.5em;
+  }
   .quiz-settings-main-container h2 {
     color: white;
     padding-left: 1em;
@@ -30,7 +42,9 @@
     gap: 10px;
   }
   
+
   .quiz-settings-delete-quiz-button,
+  .quiz-settings-edit-title-button,
   .quiz-settings-add-question-button {
     color: white;
     padding: 10px 15px;
@@ -47,6 +61,15 @@
   .quiz-settings-add-question-button {
     background-color: #2ecc71; /* Green */
   }
+
+  .quiz-settings-edit-title-button{
+    width: 8em;
+    background-color: #2ecc71;
+  }
+
+  .quiz-settings-save-button{
+    background-color: #2ecc71;
+  }
   
   .quiz-settings-table {
     width: 100%;
@@ -56,7 +79,7 @@
   .quiz-settings-th,
   .quiz-settings-td {
     padding: 12px 15px;
-    text-align: left;
+    text-align: center;
     border-bottom: 1px solid #ddd;
   }
   
@@ -69,6 +92,12 @@
   .quiz-settings-table thead tr th:last-child { 
     width: 200px; 
   }
+
+  .quiz-settings-table thead tr th:nth-child(2),
+  .quiz-settings-table thead tr th:nth-child(3) {
+      width: 150px;
+  }
+
 
   .quiz-table-scrollable{
     height: 600px;
@@ -91,13 +120,14 @@
   }
   
   .quiz-settings-input {
-    width: calc(100% - 30px); /* Adjust padding */
+    width: calc(100% - 30px); 
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 14px;
   }
   
+  .quiz-settings-save-button,
   .quiz-settings-edit-button,
   .quiz-settings-delete-row-button {
     color: white;
@@ -120,5 +150,31 @@
   .quiz-settings-footer{
     height: 4px;
   }
-  
 
+  .form-buttons button:first-child:hover{
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
+  }
+
+  .form-buttons button:last-child:hover{
+    border: 1px solid #2ecc71;
+    color: #2ecc71;
+  }
+
+  .form-buttons {
+    display: flex;
+    gap: 1em;
+  }
+
+  .overlay-form {
+    position: relative; 
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 300px;
+    gap: 1em;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }

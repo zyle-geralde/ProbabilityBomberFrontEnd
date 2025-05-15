@@ -19,18 +19,19 @@ function LevelCard({
                 <div className="level-title-container">
                     <h4 className='level-title'>{title}</h4>
                 </div>
-                <div className='level-stats-container-students'>
-                    {!isTeacher ? (
-                        <>
+                {!isTeacher ? (
+                        <div className='level-stats-container-students'>
                             <p className='level-stat level-stat-time-started'>
                                 Date & Time Started: <span className="bold-value">{timeStarted}</span>
                             </p>
                             <p className='level-stat level-stat-time-finished'>
                                 Date & Time Finished: <span className="bold-value">{timeFinished}</span>
                             </p>
-                        </>
-                    ) : null}
-                </div>
+                        </div>
+                ) : null}
+                
+
+                
             </div>
 
             <div className='level-container-right'>

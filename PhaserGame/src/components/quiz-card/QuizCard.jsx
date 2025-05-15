@@ -4,11 +4,8 @@ import LevelSelector from './LevelSelector';
 import { useUserContext } from '../../contexts/UserContext';
 
 function QuizCard({ levelsCompleted = '-', quizName = 'Untitled Quiz' }) {
-    const { userId } = useUserContext();
+    const { isTeacher } = useUserContext(); 
     const [showLevels, setShowLevels] = useState(false);
-
-    // Temporary check for teacher based on userId
-    const isTeacher = userId === 'u123456'; // Hardcoded teacher check for now
 
     const toggleLevels = () => {
         setShowLevels(prev => !prev);
@@ -33,9 +30,12 @@ function QuizCard({ levelsCompleted = '-', quizName = 'Untitled Quiz' }) {
                     <button className='show-levels-btn' onClick={toggleLevels}>
                         {showLevels ? 'Hide Levels' : 'Show Levels'}
                     </button>
-                    <button className='edit-quiz-btn'>
-                        Edit
-                    </button>
+                    {isTeacher && (
+                        <button className='edit-quiz-btn'>
+                            Edit
+                        </button>
+                    )}
+
                 </div>
             </div>
             
