@@ -22,7 +22,7 @@ export default function QuizSettingPage() {
 
   const handleAddQuestion = () => {
     setQuestions([
-      { question: '', numerator: '', denominator: '', probability: '', isNew: true },
+      { question: '', numerator: '', denominator: '', probability: '',events: [], isNew: true },
       ...questions
     ]);
   };
@@ -42,6 +42,11 @@ export default function QuizSettingPage() {
     setConfirmType("cancelQuiz");
     setShowConfirm(true);
   };
+
+  const handleSaveConfirm = () => {
+    setConfirmType("saveQuiz");
+    setShowConfirm(true)
+  }
 
   const handleConfirmDelete = () => {
     if (confirmType === "deleteQuestion" && targetIndex !== null) {
@@ -129,8 +134,6 @@ export default function QuizSettingPage() {
         </div>
 
         <div className='quiz-settings-special-btns-container'>
-          {!isAddQuizRoute && <button className="quiz-settings-delete-quiz-button" onClick={handleQuizDeleteConfirm}> - Delete Quiz </button>}
-          {isAddQuizRoute && <button className="quiz-settings-delete-quiz-button" onClick={handleQuizCancelConfirm}> - Cancel Quiz </button>}
           <button className="quiz-settings-add-question-button" onClick={handleAddQuestion}> + Add Question </button>
         </div>
 
@@ -233,6 +236,12 @@ export default function QuizSettingPage() {
             </tbody>
           </table>
         </div>
+        <div className='d-flex flex-row justify-content-end mt-2'>
+          <button className="quiz-settings-add-question-button me-2" style={{padding:"10px 50px"}} onClick={handleSaveConfirm}> Save </button>
+          {!isAddQuizRoute && <button className="quiz-settings-delete-quiz-button" onClick={handleQuizDeleteConfirm}> - Delete Quiz </button>}
+          {isAddQuizRoute && <button className="quiz-settings-delete-quiz-button" onClick={handleQuizCancelConfirm}> - Cancel Quiz </button>}
+        </div>
+        
       </div>
 
       {/* Confirmation Overlay */}
@@ -245,6 +254,7 @@ export default function QuizSettingPage() {
               {confirmType === "deleteQuiz"
                 ? "This will permanently delete the quiz and all questions."
                 : confirmType === "cancelQuiz" ? "This will delete your unsaved work"
+                  : confirmType === "saveQuiz" ? "Are you sure you want to save your work?"
                   : "This will delete the selected question."}
             </p>
             <div className="form-buttons">
