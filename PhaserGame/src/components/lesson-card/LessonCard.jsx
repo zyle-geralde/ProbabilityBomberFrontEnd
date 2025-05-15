@@ -39,6 +39,7 @@ function LessonCard({ lesson }) {
                 </div>
                 <div className='lesson-container-right'>
                     {/* Add any other info like progress or additional icons here */}
+                    
                 </div>
             </div>
 
@@ -56,6 +57,7 @@ function LessonCard({ lesson }) {
                             key={quiz.id} // Use the quiz id as the key for each quiz
                             levelsCompleted={quiz.levelsCompleted}
                             quizName={quiz.name}
+                            lessons={lesson}
                         />
                     ))}
                     {/* {isTeacher && (

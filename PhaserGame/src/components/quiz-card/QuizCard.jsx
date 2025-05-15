@@ -3,7 +3,7 @@ import './QuizCard.css';
 import LevelSelector from './LevelSelector';
 import { useUserContext } from '../../contexts/UserContext';
 
-function QuizCard({ levelsCompleted = '-', quizName = 'Untitled Quiz' }) {
+function QuizCard({ levelsCompleted = '-', quizName = 'Untitled Quiz',lessons }) {
     const { isTeacher } = useUserContext(); 
     const [showLevels, setShowLevels] = useState(false);
 
@@ -41,7 +41,9 @@ function QuizCard({ levelsCompleted = '-', quizName = 'Untitled Quiz' }) {
             
             {showLevels && (
                 <div className='bottom-container'>
-                    <LevelSelector />
+                    <LevelSelector
+                        lessons={lessons}
+                    />
                 </div>
             )}
         </div>
