@@ -12,7 +12,10 @@ function TeacherProfile({ userData, onUpdatePassword }) {
   return (
     <div>
       {localStorage.getItem("token") && <LogoutButton />}
+      <hr />
+      <h1>Create Question</h1>
       <QuestionCreation/>
+      <hr />
       <h1>User Profile</h1>
       <p>Email: {userData.email}</p>
       <p>Name: {userData.name}</p>
