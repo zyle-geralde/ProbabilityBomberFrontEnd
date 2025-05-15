@@ -80,10 +80,15 @@ export default function QuizSettingPage() {
     
   };
 
-  const handleEventDeletion = (index, field, indxx)=>{
+  const handleEventDeletion = (index, field, indxx) => {
     const updatedQuestions = [...questions];
 
     updatedQuestions[index][field].splice(indxx, 1)
+    setQuestions(updatedQuestions)
+  }
+  const handleAddevents = (index, field) => {
+    const updatedQuestions = [...questions];
+    updatedQuestions[index][field].push('')
     setQuestions(updatedQuestions)
   }
 
@@ -177,7 +182,7 @@ export default function QuizSettingPage() {
                         ))}
                       </div>
 
-                      <div className="d-flex flex-row align-items-center mt-2 ms-3" >
+                      <div className="d-flex flex-row align-items-center mt-2 ms-3" onClick={(e)=>handleAddevents(index,"events")}>
                         <i className="fas fa-plus-circle"></i>
                         <div className="ms-2" style={{ cursor: "pointer" }}>Add Event</div>
                       </div>
