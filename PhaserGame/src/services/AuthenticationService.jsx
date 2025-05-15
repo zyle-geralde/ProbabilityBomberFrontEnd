@@ -1,13 +1,18 @@
 // /services/authService.js
 import api from '../api';
 import { auth } from '../firebaseConfig';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, getAuth, signOut } from 'firebase/auth';
 
 export const firebaseLoginAndGetToken = async (email, password) => {
   const userCredential = await signInWithEmailAndPassword(auth, email, password);
   const token = await userCredential.user.getIdToken();
   return token;
 };
+
+export const fireBaseLogout = async () => {
+  const auth = getAuth();
+  await signOut(auth);
+}
 
 export const loginWithToken = async (token, role) => {
   return api.post('/auth/login/', {role}, {

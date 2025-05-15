@@ -59,3 +59,14 @@ export const forgotPassword = async ( {email, setError, setUserData, navigate} )
     setError( error.message );
   }
 };
+
+export const logoutUser = async ({ navigate }) => {
+  try {
+    await AuthService.fireBaseLogout();
+    localStorage.removeItem("token");
+    localStorage.removeItem("userData");
+    navigate(ViewStates.LOGIN);
+  } catch (error) {
+    console.error("Logout failed:", error.message);
+  }
+};
