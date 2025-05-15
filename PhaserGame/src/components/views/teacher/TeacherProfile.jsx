@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import TeacherClasses from './TeacherClasses';
+import QuestionCreation from '../../views/question/QuestionCreation'
 import CreateClass from '../../forms/CreateClass'
+import LogoutButton from '../LogoutButton';
 import './TeacherProfile.css';
-
 function TeacherProfile({ userData, onUpdatePassword }) {
   const [refreshKey, setRefreshKey] = useState(0);
   const createdDate = new Date(userData.createdAt._seconds * 1000 + userData.createdAt._nanoseconds / 1000000);
@@ -10,6 +11,8 @@ function TeacherProfile({ userData, onUpdatePassword }) {
 
   return (
     <div class="grid-container">
+      {localStorage.getItem("token") && <LogoutButton />}
+      <QuestionCreation/>
         <div class="item1">
             <nav>
                 <div class="nav-items">
@@ -36,7 +39,6 @@ function TeacherProfile({ userData, onUpdatePassword }) {
         <TeacherClasses refreshKey={refreshKey}/>
 
         <div class="item5"><p>&copy; 2025 Groupo ni Zyle. All rights reserved.</p></div>
-        
     </div>
   </div>
   );

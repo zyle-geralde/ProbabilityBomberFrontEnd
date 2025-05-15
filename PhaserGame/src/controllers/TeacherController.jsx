@@ -35,7 +35,6 @@ export const addStudentToClass = async (className, studentName) => {
         throw error;
     }
 }
-
 export const createClassForTeacher = async ( className ) => {
     try {
         await TeacherService.createClassForTeacherService(className);
