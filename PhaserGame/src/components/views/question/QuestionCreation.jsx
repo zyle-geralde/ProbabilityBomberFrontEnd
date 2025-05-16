@@ -6,7 +6,9 @@ function CreateQuestion(){
         questionName: "",
         questionDescription: "",
         numerator: "",
-        denominator: ""
+        denominator: "",
+        probability: "",
+        event: []
     });
     const [submittedData, setSubmittedData] = useState(null);
     const {success, loading} = useCreateQuestion(submittedData);
@@ -14,7 +16,7 @@ function CreateQuestion(){
         const { name, value } = e.target;
         setFormData(prev => ({
         ...prev,
-        [name]: value
+        [name]: name === "event" ? value.split(",").map(v => v.trim()) : value
         }));
     };
     const handleSubmit = () => {
@@ -45,6 +47,20 @@ function CreateQuestion(){
                 value={formData.denominator}
                 onChange={handleChange}
                 placeholder="Denominator"
+            />
+            
+            <input
+                name="probability"
+                value={formData.probability}
+                onChange={handleChange}
+                placeholder="Probability"
+            />
+            
+            <input
+                name="event"
+                value={formData.event.join(", ")} // show it as a string
+                onChange={handleChange}
+                placeholder="Events (comma separated)"
             />
             {/* Optional: Show loading/success feedback */}
             {loading && <p>Submitting...</p>}
