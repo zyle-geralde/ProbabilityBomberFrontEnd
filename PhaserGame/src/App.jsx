@@ -15,6 +15,7 @@ import TeacherProfile from './components/views/teacher/TeacherProfile';
 import PasswordResetLink from './components/views/PasswordResetLink';
 import LessonPage from "./pages/LessonPage/LessonPage";
 import QuizSettingPage from "./pages/QuizSettingPage/QuizSettingPage";
+import ProfilePage from "./pages/ProfilePage/UserProfile";
 
 export function App() {
   const navigate = useNavigate();
@@ -136,7 +137,7 @@ export function App() {
         <Route path="/lessonPage" element={<LessonPage />} />
         <Route path="/viewQuiz" element={<QuizSettingPage />} />
         <Route path="/addQuiz" element={<QuizSettingPage />} />
-        
+        <Route path="/profilePage" element={<ProfilePage />} />
       </Routes>
     </div>
   );

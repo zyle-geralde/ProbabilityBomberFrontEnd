@@ -22,12 +22,13 @@ function HomeNavbar({ username = "Guest" }) {
             </button>
             
             {showDropdown && (
-              <div className="dropdown-menu">
+              <div className="dropdown-menu" style={{ display: 'block' }}>
                 <button className="dropdown-item">Profile</button>
                 <button className="dropdown-item">Settings</button>
                 <button className="dropdown-item">Logout</button>
               </div>
             )}
+
           </div>
         </div>
       </nav>
