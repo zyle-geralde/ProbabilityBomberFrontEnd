@@ -12,6 +12,8 @@ function TeacherProfile({ userData, onUpdatePassword }) {
   return (
     <div class="grid-container">
       {localStorage.getItem("token") && <LogoutButton />}
+      <hr />
+      <h1>Create Question</h1>
       <QuestionCreation/>
         <div class="item1">
             <nav>
