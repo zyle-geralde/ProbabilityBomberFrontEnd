@@ -17,6 +17,7 @@ import LessonPage from "./pages/LessonPage/LessonPage";
 import QuizSettingPage from "./pages/QuizSettingPage/QuizSettingPage";
 import ClassPage from "./pages/ClassPage/ClassPage";
 import ProfilePage from "./pages/ProfilePage/UserProfile";
+import ClassPerformancePage from "./pages/PerformanceTracking/ClassPerformancePage";
 
 export function App() {
   const navigate = useNavigate();
@@ -141,6 +142,7 @@ export function App() {
         <Route path="/classPage" element={<ClassPage />} />
         
         <Route path="/profilePage" element={<ProfilePage />} />
+        <Route path="/classPerformancePage" element={<ClassPerformancePage />} />
       </Routes>
     </div>
   );
