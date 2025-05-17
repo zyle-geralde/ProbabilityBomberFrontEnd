@@ -17,8 +17,8 @@ export const loginUser = async ({ email, password, role, setUserData, setError, 
     
     if(role == 'student'){
       navigate(ViewStates.STUDENT_PROFILE);
-    } else if (role == 'teacher'){
-      navigate(ViewStates.TEACHER_PROFILE);
+    } else if (role == 'teacher') {
+      navigate("/classPage");
     }
 
   } catch (error) {
@@ -67,6 +67,7 @@ export const logoutUser = async ({ navigate }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("userData");
     navigate(ViewStates.LOGIN);
+     window.location.reload();
   } catch (error) {
     console.error("Logout failed:", error.message);
   }

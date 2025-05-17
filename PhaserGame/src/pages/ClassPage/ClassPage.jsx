@@ -16,6 +16,16 @@ function ClassPage() {
     const [classToDelete, setClassToDelete] = useState(null);
     const [deleteTrigger, setDeleteTrigger] = useState(false);
 
+    useEffect(() => {
+    // Trigger a refresh when the component mounts
+    setSuccess(prev => !prev);
+    }, []);
+
+    useEffect(() => {
+    // Trigger a refresh when the component mounts
+    setSuccess(prev => !prev);
+    }, []);
+
     const {
         success: createSuccess,
         loading: createLoading,
