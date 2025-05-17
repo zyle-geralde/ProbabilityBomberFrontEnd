@@ -9,7 +9,7 @@ export function useTeacherClasses(refreshKey, success){
     async function fetchClasses() {
       try {
         const response = await TeacherController.getTeacherClasses();
-        console.log(response.data.classes)
+        // console.log(response.data.classes)
         setClasses(response?.data?.classes || []);
       } catch (error) {
         console.error("Hook Error:", error);
