@@ -4,7 +4,7 @@ import "./ClassPageStyle.css";
 import ClassCard from '../../components/classcard/ClassCard';
 import { useTeacherClasses, useCreateClassForTeacher, useRemoveClassFromTeacher } from '../../hooks/UseTeacher';
 
-function ClassPage() {
+function ClassPage({userData}) {
     const [refreshKey, setRefreshKey] = useState(0);
     const [success, setSuccess] = useState(false);
     const { classes: allClass, loading } = useTeacherClasses(refreshKey, success);
@@ -92,6 +92,7 @@ function ClassPage() {
                                 <ClassCard
                                     key={index}
                                     title={elem}
+                                    userData={userData}
                                     onDelete={() => {
                                         setClassToDelete(elem);
                                         setShowDeleteModal(true);

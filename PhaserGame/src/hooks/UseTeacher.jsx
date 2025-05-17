@@ -25,6 +25,7 @@ export function useTeacherClasses(refreshKey, success){
 export function useShowStudents(className, refreshKey){
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
+  
 
   useEffect(() => {
     async function fetchStudents() {
@@ -53,9 +54,11 @@ export function useRemoveStudentFromClass(){
       const response = await TeacherController.deleteStudentFromClass(className, studentName);
       console.log("Remove Response ", response)
       setSuccess(true)
+      return true;
     } catch (error) {
       console.error("Hook Error:", error);
       setSuccess(false);
+      return false;
     } finally {
       setLoading(false);
     }
@@ -65,7 +68,7 @@ export function useRemoveStudentFromClass(){
   return { remove, loading, success, reset };
 }
 
-export function useAddStudentToClass(className, studentName){
+/*export function useAddStudentToClass(className, studentName){
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -83,6 +86,16 @@ export function useAddStudentToClass(className, studentName){
     addStudent();
   }, [className, studentName]);
   return {success, loading};
+}*/
+
+export async function useAddStudentToClass(className, studentName) {
+  try {
+    const response = await TeacherController.addStudentToClass(className, studentName);
+    return { success: true, response };
+  } catch (error) {
+    console.error("Add Student Error:", error);
+    return { success: false, error };
+  }
 }
 
 export function useCreateClassForTeacher(className){

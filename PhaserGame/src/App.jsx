@@ -135,10 +135,14 @@ export function App() {
           }
         />
         <Route path="/phaserGame" element={<PhaserGame />} />
-        <Route path="/lessonPage" element={<LessonPage />} />
+        <Route path="/lessonPage" element={userData?(<LessonPage
+          userData={ userData}
+        /> ):(<div>Loading ...</div>)}  />
         <Route path="/viewQuiz" element={<QuizSettingPage />} />
         <Route path="/addQuiz" element={<QuizSettingPage />} />
-        <Route path="/classPage" element={<ClassPage />} />
+        <Route path="/classPage" element={userData?(<ClassPage
+          userData={ userData}
+        /> ):(<div>Loading ...</div>)} />
         
         <Route path="/profilePage" element={<ProfilePage />} />
       </Routes>

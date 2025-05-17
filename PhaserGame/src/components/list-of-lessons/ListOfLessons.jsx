@@ -552,7 +552,8 @@ const staticLessons = [
 
 
 
-function ListOfLessons() {
+function ListOfLessons({ userData, title }) {
+
   return (
     <>
       {staticLessons.map((lesson) => (
