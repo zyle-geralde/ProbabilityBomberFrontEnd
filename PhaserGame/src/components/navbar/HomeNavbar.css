@@ -86,7 +86,6 @@
     color: #333;
     cursor: pointer;
     transition: background-color 0.2s ease;
-    /* Remove all button styling */
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -130,13 +129,3 @@
   }
   
   
-  /* Responsive styles */
-  @media (max-width: 768px) {
-    .welcome-text {
-      display: none;
-    }
-    
-    .navbar {
-      padding: 1rem;
-    }
-  }

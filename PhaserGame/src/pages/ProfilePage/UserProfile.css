@@ -1,0 +1,287 @@
+.container {
+font-family: Arial, sans-serif;
+padding: 20px;
+background-color: #f4f4f4;
+}
+
+.header {
+background-color: #333;
+color: #fff;
+padding: 15px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 20px;
+border-radius: 5px;
+}
+
+.headerLeft {
+font-size: 1.5em;
+font-weight: bold;
+}
+
+.headerRight {
+font-size: 0.9em;
+}
+
+.progressTargetContainer {
+background-color: #fff;
+padding: 20px;
+border-radius: 5px;
+display: flex;
+gap: 20px;
+margin-bottom: 20px;
+align-items: center;
+justify-content: space-around;
+}
+
+.progress {
+display: flex;
+flex-direction: column;
+height: 100%;
+justify-content: center;
+align-items: center;
+flex: 1;
+background-color: transparent !important;
+}
+
+.almostThere {
+color: #8A2D3B;
+font-size: 2.5em;
+font-weight: bold;
+margin: 0px 10px 0px 10px;
+}
+
+.nextTarget {
+width: 250px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: left;
+text-align: left;
+}
+.nextTarget h3{
+font-size: 2.5em;
+font-weight: bold;
+color: #8A2D3B;
+}
+
+
+.topicProgressContainer {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.topicCard {
+    margin: 0px 20px 20px 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.stageProgress {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.stageProgress p{
+margin: 6px;
+}
+
+.progressDetails{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+}
+
+.progressBar {
+    background-color: #eee;
+    height: 10px;
+    border-radius: 5px;
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.progressBarFill {
+    background-color: #8A2D3B;
+    height: 10px;
+    border-radius: 5px;
+}
+
+.progressText {
+    width: 40px;
+    text-align: right;
+    margin-right: 10px;
+    color: #777;
+    font-size: 0.9em;
+}
+
+.statusText {
+    color: #777;
+    font-size: 0.9em;
+}
+.badgesContainer {
+    background-color: #fff;
+    border-radius: 15px;
+    border: 1px solid black;
+    box-shadow: 4px 4px black;
+  }
+  
+  .badgesContainer h2 {
+    width: 100%;
+    padding: 1rem 1rem 0.8rem;
+    color: white;
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: left;
+    background-color: #8A2D3B;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+  }
+  
+  .badgesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 20px;
+    max-width: 100%;
+    max-height: 300px; 
+    overflow-y: auto;     
+    padding: 20px;
+    scroll-behavior: smooth;
+    scrollbar-width: none; 
+    -ms-overflow-style: none;
+  }
+
+  .badgesGrid::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+  
+
+  
+  .badgeCard {
+    background: #fafafa;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: default;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  
+  .badgeIcon {
+    font-size: 5rem;
+    margin-bottom: 0.7rem;
+    user-select: none;
+  }
+  
+  .badgeLabel {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #333;
+    text-align: center;
+    user-select: none;
+  }
+  
+
+
+.analyticsContainer {
+background-color: #fff;
+border-radius: 5px;
+border-radius: 15px;
+border: 1px solid black;
+box-shadow: 4px 4px black;
+}
+
+.analyticsContainer h2{
+width: 100%;
+padding: 1rem 1rem 0.8rem;
+color: white;
+font-size: 2.5rem;
+font-weight: bold;
+text-align: left;
+background-color: #8A2D3B;
+border-top-left-radius: 14px;
+border-top-right-radius: 14px;
+}
+
+
+
+.radarChartContainer {
+width: 100%;
+padding: 20px;
+max-width: 400px;
+margin: 0 auto;
+}
+
+.mainGrid {
+display: grid;
+grid-template-columns: 1fr 2fr;
+gap: 2rem;
+padding: 2rem;
+}
+
+.leftPanel, .rightPanel {
+background: #fff;
+border-radius: 15px;
+border: 1px solid black;
+box-shadow: 4px 4px black;
+
+}
+
+.rightPanel h2{
+width: 100%;
+padding: 1rem 1rem 0.8rem;
+color: white;
+font-size: 2.5rem;
+font-weight: bold;
+text-align: left;
+background-color: #8A2D3B;
+border-top-left-radius: 14px;
+border-top-right-radius: 14px;
+}
+
+.leftPanel {
+display: flex;
+gap: 1em;
+align-items: center;
+justify-content: center;
+flex: 1;
+padding-left: 20px;
+}
+
+.topicSelect {
+margin: 20px;
+padding: 0.5rem;
+font-size: 1rem;
+}
+
+
+.bottomSection {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 2rem;
+padding: 0rem 2rem 2rem 2rem;
+}
+
+
+.circularProgress {
+padding: 1em;
+width: 100%;
+height: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+
+}
+
+.circularProgress text {
+dominant-baseline: middle;
+text-anchor: middle;
+}

@@ -41,7 +41,8 @@ function LevelCard({
                         style={{ 
                             display: 'flex', 
                             flexDirection: 'row', 
-                            gap: '1rem' 
+                            gap: '1rem',
+                            alignItems:"center"
                         }}
                     >
                         <div className='level-stat-t'>
@@ -52,6 +53,9 @@ function LevelCard({
                             <div className='level-stat-value'>{avgTimeFinished}</div>
                             <p className='level-stat-label'>Avg Time Finished</p>
                         </div>
+                        <a href="/viewQuiz" className="ms-2 text-primary">
+                            <i className="fas fa-pen-to-square ms-2 cursor-pointer text-primary" style={{cursor:"pointer"}}></i>
+                        </a>
                     </div>
                 ) : (
                     <>

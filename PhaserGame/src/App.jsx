@@ -15,6 +15,8 @@ import TeacherProfile from './components/views/teacher/TeacherProfile';
 import PasswordResetLink from './components/views/PasswordResetLink';
 import LessonPage from "./pages/LessonPage/LessonPage";
 import QuizSettingPage from "./pages/QuizSettingPage/QuizSettingPage";
+import ClassPage from "./pages/ClassPage/ClassPage";
+import ProfilePage from "./pages/ProfilePage/UserProfile";
 
 export function App() {
   const navigate = useNavigate();
@@ -135,7 +137,10 @@ export function App() {
         <Route path="/phaserGame" element={<PhaserGame />} />
         <Route path="/lessonPage" element={<LessonPage />} />
         <Route path="/viewQuiz" element={<QuizSettingPage />} />
+        <Route path="/addQuiz" element={<QuizSettingPage />} />
+        <Route path="/classPage" element={<ClassPage />} />
         
+        <Route path="/profilePage" element={<ProfilePage />} />
       </Routes>
     </div>
   );

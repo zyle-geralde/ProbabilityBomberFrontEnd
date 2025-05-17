@@ -10,33 +10,101 @@ const staticLessons = [
     quizzes: [
       { 
         id: 'lesson1-quiz', 
-        name: 'Bayes Theorem Quiz', 
+        name: 'Beginner', 
         levelsCompleted: 0,
         levels: [
           {
             levelId: 'level1',
-            name: 'Beginner',
-            dateStarted: '',
-            dateEnded: '',
-            score: '',
+            name: 'Quiz1',
+            time:'10',
+            score: '10',
+            takes:"1",
             gameLink: '/game/lesson1/level1',
             createdBy: '0'  
           },
           {
             levelId: 'level2',
-            name: 'Intermediate',
-            dateStarted: '',
-            dateEnded: '',
-            score: '',
+            name: 'Quiz2',
+            time:'10',
+            score: '10',
+            takes:"1",
             gameLink: '/game/lesson1/level2',
             createdBy: '0'  
           },
           {
             levelId: 'level3',
-            name: 'Expert',
-            dateStarted: '',
-            dateEnded: '',
-            score: '',
+            name: 'Quiz3',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson1/level3',
+            createdBy: '0'  
+          }
+        ]
+      },
+{ 
+        id: 'lesson1-quiz2', 
+        name: 'Intermediate', 
+        levelsCompleted: 0,
+        levels: [
+          {
+            levelId: 'level1',
+            name: 'Quiz1',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson1/level1',
+            createdBy: '0'  
+          },
+          {
+            levelId: 'level2',
+            name: 'Quiz2',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson1/level2',
+            createdBy: '0'  
+          },
+          {
+            levelId: 'level3',
+            name: 'Quiz3',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson1/level3',
+            createdBy: '0'  
+          }
+        ]
+      },
+{ 
+        id: 'lesson1-quiz3', 
+        name: 'Advance', 
+        levelsCompleted: 0,
+        levels: [
+          {
+            levelId: 'level1',
+            name: 'Quiz1',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson1/level1',
+            createdBy: '0'  
+          },
+          {
+            levelId: 'level2',
+            name: 'Quiz2',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson1/level2',
+            createdBy: '0'  
+          },
+          {
+            levelId: 'level3',
+            name: 'Quiz3',
+            time:'10',
+            score: '10',
+            takes:"1",
             gameLink: '/game/lesson1/level3',
             createdBy: '0'  
           }
@@ -51,33 +119,101 @@ const staticLessons = [
     quizzes: [
       { 
         id: 'lesson2-quiz', 
-        name: 'Probability Basics Quiz', 
+        name: 'Beginner', 
         levelsCompleted: 0,
         levels: [
           {
             levelId: 'level1',
-            name: 'Beginner',
-            dateStarted: '',
-            dateEnded: '',
-            score: '',
+            name: 'Q1',
+            time:'10',
+            score: '10',
+            takes:"1",
             gameLink: '/game/lesson2/level1',
             createdBy: '0'  
           },
           {
             levelId: 'level2',
-            name: 'Intermediate',
-            dateStarted: '',
-            dateEnded: '',
-            score: '',
+            name: 'Q2',
+            time:'10',
+            score: '10',
+            takes:"1",
             gameLink: '/game/lesson2/level2',
             createdBy: '0'  
           },
           {
             levelId: 'level3',
-            name: 'Expert',
-            dateStarted: '',
-            dateEnded: '',
-            score: '',
+            name: 'Q3',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson2/level3',
+            createdBy: '0'  
+          }
+        ]
+      },
+      { 
+        id: 'lesson2-quiz2', 
+        name: 'Intermediate', 
+        levelsCompleted: 0,
+        levels: [
+          {
+            levelId: 'level1',
+            name: 'Q1',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson2/level1',
+            createdBy: '0'  
+          },
+          {
+            levelId: 'level2',
+            name: 'Q2',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson2/level2',
+            createdBy: '0'  
+          },
+          {
+            levelId: 'level3',
+            name: 'Q3',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson2/level3',
+            createdBy: '0'  
+          }
+        ]
+      },
+      { 
+        id: 'lesson2-quiz3', 
+        name: 'Advance', 
+        levelsCompleted: 0,
+        levels: [
+          {
+            levelId: 'level1',
+            name: 'Q1',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson2/level1',
+            createdBy: '0'  
+          },
+          {
+            levelId: 'level2',
+            name: 'Q2',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson2/level2',
+            createdBy: '0'  
+          },
+          {
+            levelId: 'level3',
+            name: 'Q3',
+            time:'10',
+            score: '10',
+            takes:"1",
             gameLink: '/game/lesson2/level3',
             createdBy: '0'  
           }
@@ -92,33 +228,101 @@ const staticLessons = [
     quizzes: [
       { 
         id: 'lesson3-quiz', 
-        name: 'Combinatorics Quiz', 
+        name: 'Beginner', 
         levelsCompleted: 0,
         levels: [
           {
             levelId: 'level1',
-            name: 'Beginner',
-            dateStarted: '',
-            dateEnded: '',
-            score: '',
+            name: 'Q1',
+            time:'10',
+            score: '10',
+            takes:"1",
             gameLink: '/game/lesson3/level1',
             createdBy: '0'  
           },
           {
             levelId: 'level2',
-            name: 'Intermediate',
-            dateStarted: '',
-            dateEnded: '',
-            score: '',
+            name: 'Q2',
+            time:'10',
+            score: '10',
+            takes:"1",
             gameLink: '/game/lesson3/level2',
             createdBy: '0'  
           },
           {
             levelId: 'level3',
-            name: 'Expert',
-            dateStarted: '',
-            dateEnded: '',
-            score: '',
+            name: 'Q3',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson3/level3',
+            createdBy: '0'  
+          }
+        ]
+      },
+      { 
+        id: 'lesson3-quiz2', 
+        name: 'Intermediate', 
+        levelsCompleted: 0,
+        levels: [
+          {
+            levelId: 'level1',
+            name: 'Q1',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson3/level1',
+            createdBy: '0'  
+          },
+          {
+            levelId: 'level2',
+            name: 'Q2',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson3/level2',
+            createdBy: '0'  
+          },
+          {
+            levelId: 'level3',
+            name: 'Q3',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson3/level3',
+            createdBy: '0'  
+          }
+        ]
+      },
+      { 
+        id: 'lesson3-quiz3', 
+        name: 'Advance', 
+        levelsCompleted: 0,
+        levels: [
+          {
+            levelId: 'level1',
+            name: 'Q1',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson3/level1',
+            createdBy: '0'  
+          },
+          {
+            levelId: 'level2',
+            name: 'Q2',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson3/level2',
+            createdBy: '0'  
+          },
+          {
+            levelId: 'level3',
+            name: 'Q3',
+            time:'10',
+            score: '10',
+            takes:"1",
             gameLink: '/game/lesson3/level3',
             createdBy: '0'  
           }
@@ -133,33 +337,101 @@ const staticLessons = [
     quizzes: [
       { 
         id: 'lesson4-quiz', 
-        name: 'Conditional Probability Quiz', 
+        name: 'Beginner', 
         levelsCompleted: 0,
         levels: [
           {
             levelId: 'level1',
-            name: 'Beginner',
-            dateStarted: '',
-            dateEnded: '',
-            score: '',
+            name: 'Q1',
+            time:'10',
+            score: '10',
+            takes:"1",
             gameLink: '/game/lesson4/level1',
             createdBy: '0'  
           },
           {
             levelId: 'level2',
-            name: 'Intermediate',
-            dateStarted: '',
-            dateEnded: '',
-            score: '',
+            name: 'Q2',
+            time:'10',
+            score: '10',
+            takes:"1",
             gameLink: '/game/lesson4/level2',
             createdBy: '0'  
           },
           {
             levelId: 'level3',
-            name: 'Expert',
-            dateStarted: '',
-            dateEnded: '',
-            score: '',
+            name: 'Q3',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson4/level3',
+            createdBy: '0'  
+          }
+        ]
+      },
+      { 
+        id: 'lesson4-quiz2', 
+        name: 'Intermediate', 
+        levelsCompleted: 0,
+        levels: [
+          {
+            levelId: 'level1',
+            name: 'Q1',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson4/level1',
+            createdBy: '0'  
+          },
+          {
+            levelId: 'level2',
+            name: 'Q2',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson4/level2',
+            createdBy: '0'  
+          },
+          {
+            levelId: 'level3',
+            name: 'Q3',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson4/level3',
+            createdBy: '0'  
+          }
+        ]
+      },
+      { 
+        id: 'lesson4-quiz3', 
+        name: 'Advance', 
+        levelsCompleted: 0,
+        levels: [
+          {
+            levelId: 'level1',
+            name: 'Q1',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson4/level1',
+            createdBy: '0'  
+          },
+          {
+            levelId: 'level2',
+            name: 'Q2',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson4/level2',
+            createdBy: '0'  
+          },
+          {
+            levelId: 'level3',
+            name: 'Q3',
+            time:'10',
+            score: '10',
+            takes:"1",
             gameLink: '/game/lesson4/level3',
             createdBy: '0'  
           }
@@ -174,33 +446,101 @@ const staticLessons = [
     quizzes: [
       { 
         id: 'lesson5-quiz', 
-        name: 'Random Variables Quiz', 
+        name: 'Beginner', 
         levelsCompleted: 0,
         levels: [
           {
             levelId: 'level1',
-            name: 'Beginner',
-            dateStarted: '',
-            dateEnded: '',
-            score: '',
+            name: 'Q1',
+            time:'10',
+            score: '10',
+            takes:"1",
             gameLink: '/game/lesson5/level1',
             createdBy: '0'  
           },
           {
             levelId: 'level2',
-            name: 'Intermediate',
-            dateStarted: '',
-            dateEnded: '',
-            score: '',
+            name: 'Q2',
+            time:'10',
+            score: '10',
+            takes:"1",
             gameLink: '/game/lesson5/level2',
             createdBy: '0'  
           },
           {
             levelId: 'level3',
-            name: 'Expert',
-            dateStarted: '',
-            dateEnded: '',
-            score: '',
+            name: 'Q3',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson5/level3',
+            createdBy: '0'  
+          }
+        ]
+      },
+{ 
+        id: 'lesson5-quiz2', 
+        name: 'Intermediate', 
+        levelsCompleted: 0,
+        levels: [
+          {
+            levelId: 'level1',
+            name: 'Q1',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson5/level1',
+            createdBy: '0'  
+          },
+          {
+            levelId: 'level2',
+            name: 'Q2',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson5/level2',
+            createdBy: '0'  
+          },
+          {
+            levelId: 'level3',
+            name: 'Q3',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson5/level3',
+            createdBy: '0'  
+          }
+        ]
+      },
+{ 
+        id: 'lesson5-quiz3', 
+        name: 'Advance', 
+        levelsCompleted: 0,
+        levels: [
+          {
+            levelId: 'level1',
+            name: 'Q1',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson5/level1',
+            createdBy: '0'  
+          },
+          {
+            levelId: 'level2',
+            name: 'Q2',
+            time:'10',
+            score: '10',
+            takes:"1",
+            gameLink: '/game/lesson5/level2',
+            createdBy: '0'  
+          },
+          {
+            levelId: 'level3',
+            name: 'Q3',
+            time:'10',
+            score: '10',
+            takes:"1",
             gameLink: '/game/lesson5/level3',
             createdBy: '0'  
           }

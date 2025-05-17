@@ -3,7 +3,7 @@ import './QuizCard.css';
 import LevelSelector from './LevelSelector';
 import { useUserContext } from '../../contexts/UserContext';
 
-function QuizCard({ levelsCompleted = '-', quizName = 'Untitled Quiz' }) {
+function QuizCard({ levelsCompleted = '-', quizName = 'Untitled Quiz',lessons }) {
     const { isTeacher } = useUserContext(); 
     const [showLevels, setShowLevels] = useState(false);
 
@@ -28,20 +28,22 @@ function QuizCard({ levelsCompleted = '-', quizName = 'Untitled Quiz' }) {
                 </div>
                 <div className='quiz-container-right'>
                     <button className='show-levels-btn' onClick={toggleLevels}>
-                        {showLevels ? 'Hide Levels' : 'Show Levels'}
+                        {showLevels ? 'Hide Quizzes' : 'Show Quizzes'}
                     </button>
-                    {isTeacher && (
+                    {/*isTeacher && (
                         <button className='edit-quiz-btn'>
                             Edit
                         </button>
-                    )}
+                    )*/}
 
                 </div>
             </div>
             
             {showLevels && (
                 <div className='bottom-container'>
-                    <LevelSelector />
+                    <LevelSelector
+                        lessons={lessons}
+                    />
                 </div>
             )}
         </div>

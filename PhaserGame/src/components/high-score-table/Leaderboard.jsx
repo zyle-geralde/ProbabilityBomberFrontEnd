@@ -10,6 +10,8 @@ const Leaderboard = () => {
     ...Array.from({ length: totalRanks - players.length }, (_, i) => ({
       rank: '',
       name: '',
+      time: '',
+      attempt:'',
       points: '',
     })),
   ];
@@ -27,6 +29,8 @@ const Leaderboard = () => {
             <tr>
               <th className="leaderboard-th-rank">Rank</th>
               <th className="leaderboard-th-name">Name</th>
+              <th className="leaderboard-th-time">Time</th>
+              <th className="leaderboard-th-attempt">Attempt</th>
               <th className="leaderboard-th-score">Score</th>
             </tr>
           </thead>
@@ -37,6 +41,12 @@ const Leaderboard = () => {
                 <tr key={index} className={isTopPlayer ? 'top-player' : ''}>
                   <td className="leaderboard-number">{player.rank || index + 1}</td>
                   <td className="leaderboard-name">{player.name || '-'}</td>
+                  <td className="leaderboard-points">
+                    {player.points ? parseFloat(player.points).toFixed(3) : '-'}
+                  </td>
+                  <td className="leaderboard-points">
+                    {player.points ? parseFloat(player.points).toFixed(3) : '-'}
+                  </td>
                   <td className="leaderboard-points">
                     {player.points ? parseFloat(player.points).toFixed(3) : '-'}
                   </td>

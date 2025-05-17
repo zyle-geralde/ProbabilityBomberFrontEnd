@@ -9,7 +9,6 @@
 }
 
 .leaderboard-header h1 {
-    font-size: 2.5em;
     color: #ffffff;
     text-transform: uppercase;
     margin: 0;
@@ -19,13 +18,24 @@
 .leaderboard-th-rank{
     padding: 5px 10px;
     width: 15%;
+    font-size: 13px;
 }
 .leaderboard-th-name{
-    width: 70%;
-    text-align: left;   
+    width: 40%;
+    text-align: left;
+    font-size: 13px;   
 }
-.leaderboard-th-rank{
+.leaderboard-th-time{
     width: 15%;
+    font-size: 13px;
+}
+.leaderboard-th-attempt{
+    width: 15%;
+    font-size: 13px;
+}
+.leaderboard-th-score{
+    width: 15%;
+    font-size: 13px;
 }
 
 .leaderboard-wrapper {
@@ -34,6 +44,7 @@
     height: 500px;
     overflow-y: auto;
     scrollbar-width: none;
+    font-size: 13px;
 }
 
 /* Hide scrollbar for Webkit */
@@ -68,23 +79,24 @@ transition: all 0.2s ease-in-out;
 
 .leaderboard-table td {
 font-family: "Rubik", sans-serif;
-font-size: 1rem;
 padding: 0.8rem;
 }
 
 .leaderboard-number {
-    font-size: 1.3rem;
     font-weight: bold;
     text-align: center;
+    font-size: 13px;
 }
 
 .leaderboard-name {
     text-align: left;
+    font-size: 13px;
 }
 
 .leaderboard-points {
     font-weight: bold;
     text-align: center;
     white-space: nowrap;
+    font-size: 13px;
 }
   

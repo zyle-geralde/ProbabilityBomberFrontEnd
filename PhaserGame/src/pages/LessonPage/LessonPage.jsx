@@ -5,8 +5,11 @@ import './LessonSelector.css';
 import ListOfLessons from '../../components/list-of-lessons/ListOfLessons';
 import HomeNavbar from '../../components/navbar/HomeNavbar';
 import Leaderboard from '../../components/high-score-table/Leaderboard';
+import ViewStudents from '../../components/viewstudents/ViewStudents';
+
 
 import { useUserContext } from '../../contexts/UserContext';
+
 
 function LessonPage() {
   const [selectedTab, setSelectedTab] = useState('course');
@@ -32,6 +35,13 @@ function LessonPage() {
             >
               Created by Teacher
             </button>
+
+            <button
+              className={`lesson-button ${selectedTab === 'students' ? 'active' : ''}`}
+              onClick={() => setSelectedTab('students')}
+            >
+              View Students
+            </button>
           </div>
         </div>
 
@@ -44,6 +54,8 @@ function LessonPage() {
 
             <div className="list-of-lessons">
               {selectedTab === 'course' && <ListOfLessons />}
+              {selectedTab === 'students' && <ViewStudents/>}
+              
               {/* You can add `selectedTab === 'created' && <CreatedLessons />` here if needed */}
             </div>
           </div>
