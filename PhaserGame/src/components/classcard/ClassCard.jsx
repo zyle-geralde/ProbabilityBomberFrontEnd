@@ -2,7 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
-function ClassCard({ title, students_num, quizzes_num, onDelete }) {
+function ClassCard({ title, onDelete}) {
     const colorList = ["rgb(255, 101, 101)"];
 
     return (
@@ -50,15 +50,9 @@ function ClassCard({ title, students_num, quizzes_num, onDelete }) {
                 <div style={{ padding: "10px 20px" }}>
                     <div className='d-flex flex-row'>
                         <div style={{ color: "rgb(139, 39, 65)", whiteSpace: "nowrap", fontWeight: "bold", marginRight: "10px" }}>
-                            Students Enrolled:
+                            Created By:
                         </div>
-                        <div style={{ color: "black", whiteSpace: "nowrap" }}>{students_num}</div>
-                    </div>
-                    <div className='d-flex flex-row'>
-                        <div style={{ color: "rgb(139, 39, 65)", whiteSpace: "nowrap", fontWeight: "bold", marginRight: "10px" }}>
-                            Quizzes Created:
-                        </div>
-                        <div style={{ color: "black", whiteSpace: "nowrap" }}>{quizzes_num}</div>
+                        <div style={{ color: "black", whiteSpace: "nowrap" }}>You</div>
                     </div>
                 </div>
             </div>
