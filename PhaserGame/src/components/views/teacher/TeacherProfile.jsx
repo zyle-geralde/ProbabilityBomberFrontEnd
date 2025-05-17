@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import TeacherClasses from './TeacherClasses';
 import QuestionCreation from '../../views/question/QuestionCreation'
-import EditQuestion from '../../views/question/EditQuestion'
 import CreateClass from '../../forms/CreateClass'
 import LogoutButton from '../LogoutButton';
 import './TeacherProfile.css';
@@ -17,8 +16,6 @@ function TeacherProfile({ userData, onUpdatePassword }) {
       <h1>Create Question</h1>
       <QuestionCreation/>
       <hr />
-      <h1>Edit Question</h1>
-      <EditQuestion/>
         <div class="item1">
             <nav>
                 <div class="nav-items">

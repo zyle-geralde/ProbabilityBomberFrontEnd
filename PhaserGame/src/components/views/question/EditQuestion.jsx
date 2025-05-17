@@ -1,71 +1,67 @@
 import { useState } from "react";
 import { useEditQuestion } from "../../../hooks/UseQuestion";
 
-function EditQuestion(){
-    const [formData, setFormData] = useState({
-        questionName: "",
-        questionDescription: "",
-        numerator: "",
-        denominator: "",
-        probability: "",
-        event: []
-    });
+function EditQuestion({question}){
+    const originalName = question.questionName;
+    const [formData, setFormData] = useState({ ...question });
+    const [editingField, setEditingField] = useState(null);
     const [submittedData, setSubmittedData] = useState(null);
     const {success, loading} = useEditQuestion(submittedData);
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+    const handleFieldChange  = (e) => {
+        const { value } = e.target;
         setFormData(prev => ({
-        ...prev,
-        [name]: name === "event" ? value.split(",").map(v => v.trim()) : value
+            ...prev,
+            [editingField]: editingField === "event" 
+                ? value.split(",").map(v => v.trim()) 
+                : value,
+            ...(editingField === "questionName" && {
+                originalQuestionName: originalName
+            })
         }));
     };
-    const handleSubmit = () => {
-        setSubmittedData(formData); // Only submit when button is clicked
+    const confirmEdit = () => {
+        setSubmittedData(formData);
+        setEditingField(null); // exit edit mode
     };
+        const renderField = (label, fieldName) => (
+        <div style={{ marginBottom: "10px" }}>
+            <strong>{label}:</strong>{" "}
+            {editingField === fieldName ? (
+                <>
+                    <input
+                        type="text"
+                        value={
+                            fieldName === "event"
+                                ? formData[fieldName].join(", ")
+                                : formData[fieldName]
+                        }
+                        onChange={handleFieldChange}
+                    />
+                    <button onClick={() => setEditingField(null)}>Cancel</button>
+                    <button onClick={confirmEdit}>Save</button>
+                </>
+            ) : (
+                <>
+                    <span>{Array.isArray(formData[fieldName]) 
+                        ? formData[fieldName].join(", ") 
+                        : formData[fieldName]}</span>
+                    <button onClick={() => setEditingField(fieldName)}>Edit</button>
+                </>
+            )}
+        </div>
+    );
     return(
-        <div>
-            <input
-                name="questionName"
-                value={formData.questionName}
-                onChange={handleChange}
-                placeholder="Question Name"
-            />
-            <input
-                name="questionDescription"
-                value={formData.questionDescription}
-                onChange={handleChange}
-                placeholder="Question Description"
-            />
-            <input
-                name="numerator"
-                value={formData.numerator}
-                onChange={handleChange}
-                placeholder="Numerator"
-            />
-            <input
-                name="denominator"
-                value={formData.denominator}
-                onChange={handleChange}
-                placeholder="Denominator"
-            />
-            
-            <input
-                name="probability"
-                value={formData.probability}
-                onChange={handleChange}
-                placeholder="Probability"
-            />
-            
-            <input
-                name="event"
-                value={formData.event.join(", ")} // show it as a string
-                onChange={handleChange}
-                placeholder="Events (comma separated)"
-            />
-            {/* Optional: Show loading/success feedback */}
+        <div style={{ border: "1px solid #ccc", padding: "15px", marginBottom: "15px" }}>
+            {renderField("Question Name", "questionName")}
+            {renderField("Description", "questionDescription")}
+            {renderField("Numerator", "numerator")}
+            {renderField("Denominator", "denominator")}
+            {renderField("Probability", "probability")}
+            {renderField("Events", "event")}
+
+            <button onClick={confirmEdit}>Confirm All Edits</button>
             {loading && <p>Submitting...</p>}
-            {success && <p>Question created successfully!</p>}
-            <button onClick={() => handleSubmit()}>Confirm</button>
+            {success && <p>Question updated successfully!</p>}
         </div>
     );
 }
