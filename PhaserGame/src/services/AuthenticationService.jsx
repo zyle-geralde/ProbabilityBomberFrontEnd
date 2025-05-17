@@ -23,6 +23,7 @@ export const loginWithToken = async (token, role) => {
 };
 
 export const registerUser = async (name, email, password, role) => {
+  console.log("Debug: ", name, email, password, role )
   return api.post('/auth/register/', { name, email, password, role});
 };
 

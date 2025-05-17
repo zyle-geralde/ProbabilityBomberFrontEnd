@@ -29,7 +29,6 @@ export const loginUser = async ({ email, password, role, setUserData, setError, 
 
 export const registerUser = async ( { userName, email, password, role, setError, navigate } ) => {
   try {
-    console.log(userName, email, password, role, setError, navigate )
     await AuthService.registerUser(userName, email, password, role);
     navigate( ViewStates.LOGIN );
   } catch (error) {

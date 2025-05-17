@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
-import { useCreateQuestion } from "../../../hooks/UseQuestion";
-import GetAllQuestion from "./GetAllQuestion";
+import { useState } from "react";
+import { useEditQuestion } from "../../../hooks/UseQuestion";
 
-function CreateQuestion(){
+function EditQuestion(){
     const [formData, setFormData] = useState({
         questionName: "",
         questionDescription: "",
@@ -11,9 +10,8 @@ function CreateQuestion(){
         probability: "",
         event: []
     });
-    const [refreshKey, setRefreshKey] = useState(0);
     const [submittedData, setSubmittedData] = useState(null);
-    const {success, loading} = useCreateQuestion(submittedData);
+    const {success, loading} = useEditQuestion(submittedData);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -24,15 +22,8 @@ function CreateQuestion(){
     const handleSubmit = () => {
         setSubmittedData(formData); // Only submit when button is clicked
     };
-    useEffect(() => {
-      if(success){
-        setRefreshKey(prev => prev + 1);
-      }
-    }, [success]);
     return(
         <div>
-            <hr />
-            <GetAllQuestion refreshKey={refreshKey}/>
             <input
                 name="questionName"
                 value={formData.questionName}
@@ -79,4 +70,4 @@ function CreateQuestion(){
     );
 }
 
-export default CreateQuestion;
+export default EditQuestion;
