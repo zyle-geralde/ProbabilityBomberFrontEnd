@@ -1,6 +1,6 @@
 import React from 'react';
 import './LevelCard.css';
-import { useUserContext } from '../../contexts/UserContext';
+import * as AuthController from '../../controllers/AuthController';
 
 function LevelCard({
     title = 'Untitled Level',
@@ -10,8 +10,7 @@ function LevelCard({
     avgScore = '-',
     avgTimeFinished = '-'
 }) {
-    const { userId } = useUserContext();
-    const isTeacher = userId === 'u123456'; // Temporary teacher check
+    const { isTeacher } = AuthController.getCurrentUserRole();
 
     return (
         <div className="level-container">

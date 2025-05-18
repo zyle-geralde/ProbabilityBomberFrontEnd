@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import './LessonPage.css';
 import './LessonSelector.css';
 
@@ -7,8 +8,6 @@ import HomeNavbar from '../../components/navbar/HomeNavbar';
 import Leaderboard from '../../components/high-score-table/Leaderboard';
 import ViewStudents from '../../components/viewstudents/ViewStudents';
 
-
-import { useUserContext } from '../../contexts/UserContext';
 
 
 function LessonPage() {

@@ -1,22 +1,10 @@
 
 function RegisterForm({ userName, email, password, role, onChange, onRegister, error }) {
   return (
-    <div>
-      <header>
-        <nav>
-          <div className="nav-items">
-            <a href="#">Home</a>
-            <a href="#">Users</a>
-            <a href="#">Ranking</a>
-            <a href="#">Topics</a>
-            <a href="#">Settings</a>
-          </div>
-        </nav>
-      </header>
-
-      <div id="body-container">
+    <div className="login-page-wrapper">
+      <div id="body-container"  className="login-page">
         <div id="body-section">
-          <h2>Sign Up</h2>
+          <h2>Register</h2>
 
           <div className="input-group">
             <label htmlFor="userName">Username</label>
@@ -60,15 +48,21 @@ function RegisterForm({ userName, email, password, role, onChange, onRegister, e
             </select>
           </div>
 
+          <div className="links">
+            <a href="/forgot_password">
+              Forgot Password?
+            </a>
+            <span className="divider">|</span>
+            <a href="/login">
+              Login
+            </a>
+          </div>
+
           <button onClick={onRegister} className="login-btn">Register</button>
         </div>
       </div>
 
       {error && <p>Error: {error}</p>}
-
-      <footer>
-        <p>&copy; 2025 Dela Peña Solutions. All rights reserved.</p>
-      </footer>
     </div>
   );
 }
