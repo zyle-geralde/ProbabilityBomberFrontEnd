@@ -66,6 +66,7 @@
   
   /* Dropdown menu styles */
   .dropdown-menu {
+    display: block;
     position: absolute;
     right: 0;
     top: 100%;

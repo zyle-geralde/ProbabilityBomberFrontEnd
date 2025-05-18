@@ -70,3 +70,14 @@ export const logoutUser = async ({ navigate }) => {
     console.error("Logout failed:", error.message);
   }
 };
+
+export const getCurrentUserRole = () => {
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  const role = userData?.role;
+
+  return {
+    isTeacher: role === "teacher",
+    isStudent: role === "student",
+    role,
+  };
+};

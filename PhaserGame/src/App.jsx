@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-import PhaserGame from './pages/PhaserGame'
 import { useEffect, useState } from "react";
 
 import * as AuthController from './controllers/AuthController';
 
+import PhaserGame from './pages/PhaserGame'
 import ViewStates from './enums/ViewStates';
 import LoginForm from './components/forms/LoginForm';
 import RegisterForm from './components/forms/RegisterForm';
@@ -18,6 +18,7 @@ import QuizSettingPage from "./pages/QuizSettingPage/QuizSettingPage";
 import ClassPage from "./pages/ClassPage/ClassPage";
 import ProfilePage from "./pages/ProfilePage/UserProfile";
 import ClassPerformancePage from "./pages/PerformanceTracking/ClassPerformancePage";
+
 
 export function App() {
   const navigate = useNavigate();

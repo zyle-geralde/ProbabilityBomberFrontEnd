@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './LessonCard.css';
-import { useUserContext } from '../../contexts/UserContext';
+
+
+import * as AuthController from '../../controllers/AuthController';
 import QuizCard from '../quiz-card/QuizCard';
 
 
@@ -8,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faFile } from '@fortawesome/free-solid-svg-icons';
 
 function LessonCard({ lesson }) {
-    const { isTeacher } = useUserContext(); 
+    const { isTeacher } = AuthController.getCurrentUserRole(); 
     const [isExpanded, setIsExpanded] = useState(false);
     const [showForm, setShowForm] = useState(false);
     const [newQuizTitle, setNewQuizTitle] = useState('');
