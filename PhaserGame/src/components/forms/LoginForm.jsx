@@ -1,11 +1,12 @@
 import "./LoginForm.css";
+import "./Forms.css";
 
 function LoginForm({ email, role, onChange, onLogin, onForgotPassword, error }) {
   return (
     <div className="login-page-wrapper">
       <div id="body-container" className="login-page">
         <div id="body-section">
-          <h2>Sign In</h2>
+          <h2>Login</h2>
 
           <div className="input-group">
             <label htmlFor="email">Username</label>

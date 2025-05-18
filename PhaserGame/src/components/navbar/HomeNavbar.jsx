@@ -3,9 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import './HomeNavbar.css';
 import * as AuthController from '../../controllers/AuthController';
 
-function HomeNavbar({ username = "Guest" }) {
+function HomeNavbar() {
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate(); 
+
+  const username = AuthController.getUsername();
+  console.log("username: ", username);
 
   const handleLogout = () => {
     AuthController.logoutUser({ navigate }); 
@@ -15,7 +18,12 @@ function HomeNavbar({ username = "Guest" }) {
     <>
       <nav className="navbar">
         <div className="navbar-container">
-          <div className="navbar-logo">[LOGO]</div>
+          <div className="navbar-logo">
+            <a href="/lessonPage">
+              <img src="./images/bomb-logo.svg" alt="Logo" />
+            </a>
+           
+          </div>
           <div className="navbar-user">
             <div className="welcome-text">Welcome, {username}</div>
             <button 

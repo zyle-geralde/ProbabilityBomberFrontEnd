@@ -1,0 +1,197 @@
+#body-container{
+    margin: auto;
+    background-color: white;
+    text-align: center;
+}
+
+.input-group {
+    position: relative;
+    display: flex;
+    text-align: left;
+    width: 100%;
+    flex-direction: column;
+}
+
+.input-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
+.login-btn {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: none;
+    background-color: #8A2D3B;
+    color: white;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.login-btn:hover {
+    background-color: #8a2d3be2;
+} 
+
+
+.page-wrapper {
+height: 100vh;           
+display: flex;
+justify-content: center;  
+align-items: center;    
+background-color: #f0f2f5; 
+padding: 20px;         
+}
+
+#body-container {
+background: white;
+padding: 1em;
+border: 1px solid black;
+box-shadow: 5px 5px black;
+border-radius: 8px;
+width: 100%;
+max-width: 400px;      
+}
+
+.input-group {
+margin-bottom: 20px;
+}
+
+.error-message {
+margin-top: 15px;
+color: red;
+font-weight: bold;
+text-align: center;
+}
+
+
+.login-container{
+    height: 100%;
+}
+
+/* Scoped only to login view */
+.login-page-wrapper {
+    height: 100vh;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    background-image: url(https://cit.edu/wp-content/uploads/2024/08/Background.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#body-container.login-page {
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border: 2px solid black;
+}
+
+
+.links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 10px 0;
+    font-size: 14px;
+    color: #888;
+}
+
+
+.links a{
+    color: #888;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.links a:hover{
+    color: #FACE2F;
+}
+
+
+.input-group select {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  appearance: none; /* Hides default arrow in most browsers */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.input-group select:focus {
+  border-color: #8A2D3B;
+  outline: none;
+  box-shadow: 0 0 3px #8A2D3B;
+}
+
+.input-group select option:hover {
+    background-color:  #8A2D3B;
+  }
+/* 
+#body-section {
+    margin: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding: 20px;
+    width: 300px;
+    background-color: white;
+    text-align: center;
+}
+
+#body-section h2 {
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.login-btn {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.login-btn:hover {
+    background-color: #0056b3;
+} */

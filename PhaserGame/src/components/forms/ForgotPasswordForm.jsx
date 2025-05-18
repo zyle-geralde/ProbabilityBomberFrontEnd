@@ -1,19 +1,7 @@
 function ForgotPasswordForm({ onChange, onForgotPassword }) {
     return (
-        <div>
-            <header>
-                <nav>
-                    <div className="nav-items">
-                        <a href="#">Home</a>
-                        <a href="#">Users</a>
-                        <a href="#">Ranking</a>
-                        <a href="#">Topics</a>
-                        <a href="#">Settings</a>
-                    </div>
-                </nav>
-            </header>
-
-            <div id="body-container">
+        <div className="login-page-wrapper">
+            <div id="body-container"  className="login-page">
                 <div id="body-section">
                     <h2>Forgot Password?</h2>
                     <p>
@@ -31,10 +19,6 @@ function ForgotPasswordForm({ onChange, onForgotPassword }) {
                     </button>
                 </div>
             </div>
-
-            <footer>
-                <p>&copy; 2025 Dela Peña Solutions. All rights reserved.</p>
-            </footer>
         </div>
     );
 }

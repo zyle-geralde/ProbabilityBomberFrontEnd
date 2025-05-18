@@ -28,9 +28,8 @@
     margin: 0 auto;
   }
   
-  .navbar-logo {
-    font-weight: bold;
-    font-size: 1.5rem;
+  .navbar-logo  img{
+    width: 40px;
     cursor: pointer;
   }
 
