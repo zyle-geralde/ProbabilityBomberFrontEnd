@@ -20,7 +20,15 @@ export const editQuestionService = async (formData) => {
 }
 export const getAllQuestionService = async () => {
     try {
-        return api.get('/question/get_all_question/')
+        return api.get('/question/get_all_question/');
+    } catch (error) {
+        console.error("Service Error: ", error);
+        throw error;
+    }
+}
+export const removeAllQuestionService = async (questionName) => {
+    try {
+        return api.post('/question/remove_all_question/', {questionName});
     } catch (error) {
         console.error("Service Error: ", error);
         throw error;

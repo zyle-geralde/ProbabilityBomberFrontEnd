@@ -19,7 +19,16 @@ export const editQuestion = async (formData) => {
 }
 export const getAllQuestion = async () => {
     try {
-        return QuestionService.getAllQuestionService();
+        return await QuestionService.getAllQuestionService();
+    } catch (error) {
+        console.error("QuestionController Error:", error);
+        throw error;
+    }
+}
+export const removeAllQuestion = async (questionName) => {
+    try {
+        await QuestionService.removeAllQuestionService(questionName);
+        return true;
     } catch (error) {
         console.error("QuestionController Error:", error);
         throw error;
