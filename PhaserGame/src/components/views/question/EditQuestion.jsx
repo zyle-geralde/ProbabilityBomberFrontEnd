@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useEditQuestion } from "../../../hooks/UseQuestion";
+import RemoveAllQuestion from "../question/RemoveAllQuestion"
 
 function EditQuestion({question}){
     const originalName = question.questionName;
+    const [removeQuestion, setRemoveQuestion] = useState(null);
     const [formData, setFormData] = useState({ ...question });
     const [editingField, setEditingField] = useState(null);
     const [submittedData, setSubmittedData] = useState(null);
@@ -58,8 +60,14 @@ function EditQuestion({question}){
             {renderField("Denominator", "denominator")}
             {renderField("Probability", "probability")}
             {renderField("Events", "event")}
+            {renderField("Created By", "createdBy")}
 
             <button onClick={confirmEdit}>Confirm All Edits</button>
+
+            {formData.questionName && (
+                <RemoveAllQuestion questionName={formData.questionName} />
+            )}
+            
             {loading && <p>Submitting...</p>}
             {success && <p>Question updated successfully!</p>}
         </div>

@@ -52,7 +52,6 @@ export function useGetAllQuestion(refreshKey){
             setLoading(true);
             try {
                 const response = await QuestionController.getAllQuestion()
-                console.log("Data: ", response.data.allQuestions)
                 setQuestions(response.data.allQuestions);
             } catch (error) {
                 console.error("Hook Error:", error);
@@ -64,4 +63,24 @@ export function useGetAllQuestion(refreshKey){
     }, [refreshKey]);
 
     return {questions, loading};
+}
+
+export function useRemoveAllQuestion(){
+    const [success, setSuccess] = useState(false);
+    const [loading, setLoading] = useState(false);
+    
+    const removeAll = async (questionName) => {
+        setLoading(true);
+        setSuccess(false);
+        try {
+            const response = await QuestionController.removeAllQuestion(questionName);
+            setSuccess(response);
+        } catch (error) {
+            console.error("Hook Error:", error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    return {removeAll, success, loading}
 }
