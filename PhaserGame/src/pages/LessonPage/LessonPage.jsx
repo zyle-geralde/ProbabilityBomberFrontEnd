@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import './LessonPage.css';
 import './LessonSelector.css';
 
@@ -9,10 +10,14 @@ import ViewStudents from '../../components/viewstudents/ViewStudents';
 
 
 import { useUserContext } from '../../contexts/UserContext';
+import { useLocation } from 'react-router-dom';
 
 
-function LessonPage() {
+function LessonPage({ userData }) {
+  const location = useLocation();
+  const { title } = location.state || {};
   const [selectedTab, setSelectedTab] = useState('course');
+
 
   return (
     <div>
@@ -53,8 +58,12 @@ function LessonPage() {
             </div>
 
             <div className="list-of-lessons">
-              {selectedTab === 'course' && <ListOfLessons />}
-              {selectedTab === 'students' && <ViewStudents/>}
+              {selectedTab === 'course' && <ListOfLessons
+                userData={userData}
+                title={title} />}
+              {selectedTab === 'students' && <ViewStudents
+                userData={userData}
+                className={title} />}
               
               {/* You can add `selectedTab === 'created' && <CreatedLessons />` here if needed */}
             </div>

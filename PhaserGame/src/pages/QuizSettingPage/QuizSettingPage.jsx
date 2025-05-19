@@ -109,7 +109,7 @@ export default function QuizSettingPage() {
           {!isAddQuizRoute && <h2>Quiz Setting & Editor</h2>}
 
           {/*contains name of the quiz, the difficuty, and the time*/}
-          {isAddQuizRoute &&
+          {/*isAddQuizRoute &&
             <div className="d-flex flex-row">
               <div className="d-flex flex-row align-items-center">
                 <label className="me-2 text-white fw-bold">Name</label>
@@ -129,7 +129,7 @@ export default function QuizSettingPage() {
                 <label className="me-2 text-white fw-bold">Time (minutes)</label>
                 <input type="number" className="form-control w-25" placeholder="ex. 30" min="1" />
               </div>
-            </div>
+            </div>*/
           }
         </div>
 
@@ -224,6 +224,7 @@ export default function QuizSettingPage() {
                     />
                   </td>
                   <td className="quiz-settings-td">
+                    <button className="quiz-settings-delete-row-button" style={{backgroundColor:"green"}}> Save </button>
                     <button
                       className="quiz-settings-delete-row-button"
                       onClick={() => handleDeleteConfirm(index)}
@@ -237,9 +238,8 @@ export default function QuizSettingPage() {
           </table>
         </div>
         <div className='d-flex flex-row justify-content-end mt-2'>
-          <button className="quiz-settings-add-question-button me-2" style={{padding:"10px 50px"}} onClick={handleSaveConfirm}> Save </button>
+          <button className="quiz-settings-add-question-button me-2" style={{padding:"10px 50px"}} onClick={handleSaveConfirm}> Done </button>
           {!isAddQuizRoute && <button className="quiz-settings-delete-quiz-button" onClick={handleQuizDeleteConfirm}> - Delete Quiz </button>}
-          {isAddQuizRoute && <button className="quiz-settings-delete-quiz-button" onClick={handleQuizCancelConfirm}> - Cancel Quiz </button>}
         </div>
         
       </div>

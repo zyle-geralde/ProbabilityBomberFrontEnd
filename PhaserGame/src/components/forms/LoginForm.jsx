@@ -1,22 +1,12 @@
+import "./LoginForm.css";
+import "./Forms.css";
 
 function LoginForm({ email, role, onChange, onLogin, onForgotPassword, error }) {
   return (
-    <div>
-      <header>
-        <nav>
-          <div className="nav-items">
-            <a href="#">Home</a>
-            <a href="#">Users</a>
-            <a href="#">Ranking</a>
-            <a href="#">Topics</a>
-            <a href="#">Settings</a>
-          </div>
-        </nav>
-      </header>
-
-      <div id="body-container">
+    <div className="login-page-wrapper">
+      <div id="body-container" className="login-page">
         <div id="body-section">
-          <h2>Sign In</h2>
+          <h2>Login</h2>
 
           <div className="input-group">
             <label htmlFor="email">Username</label>
@@ -48,20 +38,23 @@ function LoginForm({ email, role, onChange, onLogin, onForgotPassword, error }) 
             </select>
           </div>
 
-          <a onClick={onForgotPassword} style={{ cursor: "pointer" }}>
-            Forgot Password?
-          </a>
+          <div className="links">
+            <a onClick={onForgotPassword} style={{ cursor: "pointer" }}>
+              Forgot Password?
+            </a>
+            <span className="divider">|</span>
+            <a href="/register" style={{ cursor: "pointer" }}>
+              Register
+            </a>
+          </div>
+
           <button onClick={onLogin} className="login-btn">
             Login
           </button>
+
+          {error && <p className="error-msg">Error: {error}</p>}
         </div>
       </div>
-
-      {error && <p>Error: {error}</p>}
-
-      <footer>
-        <p>&copy; 2025 Dela Peña Solutions. All rights reserved.</p>
-      </footer>
     </div>
   );
 }

@@ -9,10 +9,6 @@ function UpdatePasswordForm({ onChange, onUpdate, error }) {
       />
       <button onClick={onUpdate}>Confirm</button>
       {error && <p>Error: {error}</p>}
-
-      <footer>
-        <p>&copy; 2025 Dela Peña Solutions. All rights reserved.</p>
-      </footer>
     </div>
   );
 }

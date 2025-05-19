@@ -1,6 +1,5 @@
 import React from 'react';
 import LessonCard from '../lesson-card/LessonCard';
-import { useUserContext } from '../../contexts/UserContext';
 
 const staticLessons = [
   {
@@ -552,7 +551,8 @@ const staticLessons = [
 
 
 
-function ListOfLessons() {
+function ListOfLessons({ userData, title }) {
+
   return (
     <>
       {staticLessons.map((lesson) => (

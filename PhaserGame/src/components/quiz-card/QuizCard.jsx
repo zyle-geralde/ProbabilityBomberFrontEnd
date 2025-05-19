@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+
 import './QuizCard.css';
+
 import LevelSelector from './LevelSelector';
-import { useUserContext } from '../../contexts/UserContext';
+import * as AuthController from '../../controllers/AuthController';
 
 function QuizCard({ levelsCompleted = '-', quizName = 'Untitled Quiz',lessons }) {
-    const { isTeacher } = useUserContext(); 
+    const { isTeacher } = AuthController.getCurrentUserRole(); 
     const [showLevels, setShowLevels] = useState(false);
 
     const toggleLevels = () => {

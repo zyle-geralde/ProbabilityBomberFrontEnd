@@ -1,167 +1,142 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { useShowStudents, useAddStudentToClass, useRemoveStudentFromClass } from '../../hooks/UseTeacher';
 
-function ViewStudents() {
-    const [students, setStudents] = useState([
-        "Alice Johnson",
-        "Bob Smith",
-        "Charlie Garcia",
-        "Daniela Cruz",
-        "Eugene Tan",
-        "Francine dela Cruz",
-        "Gerry Alvarez",
-        "Hannah Lim",
-        "menot Lim",
-        "HMoent Lim",
-    ]);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [dropdownVisible, setDropdownVisible] = useState(false);
+function ViewStudents({ userData, className }) {
+  const { students, loading } = useShowStudents(className, 0);
+  const [localStudents, setLocalStudents] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [alert, setAlert] = useState({ type: '', message: '', visible: false });
+  const [studentToDelete, setStudentToDelete] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const { remove, loading: removeLoading, success: removeSuccess, reset: resetRemove } = useRemoveStudentFromClass();
 
-    const filteredStudents = students.filter((name) =>
-        name.toLowerCase().includes(searchTerm.toLowerCase()) && searchTerm.trim() !== ""
-    );
+  // Sync API → local state when done loading
+  useEffect(() => {
+    if (!loading) {
+      setLocalStudents(students);
+    }
+  }, [loading, students]);
 
-    const [alert, setAlert] = useState({ type: '', message: '', visible: false });
+  const showAlert = (type, message) => {
+    setAlert({ type, message, visible: true });
+    setTimeout(() => setAlert({ type: '', message: '', visible: false }), 3000);
+  };
 
-    const [studentToDelete, setStudentToDelete] = useState(null);
-    const [showModal, setShowModal] = useState(false);
+  // Add student API call + local state update
+const handleAddStudent = async () => {
+  const trimmedName = searchTerm.trim();
+  if (!trimmedName) return showAlert('danger', 'Please enter a valid name.');
 
-    const showAlert = (type, message) => {
-        setAlert({ type, message, visible: true });
-        setTimeout(() => setAlert({ type: '', message: '', visible: false }), 3000);
-    };
+  const exists = localStudents.some(s => s.toLowerCase() === trimmedName.toLowerCase());
+  if (exists) return showAlert('warning', 'Student already exists.');
 
-    const handleAddStudent = () => {
-        const trimmedName = searchTerm.trim();
+  const { success } = await useAddStudentToClass(className, trimmedName);
+  if (success) {
+    setLocalStudents(prev => [...prev, trimmedName]);
+    setSearchTerm("");
+    showAlert('success', 'Student added successfully!');
+  } else {
+    showAlert('danger', 'Failed to add student.');
+  }
+};
 
-        if (!trimmedName) {
-            showAlert('danger', 'Please enter a valid name.');
-            return;
-        }
+  // Open modal to confirm delete
+  const handleDeleteClick = (name) => {
+    setStudentToDelete(name);
+    setShowModal(true);
+  };
 
-        const exists = students.some(
-            (student) => student.toLowerCase() === trimmedName.toLowerCase()
-        );
+  // Confirm and delete via API
+const confirmDelete = async () => {
+  const didRemove = await remove(className, studentToDelete);
 
-        if (exists) {
-            showAlert('warning', 'Student already exists.');
-            return;
-        }
+  if (didRemove) {
+    setLocalStudents(prev => prev.filter((s) => s !== studentToDelete));
+    showAlert('success', `"${studentToDelete}" has been removed.`);
+  } else {
+    showAlert('danger', `Failed to remove "${studentToDelete}".`);
+  }
 
-        setStudents((prev) => [...prev, trimmedName]);
-        setSearchTerm("");
-        setDropdownVisible(false);
-        showAlert('success', 'Student added successfully!');
-    };
+  setStudentToDelete(null);
+  setShowModal(false);
+};
 
-    const handleDeleteClick = (name) => {
-        setStudentToDelete(name);
-        setShowModal(true);
-    };
 
-    const confirmDelete = () => {
-        setStudents((prev) => prev.filter((s) => s !== studentToDelete));
-        showAlert('success', `"${studentToDelete}" has been removed.`);
-        setStudentToDelete(null);
-        setShowModal(false);
-    };
+  const filteredStudents = localStudents.filter((name) =>
+    name.toLowerCase().includes(searchTerm.toLowerCase()) && searchTerm.trim() !== ""
+  );
 
-    return (
-        <div className="container mt-4">
-            <div className='d-flex flex-row justify-content-between align-items-center'>
-                <h3>Enrolled Students</h3>
-                <button className='btn btn-danger' onClick={handleAddStudent}>
-                    Add Student
-                </button>
-            </div>
+  if (loading) return <div className="text-center mt-4">Loading students...</div>;
 
-            {/* Bootstrap Alert */}
-            {alert.visible && (
-                <div className={`alert alert-${alert.type} alert-dismissible fade show mt-3`} role="alert">
-                    {alert.message}
-                    <button
-                        type="button"
-                        className="btn-close"
-                        onClick={() => setAlert({ ...alert, visible: false })}
-                    ></button>
-                </div>
-            )}
+  return (
+    <div className="container mt-4">
+      <div className='d-flex flex-row justify-content-between align-items-center'>
+        <h3>Enrolled Students</h3>
+        <button className='btn btn-danger' onClick={handleAddStudent}>
+          Add Student
+        </button>
+      </div>
 
-            {/* Search Input */}
-            <div className="mt-3 position-relative">
-                <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Search student name..."
-                    value={searchTerm}
-                    onChange={(e) => {
-                        setSearchTerm(e.target.value);
-                        setDropdownVisible(true);
-                    }}
-                    onBlur={() => setTimeout(() => setDropdownVisible(false), 150)}
-                />
-
-            </div>
-
-            {/* Enrolled List */}
-            <div className="d-flex flex-column gap-2 mt-4">
-                {students.map((name, idx) => (
-                    <div key={idx} className="d-flex justify-content-between align-items-center border-bottom pb-2">
-                        <div style={{ wordBreak: "break-word", flex: 1 }}>
-                            {name}
-                        </div>
-                        <FontAwesomeIcon
-                            icon={faTrash}
-                            className="text-danger"
-                            style={{ cursor: 'pointer', marginLeft: '10px' }}
-                            title="Delete"
-                            onClick={() => handleDeleteClick(name)}
-                        />
-                    </div>
-                ))}
-            </div>
-
-            {/* Delete Confirmation Modal */}
-            {showModal && (
-                <div className="modal fade show d-block" tabIndex="-1" role="dialog">
-                    <div className="modal-dialog" role="document">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title">Confirm Deletion</h5>
-                                <button
-                                    type="button"
-                                    className="btn-close"
-                                    onClick={() => setShowModal(false)}
-                                ></button>
-                            </div>
-                            <div className="modal-body">
-                                <p>Are you sure you want to remove <strong>{studentToDelete}</strong>?</p>
-                            </div>
-                            <div className="modal-footer">
-                                <button
-                                    type="button"
-                                    className="btn btn-secondary"
-                                    onClick={() => setShowModal(false)}
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="button"
-                                    className="btn btn-danger"
-                                    onClick={confirmDelete}
-                                >
-                                    Confirm Delete
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-            {/* Modal backdrop */}
-            {showModal && <div className="modal-backdrop fade show"></div>}
+      {alert.visible && (
+        <div className={`alert alert-${alert.type} alert-dismissible fade show mt-3`} role="alert">
+          {alert.message}
+          <button type="button" className="btn-close" onClick={() => setAlert({ ...alert, visible: false })}></button>
         </div>
-    );
+      )}
+
+      <div className="mt-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Search student name..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
+      <div className="d-flex flex-column gap-2 mt-4">
+        {(searchTerm ? filteredStudents : localStudents).map((name, idx) => (
+          <div key={idx} className="d-flex justify-content-between align-items-center border-bottom pb-2">
+            <div style={{ wordBreak: "break-word", flex: 1 }}>{name}</div>
+            <FontAwesomeIcon
+              icon={faTrash}
+              className="text-danger"
+              style={{ cursor: 'pointer', marginLeft: '10px' }}
+              title="Delete"
+              onClick={() => handleDeleteClick(name)}
+            />
+          </div>
+        ))}
+      </div>
+
+      {showModal && (
+        <>
+          <div className="modal fade show d-block" tabIndex="-1">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title">Confirm Deletion</h5>
+                  <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
+                </div>
+                <div className="modal-body">
+                  <p>Are you sure you want to remove <strong>{studentToDelete}</strong>?</p>
+                </div>
+                <div className="modal-footer">
+                  <button className="btn btn-secondary" onClick={() => setShowModal(false)}>Cancel</button>
+                  <button className="btn btn-danger" onClick={confirmDelete}>
+                    {removeLoading ? "Deleting..." : "Confirm Delete"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="modal-backdrop fade show"></div>
+        </>
+      )}
+    </div>
+  );
 }
 
 export default ViewStudents;
