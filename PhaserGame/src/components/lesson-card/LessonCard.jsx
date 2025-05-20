@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import './LessonCard.css';
 
-
 import * as AuthController from '../../controllers/AuthController';
 import QuizCard from '../quiz-card/QuizCard';
 import { useNavigate } from 'react-router-dom';
-
+import * as UseQuiz from "../../hooks/UseQuiz"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faFile } from '@fortawesome/free-solid-svg-icons';
@@ -17,8 +16,10 @@ function LessonCard({ lesson }) {
     const [newQuizTitle, setNewQuizTitle] = useState('');
     const [difficulty, setDifficulty] = useState("");
     const [quizTime, setQuizTime] = useState("");
+    const [error, setError] = useState(""); // ✅ Error state added
 
-    const [topic,setTopic] = useState("")
+    const navigate = useNavigate();
+    const topic = lesson.id.split('lesson')[1];
 
     const toggleQuizCard = () => setIsExpanded(prev => !prev);
 
@@ -27,14 +28,41 @@ function LessonCard({ lesson }) {
     const handleCancel = () => {
         setShowForm(false);
         setNewQuizTitle('');
+        setDifficulty('');
+        setQuizTime('');
+        setError(""); // ✅ Clear error on cancel
     };
 
-    const handleSave = () => {
-        setShowForm(false);
-        console.log('New Quiz Title:', newQuizTitle);
-        navigate("/addQuiz")
-
+const handleSave = async () => {
+    if (newQuizTitle.trim() === "" || difficulty.trim() === "" || quizTime.toString().trim() === "") {
+        console.log(difficulty)
+        setError("All fields are required.");
+        return;
     }
+
+    setError(""); // Clear any previous error
+
+    const topic = lesson.id.split('lesson')[1];
+
+    try {
+        const { success, response, error: createError } = await UseQuiz.createQuiz(
+            newQuizTitle,
+            topic,
+            difficulty == "beginner"?1:difficulty == "intermediate"?2:3,
+            parseInt(quizTime+"")
+        );
+
+        if (success) {
+            setShowForm(false);
+            console.log('Quiz Created:', response);
+            navigate("/addQuiz");
+        } else {
+            setError("Failed to create quiz. Please try again.");
+        }
+    } catch (err) {
+        setError("Something went wrong while creating the quiz.");
+    }
+};
 
     return (
         <div className="lesson-container">
@@ -47,13 +75,10 @@ function LessonCard({ lesson }) {
                     </div>
                 </div>
                 <div className='lesson-container-right'>
-                    {/* Add any other info like progress or additional icons here */}
-
+                    {/* Additional info here if needed */}
                 </div>
             </div>
 
-
-            {/*Expands a quiz card when clicked*/}
             {isExpanded && (
                 <>
                     <div className='lesson-file-resource'>
@@ -63,15 +88,12 @@ function LessonCard({ lesson }) {
                     <div className='quiz-card-container'>
                         {lesson.quizzes.map((quiz) => (
                             <QuizCard
-                                key={quiz.id} // Use the quiz id as the key for each quiz
+                                key={quiz.id}
                                 levelsCompleted={quiz.levelsCompleted}
                                 quizName={quiz.name}
                                 lessons={lesson}
                             />
                         ))}
-                        {/* {isTeacher && (
-                        
-                    )} */}
                         {isTeacher && (
                             <button className='add-quiz-btn' onClick={handleAddQuizClick}>Add Quiz</button>
                         )}
@@ -79,7 +101,6 @@ function LessonCard({ lesson }) {
                 </>
             )}
 
-            {/*Show the form to add a new quiz*/}
             {showForm && (
                 <div className="overlay d-flex justify-content-center align-items-center">
                     <div className="overlay-form bg-white p-4 rounded shadow" style={{ width: '400px', position: 'relative' }}>
@@ -90,6 +111,13 @@ function LessonCard({ lesson }) {
                         ></button>
 
                         <h3 className="mb-4">Add New Quiz</h3>
+
+                        {/* ✅ Error alert */}
+                        {error && (
+                            <div className="alert alert-danger" role="alert">
+                                {error}
+                            </div>
+                        )}
 
                         {/* Quiz Title */}
                         <div className="mb-3">
@@ -129,7 +157,7 @@ function LessonCard({ lesson }) {
                                 className="form-control"
                                 min="1"
                                 value={quizTime}
-                                onChange={(e) => setQuizTime(e.target.value)}
+                                onChange={(e) => setQuizTime(parseInt(e.target.value))}
                                 placeholder="Enter time in minutes"
                             />
                         </div>
@@ -140,7 +168,6 @@ function LessonCard({ lesson }) {
                         </div>
                     </div>
                 </div>
-
             )}
         </div>
     );
