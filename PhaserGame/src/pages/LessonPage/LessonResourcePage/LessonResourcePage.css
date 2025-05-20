@@ -1,0 +1,57 @@
+.topic {
+    padding: 15px 20px;
+    margin-bottom: 20px;
+  }
+
+  .topic h2 {
+    color: #000000;
+  }
+
+  .subtopic {
+    margin-top: 15px;
+    padding-left: 15px;
+    border-left: 6px solid #8A2D3B;
+    margin-bottom: 3em;
+  }
+
+  .subtopic h3 {
+    color: #000000;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .example {
+    background-color: #fbdc9333;
+    padding: 10px;
+    border-left: 4px solid #f7ab26;
+    margin-top: 10px;
+    font-style: italic;
+  }
+
+  .standard{
+    border-left: none;
+    padding-left: 3em;
+    padding-right: 3em;
+    font-size: 1.3em;
+    font-weight: bold;
+  }
+
+  .navbar-back-container {
+    padding-left: 1em;
+    display: flex;
+    gap: 2em;
+    flex-direction: row; 
+    align-items: center; 
+    
+  }
+  .navbar-back-icon{
+    transition: transform 0.1s ease;
+    cursor: pointer;
+  }
+
+  .navbar-back-icon:hover{
+    transform: scale(1.5);
+    color: #FACE2F;
+  }
+
+  

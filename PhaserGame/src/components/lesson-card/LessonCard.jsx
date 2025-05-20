@@ -51,7 +51,7 @@ function LessonCard({ lesson }) {
                 <>
                 <div className='lesson-file-resource'>
                     <FontAwesomeIcon icon={faFile} className="lesson-file-icon"/>
-                    <a href='#' className='lesson-file-link'>Lesson Resource File</a>
+                    <a href={`/topic/1`} className='lesson-file-link'>Lesson Resource File</a>
                 </div>
                 <div className='quiz-card-container'>
                     {lesson.quizzes.map((quiz) => (
