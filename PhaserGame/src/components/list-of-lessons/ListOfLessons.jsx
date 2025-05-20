@@ -559,15 +559,18 @@ function ListOfLessons({ userData, title }) {
   if (loading) return <div>Loading</div>
   if (error) return <p>Something went wrong: {error.message}</p>;
 
-  console.log(quizzes.allQuizzes)
+  const filteredList = quizzes.allQuizzes.filter(quiz => quiz.createdBy == userData.name)
+  console.log(filteredList)
+
 
   return (
     <>
       {staticLessons.map((lesson,index) => (
         <LessonCard
           // Use lesson.id as a unique key
-          key={index} 
+          key={index}
           lesson={lesson}
+          quizList={filteredList.filter(quiz => quiz.topic === lesson.id.split('lesson')[1])}
         />
       ))}
     </>

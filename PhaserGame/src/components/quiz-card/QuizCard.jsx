@@ -45,6 +45,7 @@ function QuizCard({ levelsCompleted = '-', quizName = 'Untitled Quiz',lessons })
                 <div className='bottom-container'>
                     <LevelSelector
                         lessons={lessons}
+                        quizStage={quizName}
                     />
                 </div>
             )}

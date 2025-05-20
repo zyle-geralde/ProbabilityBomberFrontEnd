@@ -2,19 +2,25 @@ import React from 'react';
 import './LevelSelector.css';
 import LevelCard from './LevelCard';
 
-function LevelSelector({lessons}) {
+function LevelSelector({ lessons, quizStage }) {
+    let newQuizStage = quizStage == "Beginner"? 1: quizStage =="Intermediate"?2:3
+    const filteredList = lessons.filter(quiz => quiz.level + "" == newQuizStage + "")
+    console.log("New List")
+    console.log(filteredList)
+    console.log(lessons)
+    console.log(quizStage)
 
     return (
         <div className="level-selector-container">
-            {lessons.quizzes[0].levels.map((level, index) => (
+            {filteredList.map((level, index) => (
                 <LevelCard
                     key={index}
-                    title={level.name}
-                    timeStarted={level.time}
-                    timeFinished={level.time}
-                    score={level.score}
-                    avgScore={level.score}
-                    avgTimeFinished={level.time}
+                    title={level.quizName}
+                    timeStarted={level.duration}
+                    timeFinished={level.duration}
+                    score={0}
+                    avgScore={0}
+                    avgTimeFinished={level.duration}
                 />
             ))
             }

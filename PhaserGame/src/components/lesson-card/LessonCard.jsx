@@ -9,7 +9,7 @@ import * as UseQuiz from "../../hooks/UseQuiz"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faFile } from '@fortawesome/free-solid-svg-icons';
 
-function LessonCard({ lesson }) {
+function LessonCard({ lesson,quizList }) {
     const { isTeacher } = AuthController.getCurrentUserRole(); 
     const [isExpanded, setIsExpanded] = useState(false);
     const [showForm, setShowForm] = useState(false);
@@ -17,6 +17,7 @@ function LessonCard({ lesson }) {
     const [difficulty, setDifficulty] = useState("");
     const [quizTime, setQuizTime] = useState("");
     const [error, setError] = useState(""); // ✅ Error state added
+    const levels = [1,2,3]
 
     const navigate = useNavigate();
     const topic = lesson.id.split('lesson')[1];
@@ -86,12 +87,12 @@ const handleSave = async () => {
                         <a href='#' className='lesson-file-link'>Lesson Resource File</a>
                     </div>
                     <div className='quiz-card-container'>
-                        {lesson.quizzes.map((quiz) => (
+                        {levels.map((quiz,index) => (
                             <QuizCard
-                                key={quiz.id}
-                                levelsCompleted={quiz.levelsCompleted}
-                                quizName={quiz.name}
-                                lessons={lesson}
+                                key={quiz.index}
+                                levelsCompleted={0}
+                                quizName={quiz+"" =="1"?"Beginner":quiz+"" == "2"? "Intermediate":"Advance"}
+                                lessons={quizList}
                             />
                         ))}
                         {isTeacher && (
