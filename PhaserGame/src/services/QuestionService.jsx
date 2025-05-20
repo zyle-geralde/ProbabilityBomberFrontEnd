@@ -26,9 +26,37 @@ export const getAllQuestionService = async () => {
         throw error;
     }
 }
-export const removeAllQuestionService = async (questionName) => {
+export const removeAllQuestionService = async (formData) => {
     try {
-        return api.post('/question/remove_all_question/', {questionName});
+        const payload = formData
+        return api.post('/question/remove_all_question/', payload);
+    } catch (error) {
+        console.error("Service Error: ", error);
+        throw error;
+    }
+}
+export const removeAQuestionService = async (formData) => {
+    try {
+        const payload = formData;
+        return api.post('/question/remove_all_question/', payload);
+    } catch (error) {
+        console.error("Service Error: ", error);
+        throw error;
+    }
+}
+export const deleteQuestionService = async (questionName) => {
+    try {
+        const payload = {questionName};
+        return api.post('/question/delete_question/', payload)
+    } catch (error) {
+        console.error("Service Error: ", error);
+        throw error;
+    }
+}
+export const addQuestionToQuizService = async (formData) => {
+    try {
+        const payload = formData;
+        return api.post('/question/add_question_to_quiz/', payload);
     } catch (error) {
         console.error("Service Error: ", error);
         throw error;

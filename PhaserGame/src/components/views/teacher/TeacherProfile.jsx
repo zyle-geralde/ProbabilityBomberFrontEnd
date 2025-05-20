@@ -4,6 +4,9 @@ import QuestionCreation from '../../views/question/QuestionCreation'
 import CreateClass from '../../forms/CreateClass'
 import LogoutButton from '../LogoutButton';
 import './TeacherProfile.css';
+import RemoveAQuestion from '../question/RemoveAQuestion';
+import DeleteQuestion from '../question/DeleteQuestion';
+import AddQuestionToQuiz from '../question/AddQuestionToQuiz';
 function TeacherProfile({ userData, onUpdatePassword }) {
   const [refreshKey, setRefreshKey] = useState(0);
   const createdDate = new Date(userData.createdAt._seconds * 1000 + userData.createdAt._nanoseconds / 1000000);
@@ -15,6 +18,12 @@ function TeacherProfile({ userData, onUpdatePassword }) {
       <hr />
       <h1>Create Question</h1>
       <QuestionCreation/>
+      <hr />
+      <RemoveAQuestion/>
+      <hr />
+      <DeleteQuestion/>
+      <hr />
+      <AddQuestionToQuiz/>
       <hr />
         <div class="item1">
             <nav>
