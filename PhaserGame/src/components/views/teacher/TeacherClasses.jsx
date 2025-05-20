@@ -34,7 +34,7 @@ function TeacherClasses({refreshKey}) {
       
 
       <div class="class-info-container">
-        {selectedClass && <RemoveStudentFromClass className={selectedClass} />}
+        {selectedClass && <RemoveStudentFromClass className={selectedClass} />} 
       </div>
       <hr />
       

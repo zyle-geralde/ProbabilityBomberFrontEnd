@@ -1,6 +1,7 @@
 .body-container{
     margin: 30px 10px;
     text-align: center;
+    display: flex;
 }
 
 .profile-container{
@@ -10,7 +11,8 @@
     box-shadow: 5px 5px black;
     border-radius: 8px;
     width: 100%;
-    max-width: 300px;      
+    max-width: 300px;
+    height: fit-content;      
 }
 
 .profile-header{
@@ -45,6 +47,7 @@
 }
 
 .update-button {
+  margin: 1em 0em;
   background-color: #8A2D3B;
   color: white;
   padding: 10px 18px;
@@ -57,6 +60,17 @@
 
 .update-button:hover {
   background-color: #8a2d3be2;
+}
+
+.teacher-dashboard{
+    margin: 0em 2em;
+    overflow: hidden;
+    background: white;
+    border: 1px solid black;
+    box-shadow: 5px 5px black;
+    border-radius: 8px;
+    width: 100%;
+    height: fit-content;      
 }
 
 /*
