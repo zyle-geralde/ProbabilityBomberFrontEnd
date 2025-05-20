@@ -1,43 +1,74 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import HomeNavbar from '../../components/navbar/HomeNavbar';
 import "./ClassPageStyle.css";
 import ClassCard from '../../components/classcard/ClassCard';
+import { useTeacherClasses, useCreateClassForTeacher, useRemoveClassFromTeacher } from '../../hooks/UseTeacher';
 
-function ClassPage() {
-    const [allClass, setAllClass] = useState([
-        { title: "Javascript Lesson1 Abstract TItle", students: 10, quizzes: 20 },
-        { title: "Java Lesson1 Abstract TItle", students: 40, quizzes: 10 },
-        { title: "Python Lesson1 Abstract TItle", students: 8, quizzes: 22 },
-        { title: "Bisaya++ Lesson1 Abstract TItle", students: 18, quizzes: 30 },
-        { title: "Bisaya++ Lesson1 Abstract TItle", students: 18, quizzes: 30 },
-        { title: "Bisaya++ Lesson1 Abstract TItle", students: 18, quizzes: 30 },
-        { title: "Bisaya++ Lesson1 Abstract TItle", students: 18, quizzes: 30 },
-        { title: "Bisaya++ Lesson1 Abstract TItle", students: 18, quizzes: 30 },
-        { title: "Bisaya++ Lesson1 Abstract TItle", students: 18, quizzes: 30 },
-        { title: "Bisaya++ Lesson1 Abstract TItle", students: 18, quizzes: 30 },
-        { title: "Bisaya++ Lesson1 Abstract TItle", students: 18, quizzes: 30 },
-        { title: "Bisaya++ Lesson1 Abstract TItle", students: 18, quizzes: 30 },
-        { title: "Bisaya++ Lesson1 Abstract TItle", students: 18, quizzes: 30 },
-    ]);
+function ClassPage({userData}) {
+    const [refreshKey, setRefreshKey] = useState(0);
+    const [success, setSuccess] = useState(false);
+    const { classes: allClass, loading } = useTeacherClasses(refreshKey, success);
 
     const [showModal, setShowModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [newClassTitle, setNewClassTitle] = useState("");
-    const [indexToDelete, setIndexToDelete] = useState(null);
+    const [classInput, setClassInput] = useState("");
+    const [classToDelete, setClassToDelete] = useState(null);
+    const [deleteTrigger, setDeleteTrigger] = useState(false);
+
+    useEffect(() => {
+    // Trigger a refresh when the component mounts
+    setSuccess(prev => !prev);
+    }, []);
+
+    useEffect(() => {
+    // Trigger a refresh when the component mounts
+    setSuccess(prev => !prev);
+    }, []);
+
+    const {
+        success: createSuccess,
+        loading: createLoading,
+        reset: resetCreate
+    } = useCreateClassForTeacher(newClassTitle);
+
+    const {
+        success: deleteSuccess,
+        loading: deleteLoading,
+        reset: resetDelete
+    } = useRemoveClassFromTeacher(deleteTrigger ? classToDelete : null);
+
+    // Handle creation success
+    useEffect(() => {
+        if (createSuccess) {
+            setSuccess(prev => !prev);
+            setShowModal(false);
+            setClassInput("");
+            resetCreate();
+        }
+    }, [createSuccess, resetCreate]);
+
+    // Handle deletion success
+    useEffect(() => {
+        if (deleteSuccess) {
+            setSuccess(prev => !prev);
+            setShowDeleteModal(false);
+            setClassToDelete(null);
+            setDeleteTrigger(false);
+            resetDelete();
+        }
+    }, [deleteSuccess, resetDelete]);
 
     const handleAddClass = () => {
-        if (newClassTitle.trim() === "") return;
-        setAllClass(prev => [...prev, { title: newClassTitle, students: 0, quizzes: 0 }]);
-        setNewClassTitle("");
-        setShowModal(false);
+        if (classInput.trim() === "") return;
+        setNewClassTitle(classInput);
     };
 
     const handleDeleteClass = () => {
-        if (indexToDelete !== null) {
-            const updated = allClass.filter((_, i) => i !== indexToDelete);
-            setAllClass(updated);
-            setIndexToDelete(null);
-            setShowDeleteModal(false);
+        if (classToDelete) {
+            // reset trigger and then set it to true to trigger hook
+            setDeleteTrigger(false);
+            setTimeout(() => setDeleteTrigger(true), 0);
         }
     };
 
@@ -53,19 +84,22 @@ function ClassPage() {
 
             <div className='d-flex flex-row mt-3' style={{ paddingBottom: "40px" }}>
                 <div className="container">
-                    <div className="row g-4 ">
-                        {allClass.map((elem, index) => (
-                            <ClassCard
-                                key={index}
-                                title={elem.title}
-                                students_num={elem.students}
-                                quizzes_num={elem.quizzes}
-                                onDelete={() => {
-                                    setIndexToDelete(index);
-                                    setShowDeleteModal(true);
-                                }}
-                            />
-                        ))}
+                    <div className="row g-4">
+                        {loading ? (
+                            <div>Loading...</div>
+                        ) : (
+                            allClass.map((elem, index) => (
+                                <ClassCard
+                                    key={index}
+                                    title={elem}
+                                    userData={userData}
+                                    onDelete={() => {
+                                        setClassToDelete(elem);
+                                        setShowDeleteModal(true);
+                                    }}
+                                />
+                            ))
+                        )}
                     </div>
                 </div>
             </div>
@@ -84,13 +118,15 @@ function ClassPage() {
                                     type="text"
                                     className="form-control"
                                     placeholder="Enter class name"
-                                    value={newClassTitle}
-                                    onChange={(e) => setNewClassTitle(e.target.value)}
+                                    value={classInput}
+                                    onChange={(e) => setClassInput(e.target.value)}
                                 />
                             </div>
                             <div className="modal-footer">
                                 <button className="btn btn-secondary" onClick={() => setShowModal(false)}>Close</button>
-                                <button className="btn btn-primary" onClick={handleAddClass}>Create</button>
+                                <button className="btn btn-primary" onClick={handleAddClass} disabled={createLoading}>
+                                    {createLoading ? "Creating..." : "Create"}
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -107,11 +143,13 @@ function ClassPage() {
                                 <button type="button" className="btn-close" onClick={() => setShowDeleteModal(false)}></button>
                             </div>
                             <div className="modal-body">
-                                Are you sure you want to delete this class?
+                                Are you sure you want to delete <strong>{classToDelete}</strong>?
                             </div>
                             <div className="modal-footer">
                                 <button className="btn btn-secondary" onClick={() => setShowDeleteModal(false)}>Cancel</button>
-                                <button className="btn btn-danger" onClick={handleDeleteClass}>Confirm</button>
+                                <button className="btn btn-danger" onClick={handleDeleteClass} disabled={deleteLoading}>
+                                    {deleteLoading ? "Deleting..." : "Confirm"}
+                                </button>
                             </div>
                         </div>
                     </div>

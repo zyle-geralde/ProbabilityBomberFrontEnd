@@ -1,5 +1,7 @@
 import React from 'react';
 import LessonCard from '../lesson-card/LessonCard';
+import { data } from 'react-router-dom';
+import { useGetAllQuiz } from '../../hooks/UseQuiz';
 
 const staticLessons = [
   {
@@ -551,13 +553,20 @@ const staticLessons = [
 
 
 
-function ListOfLessons() {
+function ListOfLessons({ userData, title }) {
+  const { data: quizzes, loading, error } = useGetAllQuiz();
+
+  if (loading) return <div>Loading</div>
+  if (error) return <p>Something went wrong: {error.message}</p>;
+
+  console.log(quizzes.allQuizzes)
+
   return (
     <>
-      {staticLessons.map((lesson) => (
+      {staticLessons.map((lesson,index) => (
         <LessonCard
           // Use lesson.id as a unique key
-          key={lesson.id} 
+          key={index} 
           lesson={lesson}
         />
       ))}
