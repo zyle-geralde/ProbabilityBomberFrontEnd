@@ -7,10 +7,8 @@ export const loginUser = async ({ email, password, role, setUserData, setError, 
     const token = await AuthService.firebaseLoginAndGetToken(email, password);
     localStorage.setItem("token", token);
 
-    console.log("Role: ", role)
     const response = await AuthService.loginWithToken(token, role);
     const userData = response.data.userData;
-    console.log("User Data: ", userData);
 
     localStorage.setItem("userData", JSON.stringify(userData));
     setUserData(userData);
