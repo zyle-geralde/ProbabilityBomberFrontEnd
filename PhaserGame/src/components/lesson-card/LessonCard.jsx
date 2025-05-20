@@ -15,9 +15,10 @@ function LessonCard({ lesson }) {
     const [isExpanded, setIsExpanded] = useState(false);
     const [showForm, setShowForm] = useState(false);
     const [newQuizTitle, setNewQuizTitle] = useState('');
-
     const [difficulty, setDifficulty] = useState("");
     const [quizTime, setQuizTime] = useState("");
+
+    const [topic,setTopic] = useState("")
 
     const toggleQuizCard = () => setIsExpanded(prev => !prev);
 

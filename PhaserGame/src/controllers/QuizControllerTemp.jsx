@@ -10,3 +10,13 @@ export const getAllQuizzesController = async () => {
         throw error;
     }
 }
+
+export const createQuizController = async ( quizName, topic, level, duration ) => {
+    try {
+        await QuizService.createQuizService(quizName, topic, level, duration);
+        return true;
+    } catch (error) {
+        console.error("QuizController Error:", error);
+        throw error;
+    }
+}

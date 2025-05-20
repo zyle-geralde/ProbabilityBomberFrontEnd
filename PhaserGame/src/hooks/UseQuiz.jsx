@@ -27,3 +27,13 @@ export function useGetAllQuiz() {
 
   return { data, loading, error };
 }
+
+export async function createQuiz(quizName, topic, level, duration) {
+  try {
+    const response = await QuizController.createQuizController(quizName, topic, level, duration);
+    return { success: true, response };
+  } catch (error) {
+    console.error("Create Quiz Error:", error);
+    return { success: false, error };
+  }
+}
