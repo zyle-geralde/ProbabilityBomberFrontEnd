@@ -9,7 +9,7 @@ import Leaderboard from '../../components/high-score-table/Leaderboard';
 import ViewStudents from '../../components/viewstudents/ViewStudents';
 
 
-import { useUserContext } from '../../contexts/UserContext';
+// import { useUserContext } from '../../contexts/UserContext';
 import { useLocation } from 'react-router-dom';
 
 
