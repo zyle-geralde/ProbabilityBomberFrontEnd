@@ -1,0 +1,17 @@
+.class-tabs {
+    text-align: left;
+}
+
+.class-tabs button {
+  padding: 10px 15px;
+  border: 1px solid black;
+  color: white;
+  background: #641B2E;
+  cursor: pointer;
+}
+
+.class-tabs button.active {
+  background: #8A2D3B;
+  color: white;
+  border-color: #007bff;
+}

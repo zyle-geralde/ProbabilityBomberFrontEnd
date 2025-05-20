@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useShowStudents, useRemoveStudentFromClass } from '../../../hooks/UseTeacher';
+import './RemoveStudentTable.css';
 
 function RemoveStudentFromClass({ className }) {
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -24,6 +25,17 @@ function RemoveStudentFromClass({ className }) {
 
   return (
     <div>
+      <div class="classroom-header">
+          <div class="classroom-details">
+            <h1>{className}</h1>
+            <p><strong>Class code:</strong> aZba2r3</p>
+          </div>
+
+          <div class="classromm-action">
+            <button>Delete Class</button>
+          </div>
+          
+      </div>
       {loadingStudents ? (
         <p>Loading students...</p>
       ) : (
