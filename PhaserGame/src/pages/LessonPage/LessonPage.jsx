@@ -15,8 +15,10 @@ import ViewStudents from '../../components/viewstudents/ViewStudents';
 
 function LessonPage({ userData }) {
   const location = useLocation();
-  const { title } = location.state || {};
+  const { title, uid } = location.state || {};
   const [selectedTab, setSelectedTab] = useState('course');
+
+  const classId = userData.classes[uid]
 
 
   return (
@@ -60,7 +62,8 @@ function LessonPage({ userData }) {
             <div className="list-of-lessons">
               {selectedTab === 'course' && <ListOfLessons
                 userData={userData}
-                title={title} />}
+                title={title}
+                classId={classId } />}
               {selectedTab === 'students' && <ViewStudents
                 userData={userData}
                 className={title} />}

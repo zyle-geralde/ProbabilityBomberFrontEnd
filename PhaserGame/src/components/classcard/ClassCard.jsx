@@ -3,12 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
-function ClassCard({ title,userData, onDelete}) {
+function ClassCard({ title,userData, onDelete,uid}) {
     const colorList = ["rgb(255, 101, 101)"];
     const navigate = useNavigate();
 
     console.log(userData.name)
     console.log(title)
+    console.log(uid)
 
     return (
         <div className="col-md-4" style={{ cursor: "pointer", position: "relative" }}>
@@ -41,7 +42,7 @@ function ClassCard({ title,userData, onDelete}) {
                     }}
                 onClick={(e) => {
               e.stopPropagation(); // to prevent conflicts with the delete button
-            navigate('/lessonPage', { state: { title} });
+            navigate('/lessonPage', { state: { title,uid} });
         }}>
                     <div style={{
                         fontSize: "25px",
@@ -51,7 +52,7 @@ function ClassCard({ title,userData, onDelete}) {
                         width: "90%"
                     }} onClick={(e) => {
               e.stopPropagation(); // to prevent conflicts with the delete button
-            navigate('/lessonPage', { state: { title} });
+            navigate('/lessonPage', { state: { title,uid} });
         }}>
                         {title}
                     </div>
@@ -60,7 +61,7 @@ function ClassCard({ title,userData, onDelete}) {
                 {/* Body */}
                 <div style={{ padding: "10px 20px" }} onClick={(e) => {
               e.stopPropagation(); // to prevent conflicts with the delete button
-            navigate('/lessonPage', { state: { title} });
+            navigate('/lessonPage', { state: { title,uid} });
         }}>
                     <div className='d-flex flex-row'>
                         <div style={{ color: "rgb(139, 39, 65)", whiteSpace: "nowrap", fontWeight: "bold", marginRight: "10px" }}>

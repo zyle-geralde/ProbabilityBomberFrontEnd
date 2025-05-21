@@ -88,7 +88,7 @@ useEffect(() => {
     useEffect(() => {
         if (deleteSuccess) {
             loginUser({ email, password, role, setUserData, setError, navigate });
-            
+
             setSuccess(prev => !prev);
             setShowDeleteModal(false);
             setClassToDelete(null);
@@ -135,6 +135,7 @@ useEffect(() => {
                                         setClassToDelete(elem);
                                         setShowDeleteModal(true);
                                     }}
+                                    uid={index}
                                 />
                             ))
                         )}

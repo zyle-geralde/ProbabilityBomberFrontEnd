@@ -553,14 +553,14 @@ const staticLessons = [
 
 
 
-function ListOfLessons({ userData, title }) {
+function ListOfLessons({ userData, title,classId }) {
   const { data: quizzes, loading, error } = useGetAllQuiz();
   console.log(userData)
 
   if (loading) return <div>Loading</div>
   if (error) return <p>Something went wrong: {error.message}</p>;
 
-  const filteredList = quizzes.allQuizzes.filter(quiz => quiz.createdBy == userData.name)
+  const filteredList = quizzes.allQuizzes.filter(quiz => quiz.classIds[0] == classId)
   console.log(filteredList)
 
 
