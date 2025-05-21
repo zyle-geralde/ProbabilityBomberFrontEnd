@@ -82,6 +82,20 @@ const handleSave = async () => {
 
             {isExpanded && (
                 <>
+                <div className='lesson-file-resource'>
+                    <FontAwesomeIcon icon={faFile} className="lesson-file-icon"/>
+                    <a href={`/topic/1`} className='lesson-file-link'>Lesson Resource File</a>
+                </div>
+                <div className='quiz-card-container'>
+                    {lesson.quizzes.map((quiz) => (
+                        <QuizCard
+                            key={quiz.id} // Use the quiz id as the key for each quiz
+                            levelsCompleted={quiz.levelsCompleted}
+                            quizName={quiz.name}
+                            lessons={lesson}
+                        />
+                    ))}
+                    {/* {isTeacher && (
                     <div className='lesson-file-resource'>
                         <FontAwesomeIcon icon={faFile} className="lesson-file-icon" />
                         <a href='#' className='lesson-file-link'>Lesson Resource File</a>

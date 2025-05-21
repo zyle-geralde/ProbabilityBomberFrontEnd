@@ -18,6 +18,7 @@ import QuizSettingPage from "./pages/QuizSettingPage/QuizSettingPage";
 import ClassPage from "./pages/ClassPage/ClassPage";
 import ProfilePage from "./pages/ProfilePage/UserProfile";
 import ClassPerformancePage from "./pages/PerformanceTracking/ClassPerformancePage";
+import LessonResourcePage from "./pages/LessonPage/LessonResourcePage/LessonResourcePage";
 
 
 export function App() {
@@ -148,6 +149,7 @@ export function App() {
         
         <Route path="/profilePage" element={<ProfilePage />} />
         <Route path="/classPerformancePage" element={<ClassPerformancePage />} />
+        <Route path="/topic/:topicTarget" element={<LessonResourcePage />} />
       </Routes>
     </div>
   );
