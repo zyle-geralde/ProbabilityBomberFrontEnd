@@ -16,7 +16,7 @@ export const loginUser = async ({ email, password, role, setUserData, setError, 
     if(role == 'student'){
       navigate(ViewStates.STUDENT_PROFILE);
     } else if (role == 'teacher') {
-      navigate("/classPage");
+      navigate("/classPage", { state: { password } });
     }
 
   } catch (error) {

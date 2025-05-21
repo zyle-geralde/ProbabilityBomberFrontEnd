@@ -37,3 +37,13 @@ export async function createQuiz(quizName, topic, level, duration) {
     return { success: false, error };
   }
 }
+
+export async function addClassToQuiz(quizName, className) {
+  try {
+    const response = await QuizController.addClasstoQuizService(quizName, className);
+    return { success: true, response };
+  } catch (error) {
+    console.log("add class to quiz Error: ", error)
+    return {success:false, error}
+  }
+}

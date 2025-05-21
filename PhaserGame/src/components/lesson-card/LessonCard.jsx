@@ -9,7 +9,7 @@ import * as UseQuiz from "../../hooks/UseQuiz"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faFile } from '@fortawesome/free-solid-svg-icons';
 
-function LessonCard({ lesson,quizList }) {
+function LessonCard({ lesson,quizList,title }) {
     const { isTeacher } = AuthController.getCurrentUserRole(); 
     const [isExpanded, setIsExpanded] = useState(false);
     const [showForm, setShowForm] = useState(false);
@@ -17,7 +17,8 @@ function LessonCard({ lesson,quizList }) {
     const [difficulty, setDifficulty] = useState("");
     const [quizTime, setQuizTime] = useState("");
     const [error, setError] = useState(""); // ✅ Error state added
-    const levels = [1,2,3]
+    const levels = [1, 2, 3]
+
 
     const navigate = useNavigate();
     const topic = lesson.id.split('lesson')[1];
@@ -54,9 +55,19 @@ const handleSave = async () => {
         );
 
         if (success) {
-            setShowForm(false);
-            console.log('Quiz Created:', response);
-            navigate("/addQuiz");
+
+            const { success, response, error: createError } = await UseQuiz.addClassToQuiz(
+                newQuizTitle,
+                title,
+            );
+            if (success) {
+                setShowForm(false);
+                console.log('Quiz Created:', response);
+                navigate("/addQuiz");
+            }
+            else {
+                setError("Failed to create quiz. Class error");
+            }
         } else {
             setError("Failed to create quiz. Please try again.");
         }
@@ -82,20 +93,6 @@ const handleSave = async () => {
 
             {isExpanded && (
                 <>
-                <div className='lesson-file-resource'>
-                    <FontAwesomeIcon icon={faFile} className="lesson-file-icon"/>
-                    <a href={`/topic/1`} className='lesson-file-link'>Lesson Resource File</a>
-                </div>
-                <div className='quiz-card-container'>
-                    {lesson.quizzes.map((quiz) => (
-                        <QuizCard
-                            key={quiz.id} // Use the quiz id as the key for each quiz
-                            levelsCompleted={quiz.levelsCompleted}
-                            quizName={quiz.name}
-                            lessons={lesson}
-                        />
-                    ))}
-                    {/* {isTeacher && (
                     <div className='lesson-file-resource'>
                         <FontAwesomeIcon icon={faFile} className="lesson-file-icon" />
                         <a href='#' className='lesson-file-link'>Lesson Resource File</a>
@@ -105,7 +102,7 @@ const handleSave = async () => {
                             <QuizCard
                                 key={quiz.index}
                                 levelsCompleted={0}
-                                quizName={quiz+"" =="1"?"Beginner":quiz+"" == "2"? "Intermediate":"Advance"}
+                                quizName={quiz + "" == "1" ? "Beginner" : quiz + "" == "2" ? "Intermediate" : "Advance"}
                                 lessons={quizList}
                             />
                         ))}

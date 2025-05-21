@@ -144,7 +144,8 @@ export function App() {
         <Route path="/viewQuiz" element={<QuizSettingPage />} />
         <Route path="/addQuiz" element={<QuizSettingPage />} />
         <Route path="/classPage" element={userData?(<ClassPage
-          userData={ userData}
+          userData={userData}
+          setUserData = {setUserData}
         /> ):(<div>Loading ...</div>)} />
         
         <Route path="/profilePage" element={<ProfilePage />} />

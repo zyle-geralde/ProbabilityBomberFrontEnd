@@ -1,10 +1,26 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate} from 'react-router-dom';
 import HomeNavbar from '../../components/navbar/HomeNavbar';
 import "./ClassPageStyle.css";
 import ClassCard from '../../components/classcard/ClassCard';
 import { useTeacherClasses, useCreateClassForTeacher, useRemoveClassFromTeacher } from '../../hooks/UseTeacher';
+import { loginUser } from '../../controllers/AuthController';
 
-function ClassPage({userData}) {
+function ClassPage({ userData,setUserData }) {
+    const navigate = useNavigate();
+
+    // ---
+    const [userName, setUserName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [role, setRole] = useState('');
+    const [error, setError] = useState(null);
+    const [userDatame, setUserDatame] = useState(null);
+    // --
+
+    console.log(localStorage.getItem("userData"))
+
+
     const [refreshKey, setRefreshKey] = useState(0);
     const [success, setSuccess] = useState(false);
     const { classes: allClass, loading } = useTeacherClasses(refreshKey, success);
@@ -15,6 +31,24 @@ function ClassPage({userData}) {
     const [classInput, setClassInput] = useState("");
     const [classToDelete, setClassToDelete] = useState(null);
     const [deleteTrigger, setDeleteTrigger] = useState(false);
+
+    const location = useLocation();
+    const checkP = location.state?.password;
+    
+
+
+    console.log(userData)
+
+useEffect(() => {
+    if (userData) {
+        setUserDatame(userData);
+        setEmail(userData.email);
+        setRole(userData.role);
+    }
+    if (checkP) {
+        setPassword(checkP);
+    }
+}, [userData, checkP]);
 
     useEffect(() => {
     // Trigger a refresh when the component mounts
@@ -41,6 +75,8 @@ function ClassPage({userData}) {
     // Handle creation success
     useEffect(() => {
         if (createSuccess) {
+            loginUser({ email, password, role, setUserData, setError, navigate });
+            
             setSuccess(prev => !prev);
             setShowModal(false);
             setClassInput("");
@@ -51,6 +87,8 @@ function ClassPage({userData}) {
     // Handle deletion success
     useEffect(() => {
         if (deleteSuccess) {
+            loginUser({ email, password, role, setUserData, setError, navigate });
+            
             setSuccess(prev => !prev);
             setShowDeleteModal(false);
             setClassToDelete(null);

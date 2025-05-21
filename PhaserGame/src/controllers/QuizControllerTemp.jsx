@@ -20,3 +20,13 @@ export const createQuizController = async ( quizName, topic, level, duration ) =
         throw error;
     }
 }
+
+export const addClasstoQuizService = async ( quizName, className ) => {
+    try {
+        await QuizService.addClassToQuizService(quizName, className);
+        return true;
+    } catch (error) {
+        console.error("QuizController Error:", error);
+        throw error;
+    }
+}

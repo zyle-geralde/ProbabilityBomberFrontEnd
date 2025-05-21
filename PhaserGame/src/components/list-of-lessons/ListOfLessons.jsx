@@ -555,6 +555,7 @@ const staticLessons = [
 
 function ListOfLessons({ userData, title }) {
   const { data: quizzes, loading, error } = useGetAllQuiz();
+  console.log(userData)
 
   if (loading) return <div>Loading</div>
   if (error) return <p>Something went wrong: {error.message}</p>;
@@ -571,6 +572,7 @@ function ListOfLessons({ userData, title }) {
           key={index}
           lesson={lesson}
           quizList={filteredList.filter(quiz => quiz.topic === lesson.id.split('lesson')[1])}
+          title = {title}
         />
       ))}
     </>
