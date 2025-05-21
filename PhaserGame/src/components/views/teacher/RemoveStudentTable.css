@@ -1,0 +1,87 @@
+.classroom-header{
+    background-color: #8A2D3B;
+    color: white;
+    text-align: left;
+    padding: 1em 2em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.student-list{
+    margin: 1em;
+}
+
+.student-item{
+    border-radius: 8px;
+    height: 80px;
+	padding: 0em 1em;
+	border: 1px solid black;
+	display: flex;
+	justify-content: space-between;
+    align-items: center;
+}
+
+.student-details{
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 30%;
+    max-width: 200px;
+}
+
+.student-details p{
+    padding: 0;
+    margin: 0;
+}
+
+
+.student-picture {
+  width: 60px;
+  height: 60px;
+  background-color: grey; /* you can change this color */
+  border-radius: 50%;
+}
+
+.add-btn, .delete-btn{
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.delete-btn {
+    background-color: #e74c3c; /* Red */
+}
+
+.add-student-container{
+    text-align: left;
+    margin: 1em;
+}
+
+.add-btn {
+    background-color: #2ecc71;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-height: 90vh;
+  overflow-y: auto;
+}

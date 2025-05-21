@@ -14,6 +14,11 @@ function HomeNavbar() {
     AuthController.logoutUser({ navigate }); 
   };
 
+  //usertype to profile navigate?
+  const handleProfileNav = () => {
+    alert("Which profile should I go?")
+  };
+
   return (
     <>
       <nav className="navbar">
@@ -35,7 +40,7 @@ function HomeNavbar() {
 
             {showDropdown && (
               <div className="dropdown-menu">
-                <button className="dropdown-item">Profile</button>
+                <button className="dropdown-item" onClick={handleProfileNav}>Profile</button>
                 <button className="dropdown-item" onClick={handleLogout}>Logout</button>
               </div>
             )}

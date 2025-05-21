@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import RemoveStudentFromClass from './RemoveStudentFromClass';
 import { useTeacherClasses, useRemoveClassFromTeacher } from '../../../hooks/UseTeacher';
 import AddStudentToClass from '../../forms/AddStudentToClass';
+import './TeacherClasses.css';
 
 function TeacherClasses({refreshKey}) {
   const [selectedClass, setSelectedClass] = useState(null);
@@ -27,19 +28,20 @@ function TeacherClasses({refreshKey}) {
       ) : (
         <div class="class-tabs">
           {classes.map((cls, idx) => (
-            <button key={idx} onClick={ () => setSelectedClass(cls) }>{cls}</button>
+            <button key={idx} onClick={() => setSelectedClass(cls)} className={selectedClass === cls ? 'active' : ''}>
+              {cls}
+            </button>
           ))}
         </div>
       )}
       
 
       <div class="class-info-container">
-        {selectedClass && <RemoveStudentFromClass className={selectedClass} />}
+        {selectedClass && <RemoveStudentFromClass className={selectedClass} />} 
       </div>
       <hr />
       
       <hr />
-      {selectedClass && <AddStudentToClass className={selectedClass} />}
   </div>
   );
 }
