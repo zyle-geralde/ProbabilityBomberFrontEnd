@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react';
-import { useShowStudents, useRemoveStudentFromClass } from '../../../hooks/UseTeacher';
+import { useShowStudents, useRemoveStudentFromClass,  useAddStudentToClass } from '../../../hooks/UseTeacher';
+
+//import AddStudentToClass from '../../forms/AddStudentToClass';
 import './RemoveStudentTable.css';
 
 function RemoveStudentFromClass({ className }) {
+  const [inputValue, setInputValue] = useState("");
+
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [refreshKey, setRefreshKey] = useState(0);
-
+  
+  const [showModal, setShowModal] = useState(false);
   const { students, loading: loadingStudents } = useShowStudents(className, refreshKey);
   // const {success, loading: removing} = useRemoveStudentFromClass(className, selectedStudent)
   const {remove, loading: removing, success, reset} = useRemoveStudentFromClass()
@@ -23,6 +28,10 @@ function RemoveStudentFromClass({ className }) {
     remove(className, student);
   };
 
+  const handleAddStudent = () => {
+        useAddStudentToClass(className, inputValue)
+    }
+
   return (
     <div>
       <div class="classroom-header">
@@ -32,47 +41,55 @@ function RemoveStudentFromClass({ className }) {
           </div>
 
           <div class="classromm-action">
-            <button>Delete Class</button>
+            <button  class="delete-btn">Delete Class</button>
           </div>
           
       </div>
       {loadingStudents ? (
         <p>Loading students...</p>
       ) : (
-        <table>
-          <thead>
-              <tr>
-                  <th>Students in {className}</th>
-                  <th>Score 1</th>
-                  <th>Score 2</th>
-                  <th>Action</th>
-              </tr>
-          </thead>
-          <tbody>
-            {students.map((student, index) => (
-                <tr key={index}>
-                  <td>{student}</td>
-                  <td>95</td>
-                  <td>95</td>
-                  <td><button onClick={() => handleRemove(student)} disabled={removing && selectedStudent === student}>
-                    {removing && student === selectedStudent ? "Deleting..." : "Delete"}
-                  </button></td>
-                </tr>
+        <>
+          <div class="add-student-container">
+            <button  class="add-btn" onClick={() => setShowModal(true)}>Add Student</button>
+          </div>
+
+            <div class="student-list">
+              {students.map((student, index) => (
+                <div class="student-item">
+                  <div class="student-details">
+                      <div className="student-picture"></div>
+                      <p>{student}</p>
+                    </div>
+                  
+                    <div  class="student-action">
+                      <button class="delete-btn" onClick={() => handleRemove(student)} disabled={removing && selectedStudent === student}>
+                        {removing && student === selectedStudent ? "Deleting..." : "Delete"}
+                      </button>
+                    </div>
+                </div>
               ))}
-              <tr><td>Alice Johnson</td><td>88</td><td>92</td><td><button>Drop Student</button></td></tr>
-              <tr><td>Brian Smith</td><td>75</td><td>81</td><td><button>Drop Student</button></td></tr>
-              <tr><td>Carla Martinez</td><td>90</td><td>85</td><td><button>Drop Student</button></td></tr>
-              <tr><td>Daniel Wu</td><td>67</td><td>73</td><td><button>Drop Student</button></td></tr>
-              <tr><td>Ella Brown</td><td>95</td><td>97</td><td><button>Drop Student</button></td></tr>
-              <tr><td>Felix Turner</td><td>78</td><td>80</td><td><button>Drop Student</button></td></tr>
-              <tr><td>Grace Lee</td><td>84</td><td>88</td><td><button>Drop Student</button></td></tr>
-              <tr><td>Henry Adams</td><td>72</td><td>69</td><td><button>Drop Student</button></td></tr>
-              <tr><td>Isabella Wright</td><td>91</td><td>93</td><td><button>Drop Student</button></td></tr>
-              <tr><td>Jack Patel</td><td>83</td><td>86</td><td><button>Drop Student</button></td></tr>
-          </tbody>
-      </table>
+            </div>
+        </>
+        
       )}
       
+       {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content teacher-dashboard">
+            <div>
+                <h3>Add Student in {className}</h3>
+                <input
+                  type="text"
+                  placeholder="Student Name"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                />
+                <button onClick={() => handleAddStudent()}>Add Student</button>
+            </div>
+            <button onClick={() => setShowModal(false)}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

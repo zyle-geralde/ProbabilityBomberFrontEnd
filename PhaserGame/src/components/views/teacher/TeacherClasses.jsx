@@ -42,7 +42,6 @@ function TeacherClasses({refreshKey}) {
       <hr />
       
       <hr />
-      {selectedClass && <AddStudentToClass className={selectedClass} />}
   </div>
   );
 }

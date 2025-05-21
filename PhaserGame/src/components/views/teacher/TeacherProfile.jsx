@@ -10,6 +10,7 @@ import AddQuestionToQuiz from '../question/AddQuestionToQuiz';
 import HomeNavbar from '../../navbar/HomeNavbar';
 
 function TeacherProfile({ userData, onUpdatePassword }) {
+  const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const createdDate = new Date(userData.createdAt._seconds * 1000 + userData.createdAt._nanoseconds / 1000000);
   const formattedDate = createdDate.toLocaleString();
@@ -54,11 +55,12 @@ function TeacherProfile({ userData, onUpdatePassword }) {
         </div>
 
         
+        
         <div class="teacher-dashboard">        
           <TeacherClasses refreshKey={refreshKey}/>
         </div>
         
-
+        
         
       </div>
       <div class="item5"><p>&copy; 2025 Groupo ni Zyle. All rights reserved.</p></div>
