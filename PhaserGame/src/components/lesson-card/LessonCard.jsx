@@ -9,7 +9,7 @@ import * as UseQuiz from "../../hooks/UseQuiz"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faFile } from '@fortawesome/free-solid-svg-icons';
 
-function LessonCard({ lesson,quizList,title,userData }) {
+function LessonCard({ lesson,quizList,title,userData,uid }) {
     const { isTeacher } = AuthController.getCurrentUserRole(); 
     const [isExpanded, setIsExpanded] = useState(false);
     const [showForm, setShowForm] = useState(false);
@@ -66,7 +66,12 @@ const handleSave = async () => {
                 navigate("/addQuiz", {
                 state: {
                     quizName: newQuizTitle,
-                    createdBy: userData.name
+                    createdBy: userData.name,
+                    difficulty: difficulty,
+                        quizTime: quizTime,
+                        title: { title },
+                    uid:{uid}
+                    
                 }
             }); 
             }

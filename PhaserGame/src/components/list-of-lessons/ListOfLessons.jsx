@@ -553,7 +553,7 @@ const staticLessons = [
 
 
 
-function ListOfLessons({ userData, title,classId }) {
+function ListOfLessons({ userData, title,classId,uid }) {
   const { data: quizzes, loading, error } = useGetAllQuiz();
   console.log(userData)
 
@@ -574,6 +574,7 @@ function ListOfLessons({ userData, title,classId }) {
           quizList={filteredList.filter(quiz => quiz.topic === lesson.id.split('lesson')[1])}
           title={title}
           userData={userData}
+          uid={uid}
         />
       ))}
     </>

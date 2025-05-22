@@ -63,7 +63,8 @@ function LessonPage({ userData }) {
               {selectedTab === 'course' && <ListOfLessons
                 userData={userData}
                 title={title}
-                classId={classId } />}
+                classId={classId}
+                uid={uid} />}
               {selectedTab === 'students' && <ViewStudents
                 userData={userData}
                 className={title} />}

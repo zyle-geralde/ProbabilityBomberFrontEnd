@@ -29,11 +29,17 @@ export default function QuizSettingPage({}) {
   const alphanum = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
   const quizName = location.state?.quizName;
   const createdBy = location.state?.createdBy;
+  const difficulty = location.state?.difficulty;
+  const quizTime = location.state?.quizTime;
+  const title = location.state?.title.title;
+  const uid = location.state?.uid.uid;
+  console.log("TITLE: " + title)
+   console.log("UID: "+uid)
 
 
   useEffect(() => {
     if (quizName == null) {
-      navigate("/lessonPage");
+      navigate("/lessonPage",{ state: { title,uid} });
     }
   }, [quizName, navigate]);
 
@@ -52,13 +58,20 @@ export default function QuizSettingPage({}) {
   const [successMessage, setSuccessMessage] = useState("");
 
 
-
   useEffect(() => {
     if (questions) {
-    const filteredQuestions = questions.filter(q => q.questionName.split(' ')[2] === quizName);
-
+      
+      const filteredQuestions = questions.filter(q => {
+  const words = q.questionName.split(' ');
+  const extracted = words.length > 3 ? words.slice(2).join(' ') : words[2];
+  return extracted === quizName;
+});
+      console.log(quizName)
     setLocalQuestions(filteredQuestions);
     console.log(localQuestions)
+  }
+    else {
+      console.log("Error on show questions")
   }
 }, [questions]);
 
@@ -129,6 +142,9 @@ export default function QuizSettingPage({}) {
       }
     } else if (confirmType === "deleteQuiz") {
       setLocalQuestions([]);
+    }
+    else if (confirmType === "saveQuiz") {
+      navigate("/lessonPage",{ state: { title,uid} })
     }
     handleCloseConfirm();
   };
@@ -259,6 +275,11 @@ export default function QuizSettingPage({}) {
         <div className='quiz-settings-title-container'>
 
           {!isAddQuizRoute && <h2>Quiz Setting & Editor</h2>}
+          {isAddQuizRoute && <>
+            <h2>Name: {quizName}</h2>
+            <h3 style={{color:"white"}}>Difficulty: {difficulty}</h3>
+            <h3 style={{color:"white"}}>Time: {quizTime} min</h3>
+          </>}
 
           {/*contains name of the quiz, the difficuty, and the time*/}
           {/*isAddQuizRoute &&
