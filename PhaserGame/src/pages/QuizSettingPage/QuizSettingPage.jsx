@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './QuizSettingPage.css';
 import HomeNavbar from '../../components/navbar/HomeNavbar';
+import { useCreateQuestion } from '../../hooks/UseQuestion';
 
 export default function QuizSettingPage() {
 
@@ -11,18 +12,21 @@ export default function QuizSettingPage() {
   const alphanum = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
   const [questions, setQuestions] = useState([
-    { question: '', numerator: '', denominator: '', probability: '', events: ["1 or 2 when dice is rolled", "hellow b"], isNew: false },
-    { question: '', numerator: '', denominator: '', probability: '', events: ["3 or 4 when dice is rolled", "hellow c", "hellow cc"], isNew: false },
-    { question: '', numerator: '', denominator: '', probability: '', events: ["5 or 6 when dice is rolled", "hellow d", "hellow cd", "hellow ddd"], isNew: false },
+    { questionName: "false", questionDescription: "", numerator: "", denominator: "", probability: "", event: ["5 or 6 when dice is rolled", "hellow d", "hellow cd", "hellow ddd"] },
+    { questionName: "false", questionDescription: "", numerator: "", denominator: "", probability: "", event: ["5 or 6 when dice is rolled", "hellow d", "hellow cd", "hellow ddd"] },
+    { questionName: "false", questionDescription: "", numerator: "", denominator: "", probability: "", event: ["5 or 6 when dice is rolled", "hellow d", "hellow cd", "hellow ddd"] },
+    { questionName: "false", questionDescription: "", numerator: "", denominator: "", probability: "", event: ["5 or 6 when dice is rolled", "hellow d", "hellow cd", "hellow ddd"] }
   ]);
 
   const [showConfirm, setShowConfirm] = useState(false);
   const [confirmType, setConfirmType] = useState(null); // "deleteQuestion" or "deleteQuiz"
   const [targetIndex, setTargetIndex] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleAddQuestion = () => {
     setQuestions([
-      { question: '', numerator: '', denominator: '', probability: '',events: [], isNew: true },
+      { questionName: "true", questionDescription: "", numerator: "", denominator: "", probability: "", event: [] },
       ...questions
     ]);
   };
@@ -67,7 +71,7 @@ export default function QuizSettingPage() {
 
   const handleChange = (index, field, value, indxx = null) => {
     const updatedQuestions = [...questions];
-    if (field == "events") {
+    if (field == "event") {
       updatedQuestions[index][field][indxx] = value;
     }
     else {
@@ -78,11 +82,41 @@ export default function QuizSettingPage() {
     console.log(updatedQuestions)
   };
 
-  const handleSave = (index) => {
+  const handleSave = async (index) => {
     const updatedQuestions = [...questions];
-    updatedQuestions[index].isNew = false;
-    setQuestions(updatedQuestions);
-    
+    //updatedQuestions[index].isNew = false;
+    if (updatedQuestions[index].questionDescription.trim() == "" || updatedQuestions[index].numerator.trim() == "" || updatedQuestions[index].denominator.trim() == "" || updatedQuestions[index].probability.trim() == "" || updatedQuestions[index].event.length == 0) {
+      setErrorMessage("Please fill in all fields before saving.");
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 2000);
+    }
+    else {
+      if (updatedQuestions[index].questionName == "true") {
+        updatedQuestions[index].questionName = "false"
+
+        const { success, loading } =  await useCreateQuestion(updatedQuestions[index]);
+
+        if (success) {
+          console.log("success me")
+          setSuccessMessage("Question saved successfully!");
+          setTimeout(() => {
+            setSuccessMessage("");
+          }, 2000); 
+        }
+        else {
+          console.error("Error naman")
+        }
+
+      }
+      else {
+        console.log("not true")
+      }
+
+      setQuestions(updatedQuestions);
+    }
+
+
   };
 
   const handleEventDeletion = (index, field, indxx) => {
@@ -102,6 +136,18 @@ export default function QuizSettingPage() {
       <div className="quiz-settings-navbar-container">
         <HomeNavbar />
       </div>
+      {errorMessage && (
+        <div className="alert alert-danger" role="alert">
+          {errorMessage}
+        </div>
+      )}
+
+      {successMessage && (
+        <div className="alert alert-success" role="alert">
+          {successMessage}
+        </div>
+      )}
+
 
       <div className="quiz-settings-main-container">
         <div className='quiz-settings-title-container'>
@@ -158,14 +204,14 @@ export default function QuizSettingPage() {
                         type="text"
                         className="quiz-settings-input"
                         placeholder="Enter question"
-                        value={q.question}
-                        onChange={(e) => handleChange(index, 'question', e.target.value)}
+                        value={q.questionDescription}
+                        onChange={(e) => handleChange(index, 'questionDescription', e.target.value)}
                       />
 
 
                       { /*For Events*/}
                       <div className='w-75 ms-3'>
-                        {q.events.map((js, indx) => (
+                        {q.event.map((js, indx) => (
                           <div className="d-flex flex-row align-items-center mt-2" key={indx}>
                             <div className="me-2 fw-bold">{alphanum[indx]}</div>
                             <div className='me-2 fw-bold'>=</div>
@@ -173,19 +219,19 @@ export default function QuizSettingPage() {
                               type="text"
                               className="form-control"
                               value={js}
-                              onChange={(e) => handleChange(index, "events", e.target.value, indx)}
+                              onChange={(e) => handleChange(index, "event", e.target.value, indx)}
                             />
                             <i
                               className="fas fa-trash-alt text-danger cursor-pointer ms-2"
                               style={{ cursor: 'pointer' }}
-                              onClick={(e) => handleEventDeletion(index,"events",indx)}
+                              onClick={(e) => handleEventDeletion(index, "event", indx)}
                             ></i>
                           </div>
 
                         ))}
                       </div>
 
-                      <div className="d-flex flex-row align-items-center mt-2 ms-3" onClick={(e)=>handleAddevents(index,"events")}>
+                      <div className="d-flex flex-row align-items-center mt-2 ms-3" onClick={(e) => handleAddevents(index, "event")}>
                         <i className="fas fa-plus-circle"></i>
                         <div className="ms-2" style={{ cursor: "pointer" }}>Add Event</div>
                       </div>
@@ -224,7 +270,7 @@ export default function QuizSettingPage() {
                     />
                   </td>
                   <td className="quiz-settings-td">
-                    <button className="quiz-settings-delete-row-button" style={{backgroundColor:"green"}}> Save </button>
+                    <button className="quiz-settings-delete-row-button" style={{ backgroundColor: "green" }} onClick={() => handleSave(index)}> Save </button>
                     <button
                       className="quiz-settings-delete-row-button"
                       onClick={() => handleDeleteConfirm(index)}
@@ -238,10 +284,10 @@ export default function QuizSettingPage() {
           </table>
         </div>
         <div className='d-flex flex-row justify-content-end mt-2'>
-          <button className="quiz-settings-add-question-button me-2" style={{padding:"10px 50px"}} onClick={handleSaveConfirm}> Done </button>
+          <button className="quiz-settings-add-question-button me-2" style={{ padding: "10px 50px" }} onClick={handleSaveConfirm}> Done </button>
           {!isAddQuizRoute && <button className="quiz-settings-delete-quiz-button" onClick={handleQuizDeleteConfirm}> - Delete Quiz </button>}
         </div>
-        
+
       </div>
 
       {/* Confirmation Overlay */}
@@ -255,7 +301,7 @@ export default function QuizSettingPage() {
                 ? "This will permanently delete the quiz and all questions."
                 : confirmType === "cancelQuiz" ? "This will delete your unsaved work"
                   : confirmType === "saveQuiz" ? "Are you sure you want to save your work?"
-                  : "This will delete the selected question."}
+                    : "This will delete the selected question."}
             </p>
             <div className="form-buttons">
               <button onClick={handleConfirmDelete}>Confirm</button>

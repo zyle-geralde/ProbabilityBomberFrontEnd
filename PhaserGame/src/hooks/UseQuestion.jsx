@@ -1,25 +1,13 @@
 import { useEffect, useState } from "react";
 import * as QuestionController from '../controllers/QuestionController';
-export function useCreateQuestion(formData){
-    const [success, setSuccess] = useState(false);
-    const [loading, setLoading] = useState(false);
-    useEffect(() => {
-        if(formData){
-            async function createQuestion() {
-                setLoading(true);
-                try {
-                    const response = await QuestionController.createQuestion(formData)
-                    setSuccess(response);
-                } catch (error) {
-                    console.error("Hook Error:", error);
-                } finally {
-                    setLoading(false);
-                }
-            }
-            createQuestion();
-        }
-    }, [formData]);
-    return {success, loading};
+export async function useCreateQuestion(formData) {
+  try {
+    const response = await QuestionController.createQuestion(formData);
+    return { success: response, error: null };
+  } catch (error) {
+    console.error("API Error:", error);
+    return { success: null, error };
+  }
 }
 export function useEditQuestion(formData){
     const [success, setSuccess] = useState(false);
