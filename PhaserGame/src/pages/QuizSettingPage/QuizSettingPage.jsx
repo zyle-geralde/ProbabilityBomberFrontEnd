@@ -51,6 +51,8 @@ export default function QuizSettingPage({}) {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
+
+
   useEffect(() => {
     if (questions) {
     const filteredQuestions = questions.filter(q => q.questionName.split(' ')[2] === quizName);
@@ -61,6 +63,9 @@ export default function QuizSettingPage({}) {
 }, [questions]);
 
   const handleAddQuestion = () => {
+    if (localQuestions.length >= 10) {
+      return
+    }
     const newId = generateRandomId();
     setLocalQuestions([
       { createdBy:createdBy ,questionName: "true "+newId+" "+quizName, questionDescription: "", numerator: "", denominator: "", probability: "", event: [] },
