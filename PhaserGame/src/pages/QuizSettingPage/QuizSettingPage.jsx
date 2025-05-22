@@ -4,6 +4,9 @@ import './QuizSettingPage.css';
 import HomeNavbar from '../../components/navbar/HomeNavbar';
 import { useCreateQuestion } from '../../hooks/UseQuestion';
 import { useAddQuestionToQuiz } from '../../hooks/UseQuestion';
+import { useEditQuestion } from '../../hooks/UseQuestion';
+import { useGetAllQuestion } from '../../hooks/UseQuestion';
+
 
 function generateRandomId(length = 10) {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -14,7 +17,8 @@ function generateRandomId(length = 10) {
   return id;
 }
 
-export default function QuizSettingPage() {
+export default function QuizSettingPage({}) {
+  
 
   //check if it is "/addQuiz" Route
   const navigate= useNavigate()
@@ -22,18 +26,22 @@ export default function QuizSettingPage() {
   const isAddQuizRoute = location.pathname === '/addQuiz';
   const alphanum = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
   const quizName = location.state?.quizName;
+  const createdBy = location.state?.createdBy;
+
+
   useEffect(() => {
     if (quizName == null) {
       navigate("/lessonPage");
     }
   }, [quizName, navigate]);
 
-  const [questions, setQuestions] = useState([
-    { questionName: "false Hhbfa", questionDescription: "", numerator: "", denominator: "", probability: "", event: ["5 or 6 when dice is rolled", "hellow d", "hellow cd", "hellow ddd"] },
-    { questionName: "false jhbasdaf", questionDescription: "", numerator: "", denominator: "", probability: "", event: ["5 or 6 when dice is rolled", "hellow d", "hellow cd", "hellow ddd"] },
-    { questionName: "false jhbafdaj", questionDescription: "", numerator: "", denominator: "", probability: "", event: ["5 or 6 when dice is rolled", "hellow d", "hellow cd", "hellow ddd"] },
-    { questionName: "false jabdskjfba", questionDescription: "", numerator: "", denominator: "", probability: "", event: ["5 or 6 when dice is rolled", "hellow d", "hellow cd", "hellow ddd"] }
-  ]);
+
+  
+
+
+  const [refreshKey, setRefreshKey] = useState(0);
+  const { questions, loading } = useGetAllQuestion(refreshKey);
+  const [localQuestions, setLocalQuestions] = useState([]);
 
   const [showConfirm, setShowConfirm] = useState(false);
   const [confirmType, setConfirmType] = useState(null); // "deleteQuestion" or "deleteQuiz"
@@ -41,11 +49,20 @@ export default function QuizSettingPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
+  useEffect(() => {
+    if (questions) {
+    const filteredQuestions = questions.filter(q => q.questionName.split(' ')[2] === quizName);
+
+    setLocalQuestions(filteredQuestions);
+    console.log(localQuestions)
+  }
+}, [questions]);
+
   const handleAddQuestion = () => {
     const newId = generateRandomId();
-    setQuestions([
-      { questionName: "true "+newId, questionDescription: "", numerator: "", denominator: "", probability: "", event: [] },
-      ...questions
+    setLocalQuestions([
+      { createdBy:createdBy ,questionName: "true "+newId+" "+quizName, questionDescription: "", numerator: "", denominator: "", probability: "", event: [] },
+      ...localQuestions
     ]);
   };
 
@@ -72,11 +89,11 @@ export default function QuizSettingPage() {
 
   const handleConfirmDelete = () => {
     if (confirmType === "deleteQuestion" && targetIndex !== null) {
-      const newQuestions = [...questions];
+      const newQuestions = [...localQuestions];
       newQuestions.splice(targetIndex, 1);
-      setQuestions(newQuestions);
+      setLocalQuestions(newQuestions);
     } else if (confirmType === "deleteQuiz") {
-      setQuestions([]);
+      setLocalQuestions([]);
     }
     handleCloseConfirm();
   };
@@ -88,7 +105,7 @@ export default function QuizSettingPage() {
   };
 
   const handleChange = (index, field, value, indxx = null) => {
-    const updatedQuestions = [...questions];
+    const updatedQuestions = [...localQuestions];
     if (field == "event") {
       updatedQuestions[index][field][indxx] = value;
     }
@@ -96,15 +113,15 @@ export default function QuizSettingPage() {
       updatedQuestions[index][field] = value;
     }
 
-    setQuestions(updatedQuestions);
+    setLocalQuestions(updatedQuestions);
     console.log(updatedQuestions)
   };
 
   const handleSave = async (index) => {
     //const newId = generateRandomId();
-    const updatedQuestions = [...questions];
+    const updatedQuestions = [...localQuestions];
     //updatedQuestions[index].isNew = false;
-    if (updatedQuestions[index].questionDescription.trim() == "" || updatedQuestions[index].numerator.trim() == "" || updatedQuestions[index].denominator.trim() == "" || updatedQuestions[index].probability.trim() == "" || updatedQuestions[index].event.length == 0) {
+    if ((""+(updatedQuestions[index].questionDescription)).trim() == "" || (""+(updatedQuestions[index].numerator)).trim() == "" || (""+(updatedQuestions[index].denominator)).trim() == "" || updatedQuestions[index].event.length == 0 ||updatedQuestions[index].event.some(e => e.trim() === "")) {
       setErrorMessage("Please fill in all fields before saving.");
       setTimeout(() => {
         setErrorMessage("");
@@ -117,7 +134,9 @@ export default function QuizSettingPage() {
         const updatedStr = updatedQuestions[index].questionName.replace(/^true/, "false");
         updatedQuestions[index].questionName = updatedStr
 
-        const { success, loading } =  await useCreateQuestion(updatedQuestions[index]);
+        const { createdBy, ...cleanedObject } = updatedQuestions[index];
+
+        const { success, loading } =  await useCreateQuestion(cleanedObject);
 
         if (success) {
           console.log("success me")
@@ -143,25 +162,44 @@ export default function QuizSettingPage() {
 
       }
       else {
+
+        const newObject = {
+            ...updatedQuestions[index],
+          originalQuestionName: updatedQuestions[index].questionName,
+        };
+        console.log(newObject)
+        const { success, error } = await useEditQuestion(newObject);
+        if (success) {
+          setSuccessMessage('Question updated successfully!');
+          setTimeout(() => {
+            setSuccessMessage("");
+          }, 2000); 
+        } else {
+            setErrorMessage('Failed to update question.');
+            setTimeout(() => {
+              setErrorMessage("");
+            }, 2000);
+            console.error(error);
+        }
         console.log("not true")
       }
 
-      setQuestions(updatedQuestions);
+      setLocalQuestions(updatedQuestions);
     }
 
 
   };
 
   const handleEventDeletion = (index, field, indxx) => {
-    const updatedQuestions = [...questions];
+    const updatedQuestions = [...localQuestions];
 
     updatedQuestions[index][field].splice(indxx, 1)
-    setQuestions(updatedQuestions)
+    setLocalQuestions(updatedQuestions)
   }
   const handleAddevents = (index, field) => {
-    const updatedQuestions = [...questions];
+    const updatedQuestions = [...localQuestions];
     updatedQuestions[index][field].push('')
-    setQuestions(updatedQuestions)
+    setLocalQuestions(updatedQuestions)
   }
 
   return (
@@ -228,7 +266,7 @@ export default function QuizSettingPage() {
               </tr>
             </thead>
             <tbody>
-              {questions.map((q, index) => (
+              {localQuestions.map((q, index) => (
                 <tr key={index}>
                   <td className="quiz-settings-td">
                     <div className='d-flex flex-column align-items-start fw-bold' style={{ fontSize: "12px" }}>

@@ -572,7 +572,8 @@ function ListOfLessons({ userData, title,classId }) {
           key={index}
           lesson={lesson}
           quizList={filteredList.filter(quiz => quiz.topic === lesson.id.split('lesson')[1])}
-          title = {title}
+          title={title}
+          userData={userData}
         />
       ))}
     </>

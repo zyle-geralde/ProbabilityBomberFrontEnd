@@ -9,26 +9,14 @@ export async function useCreateQuestion(formData) {
     return { success: null, error };
   }
 }
-export function useEditQuestion(formData){
-    const [success, setSuccess] = useState(false);
-    const [loading, setLoading] = useState(false);
-    useEffect(() => {
-        if(formData){
-            async function editQuestion() {
-                setLoading(true);
-                try {
-                    const response = await QuestionController.editQuestion(formData)
-                    setSuccess(response);
-                } catch (error) {
-                    console.error("Hook Error:", error);
-                } finally {
-                    setLoading(false);
-                }
-            }
-            editQuestion();
-        }
-    }, [formData]);
-    return {success, loading};
+export async function useEditQuestion(formData){
+    try {
+        const response = await QuestionController.editQuestion(formData);
+        return { success: response, error: null };
+    } catch (error) {
+        console.error("EditQuestion Error:", error);
+        return { success: false, error };
+    }
 }
 export function useGetAllQuestion(refreshKey){
     const [questions, setQuestions] = useState(false);
