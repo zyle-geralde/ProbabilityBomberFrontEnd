@@ -114,6 +114,8 @@ const handleSave = async () => {
                                 levelsCompleted={0}
                                 quizName={quiz + "" == "1" ? "Beginner" : quiz + "" == "2" ? "Intermediate" : "Advance"}
                                 lessons={quizList}
+                                title={ title }
+                                uid={uid}
                             />
                         ))}
                         {isTeacher && (

@@ -33,8 +33,8 @@ export default function QuizSettingPage({}) {
   const quizTime = location.state?.quizTime;
   const title = location.state?.title.title;
   const uid = location.state?.uid.uid;
-  console.log("TITLE: " + title)
-   console.log("UID: "+uid)
+  console.log("TITLEME: " + title)
+  console.log("UIDME: "+uid)
 
 
   useEffect(() => {

@@ -5,7 +5,7 @@ import './QuizCard.css';
 import LevelSelector from './LevelSelector';
 import * as AuthController from '../../controllers/AuthController';
 
-function QuizCard({ levelsCompleted = '-', quizName = 'Untitled Quiz',lessons }) {
+function QuizCard({ levelsCompleted = '-', quizName = 'Untitled Quiz',lessons,title,uid }) {
     const { isTeacher } = AuthController.getCurrentUserRole(); 
     const [showLevels, setShowLevels] = useState(false);
 
@@ -46,6 +46,8 @@ function QuizCard({ levelsCompleted = '-', quizName = 'Untitled Quiz',lessons })
                     <LevelSelector
                         lessons={lessons}
                         quizStage={quizName}
+                        title={title}
+                        uid={uid}
                     />
                 </div>
             )}

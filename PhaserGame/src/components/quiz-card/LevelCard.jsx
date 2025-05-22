@@ -1,6 +1,7 @@
 import React from 'react';
 import './LevelCard.css';
 import * as AuthController from '../../controllers/AuthController';
+import { useNavigate } from 'react-router-dom';
 
 function LevelCard({
     title = 'Untitled Level',
@@ -8,9 +9,15 @@ function LevelCard({
     timeFinished = '-',
     score = '-',
     avgScore = '-',
-    avgTimeFinished = '-'
+    avgTimeFinished = '-',
+    quizInfo,
+    classTitle,
+    uid
 }) {
     const { isTeacher } = AuthController.getCurrentUserRole();
+    const navigate = useNavigate()
+    console.log("Class TITLE: " + classTitle)
+    console.log("Class TITLE: "+classTitle)
 
     return (
         <div className="level-container">
@@ -19,29 +26,29 @@ function LevelCard({
                     <h4 className='level-title'>{title}</h4>
                 </div>
                 {!isTeacher ? (
-                        <div className='level-stats-container-students'>
-                            <p className='level-stat level-stat-time-started'>
-                                Date & Time Started: <span className="bold-value">{timeStarted}</span>
-                            </p>
-                            <p className='level-stat level-stat-time-finished'>
-                                Date & Time Finished: <span className="bold-value">{timeFinished}</span>
-                            </p>
-                        </div>
+                    <div className='level-stats-container-students'>
+                        <p className='level-stat level-stat-time-started'>
+                            Date & Time Started: <span className="bold-value">{timeStarted}</span>
+                        </p>
+                        <p className='level-stat level-stat-time-finished'>
+                            Date & Time Finished: <span className="bold-value">{timeFinished}</span>
+                        </p>
+                    </div>
                 ) : null}
-                
 
-                
+
+
             </div>
 
             <div className='level-container-right'>
                 {isTeacher ? (
-                    <div 
-                        className='level-stats-container' 
-                        style={{ 
-                            display: 'flex', 
-                            flexDirection: 'row', 
+                    <div
+                        className='level-stats-container'
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
                             gap: '1rem',
-                            alignItems:"center"
+                            alignItems: "center"
                         }}
                     >
                         <div className='level-stat-t'>
@@ -52,8 +59,20 @@ function LevelCard({
                             <div className='level-stat-value'>{avgTimeFinished}</div>
                             <p className='level-stat-label'>Avg Time Finished</p>
                         </div>
-                        <a href="/viewQuiz" className="ms-2 text-primary">
-                            <i className="fas fa-pen-to-square ms-2 cursor-pointer text-primary" style={{cursor:"pointer"}}></i>
+                        <a className="ms-2 text-primary" onClick={() => {
+                            navigate("/viewQuiz", {
+                                state: {
+                                    quizName: title+"",
+                                    createdBy:quizInfo.createdBy +"",
+                                    difficulty: quizInfo.difficulty +"",
+                                    quizTime:quizInfo.duration + "",
+                                    title: { title:classTitle } ,
+                                    uid: { uid } 
+
+                                }
+                            })
+                        }}>
+                            <i className="fas fa-pen-to-square ms-2 cursor-pointer text-primary" style={{ cursor: "pointer" }}></i>
                         </a>
                     </div>
                 ) : (
