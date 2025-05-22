@@ -5,7 +5,9 @@ import HomeNavbar from '../../components/navbar/HomeNavbar';
 import { useCreateQuestion } from '../../hooks/UseQuestion';
 import { useAddQuestionToQuiz } from '../../hooks/UseQuestion';
 import { useEditQuestion } from '../../hooks/UseQuestion';
-import { useGetAllQuestion } from '../../hooks/UseQuestion';
+import { useGetAllQuestion, useRemoveAQuestion,useDeleteQuestion } from '../../hooks/UseQuestion';
+
+
 
 
 function generateRandomId(length = 10) {
@@ -87,11 +89,39 @@ export default function QuizSettingPage({}) {
     setShowConfirm(true)
   }
 
-  const handleConfirmDelete = () => {
+  const  handleConfirmDelete = async () => {
     if (confirmType === "deleteQuestion" && targetIndex !== null) {
       const newQuestions = [...localQuestions];
-      newQuestions.splice(targetIndex, 1);
-      setLocalQuestions(newQuestions);
+      
+      if (newQuestions[targetIndex].questionName.split(' ')[0] == "true") {
+          newQuestions.splice(targetIndex, 1);
+          setLocalQuestions(newQuestions);
+      }
+      else {
+        const formData = {questionName: newQuestions[targetIndex].questionName, quizName: quizName }; // example formData
+
+        const { success, error } = await useRemoveAQuestion(formData);
+
+        if (success) {
+
+          const { success, error } = await useDeleteQuestion(newQuestions[targetIndex].questionName );
+          if (success) {
+              console.log("Question removed successfully!");
+          
+              newQuestions.splice(targetIndex, 1);
+              setLocalQuestions(newQuestions);
+          // You can update UI state here or trigger other actions
+          }
+          else {
+            console.error("Failed to remove question permanently:", error);
+          // Show error to user, log, etc.
+          }
+
+        } else {
+          console.error("Failed to remove question form quiz:", error);
+          // Show error to user, log, etc.
+        }
+      }
     } else if (confirmType === "deleteQuiz") {
       setLocalQuestions([]);
     }
