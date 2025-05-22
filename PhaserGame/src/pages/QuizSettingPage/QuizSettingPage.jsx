@@ -1,21 +1,38 @@
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState,useEffect } from 'react';
+import { useLocation,useNavigate } from 'react-router-dom';
 import './QuizSettingPage.css';
 import HomeNavbar from '../../components/navbar/HomeNavbar';
 import { useCreateQuestion } from '../../hooks/UseQuestion';
+import { useAddQuestionToQuiz } from '../../hooks/UseQuestion';
+
+function generateRandomId(length = 10) {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let id = '';
+  for (let i = 0; i < length; i++) {
+    id += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return id;
+}
 
 export default function QuizSettingPage() {
 
   //check if it is "/addQuiz" Route
+  const navigate= useNavigate()
   const location = useLocation();
   const isAddQuizRoute = location.pathname === '/addQuiz';
   const alphanum = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+  const quizName = location.state?.quizName;
+  useEffect(() => {
+    if (quizName == null) {
+      navigate("/lessonPage");
+    }
+  }, [quizName, navigate]);
 
   const [questions, setQuestions] = useState([
-    { questionName: "false", questionDescription: "", numerator: "", denominator: "", probability: "", event: ["5 or 6 when dice is rolled", "hellow d", "hellow cd", "hellow ddd"] },
-    { questionName: "false", questionDescription: "", numerator: "", denominator: "", probability: "", event: ["5 or 6 when dice is rolled", "hellow d", "hellow cd", "hellow ddd"] },
-    { questionName: "false", questionDescription: "", numerator: "", denominator: "", probability: "", event: ["5 or 6 when dice is rolled", "hellow d", "hellow cd", "hellow ddd"] },
-    { questionName: "false", questionDescription: "", numerator: "", denominator: "", probability: "", event: ["5 or 6 when dice is rolled", "hellow d", "hellow cd", "hellow ddd"] }
+    { questionName: "false Hhbfa", questionDescription: "", numerator: "", denominator: "", probability: "", event: ["5 or 6 when dice is rolled", "hellow d", "hellow cd", "hellow ddd"] },
+    { questionName: "false jhbasdaf", questionDescription: "", numerator: "", denominator: "", probability: "", event: ["5 or 6 when dice is rolled", "hellow d", "hellow cd", "hellow ddd"] },
+    { questionName: "false jhbafdaj", questionDescription: "", numerator: "", denominator: "", probability: "", event: ["5 or 6 when dice is rolled", "hellow d", "hellow cd", "hellow ddd"] },
+    { questionName: "false jabdskjfba", questionDescription: "", numerator: "", denominator: "", probability: "", event: ["5 or 6 when dice is rolled", "hellow d", "hellow cd", "hellow ddd"] }
   ]);
 
   const [showConfirm, setShowConfirm] = useState(false);
@@ -25,8 +42,9 @@ export default function QuizSettingPage() {
   const [successMessage, setSuccessMessage] = useState("");
 
   const handleAddQuestion = () => {
+    const newId = generateRandomId();
     setQuestions([
-      { questionName: "true", questionDescription: "", numerator: "", denominator: "", probability: "", event: [] },
+      { questionName: "true "+newId, questionDescription: "", numerator: "", denominator: "", probability: "", event: [] },
       ...questions
     ]);
   };
@@ -83,6 +101,7 @@ export default function QuizSettingPage() {
   };
 
   const handleSave = async (index) => {
+    //const newId = generateRandomId();
     const updatedQuestions = [...questions];
     //updatedQuestions[index].isNew = false;
     if (updatedQuestions[index].questionDescription.trim() == "" || updatedQuestions[index].numerator.trim() == "" || updatedQuestions[index].denominator.trim() == "" || updatedQuestions[index].probability.trim() == "" || updatedQuestions[index].event.length == 0) {
@@ -92,17 +111,31 @@ export default function QuizSettingPage() {
       }, 2000);
     }
     else {
-      if (updatedQuestions[index].questionName == "true") {
-        updatedQuestions[index].questionName = "false"
+      const firstWord = updatedQuestions[index].questionName.split(' ')[0];
+      console.log(firstWord);
+      if (firstWord == "true") {
+        const updatedStr = updatedQuestions[index].questionName.replace(/^true/, "false");
+        updatedQuestions[index].questionName = updatedStr
 
         const { success, loading } =  await useCreateQuestion(updatedQuestions[index]);
 
         if (success) {
           console.log("success me")
-          setSuccessMessage("Question saved successfully!");
-          setTimeout(() => {
-            setSuccessMessage("");
-          }, 2000); 
+          const { submit, success, loading } = await useAddQuestionToQuiz({questionName:updatedQuestions[index].questionName,quizName:quizName});
+
+          if (success) {
+            setSuccessMessage("Question saved successfully!");
+            setTimeout(() => {
+              setSuccessMessage("");
+            }, 2000); 
+          }
+          else {
+            setErrorMessage("Error on quizname");
+            setTimeout(() => {
+              setErrorMessage("");
+            }, 2000);
+          }
+
         }
         else {
           console.error("Error naman")

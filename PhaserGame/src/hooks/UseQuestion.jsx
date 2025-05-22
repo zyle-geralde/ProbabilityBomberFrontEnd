@@ -106,21 +106,12 @@ export function useDeleteQuestion(){
     return {deleteQuestion, success, loading}
 }
 
-export function useAddQuestionToQuiz() {
-    const [success, setSuccess] = useState(false);
-    const [loading, setLoading] = useState(false);
-
-    const submit = async (formData) => {
-        setLoading(true);
-        try {
-            const result = await QuestionController.addQuestionToQuiz(formData);
-            setSuccess(result === true);
-        } catch (error) {
-            console.error("Hook Error:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    return { submit, success, loading };
+export async function useAddQuestionToQuiz(formData) {
+    try {
+        const result = await QuestionController.addQuestionToQuiz(formData);
+        return { success: result, error: null };
+    } catch (error) {
+        console.error("AddQuestionToQuiz Error:", error);
+        return { success: null, error };
+    }
 }

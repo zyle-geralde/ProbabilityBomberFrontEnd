@@ -63,7 +63,11 @@ const handleSave = async () => {
             if (success) {
                 setShowForm(false);
                 console.log('Quiz Created:', response);
-                navigate("/addQuiz");
+                navigate("/addQuiz", {
+                state: {
+                    quizName: newQuizTitle
+                }
+            }); 
             }
             else {
                 setError("Failed to create quiz. Class error");
