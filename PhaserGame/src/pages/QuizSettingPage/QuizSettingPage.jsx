@@ -6,7 +6,7 @@ import { useCreateQuestion } from '../../hooks/UseQuestion';
 import { useAddQuestionToQuiz } from '../../hooks/UseQuestion';
 import { useEditQuestion } from '../../hooks/UseQuestion';
 import { useGetAllQuestion, useRemoveAQuestion, useDeleteQuestion } from '../../hooks/UseQuestion';
-import { useeditQuiz } from '../../hooks/UseQuiz';
+import { useeditQuiz, usedeleteQuiz} from '../../hooks/UseQuiz';
 
 
 
@@ -144,6 +144,17 @@ export default function QuizSettingPage({}) {
         }
       }
     } else if (confirmType === "deleteQuiz") {
+        const { success, response, error } = await usedeleteQuiz(quizName, title);
+  
+        if (success) {
+          console.log("Quiz deleted:", response);
+          // Optionally refresh the quiz list
+          setRefreshKey(prev => prev + 1);
+          navigate("/lessonPage",{ state: { title,uid} })
+        } else {
+          console.error("Failed to delete quiz:", error);
+        }
+
       setLocalQuestions([]);
     }
     else if (confirmType === "saveQuiz") {

@@ -8,6 +8,8 @@ import ListOfLessons from '../../components/list-of-lessons/ListOfLessons';
 import HomeNavbar from '../../components/navbar/HomeNavbar';
 import Leaderboard from '../../components/high-score-table/Leaderboard';
 import ViewStudents from '../../components/viewstudents/ViewStudents';
+import LevelCard from '../../components/quiz-card/LevelCard';
+import { useGetAllQuiz } from '../../hooks/UseQuiz';
 
 // import { useUserContext } from '../../contexts/UserContext';
 
@@ -19,6 +21,14 @@ function LessonPage({ userData }) {
   const [selectedTab, setSelectedTab] = useState('course');
 
   const classId = userData.classes[uid]
+
+  const { data: quizzes, loading, error } = useGetAllQuiz();
+
+  if (loading) return <div>Loading</div>
+  if (error) return <p>Something went wrong: {error.message}</p>;
+
+  const filteredList = quizzes.allQuizzes.filter(quiz => quiz.classIds[0] == classId)
+  console.log(filteredList)
 
 
   return (
@@ -65,6 +75,23 @@ function LessonPage({ userData }) {
                 title={title}
                 classId={classId}
                 uid={uid} />}
+              {selectedTab === "created" && <div className="level-selector-container">
+            {filteredList.map((level, index) => (
+                <LevelCard
+                    key={index}
+                    title={level.quizName}
+                    timeStarted={level.duration}
+                    timeFinished={level.duration}
+                    score={0}
+                    avgScore={0}
+                    avgTimeFinished={level.duration}
+                    quizInfo={level}
+                    classTitle={title}
+                    uid={ uid}
+                />
+            ))
+            }
+        </div>}
               {selectedTab === 'students' && <ViewStudents
                 userData={userData}
                 className={title} />}

@@ -59,3 +59,13 @@ export async function useeditQuiz(quizName, topic,level,duration) {
   }
 }
 
+export async function usedeleteQuiz(quizName, className) {
+  try {
+    const response = await QuizController.deleteQuizController(quizName, className);
+    return { success: true, response };
+  } catch (error) {
+    console.log("add class to quiz Error: ", error)
+    return {success:false, error}
+  }
+}
+

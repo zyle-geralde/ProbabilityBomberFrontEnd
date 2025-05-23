@@ -52,12 +52,8 @@ function LevelCard({
                         }}
                     >
                         <div className='level-stat-t'>
-                            <div className='level-stat-value'>{avgScore}</div>
-                            <p className='level-stat-label'>Avg Score</p>
-                        </div>
-                        <div className='level-stat-t'>
-                            <div className='level-stat-value'>{avgTimeFinished}</div>
-                            <p className='level-stat-label'>Avg Time Finished</p>
+                            <div className='level-stat-value'>{quizInfo.questions.length}</div>
+                            <p className='level-stat-label'>Total Points</p>
                         </div>
                         <a className="ms-2 text-primary" onClick={() => {
                             navigate("/viewQuiz", {

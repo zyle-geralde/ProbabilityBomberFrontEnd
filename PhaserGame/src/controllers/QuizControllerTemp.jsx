@@ -40,3 +40,13 @@ export const editQuizController = async (quizName, topic,level,duration)=>{
         throw error;
     }
 }
+
+export const deleteQuizController = async (quizName, className)=>{
+    try {
+        await QuizService.deleteQuizService(quizName, className);
+        return true;
+    } catch (error) {
+        console.error("QuizController Error:", error);
+        throw error;
+    }
+}
