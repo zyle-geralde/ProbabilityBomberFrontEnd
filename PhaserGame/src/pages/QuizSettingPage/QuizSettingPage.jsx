@@ -5,7 +5,8 @@ import HomeNavbar from '../../components/navbar/HomeNavbar';
 import { useCreateQuestion } from '../../hooks/UseQuestion';
 import { useAddQuestionToQuiz } from '../../hooks/UseQuestion';
 import { useEditQuestion } from '../../hooks/UseQuestion';
-import { useGetAllQuestion, useRemoveAQuestion,useDeleteQuestion } from '../../hooks/UseQuestion';
+import { useGetAllQuestion, useRemoveAQuestion, useDeleteQuestion } from '../../hooks/UseQuestion';
+import { useeditQuiz } from '../../hooks/UseQuiz';
 
 
 
@@ -27,14 +28,16 @@ export default function QuizSettingPage({}) {
   const location = useLocation();
   const isAddQuizRoute = location.pathname === '/addQuiz';
   const alphanum = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-  const quizName = location.state?.quizName;
+  const [quizName, setquizName] = useState(  location.state?.quizName);
   const createdBy = location.state?.createdBy;
-  const difficulty = location.state?.difficulty;
-  const quizTime = location.state?.quizTime;
+  const [difficulty, setDifficulty] = useState(location.state?.difficulty);
+  const [quizTime, setquizTime] = useState(location.state?.quizTime);
+  const topic = location.pathname === '/addQuiz'?"1":location.state?.topic
   const title = location.state?.title.title;
   const uid = location.state?.uid.uid;
   console.log("TITLEME: " + title)
-  console.log("UIDME: "+uid)
+  console.log("UIDME: " + uid)
+   console.log("DIFICULTY: "+location.state?.difficulty)
 
 
   useEffect(() => {
@@ -144,7 +147,20 @@ export default function QuizSettingPage({}) {
       setLocalQuestions([]);
     }
     else if (confirmType === "saveQuiz") {
-      navigate("/lessonPage",{ state: { title,uid} })
+      if (!isAddQuizRoute) {
+          const result = await useeditQuiz(quizName+"", topic+"", difficulty == "beginner"?1:difficulty == "intermediate"?2:3, parseInt(quizTime));
+
+          if (result.success) {
+            console.log("Quiz edited successfully:", result.response);
+            navigate("/lessonPage",{ state: { title,uid} })
+          } else {
+          console.error("Failed to edit quiz:", result.error);
+          }
+      }
+      else {
+        navigate("/lessonPage",{ state: { title,uid} })
+      }
+      
     }
     handleCloseConfirm();
   };
@@ -274,7 +290,7 @@ export default function QuizSettingPage({}) {
       <div className="quiz-settings-main-container">
         <div className='quiz-settings-title-container'>
 
-          {!isAddQuizRoute && <h2>Quiz Setting & Editor</h2>}
+        
           {isAddQuizRoute && <>
             <h2>Name: {quizName}</h2>
             <h3 style={{color:"white"}}>Difficulty: {difficulty}</h3>
@@ -282,27 +298,36 @@ export default function QuizSettingPage({}) {
           </>}
 
           {/*contains name of the quiz, the difficuty, and the time*/}
-          {/*isAddQuizRoute &&
+          {!isAddQuizRoute &&
             <div className="d-flex flex-row">
               <div className="d-flex flex-row align-items-center">
-                <label className="me-2 text-white fw-bold">Name</label>
-                <input className="form-control w-100" />
+                <label className="text-white fw-bold">Name</label>
+                {/*<input className="form-control w-100" value={quizName} onChange={(e) => {
+                  setquizName(e.target.value)
+                }} />*/}
+                <h2>{quizName}</h2>
               </div>
 
               <div className="d-flex flex-row align-items-center">
                 <label className="me-2 text-white fw-bold">Difficulty</label>
-                <select className="form-select w-100">
-                  <option value="beginner">Beginner</option>
-                  <option value="intermediate">Intermediate</option>
-                  <option value="advanced">Advanced</option>
-                </select>
+<select
+      className="form-select w-100"
+      value={difficulty}
+      onChange={(e) => setDifficulty(e.target.value)}
+    >
+      <option value="beginner">Beginner</option>
+      <option value="intermediate">Intermediate</option>
+      <option value="advanced">Advanced</option>
+    </select>
               </div>
 
               <div className="d-flex flex-row align-items-center">
                 <label className="me-2 text-white fw-bold">Time (minutes)</label>
-                <input type="number" className="form-control w-25" placeholder="ex. 30" min="1" />
+                <input type="number" className="form-control w-25" placeholder="ex. 30" min="1" value={quizTime} onChange={(e) => {
+                  setquizTime(e.target.value)
+                }}/>
               </div>
-            </div>*/
+            </div>
           }
         </div>
 

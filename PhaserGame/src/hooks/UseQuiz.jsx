@@ -47,3 +47,15 @@ export async function addClassToQuiz(quizName, className) {
     return {success:false, error}
   }
 }
+
+
+export async function useeditQuiz(quizName, topic,level,duration) {
+  try {
+    const response = await QuizController.editQuizController(quizName, topic,level,duration);
+    return { success: true, response };
+  } catch (error) {
+    console.log("add class to quiz Error: ", error)
+    return {success:false, error}
+  }
+}
+

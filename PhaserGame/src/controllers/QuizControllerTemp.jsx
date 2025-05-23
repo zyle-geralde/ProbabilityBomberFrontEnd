@@ -30,3 +30,13 @@ export const addClasstoQuizService = async ( quizName, className ) => {
         throw error;
     }
 }
+
+export const editQuizController = async (quizName, topic,level,duration)=>{
+    try {
+        await QuizService.editQuizService(quizName, topic,level,duration);
+        return true;
+    } catch (error) {
+        console.error("QuizController Error:", error);
+        throw error;
+    }
+}

@@ -64,10 +64,11 @@ function LevelCard({
                                 state: {
                                     quizName: title+"",
                                     createdBy:quizInfo.createdBy +"",
-                                    difficulty: quizInfo.difficulty +"",
+                                    difficulty: quizInfo.level == "1"? "beginner":quizInfo.level == "2"?"intermediate":"advanced",
                                     quizTime:quizInfo.duration + "",
                                     title: { title:classTitle } ,
-                                    uid: { uid } 
+                                    uid: { uid },
+                                    topic:quizInfo.topic+""
 
                                 }
                             })

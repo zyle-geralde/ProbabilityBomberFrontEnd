@@ -30,3 +30,15 @@ export const addClassToQuizService = async (quizName, className)=>{
         throw error
     }
 }
+
+export const editQuizService = async (quizName, topic,level,duration)=>{
+    try {
+        const payload = { quizName, topic,level,duration }
+        console.log("Payload being sent:", payload);
+        return api.post('quiz/edit_quiz',payload)
+    }
+    catch (error) {
+        console.error("Service Error: ", error)
+        throw error
+    }
+}
