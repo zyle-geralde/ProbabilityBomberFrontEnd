@@ -1,7 +1,7 @@
 .container {
 font-family: Arial, sans-serif;
-padding: 20px;
-background-color: #f4f4f4;
+/* padding: 20px;
+background-color: #f4f4f4; */
 }
 
 .header {
@@ -221,21 +221,97 @@ margin: 0 auto;
 }
 
 .mainGrid {
-display: grid;
-grid-template-columns: 1fr 2fr;
-gap: 2rem;
-padding: 2rem;
+  padding: 1em;
+  display: grid;
+    gap: 1em;
+    grid-template-areas:
+        "profile-container progress-container topic-progress-container topic-progress-container"
+        ".    badges-container badges-container badges-container"
+        ".    radarchart-container radarchart-container radarchart-container"
+        ".    radarchart-container radarchart-container radarchart-container";
 }
 
-.leftPanel, .rightPanel {
+.profile-container-v2{
+  grid-area: profile-container;
+  overflow: hidden;
+  background: white;
+  border: 1px solid black;
+  box-shadow: 5px 5px black;
+  border-radius: 14px;
+  width: 100%;
+  height: fit-content;  
+  max-width: 100%;
+}
+
+
+.profile-header{
+  width: 100%;
+  padding: 1rem 1rem 0.8rem;
+  color: white;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: left;
+  background-color: #8A2D3B;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+}
+
+.profile-content{
+  padding: 0.5em 0em;
+  text-align: center;
+}
+
+
+.profile-picture {
+width: 120px;
+height: 120px;
+background-color: grey; /* you can change this color */
+border-radius: 50%;
+margin: 0 auto 20px auto;
+}
+
+.profile-details {
+list-style: none;
+padding: 0;
+text-align: center;
+}
+
+.profile-details li {
+margin-bottom: 5px;
+font-size: 16px;
+color: #555;
+}
+
+.update-button {
+margin: 1em 0em;
+background-color: #8A2D3B;
+color: white;
+padding: 10px 18px;
+border: none;
+border-radius: 6px;
+cursor: pointer;
+font-size: 16px;
+transition: background-color 0.3s ease;
+}
+
+.update-button:hover {
+background-color: #8a2d3be2;
+}
+
+.progress-container, .topic-progress-container {
 background: #fff;
 border-radius: 15px;
 border: 1px solid black;
 box-shadow: 4px 4px black;
-
 }
 
-.rightPanel h2{
+.progress-container{
+  grid-area: progress-container;
+  display: flex;
+  flex-direction: row;
+}
+
+.topic-progress-container h2{
 width: 100%;
 padding: 1rem 1rem 0.8rem;
 color: white;
@@ -247,29 +323,32 @@ border-top-left-radius: 14px;
 border-top-right-radius: 14px;
 }
 
-.leftPanel {
-display: flex;
-gap: 1em;
-align-items: center;
-justify-content: center;
-flex: 1;
-padding-left: 20px;
+.topic-progress-container {
+  grid-area: topic-progress-container;
+  gap: 1em;
 }
 
 .topicSelect {
-margin: 20px;
-padding: 0.5rem;
-font-size: 1rem;
+  margin: 20px;
+  padding: 0.5rem;
+  font-size: 1rem;
 }
 
-
+/* 
 .bottomSection {
 display: grid;
 grid-template-columns: 1fr 1fr;
 gap: 2rem;
 padding: 0rem 2rem 2rem 2rem;
+} */
+
+.badges-container{
+  grid-area: badges-container;
 }
 
+.radarchart-container{
+  grid-area: radarchart-container;
+}
 
 .circularProgress {
 padding: 1em;

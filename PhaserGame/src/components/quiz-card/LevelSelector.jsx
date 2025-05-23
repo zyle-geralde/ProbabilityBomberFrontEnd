@@ -16,8 +16,7 @@ function LevelSelector({ lessons, quizStage,title,uid }) {
                 <LevelCard
                     key={index}
                     title={level.quizName}
-                    timeStarted={level.duration}
-                    timeFinished={level.duration}
+                    duration={level.duration}
                     score={0}
                     avgScore={0}
                     avgTimeFinished={level.duration}

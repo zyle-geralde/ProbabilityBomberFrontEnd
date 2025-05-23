@@ -29,13 +29,10 @@
   }
   
   .navbar-logo  img{
-    width: 40px;
+    width: 150px;
     cursor: pointer;
   }
 
-  .navbar-logo:hover{
-    color: gold;
-  }
   
   /* User section styles */
   .navbar-user {

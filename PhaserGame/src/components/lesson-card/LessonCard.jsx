@@ -9,8 +9,8 @@ import * as UseQuiz from "../../hooks/UseQuiz"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faFile } from '@fortawesome/free-solid-svg-icons';
 
-function LessonCard({ lesson,quizList,title,userData,uid }) {
-    const { isTeacher } = AuthController.getCurrentUserRole(); 
+function LessonCard({ lesson,quizList,title,userData,uid, resourceLink }) {
+    const isTeacher = AuthController.getCurrentUserRole(); 
     const [isExpanded, setIsExpanded] = useState(false);
     const [showForm, setShowForm] = useState(false);
     const [newQuizTitle, setNewQuizTitle] = useState('');
@@ -86,6 +86,7 @@ const handleSave = async () => {
     }
 };
 
+// console.log("Resource Link: ", resourceLink)
     return (
         <div className="lesson-container">
             <div className='top-container seperator' onClick={toggleQuizCard}>
@@ -105,7 +106,7 @@ const handleSave = async () => {
                 <>
                     <div className='lesson-file-resource'>
                         <FontAwesomeIcon icon={faFile} className="lesson-file-icon" />
-                        <a href='#' className='lesson-file-link'>Lesson Resource File</a>
+                        <a href={resourceLink} className='lesson-file-link'>Lesson Resource File</a>
                     </div>
                     <div className='quiz-card-container'>
                         {levels.map((quiz,index) => (

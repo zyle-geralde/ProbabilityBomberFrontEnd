@@ -65,3 +65,17 @@ body{
     border: 1px solid black;
     box-shadow: 4px 4px black;
 }
+
+
+/* No Comment Div */
+.no-class-message {
+    display: flex;
+    align-items: center;
+    height: 500px;
+    /* padding: 2rem; */
+    text-align: center;
+    padding-top: 5em;
+    color: #555;
+    justify-content: center;
+  }
+  

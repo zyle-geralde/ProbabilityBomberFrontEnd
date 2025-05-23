@@ -6,117 +6,14 @@ import { useGetAllQuiz } from '../../hooks/UseQuiz';
 const staticLessons = [
   {
     id: 'lesson1',
-    title: 'Bayes Theorem',
-    resourceLink: '/Bayes Theorem',
-    quizzes: [
-      { 
-        id: 'lesson1-quiz', 
-        name: 'Beginner', 
-        levelsCompleted: 0,
-        levels: [
-          {
-            levelId: 'level1',
-            name: 'Quiz1',
-            time:'10',
-            score: '10',
-            takes:"1",
-            gameLink: '/game/lesson1/level1',
-            createdBy: '0'  
-          },
-          {
-            levelId: 'level2',
-            name: 'Quiz2',
-            time:'10',
-            score: '10',
-            takes:"1",
-            gameLink: '/game/lesson1/level2',
-            createdBy: '0'  
-          },
-          {
-            levelId: 'level3',
-            name: 'Quiz3',
-            time:'10',
-            score: '10',
-            takes:"1",
-            gameLink: '/game/lesson1/level3',
-            createdBy: '0'  
-          }
-        ]
-      },
-{ 
-        id: 'lesson1-quiz2', 
-        name: 'Intermediate', 
-        levelsCompleted: 0,
-        levels: [
-          {
-            levelId: 'level1',
-            name: 'Quiz1',
-            time:'10',
-            score: '10',
-            takes:"1",
-            gameLink: '/game/lesson1/level1',
-            createdBy: '0'  
-          },
-          {
-            levelId: 'level2',
-            name: 'Quiz2',
-            time:'10',
-            score: '10',
-            takes:"1",
-            gameLink: '/game/lesson1/level2',
-            createdBy: '0'  
-          },
-          {
-            levelId: 'level3',
-            name: 'Quiz3',
-            time:'10',
-            score: '10',
-            takes:"1",
-            gameLink: '/game/lesson1/level3',
-            createdBy: '0'  
-          }
-        ]
-      },
-{ 
-        id: 'lesson1-quiz3', 
-        name: 'Advance', 
-        levelsCompleted: 0,
-        levels: [
-          {
-            levelId: 'level1',
-            name: 'Quiz1',
-            time:'10',
-            score: '10',
-            takes:"1",
-            gameLink: '/game/lesson1/level1',
-            createdBy: '0'  
-          },
-          {
-            levelId: 'level2',
-            name: 'Quiz2',
-            time:'10',
-            score: '10',
-            takes:"1",
-            gameLink: '/game/lesson1/level2',
-            createdBy: '0'  
-          },
-          {
-            levelId: 'level3',
-            name: 'Quiz3',
-            time:'10',
-            score: '10',
-            takes:"1",
-            gameLink: '/game/lesson1/level3',
-            createdBy: '0'  
-          }
-        ]
-      },
-    ],
+    title: 'Introduction to Probability',
+    resourceLink: '/topic/1',
+    quizzes: [],
   },
   {
     id: 'lesson2',
-    title: 'Probability Basics',
-    resourceLink: '/Probability Basics',
+    title: 'Equally Likely & Complementary Events',
+    resourceLink: '/topic/2',
     quizzes: [
       { 
         id: 'lesson2-quiz', 
@@ -224,8 +121,8 @@ const staticLessons = [
   },
   {
     id: 'lesson3',
-    title: 'Combinatorics',
-    resourceLink: '/Combinatorics',
+    title: 'Types of Probability',
+    resourceLink: '/topic/3',
     quizzes: [
       { 
         id: 'lesson3-quiz', 
@@ -333,8 +230,8 @@ const staticLessons = [
   },
   {
     id: 'lesson4',
-    title: 'Conditional Probability',
-    resourceLink: '/Conditional Probability',
+    title: 'Mutually and Not Mutually Exclusive Events',
+    resourceLink: '/topic/4',
     quizzes: [
       { 
         id: 'lesson4-quiz', 
@@ -440,129 +337,129 @@ const staticLessons = [
       },
     ],
   },
-  {
-    id: 'lesson5',
-    title: 'Random Variables',
-    resourceLink: '/Random Variables',
-    quizzes: [
-      { 
-        id: 'lesson5-quiz', 
-        name: 'Beginner', 
-        levelsCompleted: 0,
-        levels: [
-          {
-            levelId: 'level1',
-            name: 'Q1',
-            time:'10',
-            score: '10',
-            takes:"1",
-            gameLink: '/game/lesson5/level1',
-            createdBy: '0'  
-          },
-          {
-            levelId: 'level2',
-            name: 'Q2',
-            time:'10',
-            score: '10',
-            takes:"1",
-            gameLink: '/game/lesson5/level2',
-            createdBy: '0'  
-          },
-          {
-            levelId: 'level3',
-            name: 'Q3',
-            time:'10',
-            score: '10',
-            takes:"1",
-            gameLink: '/game/lesson5/level3',
-            createdBy: '0'  
-          }
-        ]
-      },
-{ 
-        id: 'lesson5-quiz2', 
-        name: 'Intermediate', 
-        levelsCompleted: 0,
-        levels: [
-          {
-            levelId: 'level1',
-            name: 'Q1',
-            time:'10',
-            score: '10',
-            takes:"1",
-            gameLink: '/game/lesson5/level1',
-            createdBy: '0'  
-          },
-          {
-            levelId: 'level2',
-            name: 'Q2',
-            time:'10',
-            score: '10',
-            takes:"1",
-            gameLink: '/game/lesson5/level2',
-            createdBy: '0'  
-          },
-          {
-            levelId: 'level3',
-            name: 'Q3',
-            time:'10',
-            score: '10',
-            takes:"1",
-            gameLink: '/game/lesson5/level3',
-            createdBy: '0'  
-          }
-        ]
-      },
-{ 
-        id: 'lesson5-quiz3', 
-        name: 'Advance', 
-        levelsCompleted: 0,
-        levels: [
-          {
-            levelId: 'level1',
-            name: 'Q1',
-            time:'10',
-            score: '10',
-            takes:"1",
-            gameLink: '/game/lesson5/level1',
-            createdBy: '0'  
-          },
-          {
-            levelId: 'level2',
-            name: 'Q2',
-            time:'10',
-            score: '10',
-            takes:"1",
-            gameLink: '/game/lesson5/level2',
-            createdBy: '0'  
-          },
-          {
-            levelId: 'level3',
-            name: 'Q3',
-            time:'10',
-            score: '10',
-            takes:"1",
-            gameLink: '/game/lesson5/level3',
-            createdBy: '0'  
-          }
-        ]
-      },
-    ],
-  },
+//   {
+//     id: 'lesson5',
+//     title: 'Random Variables',
+//     resourceLink: '/Random Variables',
+//     quizzes: [
+//       { 
+//         id: 'lesson5-quiz', 
+//         name: 'Beginner', 
+//         levelsCompleted: 0,
+//         levels: [
+//           {
+//             levelId: 'level1',
+//             name: 'Q1',
+//             time:'10',
+//             score: '10',
+//             takes:"1",
+//             gameLink: '/game/lesson5/level1',
+//             createdBy: '0'  
+//           },
+//           {
+//             levelId: 'level2',
+//             name: 'Q2',
+//             time:'10',
+//             score: '10',
+//             takes:"1",
+//             gameLink: '/game/lesson5/level2',
+//             createdBy: '0'  
+//           },
+//           {
+//             levelId: 'level3',
+//             name: 'Q3',
+//             time:'10',
+//             score: '10',
+//             takes:"1",
+//             gameLink: '/game/lesson5/level3',
+//             createdBy: '0'  
+//           }
+//         ]
+//       },
+// { 
+//         id: 'lesson5-quiz2', 
+//         name: 'Intermediate', 
+//         levelsCompleted: 0,
+//         levels: [
+//           {
+//             levelId: 'level1',
+//             name: 'Q1',
+//             time:'10',
+//             score: '10',
+//             takes:"1",
+//             gameLink: '/game/lesson5/level1',
+//             createdBy: '0'  
+//           },
+//           {
+//             levelId: 'level2',
+//             name: 'Q2',
+//             time:'10',
+//             score: '10',
+//             takes:"1",
+//             gameLink: '/game/lesson5/level2',
+//             createdBy: '0'  
+//           },
+//           {
+//             levelId: 'level3',
+//             name: 'Q3',
+//             time:'10',
+//             score: '10',
+//             takes:"1",
+//             gameLink: '/game/lesson5/level3',
+//             createdBy: '0'  
+//           }
+//         ]
+//       },
+// { 
+//         id: 'lesson5-quiz3', 
+//         name: 'Advance', 
+//         levelsCompleted: 0,
+//         levels: [
+//           {
+//             levelId: 'level1',
+//             name: 'Q1',
+//             time:'10',
+//             score: '10',
+//             takes:"1",
+//             gameLink: '/game/lesson5/level1',
+//             createdBy: '0'  
+//           },
+//           {
+//             levelId: 'level2',
+//             name: 'Q2',
+//             time:'10',
+//             score: '10',
+//             takes:"1",
+//             gameLink: '/game/lesson5/level2',
+//             createdBy: '0'  
+//           },
+//           {
+//             levelId: 'level3',
+//             name: 'Q3',
+//             time:'10',
+//             score: '10',
+//             takes:"1",
+//             gameLink: '/game/lesson5/level3',
+//             createdBy: '0'  
+//           }
+//         ]
+//       },
+//     ],
+//   },
 ];
 
 
 
 function ListOfLessons({ userData, title,classId,uid }) {
+  // console.log("here:", userData , title, classId, uid)
   const { data: quizzes, loading, error } = useGetAllQuiz();
-  console.log(userData)
+  // console.log(userData)
 
   if (loading) return <div>Loading</div>
   if (error) return <p>Something went wrong: {error.message}</p>;
 
   const filteredList = quizzes.allQuizzes.filter(quiz => quiz.classIds[0] == classId)
-  console.log(filteredList)
-
+  // console.log(filteredList)
 
   return (
     <>
@@ -575,9 +472,11 @@ function ListOfLessons({ userData, title,classId,uid }) {
           title={title}
           userData={userData}
           uid={uid}
+          resourceLink={lesson.resourceLink}
         />
       ))}
     </>
+    
   );
 }
   

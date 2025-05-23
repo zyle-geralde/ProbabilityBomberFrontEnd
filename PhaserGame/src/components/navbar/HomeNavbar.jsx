@@ -8,24 +8,29 @@ function HomeNavbar() {
   const navigate = useNavigate(); 
 
   const username = AuthController.getUsername();
-  console.log("username: ", username);
+  // console.log("username: ", username);
 
   const handleLogout = () => {
     AuthController.logoutUser({ navigate }); 
   };
 
+  const isTeacher = AuthController.getCurrentUserRole();
+
+
   //usertype to profile navigate?
   const handleProfileNav = () => {
-    alert("Which profile should I go?")
+      navigate('/profilePage');
   };
+
+  
 
   return (
     <>
       <nav className="navbar">
         <div className="navbar-container">
           <div className="navbar-logo">
-            <a href="/lessonPage">
-              <img src="./images/bomb-logo.svg" alt="Logo" />
+            <a href={isTeacher ? '/classPage' : '/lessonPage'}>
+              <img src="./images/bomb-logov2.svg" alt="Logo" />
             </a>
            
           </div>

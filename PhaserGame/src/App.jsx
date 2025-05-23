@@ -10,12 +10,13 @@ import LoginForm from './components/forms/LoginForm';
 import RegisterForm from './components/forms/RegisterForm';
 import Password from './components/forms/UpdatePasswordForm';
 import ForgotPassword from './components/forms/ForgotPasswordForm';
-import StudentProfile from './components/views/StudentProfile'; 
+// import StudentProfile from './components/views/StudentProfile'; 
 import TeacherProfile from './components/views/teacher/TeacherProfile';
 import PasswordResetLink from './components/views/PasswordResetLink';
 import LessonPage from "./pages/LessonPage/LessonPage";
 import QuizSettingPage from "./pages/QuizSettingPage/QuizSettingPage";
 import ClassPage from "./pages/ClassPage/ClassPage";
+import StudentProfile from "./pages/ProfilePage/StudentProfile";
 import ProfilePage from "./pages/ProfilePage/UserProfile";
 import ClassPerformancePage from "./pages/PerformanceTracking/ClassPerformancePage";
 import LessonResourcePage from "./pages/LessonPage/LessonResourcePage/LessonResourcePage";
@@ -94,7 +95,7 @@ export function App() {
             />
           }
         />
-        <Route
+        {/* <Route
           path="/teacher_profile"
           element={
             userData ? (
@@ -105,7 +106,7 @@ export function App() {
               <p>Loading...</p>
             )
           }
-        />
+        /> */}
         <Route
           path="/password"
           element={

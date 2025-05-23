@@ -63,7 +63,6 @@ function TeacherProfile({ userData, onUpdatePassword }) {
         
         
       </div>
-      <div class="item5"><p>&copy; 2025 Groupo ni Zyle. All rights reserved.</p></div>
     </>
     
   );

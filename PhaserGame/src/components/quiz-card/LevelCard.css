@@ -59,9 +59,14 @@
 
 .level-score-container{
     text-align: center;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
 }
 
 .level-score-label{
+    margin: 0;
     font-size: 0.9rem;
     color: #777;
 }
@@ -70,6 +75,10 @@
     display: flex;
     align-items: center;
     width: 200px;
+}
+
+.level-title{
+    margin: 0;
 }
 
 .level-stats-container-students{
@@ -98,5 +107,9 @@
 .bold-value {
     font-weight: bold;
     color: black;
+}
+
+.level-stat-label{
+    margin: 0;
 }
 

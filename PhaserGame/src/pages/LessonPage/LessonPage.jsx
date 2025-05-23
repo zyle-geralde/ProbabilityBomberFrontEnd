@@ -10,17 +10,22 @@ import Leaderboard from '../../components/high-score-table/Leaderboard';
 import ViewStudents from '../../components/viewstudents/ViewStudents';
 import LevelCard from '../../components/quiz-card/LevelCard';
 import { useGetAllQuiz } from '../../hooks/UseQuiz';
+import * as AuthController from '../../controllers/AuthController';
 
 // import { useUserContext } from '../../contexts/UserContext';
 
 
 
 function LessonPage({ userData }) {
+  const isTeacher = AuthController.getCurrentUserRole(); 
   const location = useLocation();
   const { title, uid } = location.state || {};
   const [selectedTab, setSelectedTab] = useState('course');
+  
+  const classId = isTeacher
+  ? userData.classes[uid]
+  : userData.classId || null;
 
-  const classId = userData.classes[uid]
 
   const { data: quizzes, loading, error } = useGetAllQuiz();
 
@@ -35,82 +40,89 @@ function LessonPage({ userData }) {
     <div>
       <HomeNavbar />
 
-      <div className="teacher-lesson-page-container">
-        {/* Sidebar Selector */}
-        <div className="selector-area">
-          <div className="lesson-selector-container">
-            <div className="title">Activities</div>
-            <button
-              className={`lesson-button ${selectedTab === 'course' ? 'active' : ''}`}
-              onClick={() => setSelectedTab('course')}
-            >
-              Course
-            </button>
-            <button
-              className={`lesson-button ${selectedTab === 'created' ? 'active' : ''}`}
-              onClick={() => setSelectedTab('created')}
-            >
-              Created by Teacher
-            </button>
-
-            <button
-              className={`lesson-button ${selectedTab === 'students' ? 'active' : ''}`}
-              onClick={() => setSelectedTab('students')}
-            >
-              View Students
-            </button>
-          </div>
+      {!classId && !isTeacher? (
+        <div className="no-class-message">
+          <h2>No Classes Assigned yet</h2>
         </div>
+      ) : (
+        <div className="teacher-lesson-page-container">
+          {/* Sidebar Selector */}
+          <div className="selector-area">
+            <div className="lesson-selector-container">
+              <div className="title">Activities</div>
+              <button
+                className={`lesson-button ${selectedTab === 'course' ? 'active' : ''}`}
+                onClick={() => setSelectedTab('course')}
+              >
+                Course
+              </button>
+              <button
+                className={`lesson-button ${selectedTab === 'created' ? 'active' : ''}`}
+                onClick={() => setSelectedTab('created')}
+              >
+                Created by Teacher
+              </button>
 
-        {/* Main Lesson Content */}
-        <div className="main-content">
-          <div className="lesson-card-area">
-            <div className="lesson-card-area-title">
-              Discrete Structures 2: Probabilities
-            </div>
+              {isTeacher && (
+                <button className={`lesson-button ${selectedTab === 'students' ? 'active' : ''}`} onClick={() => setSelectedTab('students')}>
+                  View Students
+                </button>
+              )}
 
-            <div className="list-of-lessons">
-              {selectedTab === 'course' && <ListOfLessons
-                userData={userData}
-                title={title}
-                classId={classId}
-                uid={uid} />}
-              {selectedTab === "created" && <div className="level-selector-container">
-            {filteredList.map((level, index) => (
-                <LevelCard
-                    key={index}
-                    title={level.quizName}
-                    timeStarted={level.duration}
-                    timeFinished={level.duration}
-                    score={0}
-                    avgScore={0}
-                    avgTimeFinished={level.duration}
-                    quizInfo={level}
-                    classTitle={title}
-                    uid={ uid}
-                />
-            ))
-            }
-        </div>}
-              {selectedTab === 'students' && <ViewStudents
-                userData={userData}
-                className={title} />}
-              
-              {/* You can add `selectedTab === 'created' && <CreatedLessons />` here if needed */}
             </div>
           </div>
-        </div>
 
-        {/* Leaderboard */}
-        <div className="leaderboard-container">
-          <Leaderboard 
-            title="Leaderboard" 
-            showTime={true} 
-            showRank={true} 
-            showScore={true} 
-          />
+          {/* Main Lesson Content */}
+          <div className="main-content">
+            <div className="lesson-card-area">
+              <div className="lesson-card-area-title">
+                Discrete Structures 2: Probabilities
+              </div>
+
+              <div className="list-of-lessons">
+                {selectedTab === 'course' && (
+                  <ListOfLessons
+                    userData={userData}
+                    title={title}
+                    classId={classId}
+                    uid={uid}
+                  />
+                )}
+                {selectedTab === 'created' && (
+                  <div className="level-selector-container">
+                    {filteredList.map((level, index) => (
+                      <LevelCard
+                        key={index}
+                        title={level.quizName}
+                        duration={level.duration}
+                        score={0}
+                        avgScore={0}
+                        avgTimeFinished={level.duration}
+                        quizInfo={level}
+                        classTitle={title}
+                        uid={uid}
+                      />
+                    ))}
+                  </div>
+                )}
+                {selectedTab === 'students' && (
+                  <ViewStudents userData={userData} className={title} />
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Leaderboard */}
+          <div className="leaderboard-container">
+            <Leaderboard
+              title="Leaderboard"
+              showTime={true}
+              showRank={true}
+              showScore={true}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

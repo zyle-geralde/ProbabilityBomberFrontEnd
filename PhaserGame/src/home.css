@@ -47,6 +47,11 @@ nav {
     margin-top:  40px;
     margin-bottom:  40px;
 }
+
+.ms-2.text-primary{
+    font-size: 22px;
+    color: #8a2d3b !important;;
+}
 /* }
 
 #body-container{

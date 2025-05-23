@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 
 function LevelCard({
     title = 'Untitled Level',
-    timeStarted = '-',
-    timeFinished = '-',
+    duration = '-',
+    // timeFinished = '-',
     score = '-',
     avgScore = '-',
     avgTimeFinished = '-',
@@ -14,25 +14,30 @@ function LevelCard({
     classTitle,
     uid
 }) {
-    const { isTeacher } = AuthController.getCurrentUserRole();
+    const isTeacher = AuthController.getCurrentUserRole();
     const navigate = useNavigate()
     console.log("Class TITLE: " + classTitle)
     console.log("Class TITLE: "+classTitle)
-
+    console.log(duration)
     return (
         <div className="level-container">
             <div className='level-container-left'>
                 <div className="level-title-container">
-                    <h4 className='level-title'>{title}</h4>
+                    <h6 className='level-title'>{title}</h6>
                 </div>
                 {!isTeacher ? (
                     <div className='level-stats-container-students'>
+                        
                         <p className='level-stat level-stat-time-started'>
+                            Duration: <span className="bold-value">{duration} Minutes</span>
+                        </p>
+
+                        {/* <p className='level-stat level-stat-time-started'>
                             Date & Time Started: <span className="bold-value">{timeStarted}</span>
                         </p>
                         <p className='level-stat level-stat-time-finished'>
                             Date & Time Finished: <span className="bold-value">{timeFinished}</span>
-                        </p>
+                        </p> */}
                     </div>
                 ) : null}
 
@@ -53,7 +58,7 @@ function LevelCard({
                     >
                         <div className='level-stat-t'>
                             <div className='level-stat-value'>{quizInfo.questions.length}</div>
-                            <p className='level-stat-label'>Total Points</p>
+                            <p className='level-stat-label'>Total Score</p>
                         </div>
                         <a className="ms-2 text-primary" onClick={() => {
                             navigate("/viewQuiz", {
