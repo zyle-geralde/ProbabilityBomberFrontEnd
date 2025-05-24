@@ -13,6 +13,7 @@ function LevelSelector({ lessons, quizStage,title,uid }) {
     return (
         <div className="level-selector-container">
             {filteredList.map((level, index) => (
+                
                 <LevelCard
                     key={index}
                     title={level.quizName}

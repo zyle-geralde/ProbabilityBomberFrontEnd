@@ -61,8 +61,8 @@ export default function QuizSettingPage({}) {
   const [successMessage, setSuccessMessage] = useState("");
 
 
-  useEffect(() => {
-    if (questions) {
+useEffect(() => {
+  if (questions) {
       
       const filteredQuestions = questions.filter(q => {
   const words = q.questionName.split(' ');
