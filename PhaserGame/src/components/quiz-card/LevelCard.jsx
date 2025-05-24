@@ -17,7 +17,7 @@ function LevelCard({
     const isTeacher = AuthController.getCurrentUserRole();
     const navigate = useNavigate()
     console.log("Class TITLE: " + classTitle)
-    console.log("Class TITLE: "+classTitle)
+    console.log("Class TITLE: " + classTitle)
     console.log(duration)
     return (
         <div className="level-container">
@@ -25,22 +25,6 @@ function LevelCard({
                 <div className="level-title-container">
                     <h6 className='level-title'>{title}</h6>
                 </div>
-                {!isTeacher ? (
-                    <div className='level-stats-container-students'>
-                        
-                        <p className='level-stat level-stat-time-started'>
-                            Duration: <span className="bold-value">{duration} Minutes</span>
-                        </p>
-
-                        {/* <p className='level-stat level-stat-time-started'>
-                            Date & Time Started: <span className="bold-value">{timeStarted}</span>
-                        </p>
-                        <p className='level-stat level-stat-time-finished'>
-                            Date & Time Finished: <span className="bold-value">{timeFinished}</span>
-                        </p> */}
-                    </div>
-                ) : null}
-
 
 
             </div>
@@ -60,16 +44,20 @@ function LevelCard({
                             <div className='level-stat-value'>{quizInfo.questions.length}</div>
                             <p className='level-stat-label'>Total Score</p>
                         </div>
+                        <div className='level-stat-t'>
+                            <div className='level-stat-value'>{quizInfo.duration} min</div>
+                            <p className='level-stat-label'>Duration</p>
+                        </div>
                         <a className="ms-2 text-primary" onClick={() => {
                             navigate("/viewQuiz", {
                                 state: {
-                                    quizName: title+"",
-                                    createdBy:quizInfo.createdBy +"",
-                                    difficulty: quizInfo.level == "1"? "beginner":quizInfo.level == "2"?"intermediate":"advanced",
-                                    quizTime:quizInfo.duration + "",
-                                    title: { title:classTitle } ,
+                                    quizName: title + "",
+                                    createdBy: quizInfo.createdBy + "",
+                                    difficulty: quizInfo.level == "1" ? "beginner" : quizInfo.level == "2" ? "intermediate" : "advanced",
+                                    quizTime: quizInfo.duration + "",
+                                    title: { title: classTitle },
                                     uid: { uid },
-                                    topic:quizInfo.topic+""
+                                    topic: quizInfo.topic + ""
 
                                 }
                             })
@@ -79,11 +67,28 @@ function LevelCard({
                     </div>
                 ) : (
                     <>
-                        <div className="level-score-container">
-                            <div className="level-score">{score}</div>
-                            <p className="level-score-label">Score</p>
+                    <div
+                        className='level-stats-container'
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            gap: '1rem',
+                            alignItems: "center"
+                        }}
+                    >
+                        <div className='level-stat-t'>
+                            <div className='level-stat-value'>{quizInfo.questions.length}</div>
+                            <p className='level-stat-label'>Total Score</p>
                         </div>
-                        <button className='level-start-btn'>Start</button>
+                        <div className='level-stat-t'>
+                            <div className='level-stat-value'>{0}</div>
+                            <p className='level-stat-label'>Score</p>
+                        </div>
+                        <div className='level-stat-t'>
+                            <div className='level-stat-value'>{quizInfo.duration} min</div>
+                            <p className='level-stat-label'>Duration</p>
+                        </div>
+                    </div>
                     </>
                 )}
             </div>
