@@ -18,7 +18,7 @@ function ClassPage({ userData,setUserData }) {
     const [userDatame, setUserDatame] = useState(null);
     // --
 
-    console.log(localStorage.getItem("userData"))
+    //console.log(localStorage.getItem("userData"))
 
 
     const [refreshKey, setRefreshKey] = useState(0);

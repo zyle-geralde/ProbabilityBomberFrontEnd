@@ -69,3 +69,13 @@ export async function usedeleteQuiz(quizName, className) {
   }
 }
 
+export async function useUpdateStudentInformation(object_payload) {
+  try {
+    const response = await QuizController.updateStudentInformationController(object_payload);
+    return { success: true, response };
+  } catch (error) {
+    console.log("add class to quiz Error: ", error)
+    return {success:false, error}
+  }
+}
+

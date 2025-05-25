@@ -138,7 +138,9 @@ export function App() {
             />
           }
         />
-        <Route path="/phaserGame" element={<PhaserGame />} />
+        <Route path="/phaserGame" element={userData?(<PhaserGame
+          userData={ userData}
+        /> ):(<div>Loading ...</div>)} />
         <Route path="/lessonPage" element={userData?(<LessonPage
           userData={ userData}
         /> ):(<div>Loading ...</div>)}  />

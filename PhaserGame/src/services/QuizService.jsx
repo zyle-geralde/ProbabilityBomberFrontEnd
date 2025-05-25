@@ -54,3 +54,15 @@ export const deleteQuizService = async (quizName, className)=>{
         throw error
     }
 }
+
+export const updateStudentInformationSrevice = async (object_payload)=>{
+    try {
+        const payload = object_payload
+        console.log("Payload being sent:", payload);
+        return api.post('quiz/update_information', payload)
+    }
+    catch (error) {
+        console.error("Service Error: ", error)
+        throw error
+    }
+}

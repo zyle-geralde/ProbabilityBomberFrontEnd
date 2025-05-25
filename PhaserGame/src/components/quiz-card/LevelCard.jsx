@@ -24,7 +24,8 @@ function LevelCard({
     let navigateToGame = (e) => {
         navigate("/PhaserGame", {
             state: {
-                quizInfo: quizInfo
+                quizInfo: quizInfo,
+                classTitle: classTitle
             }
         })
     }

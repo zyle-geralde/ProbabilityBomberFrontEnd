@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useGetAllQuestion } from '../hooks/UseQuestion';
+import { useUpdateStudentInformation } from '../hooks/UseQuiz';
+import { useGetStudentClass } from '../hooks/UseStudent';
 import { useState } from 'react';
 
-function PhaserGame() {
+function PhaserGame({ userData }) {
     const location = useLocation();
     const gameRef = useRef(null);
     const gameInstance = useRef(null);
@@ -11,44 +13,77 @@ function PhaserGame() {
 
     const [refreshKey, setRefreshKey] = useState(0);
     const { questions, loading } = useGetAllQuestion(refreshKey);
+
+    const { data, loadingm, error } = useGetStudentClass();
+
     const [localQuestions, setLocalQuestions] = useState([]);
-    const { quizInfo } = location.state || {}
-    const [ quizDifficulty, setQuizDifficulty] = useState(1) 
-    console.log("QUIZINFO: "+quizInfo.quizName)
+    const { quizInfo,classTitle } = location.state || {}
+    const [quizDifficulty, setQuizDifficulty] = useState(1)
+    console.log("QUIZINFO: " + quizInfo.quizName)
+    console.log("UserINFO: " + userData.email)
+
+    if (loading) console.log("loading on get Class");
+    if (error) console.log("Error on get class");
+    console.log(data["className"])
 
 
-    
-    useEffect(() => {
-    if (questions) {
-          
-      const filteredQuestions = questions.filter(q => {
-      const words = q.questionName.split(' ');
-      const extracted = words.length > 3 ? words.slice(2).join(' ') : words[2];
-      return extracted === quizInfo.quizName;
-    });
-        
-        
-        const newArray = filteredQuestions.map((item,index) => {
-            return {
-                ansNumerator: parseInt(item.numerator),
-                ansDenominator: parseInt(item.denominator),
-                events: item.event.map((evnt, indx) => {
-                    return `Event ${alphabet[indx]}: `+evnt
-                }), probQuestion: `P( ${item.probability} ) = ` }
+    const updateStudentInfo = async (score,timeCompletion,noAttempts) => {
+        let object_payload = {
+            "quizName": quizInfo.quizName,
+            "className": data["className"],
+            "studentName": userData.email,
+            "studentInformation": {
+                [data["className"]]: {
+                    [userData.email]: {
+                        "score": score,
+                        "timeCompletion": timeCompletion,
+                        "noAttempts": noAttempts
+                    }
+                }
             }
-        )
-        setLocalQuestions(newArray);
-      }
+        }
+        const { success, response,error } = await useUpdateStudentInformation(object_payload)
+
+        if (success) {
+            console.log("Updated student Info ",response)
+        }
         else {
-          console.log("Error on show questions")
-      }
+            console.error("Failed to update student Info ",response)
+        }
+    }
+
+    useEffect(() => {
+        if (questions) {
+
+            const filteredQuestions = questions.filter(q => {
+                const words = q.questionName.split(' ');
+                const extracted = words.length > 3 ? words.slice(2).join(' ') : words[2];
+                return extracted === quizInfo.quizName;
+            });
+
+
+            const newArray = filteredQuestions.map((item, index) => {
+                return {
+                    ansNumerator: parseInt(item.numerator),
+                    ansDenominator: parseInt(item.denominator),
+                    events: item.event.map((evnt, indx) => {
+                        return `Event ${alphabet[indx]}: ` + evnt
+                    }), probQuestion: `P( ${item.probability} ) = `
+                }
+            }
+            )
+            setLocalQuestions(newArray);
+        }
+        else {
+            console.log("Error on show questions")
+        }
     }, [questions]);
 
     useEffect(() => {
         setQuizDifficulty(parseInt(quizInfo.level))
         console.log(localQuestions);
     }, [quizInfo]);
-    
+
 
 
     useEffect(() => {
@@ -1588,7 +1623,7 @@ function PhaserGame() {
                                 enemy.directionTimer = this.time.addEvent({
                                     delay: newDelay,
                                     callback: () => {
-                                        this.enemyWallCollide(enemy,null)
+                                        this.enemyWallCollide(enemy, null)
                                     },
                                     callbackScope: self,
                                     loop: true,
@@ -1983,6 +2018,7 @@ function PhaserGame() {
                                 }
                             },
                             this.createWinDisplay = function () {
+                                updateStudentInfo(self.score,(self.timeLeft / 60).toFixed(2),1)//To be changed once get ALl info is implemented. Change the attempt and check score if it is greater than
                                 let greetings = self.score >= Math.round(self.perfectScore * 0.60) ? "Congratulations" : "Nice Try";
                                 mainGreeting = self.add.text(
                                     this.cameras.main.width / 2,
@@ -2251,7 +2287,7 @@ function PhaserGame() {
                 }
             };
         }
-    }, [localQuestions,quizInfo]);
+    }, [localQuestions, quizInfo]);
 
     return <div ref={gameRef} style={{ margin: "0", display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", backgroundColor: "#282c34" }} />;
 }

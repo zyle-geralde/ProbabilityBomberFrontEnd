@@ -50,3 +50,13 @@ export const deleteQuizController = async (quizName, className)=>{
         throw error;
     }
 }
+
+export const updateStudentInformationController = async (object_payload)=>{
+    try {
+        await QuizService.updateStudentInformationSrevice(object_payload);
+        return true;
+    } catch (error) {
+        console.error("QuizController Error:", error);
+        throw error;
+    }
+}

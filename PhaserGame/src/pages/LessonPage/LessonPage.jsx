@@ -11,6 +11,7 @@ import ViewStudents from '../../components/viewstudents/ViewStudents';
 import LevelCard from '../../components/quiz-card/LevelCard';
 import { useGetAllQuiz } from '../../hooks/UseQuiz';
 import * as AuthController from '../../controllers/AuthController';
+import { useTeacherClasses } from '../../hooks/UseTeacher';
 
 // import { useUserContext } from '../../contexts/UserContext';
 
@@ -21,6 +22,12 @@ function LessonPage({ userData }) {
   const location = useLocation();
   const { title, uid } = location.state || {};
   const [selectedTab, setSelectedTab] = useState('course');
+
+
+  //for checking. remove this later
+  /*const [refreshKey, setRefreshKey] = useState(0);
+  const [success, setSuccess] = useState(false);
+  const { classes: allClass, loadingm } = useTeacherClasses(refreshKey, success);*/
   
   const classId = isTeacher
   ? userData.classes[uid]
@@ -28,12 +35,15 @@ function LessonPage({ userData }) {
 
 
   const { data: quizzes, loading, error } = useGetAllQuiz();
+  //console.log(allClass)
 
   if (loading) return <div>Loading</div>
   if (error) return <p>Something went wrong: {error.message}</p>;
 
   const filteredList = quizzes.allQuizzes.filter(quiz => quiz.classIds[0] == classId)
   console.log(filteredList)
+
+  console.log("LocalStore: "+localStorage.getItem("userData"))
 
 
   return (
