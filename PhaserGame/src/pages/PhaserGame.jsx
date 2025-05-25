@@ -1,8 +1,55 @@
 import React, { useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useGetAllQuestion } from '../hooks/UseQuestion';
+import { useState } from 'react';
 
 function PhaserGame() {
+    const location = useLocation();
     const gameRef = useRef(null);
     const gameInstance = useRef(null);
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+    const [refreshKey, setRefreshKey] = useState(0);
+    const { questions, loading } = useGetAllQuestion(refreshKey);
+    const [localQuestions, setLocalQuestions] = useState([]);
+    const { quizInfo } = location.state || {}
+    const [ quizDifficulty, setQuizDifficulty] = useState(1) 
+    console.log("QUIZINFO: "+quizInfo.quizName)
+
+
+    
+    useEffect(() => {
+    if (questions) {
+          
+      const filteredQuestions = questions.filter(q => {
+      const words = q.questionName.split(' ');
+      const extracted = words.length > 3 ? words.slice(2).join(' ') : words[2];
+      return extracted === quizInfo.quizName;
+    });
+        
+        
+        const newArray = filteredQuestions.map((item,index) => {
+            return {
+                ansNumerator: parseInt(item.numerator),
+                ansDenominator: parseInt(item.denominator),
+                events: item.event.map((evnt, indx) => {
+                    return `Event ${alphabet[indx]}: `+evnt
+                }), probQuestion: `P( ${item.probability} ) = ` }
+            }
+        )
+        setLocalQuestions(newArray);
+      }
+        else {
+          console.log("Error on show questions")
+      }
+    }, [questions]);
+
+    useEffect(() => {
+        setQuizDifficulty(parseInt(quizInfo.level))
+        console.log(localQuestions);
+    }, [quizInfo]);
+    
+
 
     useEffect(() => {
         if (window.Phaser && !gameInstance.current) {
@@ -108,7 +155,7 @@ function PhaserGame() {
 
                         this.game.canvas.willReadFrequently = true;
 
-                        this.LevelIndicator = 3// 1->beginner, 2->intermediate, 3 ->advance
+                        this.LevelIndicator = quizInfo.level// 1->beginner, 2->intermediate, 3 ->advance
 
                         this.wallGroup = null;
                         this.player = null;
@@ -176,19 +223,13 @@ function PhaserGame() {
                         this.probNumeratorHold = null
                         this.probDenominatorHold = null
                         this.questionIndex = 0
-                        this.questionsList = [
-                            { ansNumerator: 1, ansDenominator: 11, events: ["EVENT A: hello world\n", "EVENT B: Hi world\n", "EVENT C: Hello again\n"], probQuestion: "P( (A|B)/D ) = " },
-                            { ansNumerator: 2, ansDenominator: 22, events: ["EVENT A: hello world2\n", "EVENT B: Hi world2\n", "EVENT C: Hello again2\n"], probQuestion: "P( A|B ) = " },
-                            { ansNumerator: 3, ansDenominator: 33, events: ["EVENT A: hello world3\n", "EVENT B: Hi world3\n", "EVENT C: Hello again3\n"], probQuestion: "P( A ) = " },
-                            { ansNumerator: 4, ansDenominator: 44, events: ["EVENT A: hello world4\n", "EVENT B: Hi world4\n", "EVENT C: Hello again4\n"], probQuestion: "P( B ) = " },
-                            { ansNumerator: 5, ansDenominator: 55, events: ["EVENT A: hello world5\n", "EVENT B: Hi world5\n", "EVENT C: Hello again5\n"], probQuestion: "P( C ) = " }
-                        ]
+                        this.questionsList = localQuestions
 
                         let answerlongText;
                         let longText;
                         this.score = 0
                         this.holdScore = 0
-                        this.perfectScore = 5
+                        this.perfectScore = quizInfo.questions.length
 
                         //keypress
                         this.keyX = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
@@ -2144,7 +2185,7 @@ function PhaserGame() {
                         this.timerSeconds = 0; // Variable to store the timer value
                         this.timerText = this.add.text(this.cameras.main.width - 300, 100, 'Time: 0', { fontSize: '32px', fill: '#000000' }).setScrollFactor(0); // Text to display the timer*/
 
-                        this.initialTime = 3000; // 5 minutes in seconds
+                        this.initialTime = quizInfo.duration * 60; // 5 minutes in seconds
                         this.timeLeft = this.initialTime;
 
                         this.gameTimer = this.time.addEvent({
@@ -2210,7 +2251,7 @@ function PhaserGame() {
                 }
             };
         }
-    }, []);
+    }, [localQuestions,quizInfo]);
 
     return <div ref={gameRef} style={{ margin: "0", display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", backgroundColor: "#282c34" }} />;
 }
