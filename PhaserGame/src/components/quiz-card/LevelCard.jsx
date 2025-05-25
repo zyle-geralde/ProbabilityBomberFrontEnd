@@ -18,6 +18,7 @@ function LevelCard({
     quizInfo,
     classTitle,
     uid,
+    userData,
     setstudentLeaderBoards
 }) {
     const isTeacher = AuthController.getCurrentUserRole();
@@ -55,6 +56,7 @@ function LevelCard({
                 });
 
                 setstudentLeaderBoards(ranked)
+                setStudentData(ranked)
             }
             // make sure response.data has what you need
         } else {
@@ -68,11 +70,23 @@ function LevelCard({
     console.log("Class TITLE: " + classTitle)
     console.log(duration)
 
-    let navigateToGame = (e) => {
+    let navigateToGame = async (e) => {
+        const { success, response, error } = await useGetAllStudentInformation(quizInfo.quizName);
+
+        let notArranged = response.data.allQuizInformation[!isTeacher ? datam.className : datam];
+        console.log("Not Arranged")
+        console.log(notArranged)
+        
+        
+        const studentDataSpecific = notArranged.find(obj => obj.hasOwnProperty(userData.name))?.[userData.name];
+
+        console.log("STUDENTDATA: " + JSON.stringify(studentDataSpecific))
+
         navigate("/PhaserGame", {
             state: {
                 quizInfo: quizInfo,
-                classTitle: classTitle
+                classTitle: classTitle,
+                studentDataSpecific: studentDataSpecific
             }
         })
     }

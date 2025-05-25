@@ -32,8 +32,11 @@ function LessonPage({ userData }) {
   
   const classId = isTeacher
   ? userData.classes[uid]
-  : userData.classId || null;
-
+    : userData.classId || null;
+  
+  /*const studentName = !isTeacher ? userData.name : "none"
+  const studentData = studentLeaderBoards.filter(info => info.name == studentName)
+  console.log("STUDENTDATA: " + JSON.stringify(studentData))*/
 
   const { data: quizzes, loading, error } = useGetAllQuiz();
   //console.log(allClass)
@@ -113,6 +116,7 @@ function LessonPage({ userData }) {
                           quizInfo={level}
                           classTitle={title}
                           uid={uid}
+                          userData={userData}
                           setstudentLeaderBoards={setstudentLeaderBoards}
                       />
                     ))}

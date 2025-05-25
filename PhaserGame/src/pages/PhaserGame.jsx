@@ -11,44 +11,83 @@ function PhaserGame({ userData }) {
     const gameInstance = useRef(null);
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-    const [refreshKey, setRefreshKey] = useState(0);
+    //Uncomment this later
+    /*const [refreshKey, setRefreshKey] = useState(0);
     const { questions, loading } = useGetAllQuestion(refreshKey);
 
-    const { data, loadingm, error } = useGetStudentClass();
+    const { data, loadingm, error } = useGetStudentClass();*/
 
-    const [localQuestions, setLocalQuestions] = useState([]);
-    const { quizInfo,classTitle } = location.state || {}
+    const [localQuestions, setLocalQuestions] = useState([{
+                    ansNumerator: 0,
+                    ansDenominator: 0,
+                    events: ["111","222"]
+                },{
+                    ansNumerator: 0,
+                    ansDenominator: 0,
+                    events: ["111","222"]
+                }]);
+    const { quizInfo, classTitle, studentDataSpecific } = location.state || {}
     const [quizDifficulty, setQuizDifficulty] = useState(1)
-    console.log("QUIZINFO: " + quizInfo.quizName)
+    //Uncomment this later
+    /*console.log("QUIZINFO: " + quizInfo.quizName)
     console.log("UserINFO: " + userData.email)
+    console.log("studentDataSpecific: " + studentDataSpecific)
 
     if (loading) console.log("loading on get Class");
     if (error) console.log("Error on get class");
     console.log(data["className"])
 
 
-    const updateStudentInfo = async (score,timeCompletion,noAttempts) => {
-        let object_payload = {
-            "quizName": quizInfo.quizName,
-            "className": data["className"],
-            "studentName": userData.email,
-            "studentInformation": {
-                [data["className"]]: {
-                    [userData.email]: {
-                        "score": score,
-                        "timeCompletion": timeCompletion,
-                        "noAttempts": noAttempts
+    const updateStudentInfo = async (score, timeCompletion, noAttempts) => {
+        if (studentDataSpecific != undefined) {
+            const storeScore = score >= studentDataSpecific.score ? score : studentDataSpecific.score
+            const timeStore = timeCompletion <= studentDataSpecific.timeCompletion ? timeCompletion : studentDataSpecific.timeCompletion
+            let object_payload = {
+                "quizName": quizInfo.quizName,
+                "className": data["className"],
+                "studentName": userData.email,
+                "studentInformation": {
+                    [data["className"]]: {
+                        [userData.email]: {
+                            "score": storeScore,
+                            "timeCompletion": timeStore,
+                            "noAttempts": studentDataSpecific.noAttempts += 1
+                        }
                     }
                 }
             }
-        }
-        const { success, response,error } = await useUpdateStudentInformation(object_payload)
+            const { success, response, error } = await useUpdateStudentInformation(object_payload)
 
-        if (success) {
-            console.log("Updated student Info ",response)
+            if (success) {
+                console.log("Updated student Info ", response)
+            }
+            else {
+                console.error("Failed to update student Info ", response)
+            }
         }
         else {
-            console.error("Failed to update student Info ",response)
+            let object_payload = {
+                "quizName": quizInfo.quizName,
+                "className": data["className"],
+                "studentName": userData.email,
+                "studentInformation": {
+                    [data["className"]]: {
+                        [userData.email]: {
+                            "score": score,
+                            "timeCompletion": timeCompletion,
+                            "noAttempts": 1
+                        }
+                    }
+                }
+            }
+            const { success, response, error } = await useUpdateStudentInformation(object_payload)
+
+            if (success) {
+                console.log("Updated student Info ", response)
+            }
+            else {
+                console.error("Failed to update student Info ", response)
+            }
         }
     }
 
@@ -82,7 +121,7 @@ function PhaserGame({ userData }) {
     useEffect(() => {
         setQuizDifficulty(parseInt(quizInfo.level))
         console.log(localQuestions);
-    }, [quizInfo]);
+    }, [quizInfo]);*/
 
 
 
@@ -190,7 +229,7 @@ function PhaserGame({ userData }) {
 
                         this.game.canvas.willReadFrequently = true;
 
-                        this.LevelIndicator = quizInfo.level// 1->beginner, 2->intermediate, 3 ->advance
+                        this.LevelIndicator =  quizInfo === undefined?1:  quizInfo.level// 1->beginner, 2->intermediate, 3 ->advance
 
                         this.wallGroup = null;
                         this.player = null;
@@ -264,7 +303,7 @@ function PhaserGame({ userData }) {
                         let longText;
                         this.score = 0
                         this.holdScore = 0
-                        this.perfectScore = quizInfo.questions.length
+                        this.perfectScore = quizInfo === undefined?2:quizInfo.questions.length
 
                         //keypress
                         this.keyX = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
@@ -2018,7 +2057,10 @@ function PhaserGame({ userData }) {
                                 }
                             },
                             this.createWinDisplay = function () {
-                                updateStudentInfo(self.score,(self.timeLeft / 60).toFixed(2),1)//To be changed once get ALl info is implemented. Change the attempt and check score if it is greater than
+                            //Uncomment this later
+                                /*let origTime = quizInfo.duration
+                                let timeDifference = origTime - ((self.timeLeft / 60).toFixed(2))
+                                updateStudentInfo(self.score, timeDifference, 1)//To be changed once get ALl info is implemented. Change the attempt and check score if it is greater than*/
                                 let greetings = self.score >= Math.round(self.perfectScore * 0.60) ? "Congratulations" : "Nice Try";
                                 mainGreeting = self.add.text(
                                     this.cameras.main.width / 2,
@@ -2221,7 +2263,7 @@ function PhaserGame({ userData }) {
                         this.timerSeconds = 0; // Variable to store the timer value
                         this.timerText = this.add.text(this.cameras.main.width - 300, 100, 'Time: 0', { fontSize: '32px', fill: '#000000' }).setScrollFactor(0); // Text to display the timer*/
 
-                        this.initialTime = quizInfo.duration * 60; // 5 minutes in seconds
+                        this.initialTime = quizInfo === undefined?1234:quizInfo.duration * 60; // 5 minutes in seconds
                         this.timeLeft = this.initialTime;
 
                         this.gameTimer = this.time.addEvent({

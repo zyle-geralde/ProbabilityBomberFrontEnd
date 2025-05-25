@@ -117,6 +117,7 @@ const handleSave = async () => {
                                 lessons={quizList}
                                 title={ title }
                                 uid={uid}
+                                userData={userData}
                                 setstudentLeaderBoards={setstudentLeaderBoards}
                             />
                         ))}
