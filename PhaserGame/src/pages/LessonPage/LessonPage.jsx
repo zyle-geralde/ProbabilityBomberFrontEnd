@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 
 import './LessonPage.css';
 import './LessonSelector.css';
@@ -13,6 +14,7 @@ import { useGetAllQuiz } from '../../hooks/UseQuiz';
 import * as AuthController from '../../controllers/AuthController';
 import { useTeacherClasses } from '../../hooks/UseTeacher';
 
+
 // import { useUserContext } from '../../contexts/UserContext';
 
 
@@ -22,12 +24,11 @@ function LessonPage({ userData }) {
   const location = useLocation();
   const { title, uid } = location.state || {};
   const [selectedTab, setSelectedTab] = useState('course');
+  const [studentLeaderBoards,setstudentLeaderBoards] = useState([])
 
-
-  //for checking. remove this later
-  /*const [refreshKey, setRefreshKey] = useState(0);
-  const [success, setSuccess] = useState(false);
-  const { classes: allClass, loadingm } = useTeacherClasses(refreshKey, success);*/
+  useEffect(() =>{
+    console.log(studentLeaderBoards)
+  },[studentLeaderBoards])
   
   const classId = isTeacher
   ? userData.classes[uid]
@@ -43,7 +44,7 @@ function LessonPage({ userData }) {
   const filteredList = quizzes.allQuizzes.filter(quiz => quiz.classIds[0] == classId)
   console.log(filteredList)
 
-  console.log("LocalStore: "+localStorage.getItem("userData"))
+  console.log("LocalStore: " + localStorage.getItem("userData"))
 
 
   return (
@@ -96,21 +97,23 @@ function LessonPage({ userData }) {
                     title={title}
                     classId={classId}
                     uid={uid}
+                    setstudentLeaderBoards={setstudentLeaderBoards}
                   />
                 )}
                 {selectedTab === 'created' && (
                   <div className="level-selector-container">
-                    {filteredList.map((level, index) => (
-                      <LevelCard
-                        key={index}
-                        title={level.quizName}
-                        duration={level.duration}
-                        score={0}
-                        avgScore={0}
-                        avgTimeFinished={level.duration}
-                        quizInfo={level}
-                        classTitle={title}
-                        uid={uid}
+                      {filteredList.map((level, index) => (
+                        <LevelCard
+                          key={index}
+                          title={level.quizName}
+                          duration={level.duration}
+                          score={0}
+                          avgScore={0}
+                          avgTimeFinished={level.duration}
+                          quizInfo={level}
+                          classTitle={title}
+                          uid={uid}
+                          setstudentLeaderBoards={setstudentLeaderBoards}
                       />
                     ))}
                   </div>
@@ -125,10 +128,11 @@ function LessonPage({ userData }) {
           {/* Leaderboard */}
           <div className="leaderboard-container">
             <Leaderboard
-              title="Leaderboard"
-              showTime={true}
-              showRank={true}
-              showScore={true}
+                title="Leaderboard"
+                showTime={true}
+                showRank={true}
+                showScore={true}
+                studentLeaderBoards={studentLeaderBoards}
             />
           </div>
         </div>

@@ -66,3 +66,13 @@ export const updateStudentInformationSrevice = async (object_payload)=>{
         throw error
     }
 }
+
+
+export const getAllStudentInformationService = async (quizName) => {
+    try {
+        return api.post('/quiz/get_all_quiz_information', { quizName });
+    } catch (error) {
+        console.error("Service Error: ", error);
+        throw error;
+    }
+}

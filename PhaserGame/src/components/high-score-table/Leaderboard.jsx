@@ -1,20 +1,11 @@
 import React from 'react';
 import './Leaderboard.css';
 
-const Leaderboard = () => {
+const Leaderboard = ({studentLeaderBoards}) => {
   const players = []; // Add players here as needed
   const totalRanks = 10;
 
-  const paddedPlayers = [
-    ...players,
-    ...Array.from({ length: totalRanks - players.length }, (_, i) => ({
-      rank: '',
-      name: '',
-      time: '',
-      attempt:'',
-      points: '',
-    })),
-  ];
+  const paddedPlayers = studentLeaderBoards
 
   return (
     <>
@@ -39,16 +30,16 @@ const Leaderboard = () => {
               const isTopPlayer = player.rank === 1;
               return (
                 <tr key={index} className={isTopPlayer ? 'top-player' : ''}>
-                  <td className="leaderboard-number">{player.rank || index + 1}</td>
-                  <td className="leaderboard-name">{player.name || '-'}</td>
+                  <td className="leaderboard-number">{index + 1}</td>
+                  <td className="leaderboard-name">{player.name}</td>
                   <td className="leaderboard-points">
-                    {player.points ? parseFloat(player.points).toFixed(3) : '-'}
+                    {player.timeCompletion}
                   </td>
                   <td className="leaderboard-points">
-                    {player.points ? parseFloat(player.points).toFixed(3) : '-'}
+                    {player.noAttempts}
                   </td>
                   <td className="leaderboard-points">
-                    {player.points ? parseFloat(player.points).toFixed(3) : '-'}
+                    {player.score}
                   </td>
                 </tr>
               );

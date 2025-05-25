@@ -6,6 +6,7 @@ import ClassCard from '../../components/classcard/ClassCard';
 import { useTeacherClasses, useCreateClassForTeacher, useRemoveClassFromTeacher } from '../../hooks/UseTeacher';
 import { loginUser } from '../../controllers/AuthController';
 
+
 function ClassPage({ userData,setUserData }) {
     const navigate = useNavigate();
 
@@ -34,12 +35,12 @@ function ClassPage({ userData,setUserData }) {
 
     const location = useLocation();
     const checkP = location.state?.password;
-    
+
 
 
     console.log(userData)
 
-useEffect(() => {
+    useEffect(() => {
     if (userData) {
         setUserDatame(userData);
         setEmail(userData.email);

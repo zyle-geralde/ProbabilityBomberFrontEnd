@@ -12,7 +12,7 @@ export function useGetAllQuiz() {
       try {
         const response = await QuizController.getAllQuizzesController();
         //console.log(response.data);
-          
+
         setData(response.data);
       } catch (err) {
         console.error("Fetch Quizzes Error:", err);
@@ -44,18 +44,18 @@ export async function addClassToQuiz(quizName, className) {
     return { success: true, response };
   } catch (error) {
     console.log("add class to quiz Error: ", error)
-    return {success:false, error}
+    return { success: false, error }
   }
 }
 
 
-export async function useeditQuiz(quizName, topic,level,duration) {
+export async function useeditQuiz(quizName, topic, level, duration) {
   try {
-    const response = await QuizController.editQuizController(quizName, topic,level,duration);
+    const response = await QuizController.editQuizController(quizName, topic, level, duration);
     return { success: true, response };
   } catch (error) {
     console.log("add class to quiz Error: ", error)
-    return {success:false, error}
+    return { success: false, error }
   }
 }
 
@@ -65,7 +65,7 @@ export async function usedeleteQuiz(quizName, className) {
     return { success: true, response };
   } catch (error) {
     console.log("add class to quiz Error: ", error)
-    return {success:false, error}
+    return { success: false, error }
   }
 }
 
@@ -75,7 +75,16 @@ export async function useUpdateStudentInformation(object_payload) {
     return { success: true, response };
   } catch (error) {
     console.log("add class to quiz Error: ", error)
-    return {success:false, error}
+    return { success: false, error }
   }
 }
 
+export async function useGetAllStudentInformation(quizName) {
+  try {
+    const response = await QuizController.getAllStudentInformationController(quizName);
+    return { success: true, response };
+  } catch (error) {
+    console.log("add class to quiz Error: ", error)
+    return { success: false, error }
+  }
+}

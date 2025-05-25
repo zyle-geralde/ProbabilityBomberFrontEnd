@@ -3,6 +3,10 @@ import './LevelCard.css';
 import * as AuthController from '../../controllers/AuthController';
 import { useNavigate } from 'react-router-dom';
 import { getAllQuestion } from '../../controllers/QuestionController';
+import { useGetAllStudentInformation } from '../../hooks/UseQuiz';
+import { useGetStudentClass } from '../../hooks/UseStudent';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 function LevelCard({
     title = 'Untitled Level',
@@ -14,8 +18,51 @@ function LevelCard({
     quizInfo,
     classTitle,
     uid,
+    setstudentLeaderBoards
 }) {
     const isTeacher = AuthController.getCurrentUserRole();
+    const [studentData, setStudentData] = useState([]);
+    let datam =null
+    if (!isTeacher) {
+        const { data, loadingm, error } = useGetStudentClass();
+        datam= data
+    }
+    else {
+        datam = classTitle
+    }
+    
+
+    const handleClickStudentInfo = async () => {
+        console.log("QUIZINFO :" + quizInfo.quizName)
+        console.log(classTitle)
+        const { success, response, error } = await useGetAllStudentInformation(quizInfo.quizName);
+        if (success) {
+            
+            const notArranged = response.data.allQuizInformation[!isTeacher?datam.className:datam];
+
+            if (notArranged.length > 0) {
+                const flattened = notArranged.map(entry => {
+                    const name = Object.keys(entry)[0];
+                    const info = entry[name];
+                    return { name, ...info };
+                });
+
+                // Step 2: Sort
+                const ranked = flattened.sort((a, b) => {
+                    if (a.score !== b.score) return b.score - a.score; // Higher score first
+                    if (a.noAttempts !== b.noAttempts) return a.noAttempts - b.noAttempts; // Fewer attempts
+                    return a.timeCompletion - b.timeCompletion; // Lower time first
+                });
+
+                setstudentLeaderBoards(ranked)
+            }
+            // make sure response.data has what you need
+        } else {
+            console.error("Error on studentInfo")
+        }
+    };
+
+
     const navigate = useNavigate()
     console.log("Class TITLE: " + classTitle)
     console.log("Class TITLE: " + classTitle)
@@ -31,8 +78,8 @@ function LevelCard({
     }
     return (
         <>
-            {!isTeacher && <div className="level-container" onClick={navigateToGame}>
-                <div className='level-container-left'>
+            {!isTeacher && <div className="level-container">
+                <div className='level-container-left' onClick={handleClickStudentInfo}>
                     <div className="level-title-container">
                         <h6 className='level-title'>{title}</h6>
                     </div>
@@ -99,6 +146,7 @@ function LevelCard({
                                     <div className='level-stat-value'>{quizInfo.duration} min</div>
                                     <p className='level-stat-label'>Duration</p>
                                 </div>
+                                <button className='btn btn-danger' onClick={navigateToGame}>Start</button>
                             </div>
                         </>
                     )}
@@ -107,7 +155,7 @@ function LevelCard({
 
 
             {isTeacher && <div className="level-container">
-                <div className='level-container-left'>
+                <div className='level-container-left' onClick={handleClickStudentInfo}>
                     <div className="level-title-container">
                         <h6 className='level-title'>{title}</h6>
                     </div>

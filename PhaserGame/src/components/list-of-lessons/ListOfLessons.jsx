@@ -450,7 +450,7 @@ const staticLessons = [
 
 
 
-function ListOfLessons({ userData, title,classId,uid }) {
+function ListOfLessons({ userData, title,classId,uid,setstudentLeaderBoards }) {
   // console.log("here:", userData , title, classId, uid)
   const { data: quizzes, loading, error } = useGetAllQuiz();
   // console.log(userData)
@@ -473,6 +473,7 @@ function ListOfLessons({ userData, title,classId,uid }) {
           userData={userData}
           uid={uid}
           resourceLink={lesson.resourceLink}
+          setstudentLeaderBoards={setstudentLeaderBoards}
         />
       ))}
     </>

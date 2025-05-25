@@ -60,3 +60,13 @@ export const updateStudentInformationController = async (object_payload)=>{
         throw error;
     }
 }
+
+export const getAllStudentInformationController = async (quizName) => {
+    try {
+        const response = await QuizService.getAllStudentInformationService(quizName );
+        return response
+    } catch (error) {
+        console.error("getAllQuizControler Error:", error);
+        throw error;
+    }
+}
