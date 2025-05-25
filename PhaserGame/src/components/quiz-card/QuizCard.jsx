@@ -6,7 +6,8 @@ import LevelSelector from './LevelSelector';
 import * as AuthController from '../../controllers/AuthController';
 
 function QuizCard({ levelsCompleted = '-', quizName = 'Untitled Quiz',lessons,title,uid }) {
-    const isTeacher = AuthController.getCurrentUserRole(); 
+    const role = AuthController.getCurrentUserRole();
+    const isTeacher = role === 'teacher';
     const [showLevels, setShowLevels] = useState(false);
 
     const toggleLevels = () => {

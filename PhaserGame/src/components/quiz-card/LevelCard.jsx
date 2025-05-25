@@ -14,7 +14,8 @@ function LevelCard({
     classTitle,
     uid
 }) {
-    const isTeacher = AuthController.getCurrentUserRole();
+    const role = AuthController.getCurrentUserRole();
+    const isTeacher = role === 'teacher';
     const navigate = useNavigate()
     console.log("Class TITLE: " + classTitle)
     console.log("Class TITLE: "+classTitle)

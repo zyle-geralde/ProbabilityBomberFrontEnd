@@ -10,7 +10,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faFile } from '@fortawesome/free-solid-svg-icons';
 
 function LessonCard({ lesson,quizList,title,userData,uid, resourceLink }) {
-    const isTeacher = AuthController.getCurrentUserRole(); 
+    const role = AuthController.getCurrentUserRole();
+    const isTeacher = role === 'teacher';
     const [isExpanded, setIsExpanded] = useState(false);
     const [showForm, setShowForm] = useState(false);
     const [newQuizTitle, setNewQuizTitle] = useState('');

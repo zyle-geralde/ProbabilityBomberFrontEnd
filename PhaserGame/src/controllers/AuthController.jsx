@@ -74,8 +74,7 @@ export const logoutUser = async ({ navigate }) => {
 
 export const getCurrentUserRole = () => {
   const userData = JSON.parse(localStorage.getItem("userData"));
-  const role = userData?.role;
-  return role === "teacher";  // returns true or false
+  return userData?.role || null; 
 };
 
 export const getUsername = () => {

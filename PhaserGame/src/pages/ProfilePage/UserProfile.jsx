@@ -7,7 +7,8 @@ import ViewStates from '../../enums/ViewStates';
 
 function ProfilePage() {
   const navigate = useNavigate();
-  const isTeacher = AuthController.getCurrentUserRole();
+  const role = AuthController.getCurrentUserRole();
+  const isTeacher = role === 'teacher';
   const userData = JSON.parse(localStorage.getItem("userData"));
   console.log("userData: ",userData);
 

@@ -20,6 +20,7 @@ import StudentProfile from "./pages/ProfilePage/StudentProfile";
 import ProfilePage from "./pages/ProfilePage/UserProfile";
 import ClassPerformancePage from "./pages/PerformanceTracking/ClassPerformancePage";
 import LessonResourcePage from "./pages/LessonPage/LessonResourcePage/LessonResourcePage";
+import ProtectedRoute from "./components/routes/ProtectedRoute";
 
 
 export function App() {
@@ -143,14 +144,22 @@ export function App() {
           userData={ userData}
         /> ):(<div>Loading ...</div>)}  />
         <Route path="/viewQuiz" element={<QuizSettingPage />} />
-        <Route path="/addQuiz" element={<QuizSettingPage />} />
+        <Route path="/addQuiz" element={
+          <ProtectedRoute allowedRoles={['teacher']}>
+            <QuizSettingPage />
+          </ProtectedRoute>
+          } />
         <Route path="/classPage" element={userData?(<ClassPage
           userData={userData}
           setUserData = {setUserData}
         /> ):(<div>Loading ...</div>)} />
         
         <Route path="/profilePage" element={<ProfilePage />} />
-        <Route path="/classPerformancePage" element={<ClassPerformancePage />} />
+        <Route path="/classPerformancePage" element={
+          <ProtectedRoute allowedRoles={['teacher']}>
+            <ClassPerformancePage />
+          </ProtectedRoute>
+        }/>
         <Route path="/topic/:topicTarget" element={<LessonResourcePage />} />
       </Routes>
     </div>

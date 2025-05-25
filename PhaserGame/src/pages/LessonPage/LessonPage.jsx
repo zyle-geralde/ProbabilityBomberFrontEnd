@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import './LessonPage.css';
 import './LessonSelector.css';
@@ -17,10 +17,12 @@ import * as AuthController from '../../controllers/AuthController';
 
 
 function LessonPage({ userData }) {
-  const isTeacher = AuthController.getCurrentUserRole(); 
+  const role = AuthController.getCurrentUserRole();
+  const isTeacher = role === 'teacher';
   const location = useLocation();
   const { title, uid } = location.state || {};
   const [selectedTab, setSelectedTab] = useState('course');
+  const navigate = useNavigate();
   
   const classId = isTeacher
   ? userData.classes[uid]
@@ -64,9 +66,14 @@ function LessonPage({ userData }) {
               </button>
 
               {isTeacher && (
-                <button className={`lesson-button ${selectedTab === 'students' ? 'active' : ''}`} onClick={() => setSelectedTab('students')}>
-                  View Students
-                </button>
+                <>
+                  <button className={`lesson-button ${selectedTab === 'students' ? 'active' : ''}`} onClick={() => setSelectedTab('students')}>
+                    View Students
+                  </button>
+                  <button className={`lesson-button ${selectedTab === 'students' ? 'active' : ''}`} onClick={() => navigate('/classPerformancePage')}>
+                    Class Performance
+                  </button>
+                </>
               )}
 
             </div>
