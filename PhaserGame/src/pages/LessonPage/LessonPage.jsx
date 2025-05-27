@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
 import './LessonPage.css';
@@ -20,10 +20,12 @@ import { useTeacherClasses } from '../../hooks/UseTeacher';
 
 
 function LessonPage({ userData }) {
-  const isTeacher = AuthController.getCurrentUserRole(); 
+  const role = AuthController.getCurrentUserRole();
+  const isTeacher = role === 'teacher';
   const location = useLocation();
   const { title, uid } = location.state || {};
   const [selectedTab, setSelectedTab] = useState('course');
+  const navigate = useNavigate();
   const [studentLeaderBoards,setstudentLeaderBoards] = useState([])
 
   useEffect(() =>{
@@ -33,6 +35,7 @@ function LessonPage({ userData }) {
   const classId = isTeacher
   ? userData.classes[uid]
     : userData.classId || null;
+  
   
   /*const studentName = !isTeacher ? userData.name : "none"
   const studentData = studentLeaderBoards.filter(info => info.name == studentName)
@@ -78,9 +81,14 @@ function LessonPage({ userData }) {
               </button>
 
               {isTeacher && (
-                <button className={`lesson-button ${selectedTab === 'students' ? 'active' : ''}`} onClick={() => setSelectedTab('students')}>
-                  View Students
-                </button>
+                <>
+                  <button className={`lesson-button ${selectedTab === 'students' ? 'active' : ''}`} onClick={() => setSelectedTab('students')}>
+                    View Students
+                  </button>
+                  <button className={`lesson-button ${selectedTab === 'students' ? 'active' : ''}`} onClick={() => navigate('/classPerformancePage')}>
+                    Class Performance
+                  </button>
+                </>
               )}
 
             </div>

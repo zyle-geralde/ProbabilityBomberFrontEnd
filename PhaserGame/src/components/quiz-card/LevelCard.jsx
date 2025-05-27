@@ -21,7 +21,8 @@ function LevelCard({
     userData,
     setstudentLeaderBoards
 }) {
-    const isTeacher = AuthController.getCurrentUserRole();
+    const role = AuthController.getCurrentUserRole();
+    const isTeacher = role === 'teacher';
     const [studentData, setStudentData] = useState([]);
     let datam =null
     if (!isTeacher) {

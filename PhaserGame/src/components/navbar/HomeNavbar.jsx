@@ -14,7 +14,9 @@ function HomeNavbar() {
     AuthController.logoutUser({ navigate }); 
   };
 
-  const isTeacher = AuthController.getCurrentUserRole();
+
+  const role = AuthController.getCurrentUserRole();
+  const isTeacher = role === 'teacher';
 
 
   //usertype to profile navigate?

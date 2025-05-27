@@ -225,7 +225,7 @@ margin: 0 auto;
   display: grid;
     gap: 1em;
     grid-template-areas:
-        "profile-container progress-container topic-progress-container topic-progress-container"
+        "profile-container topic-progress-container topic-progress-container topic-progress-container"
         ".    badges-container badges-container badges-container"
         ".    radarchart-container radarchart-container radarchart-container"
         ".    radarchart-container radarchart-container radarchart-container";
@@ -323,10 +323,10 @@ border-top-left-radius: 14px;
 border-top-right-radius: 14px;
 }
 
-.topic-progress-container {
+/*.topic-progress-container {
   grid-area: topic-progress-container;
   gap: 1em;
-}
+}*/
 
 .topicSelect {
   margin: 20px;

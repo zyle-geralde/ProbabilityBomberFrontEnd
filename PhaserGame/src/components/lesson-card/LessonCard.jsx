@@ -9,8 +9,9 @@ import * as UseQuiz from "../../hooks/UseQuiz"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faFile } from '@fortawesome/free-solid-svg-icons';
 
-function LessonCard({ lesson, quizList, title, userData, uid, resourceLink, setstudentLeaderBoards }) {
-    const isTeacher = AuthController.getCurrentUserRole(); 
+function LessonCard({ lesson,quizList,title,userData,uid, resourceLink, setstudentLeaderBoards  }) {
+    const role = AuthController.getCurrentUserRole();
+    const isTeacher = role === 'teacher';
     const [isExpanded, setIsExpanded] = useState(false);
     const [showForm, setShowForm] = useState(false);
     const [newQuizTitle, setNewQuizTitle] = useState('');
