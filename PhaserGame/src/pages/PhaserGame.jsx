@@ -12,10 +12,10 @@ function PhaserGame({ userData }) {
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
     //Uncomment this later
-    /*const [refreshKey, setRefreshKey] = useState(0);
+    const [refreshKey, setRefreshKey] = useState(0);
     const { questions, loading } = useGetAllQuestion(refreshKey);
 
-    const { data, loadingm, error } = useGetStudentClass();*/
+    const { data, loadingm, error } = useGetStudentClass();
 
     const [localQuestions, setLocalQuestions] = useState([{
                     ansNumerator: 0,
@@ -29,7 +29,7 @@ function PhaserGame({ userData }) {
     const { quizInfo, classTitle, studentDataSpecific } = location.state || {}
     const [quizDifficulty, setQuizDifficulty] = useState(1)
     //Uncomment this later
-    /*console.log("QUIZINFO: " + quizInfo.quizName)
+    console.log("QUIZINFO: " + quizInfo.quizName)
     console.log("UserINFO: " + userData.email)
     console.log("studentDataSpecific: " + studentDataSpecific)
 
@@ -121,7 +121,7 @@ function PhaserGame({ userData }) {
     useEffect(() => {
         setQuizDifficulty(parseInt(quizInfo.level))
         console.log(localQuestions);
-    }, [quizInfo]);*/
+    }, [quizInfo]);
 
 
 
@@ -2058,8 +2058,8 @@ function PhaserGame({ userData }) {
                             },
                             this.createWinDisplay = function () {
                             //Uncomment this later
-                                /*let origTime = quizInfo.duration
-                                let timeDifference = origTime - ((self.timeLeft / 60).toFixed(2))
+                                let origTime = quizInfo.duration
+                                let timeDifference = (origTime - ((self.timeLeft / 60).toFixed(2))).toFixed(2)
                                 updateStudentInfo(self.score, timeDifference, 1)//To be changed once get ALl info is implemented. Change the attempt and check score if it is greater than*/
                                 let greetings = self.score >= Math.round(self.perfectScore * 0.60) ? "Congratulations" : "Nice Try";
                                 mainGreeting = self.add.text(

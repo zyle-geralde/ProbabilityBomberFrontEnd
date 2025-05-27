@@ -10,3 +10,13 @@ export const getStudentClassController = async () => {
         throw error;
     }
 }
+
+export const getStudentInformationController = async () => {
+    try {
+        const response = await StudentService.getStudentInformationService();
+        return response
+    } catch (error) {
+        console.error("getStudentInformationController Error:", error);
+        throw error;
+    }
+}
