@@ -13,6 +13,7 @@ import LevelCard from '../../components/quiz-card/LevelCard';
 import { useGetAllQuiz } from '../../hooks/UseQuiz';
 import * as AuthController from '../../controllers/AuthController';
 import { useTeacherClasses } from '../../hooks/UseTeacher';
+import { useGetAllStudentInformation } from '../../hooks/UseQuiz';
 
 
 // import { useUserContext } from '../../contexts/UserContext';
@@ -85,7 +86,7 @@ function LessonPage({ userData }) {
                   <button className={`lesson-button ${selectedTab === 'students' ? 'active' : ''}`} onClick={() => setSelectedTab('students')}>
                     View Students
                   </button>
-                  <button className={`lesson-button ${selectedTab === 'students' ? 'active' : ''}`} onClick={() => navigate('/classPerformancePage')}>
+                  <button className={`lesson-button ${selectedTab === 'students' ? 'active' : ''}`} onClick={() => navigate('/classPerformancePage', {state: { classId }})}>
                     Class Performance
                   </button>
                 </>

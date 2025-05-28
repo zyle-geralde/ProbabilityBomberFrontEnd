@@ -11,7 +11,7 @@ export function useGetAllQuiz() {
     const fetchQuizzes = async () => {
       try {
         const response = await QuizController.getAllQuizzesController();
-        //console.log(response.data);
+        console.log(response.data);
 
         setData(response.data);
       } catch (err) {
@@ -84,7 +84,25 @@ export async function useGetAllStudentInformation(quizName) {
     const response = await QuizController.getAllStudentInformationController(quizName);
     return { success: true, response };
   } catch (error) {
-    console.log("add class to quiz Error: ", error)
-    return { success: false, error }
+let errorMessage = "An unexpected error occurred.";
+
+    // Check for network errors or general JavaScript Errors
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    // Check for Axios-specific errors where the server responded with an error
+    else if (error && typeof error === 'object' && error.response) {
+      // Prioritize a message from the server's response data
+      errorMessage = error.response.data?.message || error.response.data || "Server responded with an error.";
+    }
+    // Fallback if the error is a simple string
+    else if (typeof error === 'string') {
+      errorMessage = error;
+    }
+
+    return { success: false, error: errorMessage };
   }
 }
+
+
+

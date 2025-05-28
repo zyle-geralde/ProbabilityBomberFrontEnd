@@ -159,7 +159,7 @@ export function App() {
         <Route path="/profilePage" element={<ProfilePage />} />
         <Route path="/classPerformancePage" element={
           <ProtectedRoute allowedRoles={['teacher']}>
-            <ClassPerformancePage />
+            <ClassPerformancePage/>
           </ProtectedRoute>
         }/>
         <Route path="/topic/:topicTarget" element={<LessonResourcePage />} />
