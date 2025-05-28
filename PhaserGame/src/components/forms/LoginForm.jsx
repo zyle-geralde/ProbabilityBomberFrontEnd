@@ -1,12 +1,27 @@
 import "./LoginForm.css";
 import "./Forms.css";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
-function LoginForm({ email, role, onChange, onLogin, onForgotPassword, error }) {
+function LoginForm({ email, role, onChange, onLogin, onForgotPassword, error,setRole }) {
+  const location = useLocation();
+  const isTeacherLog = location.pathname === "/loginForTeachers"
+
+  useEffect(() => { 
+    if (isTeacherLog) {
+      setRole("teacher")
+    }
+    else {
+      setRole("student")
+    }
+    
+  },[])
+
   return (
     <div className="login-page-wrapper">
       <div id="body-container" className="login-page">
         <div id="body-section">
-          <h2>Login</h2>
+          <h2>{isTeacherLog?"Login For Teachers":"Log In for Students"}</h2>
 
           <div className="input-group">
             <label htmlFor="email">Username</label>
@@ -29,9 +44,8 @@ function LoginForm({ email, role, onChange, onLogin, onForgotPassword, error }) 
             />
           </div>
 
-          <div className="input-group">
-            <label htmlFor="role">Role</label>
-            <select name="role" value={role} onChange={onChange}>
+          <div className="input-group" style={{opacity:"0"}}>
+            <select name="role" value={role} onChange={onChange} style={{width:"2px",height:"2px"}}>
               <option value="">Select role</option>
               <option value="teacher">Teacher</option>
               <option value="student">Student</option>
@@ -43,7 +57,7 @@ function LoginForm({ email, role, onChange, onLogin, onForgotPassword, error }) 
               Forgot Password?
             </a>
             <span className="divider">|</span>
-            <a href="/register" style={{ cursor: "pointer" }}>
+            <a href={isTeacherLog?"/registerForTeachers":"/register"} style={{ cursor: "pointer" }}>
               Register
             </a>
           </div>

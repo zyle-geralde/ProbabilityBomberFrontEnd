@@ -79,6 +79,38 @@ export function App() {
               onLogin={handleLogin}
               onForgotPassword={() => navigate(ViewStates.FORGOT_PASSWORD)}
               error={error}
+              setRole={setRole}
+            />
+          }
+        />
+
+        <Route
+          path="/"
+          element={
+            <LoginForm
+              email={email}
+              password={password}
+              role={role}
+              onChange={handleChange}
+              onLogin={handleLogin}
+              onForgotPassword={() => navigate(ViewStates.FORGOT_PASSWORD)}
+              error={error}
+              setRole={ setRole}
+            />
+          }
+        />
+        <Route
+          path="/loginForTeachers"
+          element={
+            <LoginForm
+              email={email}
+              password={password}
+              role={role}
+              onChange={handleChange}
+              onLogin={handleLogin}
+              onForgotPassword={() => navigate(ViewStates.FORGOT_PASSWORD)}
+              error={error}
+              setRole={ setRole}
             />
           }
         />
@@ -93,6 +125,23 @@ export function App() {
               onChange={handleChange}
               onRegister={handleRegister}
               error={error}
+              setRole={ setRole}
+            />
+          }
+        />
+
+        <Route
+          path="/registerForTeachers"
+          element={
+            <RegisterForm
+              userName={userName}
+              email={email}
+              password={password}
+              role={role}
+              onChange={handleChange}
+              onRegister={handleRegister}
+              error={error}
+              setRole={ setRole}
             />
           }
         />

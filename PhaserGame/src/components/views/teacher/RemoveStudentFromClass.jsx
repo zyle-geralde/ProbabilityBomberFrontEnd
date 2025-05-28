@@ -37,34 +37,26 @@ function RemoveStudentFromClass({ className }) {
       <div class="classroom-header">
           <div class="classroom-details">
             <h1>{className}</h1>
-            <p><strong>Class code:</strong> aZba2r3</p>
+            
           </div>
 
-          <div class="classromm-action">
-            <button  class="delete-btn">Delete Class</button>
-          </div>
           
       </div>
       {loadingStudents ? (
         <p>Loading students...</p>
       ) : (
         <>
-          <div class="add-student-container">
-            <button  class="add-btn" onClick={() => setShowModal(true)}>Add Student</button>
-          </div>
 
             <div class="student-list">
               {students.map((student, index) => (
                 <div class="student-item">
                   <div class="student-details">
-                      <div className="student-picture"></div>
+                      
                       <p>{student}</p>
                     </div>
                   
                     <div  class="student-action">
-                      <button class="delete-btn" onClick={() => handleRemove(student)} disabled={removing && selectedStudent === student}>
-                        {removing && student === selectedStudent ? "Deleting..." : "Delete"}
-                      </button>
+
                     </div>
                 </div>
               ))}

@@ -1,10 +1,26 @@
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
-function RegisterForm({ userName, email, password, role, onChange, onRegister, error }) {
+function RegisterForm({ userName, email, password, role, onChange, onRegister, error, setRole }) {
+  const location = useLocation();
+  const isTeacherLog = location.pathname === "/registerForTeachers"
+
+  
+  useEffect(() => { 
+    if (isTeacherLog) {
+      setRole("teacher")
+    }
+    else {
+      setRole("student")
+    }
+    
+  }, [])
+  
   return (
     <div className="login-page-wrapper">
       <div id="body-container"  className="login-page">
         <div id="body-section">
-          <h2>Register</h2>
+          <h2>{isTeacherLog?"Register For Teachers":"Register For Students"}</h2>
 
           <div className="input-group">
             <label htmlFor="userName">Username</label>
@@ -39,9 +55,9 @@ function RegisterForm({ userName, email, password, role, onChange, onRegister, e
             />
           </div>
 
-          <div className="input-group">
+          <div className="input-group" style={{opacity:"0"}}>
             <label htmlFor="role">Role</label>
-            <select name="role" value={role} onChange={onChange}>
+            <select name="role" value={role} onChange={onChange} style={{width:"2px",height:"2px"}}>
               <option value="">Select role</option>
               <option value="teacher">Teacher</option>
               <option value="student">Student</option>
@@ -53,7 +69,7 @@ function RegisterForm({ userName, email, password, role, onChange, onRegister, e
               Forgot Password?
             </a>
             <span className="divider">|</span>
-            <a href="/login">
+            <a href={isTeacherLog?"/loginForTeachers":"/login"}>
               Login
             </a>
           </div>

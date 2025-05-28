@@ -42,7 +42,6 @@ function TeacherProfile({ userData, onUpdatePassword }) {
           <div class="profile-content">
             <h1>{userData.name}</h1>
 
-            <div class="profile-picture"></div>
 
             <ul class="profile-details">
               <li><strong>Email:</strong> {userData.email}</li>
