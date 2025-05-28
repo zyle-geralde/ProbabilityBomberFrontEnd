@@ -70,3 +70,13 @@ export const getAllStudentInformationController = async (quizName) => {
         throw error;
     }
 }
+
+export const deleteStudentInformationController = async (object_payload)=>{
+    try {
+        await QuizService.deleteStudentInformationService(object_payload);
+        return true;
+    } catch (error) {
+        console.error("QuizController Error:", error);
+        throw error;
+    }
+}

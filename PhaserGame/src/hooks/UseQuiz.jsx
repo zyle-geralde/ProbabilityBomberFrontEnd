@@ -104,5 +104,15 @@ let errorMessage = "An unexpected error occurred.";
   }
 }
 
+export async function useDeleteStudentInformation(object_payload) {
+  try {
+    const response = await QuizController.deleteStudentInformationController(object_payload);
+    return { success: true, response };
+  } catch (error) {
+    console.log("add class to quiz Error: ", error)
+    return { success: false, error }
+  }
+}
+
 
 

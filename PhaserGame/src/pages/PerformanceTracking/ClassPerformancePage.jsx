@@ -5,6 +5,7 @@ import { useGetAllQuiz } from '../../hooks/UseQuiz';
 import { useGetAllStudentInformation } from '../../hooks/UseQuiz';
 import { useLocation } from 'react-router-dom';
 import { useUpdateStudentInformation } from '../../hooks/UseQuiz';
+import { useDeleteStudentInformation } from '../../hooks/UseQuiz'; // Import the new hook for deletion
 
 function ClassPerformancePage() {
   const [rawQuizPerformanceData, setAllStudentQuizData] = useState([]);
@@ -12,18 +13,23 @@ function ClassPerformancePage() {
   const [errorme, setError] = useState(null);
   const [quizNames, setQuizNames] = useState([]);
   const [quizList, setQuizList] = useState([]);
-  const [classTitle,setClassTitle] = useState([])
+  const [classTitle, setClassTitle] = useState([]);
 
   const [studentsTransformedData, setStudentsTransformedData] = useState([]);
   const [openStudentName, setOpenStudentName] = useState(null);
 
-  // New state for the edit modal
+  // State for the edit modal
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [currentEditStudent, setCurrentEditStudent] = useState(null);
   const [currentEditQuiz, setCurrentEditQuiz] = useState(null);
   const [editScore, setEditScore] = useState('');
   const [editAttempts, setEditAttempts] = useState('');
   const [editDuration, setEditDuration] = useState('');
+
+  // New state for the delete confirmation modal
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [currentDeleteStudent, setCurrentDeleteStudent] = useState(null);
+  const [currentDeleteQuiz, setCurrentDeleteQuiz] = useState(null);
 
   const { data: quizzes, loading: loadingQuizzes, error: errorQuizzes } = useGetAllQuiz();
   const location = useLocation();
@@ -38,7 +44,7 @@ function ClassPerformancePage() {
     if (!loadingQuizzes && !errorQuizzes && quizzes?.allQuizzes) {
       const filteredList = quizzes.allQuizzes.filter(quiz => quiz.classIds[0] == classId);
       setQuizNames(filteredList.map(quiz => quiz.quizName));
-      setQuizList(filteredList)
+      setQuizList(filteredList);
     }
   }, [quizzes, loadingQuizzes, errorQuizzes, classId]);
 
@@ -91,7 +97,7 @@ function ClassPerformancePage() {
       if (quizEntry?.allQuizInformation) {
         const quizName = quizNames[index];
         const studentsInQuiz = quizEntry.allQuizInformation[Object.keys(quizEntry.allQuizInformation)[0]];
-        setClassTitle(Object.keys(quizEntry.allQuizInformation)[0])
+        setClassTitle(Object.keys(quizEntry.allQuizInformation)[0]);
 
         if (Array.isArray(studentsInQuiz)) {
           studentsInQuiz.forEach(studentRecord => {
@@ -126,8 +132,7 @@ function ClassPerformancePage() {
     setOpenStudentName(openStudentName === studentName ? null : studentName);
   };
 
-  // --- New functions for handling edit modal ---
-
+  // --- Functions for handling edit modal ---
   const handleEditClick = (student, quiz) => {
     setCurrentEditStudent(student);
     setCurrentEditQuiz(quiz);
@@ -197,7 +202,70 @@ function ClassPerformancePage() {
     handleModalClose(); // Close the modal after saving
   };
 
-  // --- End new functions ---
+  // --- New functions for handling delete modal ---
+  const handleDeleteClick = (student, quiz) => {
+    setCurrentDeleteQuiz(quiz)
+    setCurrentDeleteStudent(student)
+    setCurrentEditStudent(student);
+    setCurrentEditQuiz(quiz);
+    setEditScore(quiz.score);
+    setEditAttempts(quiz.noAttempts);
+    setEditDuration(quiz.timeCompletion);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteModalClose = () => {
+    setCurrentDeleteQuiz('')
+    setCurrentDeleteStudent('')
+    setIsDeleteModalOpen(false);
+    setCurrentEditStudent(null);
+    setCurrentEditQuiz(null);
+    setEditScore('');
+    setEditAttempts('');
+    setEditDuration('');
+  };
+
+  const handleConfirmDelete = async () => {
+    let object_payload = {
+      "quizName": currentEditQuiz.title,
+      "className": classTitle,
+      "studentName": currentEditStudent.name,
+      "studentInformation": {
+        [classTitle]: {
+          [currentEditStudent.name]: {
+            "score": editScore,
+            "timeCompletion": editDuration,
+            "noAttempts": editAttempts
+          }
+        }
+      }
+    };
+
+    const { success, response, error } = await useDeleteStudentInformation(object_payload);
+
+    if (success) {
+      console.log("Deleted student info:", response);
+      // Remove the deleted quiz from the local state
+      setStudentsTransformedData(prevData => {
+        return prevData.map(student => {
+          if (student.name === currentDeleteStudent.name) {
+            return {
+              ...student,
+              quizzes: student.quizzes.filter(quiz => quiz.title !== currentDeleteQuiz.title)
+            };
+          }
+          return student;
+        }).filter(student => student.quizzes.length > 0); // Optionally remove student if no quizzes left
+      });
+    } else {
+      console.error("Failed to delete student info:", error);
+      // Optionally, show an error message
+    }
+
+    handleDeleteModalClose(); // Close the modal after attempted deletion
+  };
+
+  // --- End new functions for delete ---
 
   if (loadingQuizzes || loadingme) {
     return <div>Loading student performance data...</div>;
@@ -286,22 +354,40 @@ function ClassPerformancePage() {
                               <p style={{ margin: "0", fontSize: "0.9em", color: "#666" }}>Score: <strong>{quiz.score}</strong></p>
                               <p style={{ margin: "5px 0 0", fontSize: "0.85em", color: "#888" }}>Time: {quiz.timeCompletion}s</p>
                               <p style={{ margin: "5px 0 10px", fontSize: "0.85em", color: "#888" }}>Attempts: {quiz.noAttempts}</p>
-                              <button
-                                onClick={() => handleEditClick(student, quiz)}
-                                style={{
-                                  backgroundColor: "#007bff",
-                                  color: "white",
-                                  border: "none",
-                                  borderRadius: "5px",
-                                  padding: "8px 12px",
-                                  cursor: "pointer",
-                                  fontSize: "0.9em",
-                                  alignSelf: "flex-end",
-                                  transition: "background-color 0.2s ease"
-                                }}
-                              >
-                                Edit
-                              </button>
+                              <div style={{ display: "flex", justifyContent: "space-between", gap: "10px" }}>
+                                <button
+                                  onClick={() => handleEditClick(student, quiz)}
+                                  style={{
+                                    backgroundColor: "#007bff",
+                                    color: "white",
+                                    border: "none",
+                                    borderRadius: "5px",
+                                    padding: "8px 12px",
+                                    cursor: "pointer",
+                                    fontSize: "0.9em",
+                                    flexGrow: 1,
+                                    transition: "background-color 0.2s ease"
+                                  }}
+                                >
+                                  Edit
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteClick(student, quiz)}
+                                  style={{
+                                    backgroundColor: "#dc3545", // Red color for delete
+                                    color: "white",
+                                    border: "none",
+                                    borderRadius: "5px",
+                                    padding: "8px 12px",
+                                    cursor: "pointer",
+                                    fontSize: "0.9em",
+                                    flexGrow: 1,
+                                    transition: "background-color 0.2s ease"
+                                  }}
+                                >
+                                  Delete
+                                </button>
+                              </div>
                             </div>
                           ))
                         ) : (
@@ -422,6 +508,70 @@ function ClassPerformancePage() {
                     }}
                   >
                     Save
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {isDeleteModalOpen && (
+        <div className="modal-overlay" style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 1000
+        }}>
+          <div className="modal-content" style={{
+            backgroundColor: "white",
+            padding: "30px",
+            borderRadius: "10px",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+            width: "400px",
+            maxWidth: "90%",
+            textAlign: "center"
+          }}>
+            <h3 style={{ marginBottom: "20px", color: "#dc3545" }}>Confirm Deletion</h3>
+            {currentDeleteStudent && currentDeleteQuiz && (
+              <>
+                <p>Are you sure you want to delete the performance record for **{currentDeleteStudent.name}** on quiz **{currentDeleteQuiz.title}**?</p>
+                <p style={{ color: "#888", fontSize: "0.9em" }}>This action cannot be undone.</p>
+                <div className="modal-actions" style={{ display: "flex", justifyContent: "space-around", marginTop: "20px" }}>
+                  <button
+                    onClick={handleDeleteModalClose}
+                    style={{
+                      backgroundColor: "#6c757d",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "5px",
+                      padding: "10px 20px",
+                      cursor: "pointer",
+                      fontSize: "1em"
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleConfirmDelete}
+                    style={{
+                      backgroundColor: "#dc3545",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "5px",
+                      padding: "10px 20px",
+                      cursor: "pointer",
+                      fontSize: "1em"
+                    }}
+                  >
+                    Delete
                   </button>
                 </div>
               </>
