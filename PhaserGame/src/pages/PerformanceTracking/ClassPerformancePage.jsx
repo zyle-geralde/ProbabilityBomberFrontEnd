@@ -294,9 +294,10 @@ function ClassPerformancePage() {
           marginBottom: "30px",
           borderRadius: "10px",
           padding: "20px",
-          boxSizing: "border-box"
+          boxSizing: "border-box",
+          boxShadow: "5px 5px black",
         }}>
-          <h2 style={{ textAlign: "center", marginBottom: "25px", color: "#333" }}>Student Performance Overview</h2>
+          <h2 style={{ textAlign: "center", marginBottom: "30px", fontWeight: "Bold",color: "#641B2E" }}>Student Performance Overview</h2>
 
           <div className="student-list-container">
             {studentsTransformedData.length > 0 ? (
