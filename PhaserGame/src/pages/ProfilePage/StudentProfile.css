@@ -74,11 +74,18 @@ color: #8A2D3B;
     margin-bottom: 20px;
 }
 
+.radarchart-container .recharts-responsive-container{
+  height: 400px !important;
+  display: flex;
+  align-items: center;
+}
+
 .topicCard {
     margin: 0px 20px 20px 20px;
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 5px;
+    width: 500px;
 }
 
 .stageProgress {
@@ -225,10 +232,8 @@ margin: 0 auto;
   display: grid;
     gap: 1em;
     grid-template-areas:
-        "profile-container topic-progress-container topic-progress-container topic-progress-container"
-        ".    badges-container badges-container badges-container"
-        ".    radarchart-container radarchart-container radarchart-container"
-        ".    radarchart-container radarchart-container radarchart-container";
+        "profile-container topic-progress-container radarchart-container radarchart-container"
+        "        .         badges-container         badges-container     badges-container";
 }
 
 .profile-container-v2{
@@ -257,7 +262,7 @@ margin: 0 auto;
 }
 
 .profile-content{
-  padding: 0.5em 0em;
+  padding: 0.5em 1em;
   text-align: center;
 }
 
@@ -348,6 +353,25 @@ padding: 0rem 2rem 2rem 2rem;
 
 .radarchart-container{
   grid-area: radarchart-container;
+  background: white;
+  border: 1px solid black;
+  box-shadow: 5px 5px black;
+  border-radius: 14px;
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+}
+
+.radarchart-container h2{
+  width: 100%;
+  padding: 1rem 1rem 0.8rem;
+  color: white;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: left;
+  background-color: #8A2D3B;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
 }
 
 .circularProgress {

@@ -17,61 +17,6 @@ import { useGetStudentInformation } from '../../hooks/UseStudent';
 import './StudentProfile.css';
 // import StudentProfile from '../../components/views/StudentProfile';
 
-const Header = ({ username }) => (
-    <div className="header">
-        <div className="headerLeft">
-            <span className="logo">Student Analytics</span>
-        </div>
-        <div className="headerRight">
-            <span className="welcome">Welcome, {username}</span>
-        </div>
-    </div>
-);
-
-const ProgressSection = ({ completionPercentage }) => {
-
-    let progressMessage = "";
-
-    if (completionPercentage >= 90) {
-        progressMessage = "EXCELLENT!";
-    } else if (completionPercentage >= 60) {
-        progressMessage = "ALMOST THERE!";
-    } else if (completionPercentage >= 30) {
-        progressMessage = "KEEP GOING!";
-    } else {
-        progressMessage = "JUST STARTED!";
-    }
-
-    return (
-        <div className="progress">
-            <div className='circularProgress'>
-                <CircularProgressbar
-                    value={completionPercentage}
-                    text={`${completionPercentage}%`}
-                    styles={buildStyles({
-                        rotation: 1,
-                        strokeLinecap: "round",
-                        textColor: '#8A2D3B',
-                        pathColor: '#8A2D3B',
-                        trailColor: '#e0e0e0',
-                        strokeWidth: 8,
-                        textSize: '12px',
-                    })}
-                />
-            </div>
-            <p className="almostThere">{progressMessage}</p>
-        </div>
-    );
-};
-
-
-const NextTargetSection = ({ topic, stage }) => (
-    <div className="nextTarget">
-        <h3>Next Target</h3>
-        <p><strong>Topic:</strong> {topic}</p>
-        <p><strong>Stage:</strong> {stage}</p>
-    </div>
-);
 
 const TopicProgressCard = ({ topicProgress, selectedTopic, setSelectedTopic }) => {
     // Ensure selectedData is not undefined before accessing its properties
@@ -107,23 +52,6 @@ const TopicProgressCard = ({ topicProgress, selectedTopic, setSelectedTopic }) =
         </div>
     );
 };
-
-const BadgesSection = ({ badges }) => {
-    return (
-        <div className="badgesContainer">
-            <h2>Badges</h2>
-            <div className="badgesGrid">
-                {badges.map((badge, index) => (
-                    <div className="badgeCard" key={index}>
-                        <span className="badgeIcon">{badge.icon}</span>
-                        <p className="badgeLabel">{badge.label}</p>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
-};
-
 
 
 const AnalyticsSection = ({ studentScoreList, filteredQuizzesList }) => {
@@ -268,10 +196,10 @@ function StudentProfile({ userData, onUpdatePassword }) {
 
     // Calculate topicProgress based on the current state
     const topicProgress = [
-        { topic: "Topic 1", beginner: beginnerTotalScore === 0 ? 0 : beginnerScore / beginnerTotalScore, intermediate: intermediateTotalScore === 0 ? 0 : intermediateScore / intermediateTotalScore, advanced: advanceTotalScore === 0 ? 0 : advanceScore / advanceTotalScore },
-        { topic: "Topic 2", beginner: beginnerTotalScore === 0 ? 0 : beginnerScore / beginnerTotalScore, intermediate: intermediateTotalScore === 0 ? 0 : intermediateScore / intermediateTotalScore, advanced: advanceTotalScore === 0 ? 0 : advanceScore / advanceTotalScore },
-        { topic: "Topic 3", beginner: beginnerTotalScore === 0 ? 0 : beginnerScore / beginnerTotalScore, intermediate: intermediateTotalScore === 0 ? 0 : intermediateScore / intermediateTotalScore, advanced: advanceTotalScore === 0 ? 0 : advanceScore / advanceTotalScore },
-        { topic: "Topic 4", beginner: beginnerTotalScore === 0 ? 0 : beginnerScore / beginnerTotalScore, intermediate: intermediateTotalScore === 0 ? 0 : intermediateScore / intermediateTotalScore, advanced: advanceTotalScore === 0 ? 0 : advanceScore / advanceTotalScore },
+        { topic: "Topic 1:  Introduction to Probability", beginner: beginnerTotalScore === 0 ? 0 : beginnerScore / beginnerTotalScore, intermediate: intermediateTotalScore === 0 ? 0 : intermediateScore / intermediateTotalScore, advanced: advanceTotalScore === 0 ? 0 : advanceScore / advanceTotalScore },
+        { topic: "Topic 2: Equally Likely & Complementary Events", beginner: beginnerTotalScore === 0 ? 0 : beginnerScore / beginnerTotalScore, intermediate: intermediateTotalScore === 0 ? 0 : intermediateScore / intermediateTotalScore, advanced: advanceTotalScore === 0 ? 0 : advanceScore / advanceTotalScore },
+        { topic: "Topic 3: Types of Probability", beginner: beginnerTotalScore === 0 ? 0 : beginnerScore / beginnerTotalScore, intermediate: intermediateTotalScore === 0 ? 0 : intermediateScore / intermediateTotalScore, advanced: advanceTotalScore === 0 ? 0 : advanceScore / advanceTotalScore },
+        { topic: "Topic 4: Mutually and Not Mutually Exclusive Events", beginner: beginnerTotalScore === 0 ? 0 : beginnerScore / beginnerTotalScore, intermediate: intermediateTotalScore === 0 ? 0 : intermediateScore / intermediateTotalScore, advanced: advanceTotalScore === 0 ? 0 : advanceScore / advanceTotalScore },
     ];
 
     useEffect(() => {
