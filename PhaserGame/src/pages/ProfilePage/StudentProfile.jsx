@@ -180,7 +180,7 @@ function StudentProfile({ userData, onUpdatePassword }) {
     const [intermediateScore, setintermediateScore] = useState(0)
     const [advanceScore, setadvanceScore] = useState(0)
 
-    const [selectedTopic, setSelectedTopic] = useState("Topic 3");
+    const [selectedTopic, setSelectedTopic] = useState("Topic 1:  Introduction to Probability");
 
     // Use useMemo to memoize the filtered data for AnalyticsSection
     const studentQuizNames = useMemo(() => {
