@@ -11,6 +11,7 @@ import {
 import HomeNavbar from '../../components/navbar/HomeNavbar';
 import { useGetAllQuiz } from '../../hooks/UseQuiz';
 import { useGetStudentInformation } from '../../hooks/UseStudent';
+import { useNavigate } from 'react-router-dom';
 
 
 // import '../../components/views/teacher/TeacherProfile.css'
@@ -165,6 +166,7 @@ const RadarChartSection = ({ beginnerScore, beginnerTotalScore, intermediateScor
 
 function StudentProfile({ userData, onUpdatePassword }) {
     // Destructure with default empty objects to prevent errors during initial render
+    const navigate = useNavigate()
     const { data: studentScoreData, loading: studentLoading, error: studentError } = useGetStudentInformation();
     const { data: quizData, loading: quizLoading, error: quizError } = useGetAllQuiz();
 
@@ -334,6 +336,13 @@ function StudentProfile({ userData, onUpdatePassword }) {
     return (
         <>
             <HomeNavbar />
+
+            <button className='btn btn-danger'style={{"marginLeft":"40px","marginTop":"30px"}}
+                onClick={() => navigate('/lessonPage')}
+            >
+            {"<"}
+        </button>
+
 
             <div className="mainGrid">
                 <div className="profile-container-v2">

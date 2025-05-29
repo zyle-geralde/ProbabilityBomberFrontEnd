@@ -6,8 +6,10 @@ import { useGetAllStudentInformation } from '../../hooks/UseQuiz';
 import { useLocation } from 'react-router-dom';
 import { useUpdateStudentInformation } from '../../hooks/UseQuiz';
 import { useDeleteStudentInformation } from '../../hooks/UseQuiz'; // Import the new hook for deletion
+import { useNavigate } from 'react-router-dom';
 
 function ClassPerformancePage() {
+  const navigate = useNavigate()
   const [rawQuizPerformanceData, setAllStudentQuizData] = useState([]);
   const [loadingme, setLoading] = useState(true);
   const [errorme, setError] = useState(null);
@@ -282,6 +284,7 @@ function ClassPerformancePage() {
   return (
     <>
       <HomeNavbar />
+      
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
         <div style={{
           height: "auto",

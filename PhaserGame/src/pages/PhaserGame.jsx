@@ -18,14 +18,14 @@ function PhaserGame({ userData }) {
     const { data, loadingm, error } = useGetStudentClass();
 
     const [localQuestions, setLocalQuestions] = useState([{
-                    ansNumerator: 0,
-                    ansDenominator: 0,
-                    events: ["111","222"]
-                },{
-                    ansNumerator: 0,
-                    ansDenominator: 0,
-                    events: ["111","222"]
-                }]);
+        ansNumerator: 0,
+        ansDenominator: 0,
+        events: ["111", "222"]
+    }, {
+        ansNumerator: 0,
+        ansDenominator: 0,
+        events: ["111", "222"]
+    }]);
     const { quizInfo, classTitle, studentDataSpecific } = location.state || {}
     const [quizDifficulty, setQuizDifficulty] = useState(1)
     //Uncomment this later
@@ -103,6 +103,7 @@ function PhaserGame({ userData }) {
 
             const newArray = filteredQuestions.map((item, index) => {
                 return {
+                    description:item.questionDescription,
                     ansNumerator: parseInt(item.numerator),
                     ansDenominator: parseInt(item.denominator),
                     events: item.event.map((evnt, indx) => {
@@ -111,6 +112,8 @@ function PhaserGame({ userData }) {
                 }
             }
             )
+            console.log("NewArray: ")
+            console.log(newArray)
             setLocalQuestions(newArray);
         }
         else {
@@ -229,7 +232,7 @@ function PhaserGame({ userData }) {
 
                         this.game.canvas.willReadFrequently = true;
 
-                        this.LevelIndicator =  quizInfo === undefined?1:  quizInfo.level// 1->beginner, 2->intermediate, 3 ->advance
+                        this.LevelIndicator = quizInfo === undefined ? 1 : quizInfo.level// 1->beginner, 2->intermediate, 3 ->advance
 
                         this.wallGroup = null;
                         this.player = null;
@@ -303,7 +306,7 @@ function PhaserGame({ userData }) {
                         let longText;
                         this.score = 0
                         this.holdScore = 0
-                        this.perfectScore = quizInfo === undefined?2:quizInfo.questions.length
+                        this.perfectScore = quizInfo === undefined ? 2 : quizInfo.questions.length
 
                         //keypress
                         this.keyX = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
@@ -318,7 +321,6 @@ function PhaserGame({ userData }) {
                         let scoreArc
                         let scoreLabel
                         let scoreLabel2
-                        let scoreLabel3
                         let proceedButton
                         let displayedWin = false
 
@@ -401,10 +403,10 @@ function PhaserGame({ userData }) {
                                 longText = this.add.text(
                                     containerX + padding, // Add padding to the text's X position
                                     containerY + padding, // Add padding to the text's Y position
-                                    (self.questionsList[self.questionIndex].events).join(''),
+                                    self.questionsList[self.questionIndex].description +"\n"+(self.questionsList[self.questionIndex].events).join(''),
                                     {
                                         fontSize: '18px',
-                                        fill: '#f74a4a',
+                                        fill: '#ffffff',
                                         fontStyle: "bold",
                                         stroke: '#000000',
                                         strokeThickness: 10, wordWrap: { width: containerWidth - padding }
@@ -470,7 +472,7 @@ function PhaserGame({ userData }) {
                                     `${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`,
                                     {
                                         fontSize: '24px',
-                                        fill: '#f74a4a',
+                                        fill: '#ffffff',
                                         fontStyle: "bold",
                                         stroke: '#000000',
                                         strokeThickness: 10
@@ -862,7 +864,7 @@ function PhaserGame({ userData }) {
                                     if (probSymb.length == 1) {
                                         messageSymb = self.add.text(bb.x - 10, bb.y - 15, probSymb, {
                                             fontSize: '32px',
-                                            fill: '#800000',
+                                            fill: '#03fc73',
                                             fontStyle: "bold",
                                             stroke: '#000000',
                                             strokeThickness: 4
@@ -871,7 +873,7 @@ function PhaserGame({ userData }) {
                                     else if (probSymb.length == 2) {
                                         messageSymb = self.add.text(bb.x - 20, bb.y - 15, probSymb, {
                                             fontSize: '32px',
-                                            fill: '#800000',
+                                            fill: '#03fc73',
                                             fontStyle: "bold",
                                             stroke: '#000000',
                                             strokeThickness: 4
@@ -880,7 +882,7 @@ function PhaserGame({ userData }) {
                                     else if (probSymb.length == 3) {
                                         messageSymb = self.add.text(bb.x - 25, bb.y - 15, probSymb, {
                                             fontSize: '28px',
-                                            fill: '#800000',
+                                            fill: '#03fc73',
                                             fontStyle: "bold",
                                             stroke: '#000000',
                                             strokeThickness: 4
@@ -1123,7 +1125,7 @@ function PhaserGame({ userData }) {
                                         self.questionIndex -= 1
                                     }
 
-                                    longText.setText((self.questionsList[self.questionIndex].events).join(''))
+                                    longText.setText(self.questionsList[self.questionIndex].description+"\n"+(self.questionsList[self.questionIndex].events).join(''))
 
                                     answerlongText.setText(`${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`)
 
@@ -1151,7 +1153,7 @@ function PhaserGame({ userData }) {
                                         self.questionIndex += 1
                                     }
 
-                                    longText.setText((self.questionsList[self.questionIndex].events).join(''))
+                                    longText.setText(self.questionsList[self.questionIndex].description+"\n"+(self.questionsList[self.questionIndex].events).join(''))
 
                                     answerlongText.setText(`${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`)
 
@@ -1962,8 +1964,8 @@ function PhaserGame({ userData }) {
 
                                         // Wait 1 second then set back to #f74a4a
                                         self.time.delayedCall(1500, () => {
-                                            answerlongText.setStyle({ fill: '#f74a4a' });
-                                            longText.setStyle({ fill: '#f74a4a' });
+                                            answerlongText.setStyle({ fill: '#ffffff' });
+                                            longText.setStyle({ fill: '#ffffff' });
                                             self.numerator = "__ ";
                                             self.denominator = " __";
                                             self.probNumeratorHold.destroy()
@@ -1979,7 +1981,7 @@ function PhaserGame({ userData }) {
                                                 }
 
                                                 if (self.questionsList.length != 0) {
-                                                    longText.setText((self.questionsList[self.questionIndex].events).join(''))
+                                                    longText.setText(self.questionsList[self.questionIndex].description+"\n"+(self.questionsList[self.questionIndex].events).join(''))
 
                                                     answerlongText.setText(`${self.questionsList[self.questionIndex].probQuestion} ${self.numerator == null ? " " : self.numerator} / ${self.denominator == null ? " " : self.denominator}`)
                                                 }
@@ -2024,10 +2026,9 @@ function PhaserGame({ userData }) {
                                             repeat: 1,
                                             onUpdate: function () {
                                                 let t = colorObject.t;
-
-                                                let r = Math.round(247 + (128 - 247) * t);
-                                                let g = Math.round(74 + (0 - 74) * t);
-                                                let b = Math.round(74 + (0 - 74) * t);
+                                                let r = Math.round(255 + (200 - 255) * t); // Starts at 255, moves towards 200
+                                                let g = Math.round(255 + (200 - 255) * t); // Starts at 255, moves towards 200
+                                                let b = Math.round(255 + (200 - 255) * t);
 
                                                 let color = `rgb(${r},${g},${b})`;
 
@@ -2057,7 +2058,7 @@ function PhaserGame({ userData }) {
                                 }
                             },
                             this.createWinDisplay = function () {
-                            //Uncomment this later
+                                //Uncomment this later
                                 let origTime = quizInfo.duration
                                 let timeDifference = (origTime - ((self.timeLeft / 60).toFixed(2))).toFixed(2)
                                 updateStudentInfo(self.score, timeDifference, 1)//To be changed once get ALl info is implemented. Change the attempt and check score if it is greater than*/
@@ -2169,19 +2170,6 @@ function PhaserGame({ userData }) {
                                 scoreLabel2.setDepth(6);
                                 scoreLabel2.alpha = 0
 
-                                scoreLabel3 = this.add.text(
-                                    centerX,
-                                    centerY + 60,
-                                    `RANK: ${1}`,
-                                    {
-                                        fontSize: '27px',
-                                        fill: greetings == "Congratulations" ? "#42f5ad" : "#f54269",
-                                        fontStyle: 'bold'
-                                    }
-                                ).setOrigin(0.5);
-                                scoreLabel3.setScrollFactor(0);
-                                scoreLabel3.setDepth(6);
-                                scoreLabel3.alpha = 0
 
                                 proceedButton = this.add.text(this.cameras.main.width / 2, 540, 'PROCEED', {
                                     fontSize: '32px',
@@ -2203,9 +2191,13 @@ function PhaserGame({ userData }) {
                                 proceedButton.setDepth(5);
                                 proceedButton.alpha = 0;
 
+                            proceedButton.on('pointerdown', () => {
+                                window.location.href = '/lessonPage';
+                            });
+
 
                                 this.tweens.add({
-                                    targets: [youPassedBack, mainGreeting, subGreeting, circleBackground, scoreArc, scoreLabel, scoreLabel2, scoreLabel3, proceedButton],
+                                    targets: [youPassedBack, mainGreeting, subGreeting, circleBackground, scoreArc, scoreLabel, scoreLabel2, proceedButton],
                                     alpha: 1,
                                     duration: 500,
                                     ease: 'Linear'
@@ -2263,7 +2255,7 @@ function PhaserGame({ userData }) {
                         this.timerSeconds = 0; // Variable to store the timer value
                         this.timerText = this.add.text(this.cameras.main.width - 300, 100, 'Time: 0', { fontSize: '32px', fill: '#000000' }).setScrollFactor(0); // Text to display the timer*/
 
-                        this.initialTime = quizInfo === undefined?1234:quizInfo.duration * 60; // 5 minutes in seconds
+                        this.initialTime = quizInfo === undefined ? 1234 : quizInfo.duration * 60; // 5 minutes in seconds
                         this.timeLeft = this.initialTime;
 
                         this.gameTimer = this.time.addEvent({

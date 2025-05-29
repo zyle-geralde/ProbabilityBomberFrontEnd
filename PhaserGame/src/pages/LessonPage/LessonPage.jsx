@@ -57,6 +57,13 @@ function LessonPage({ userData }) {
   return (
     <div>
       <HomeNavbar />
+      {isTeacher && <button
+            className='btn btn-danger'style={{"marginLeft":"40px","marginTop":"30px"}}
+                onClick={() => navigate('/classPage')}
+            >
+            {"<"}
+        </button>}
+
 
       {!classId && !isTeacher? (
         <div className="no-class-message">
@@ -88,7 +95,7 @@ function LessonPage({ userData }) {
                   </button>
                   <button className={`lesson-button ${selectedTab === 'students' ? 'active' : ''}`} onClick={() => navigate('/classPerformancePage', {state: { classId }})}>
                     Class Performance
-                  </button>
+                    </button>
                 </>
               )}
 
