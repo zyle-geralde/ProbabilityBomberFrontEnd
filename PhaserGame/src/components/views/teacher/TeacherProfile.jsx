@@ -8,12 +8,14 @@ import RemoveAQuestion from '../question/RemoveAQuestion';
 import DeleteQuestion from '../question/DeleteQuestion';
 import AddQuestionToQuiz from '../question/AddQuestionToQuiz';
 import HomeNavbar from '../../navbar/HomeNavbar';
+import { useNavigate } from 'react-router-dom';
 
 function TeacherProfile({ userData, onUpdatePassword }) {
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const createdDate = new Date(userData.createdAt._seconds * 1000 + userData.createdAt._nanoseconds / 1000000);
   const formattedDate = createdDate.toLocaleString();
+  const navigate = useNavigate()
 
   // {localStorage.getItem("token") && <LogoutButton />} => 2 logout?
   /* 
@@ -33,6 +35,13 @@ function TeacherProfile({ userData, onUpdatePassword }) {
       <div>
         <HomeNavbar />
       </div>
+      <button
+            className='btn btn-danger'style={{"marginLeft":"40px","marginTop":"30px"}}
+                onClick={() => navigate('/classPage')}
+            >
+            {"<"}
+      </button>
+
       <div class="body-container">
         <div class="profile-container">
           <div class="profile-header">
