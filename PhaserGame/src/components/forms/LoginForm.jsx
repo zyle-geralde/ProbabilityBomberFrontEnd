@@ -24,7 +24,7 @@ function LoginForm({ email, role, onChange, onLogin, onForgotPassword, error,set
           <h2>{isTeacherLog?"Login For Teachers":"Log In for Students"}</h2>
 
           <div className="input-group">
-            <label htmlFor="email">Username</label>
+            <label htmlFor="email">Email</label>
             <input
               type="email"
               name="email"

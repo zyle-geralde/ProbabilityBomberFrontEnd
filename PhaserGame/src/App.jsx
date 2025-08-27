@@ -21,6 +21,7 @@ import ProfilePage from "./pages/ProfilePage/UserProfile";
 import ClassPerformancePage from "./pages/PerformanceTracking/ClassPerformancePage";
 import LessonResourcePage from "./pages/LessonPage/LessonResourcePage/LessonResourcePage";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
+import PhaserGameSetUp from "./pages/GamePage/PhaserGame";
 
 
 export function App() {
@@ -87,16 +88,7 @@ export function App() {
         <Route
           path="/"
           element={
-            <LoginForm
-              email={email}
-              password={password}
-              role={role}
-              onChange={handleChange}
-              onLogin={handleLogin}
-              onForgotPassword={() => navigate(ViewStates.FORGOT_PASSWORD)}
-              error={error}
-              setRole={ setRole}
-            />
+            <PhaserGameSetUp/>
           }
         />
         <Route
