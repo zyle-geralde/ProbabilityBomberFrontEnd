@@ -1,5 +1,6 @@
 import React, { useEffect, useRef,useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import Wall from './Classes/WallClass';
 
 function PhaserGameSetUp() {
     const gameRef = useRef(null);
@@ -47,16 +48,58 @@ function PhaserGameSetUp() {
                         });
                     },
                     create: function () {
+                        this.wallGroup = null;
+                        this.wallDim = 60
+                        this.wallDimy = 60
+                        this.wallDimx = 60
+                        this.holdItemDim = 74
+                        this.cols = 13//odd
+                        this.rows = 6//even
+                        this.totalWallWidth = this.cols * this.wallDim;
+                        this.totalWallHeight = this.rows * this.wallDim;
+                        this.outsidewall = null;
+                        this.topwall = null;
+                        this.rightwall = null;
+                        this.bottomwall = null;
+                        this.unbrkWallList = []
+                        this.brkWallList = []
+                        this.brkWallGroup = null
+                        
                         const self = this
 
                         //game setUp
                         this.createBackground = function () {
-                            self.add.sprite(-70,-500,'ground').setOrigin(0.0).setScale(0.8)
+                            self.add.sprite(-70,-500,'ground').setOrigin(0,0).setScale(0.8)
+                        }
+
+                        this.createWalls = function () {
+                            self.wallGroup = this.physics.add.group();
+                            self.createLeftWall();
+                            /*self.createTopWall();
+                            self.createRightWall();
+                            self.createBottomWall();*/
+
+                        }
+
+                        this.createLeftWall = function () {
+
+
+                            self.outsidewall = self.physics.add.group({ immovable: true });
+                            let adjustwall = self.wallDim;
+                            for (let nn = 0; nn < self.rows; nn++) {
+                                let wall = self.outsidewall.create(0, adjustwall, 'unbrkwall');
+                                self.unbrkWallList.push({ "x": 0, "y": adjustwall })
+                                adjustwall += self.wallDim;
+                                wall.body.setSize(self.wallDimx, self.wallDimy);
+                                wall.setDisplaySize(self.wallDim, self.wallDim);
+                            }
                         }
 
 
                         //Method calls
                         this.createBackground()
+                        this.createWalls()
+                        
                     },
                     update: function () {
                     }
