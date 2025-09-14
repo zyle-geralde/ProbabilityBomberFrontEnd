@@ -58,6 +58,7 @@ function PhaserGameSetUp() {
                         this.totalWallWidth = this.cols * this.wallDim;
                         this.totalWallHeight = this.rows * this.wallDim;
                         this.outsidewall = null;
+                        this.insidewall = null
                         this.topwall = null;
                         this.rightwall = null;
                         this.bottomwall = null;
@@ -77,6 +78,7 @@ function PhaserGameSetUp() {
                             self.wallGroup = this.physics.add.group();
                             self.createLeftWall();
                             self.createTopWall();
+                            self.createInsideWall()
                             /*self.createTopWall();
                             self.createRightWall();
                             self.createBottomWall();*/
@@ -100,6 +102,9 @@ function PhaserGameSetUp() {
                         }
                         this.createTopWall = function () {
                             self.Wall.createTopWalls()
+                        }
+                        this.createInsideWall = function () {
+                            self.Wall.createInsideWalls()
                         }
 
 

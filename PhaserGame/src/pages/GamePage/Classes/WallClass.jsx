@@ -24,8 +24,7 @@ class Wall {
     createTopWalls() {
         this.self.topwall = this.self.physics.add.group({ immovable: true });
         let adjusttopwall = this.adjustwall;
-        let xValue = this.centerX + this.self.wallDim 
-        let skipColumn = false;
+        let xValue = this.centerX + this.self.wallDim
 
         //this.self.brkWallGroup = self.physics.add.group({ immovable: true })
 
@@ -35,6 +34,25 @@ class Wall {
             xValue += this.self.wallDim;
             wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
             wall.setDisplaySize(this.self.wallDim, this.self.wallDim);
+        }
+    }
+    createInsideWalls() {
+        this.self.insidewall = this.self.physics.add.group({ immovable: true });
+        let xValue = this.centerX + this.self.wallDim
+        for (let col = 1; col < this.self.cols -1 ; col++) {
+            if (col % 2 == 0) {
+                let adjustinsidewall = this.adjustwall + this.self.wallDim
+                for (let row = 1; row < this.self.rows; row++) {
+                    if (row % 2 == 0) {
+                        let wall = this.self.insidewall.create(xValue, adjustinsidewall, 'unbrkwall');
+                        this.self.unbrkWallList.push({ "x": xValue, "y": adjustinsidewall })
+                        wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
+                        wall.setDisplaySize(this.self.wallDim, this.self.wallDim);
+                    }
+                    adjustinsidewall += this.self.wallDim;
+                }
+            }
+            xValue+=this.self.wallDim
         }
     }
 }
