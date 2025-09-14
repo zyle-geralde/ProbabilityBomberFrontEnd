@@ -64,6 +64,7 @@ function PhaserGameSetUp() {
                         this.unbrkWallList = []
                         this.brkWallList = []
                         this.brkWallGroup = null
+                        this.Wall = new Wall(this)
                         
                         const self = this
 
@@ -75,6 +76,7 @@ function PhaserGameSetUp() {
                         this.createWalls = function () {
                             self.wallGroup = this.physics.add.group();
                             self.createLeftWall();
+                            self.createTopWall();
                             /*self.createTopWall();
                             self.createRightWall();
                             self.createBottomWall();*/
@@ -84,7 +86,7 @@ function PhaserGameSetUp() {
                         this.createLeftWall = function () {
 
 
-                            self.outsidewall = self.physics.add.group({ immovable: true });
+                            /*self.outsidewall = self.physics.add.group({ immovable: true });
                             let adjustwall = self.wallDim;
                             for (let nn = 0; nn < self.rows; nn++) {
                                 let wall = self.outsidewall.create(0, adjustwall, 'unbrkwall');
@@ -92,13 +94,19 @@ function PhaserGameSetUp() {
                                 adjustwall += self.wallDim;
                                 wall.body.setSize(self.wallDimx, self.wallDimy);
                                 wall.setDisplaySize(self.wallDim, self.wallDim);
-                            }
+                            }*/
+
+                            self.Wall.createLeftWalls()
+                        }
+                        this.createTopWall = function () {
+                            self.Wall.createTopWalls()
                         }
 
 
                         //Method calls
                         this.createBackground()
                         this.createWalls()
+
                         
                     },
                     update: function () {
