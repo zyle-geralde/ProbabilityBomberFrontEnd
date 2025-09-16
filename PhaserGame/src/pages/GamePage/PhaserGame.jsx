@@ -49,12 +49,12 @@ function PhaserGameSetUp() {
                     },
                     create: function () {
                         this.wallGroup = null;
-                        this.wallDim = 50
-                        this.wallDimy = 50
-                        this.wallDimx = 50
+                        this.wallDim = 45
+                        this.wallDimy = 45
+                        this.wallDimx = 45
                         this.holdItemDim = 74
                         this.cols = 13//odd
-                        this.rows = 6//even
+                        this.rows = 8//even
                         this.totalWallWidth = this.cols * this.wallDim;
                         this.totalWallHeight = this.rows * this.wallDim;
                         this.outsidewall = null;

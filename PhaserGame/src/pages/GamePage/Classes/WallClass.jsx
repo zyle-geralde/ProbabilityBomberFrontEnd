@@ -2,12 +2,6 @@ class Wall {
 
     constructor(self) {
         this.self = self
-        //this.adjustwall = 31 + this.self.wallDim
-        //this.centerX = 50
-        /*this.adjustwall =0
-        this.centerX = 0
-        this.width = this.centerX + ((this.self.cols - 1) * this.self.wallDim)
-        this.height = (this.adjustwall) + (this.self.rows * this.self.wallDim)*/
 
         // total playfield width
         this.totalWidth = this.self.cols * this.self.wallDim;
@@ -16,7 +10,7 @@ class Wall {
         this.centerX = (this.self.sys.game.config.width - this.totalWidth) / 2;
 
         // keep walls at the top (no vertical centering)
-        this.adjustwall = 0;
+        this.adjustwall = 31;
 
         // "rightmost" and "bottommost" coordinates
         this.width = this.centerX + ((this.self.cols - 1) * this.self.wallDim);
@@ -56,20 +50,19 @@ class Wall {
     createInsideWalls() {
         this.self.insidewall = this.self.physics.add.group({ immovable: true });
         let xValue = this.centerX + this.self.wallDim
-        for (let col = 1; col < this.self.cols -1 ; col++) {
-            if (col % 2 == 0) {
-                let adjustinsidewall = this.adjustwall + this.self.wallDim
-                for (let row = 1; row < this.self.rows; row++) {
-                    if (row % 2 == 0) {
-                        let wall = this.self.insidewall.create(xValue, adjustinsidewall, 'unbrkwall');
-                        this.self.unbrkWallList.push({ "x": xValue, "y": adjustinsidewall })
-                        wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
-                        wall.setDisplaySize(this.self.wallDim, this.self.wallDim);
-                    }
-                    adjustinsidewall += this.self.wallDim;
+        for (let col = 1; col < this.self.cols - 1; col++) {
+            let adjustinsidewall = this.adjustwall + this.self.wallDim
+            for (let row = 1; row < this.self.rows; row++) {
+                if ((col == 3 && row == 2) || (col == 4 && row == 2) || (col == 3 && row == 3) || (col == 3 && row == 5) || (col == 3 && row == 6) ||
+                 (col == 4 && row == 6) ||  (col == 9 && row == 2) || (col == 9 && row == 3) || (col == 8 && row == 2) || (col == 9 && row == 5) || (col == 9 && row == 6) || (col == 8 && row == 6)) {
+                    let wall = this.self.insidewall.create(xValue, adjustinsidewall, 'unbrkwall');
+                    this.self.unbrkWallList.push({ "x": xValue, "y": adjustinsidewall })
+                    wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
+                    wall.setDisplaySize(this.self.wallDim, this.self.wallDim);
                 }
+                adjustinsidewall += this.self.wallDim;
             }
-            xValue+=this.self.wallDim
+            xValue += this.self.wallDim
         }
     }
     createRightWalls() {
