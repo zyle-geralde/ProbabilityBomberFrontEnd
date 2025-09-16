@@ -4,6 +4,7 @@ class Wall {
         this.self = self
         this.adjustwall = 31 + this.self.wallDim
         this.centerX = 50
+        this.width = this.centerX + ((this.self.cols - 1) * this.self.wallDim )
 
     }
     createLeftWalls() {
@@ -53,6 +54,19 @@ class Wall {
                 }
             }
             xValue+=this.self.wallDim
+        }
+    }
+    createRightWalls() {
+        let adjustwallleft = this.adjustwall + this.self.wallDim
+        let xValueleft = this.width
+        this.self.outsidewall = this.self.physics.add.group({ immovable: true });
+
+        for (let nn = 0; nn < this.self.rows - 1; nn++) {
+            let wall = this.self.outsidewall.create(xValueleft, adjustwallleft, 'unbrkwall');
+            this.self.unbrkWallList.push({ "x": xValueleft, "y": adjustwallleft })
+            adjustwallleft += this.self.wallDim;
+            wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
+            wall.setDisplaySize(this.self.wallDim, this.self.wallDim);
         }
     }
 }
