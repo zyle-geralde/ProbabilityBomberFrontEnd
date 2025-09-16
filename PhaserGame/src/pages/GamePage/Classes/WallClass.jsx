@@ -62,18 +62,16 @@ class Wall {
         }
     }
     createInsideWalls() {
+        //assign key value pairs of inside breakable walls
         this.assignInsideWallDimension()
+        
         console.log(this.insideWallDimension)
         this.self.insidewall = this.self.physics.add.group({ immovable: true });
         let xValue = this.centerX + this.self.wallDim
         for (let col = 1; col < this.self.cols - 1; col++) {
             let adjustinsidewall = this.adjustwall + this.self.wallDim
             for (let row = 1; row < this.self.rows; row++) {
-                if ((col == 3 && row == 2) || (col == 4 && row == 2) || (col == 3 && row == 3) ||
-                    (col == 3 && row == 5) || (col == 3 && row == 6) || (col == 4 && row == 6) ||
-                    (col == 9 && row == 2) || (col == 9 && row == 3) || (col == 8 && row == 2) ||
-                    (col == 9 && row == 5) || (col == 9 && row == 6) || (col == 8 && row == 6) ||
-                    (col == 5 && row == 4) || (col == 6 && row == 4) || (col == 7 && row == 4))
+                if (this.insideWallDimension.some(w => w.col === col && w.row === row))
                 {
                     let wall = this.self.insidewall.create(xValue, adjustinsidewall, 'unbrkwall');
                     this.self.unbrkWallList.push({ "x": xValue, "y": adjustinsidewall })
