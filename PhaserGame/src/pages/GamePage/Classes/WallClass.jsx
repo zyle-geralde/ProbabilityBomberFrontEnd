@@ -2,10 +2,25 @@ class Wall {
 
     constructor(self) {
         this.self = self
-        this.adjustwall = 31 + this.self.wallDim
-        this.centerX = 50
+        //this.adjustwall = 31 + this.self.wallDim
+        //this.centerX = 50
+        /*this.adjustwall =0
+        this.centerX = 0
         this.width = this.centerX + ((this.self.cols - 1) * this.self.wallDim)
-        this.height = (this.adjustwall) + (this.self.rows * this.self.wallDim)
+        this.height = (this.adjustwall) + (this.self.rows * this.self.wallDim)*/
+
+        // total playfield width
+        this.totalWidth = this.self.cols * this.self.wallDim;
+
+        // center horizontally
+        this.centerX = (this.self.sys.game.config.width - this.totalWidth) / 2;
+
+        // keep walls at the top (no vertical centering)
+        this.adjustwall = 0;
+
+        // "rightmost" and "bottommost" coordinates
+        this.width = this.centerX + ((this.self.cols - 1) * this.self.wallDim);
+        this.height = this.adjustwall + (this.self.rows * this.self.wallDim);
 
     }
     createLeftWalls() {
@@ -71,14 +86,14 @@ class Wall {
         }
     }
     createBottomWalls() {
-        this.self.topwall = this.self.physics.add.group({ immovable: true });
-        let adjusttopwall = this.height;
-        let xValue = this.centerX
+        this.self.bottomwall = this.self.physics.add.group({ immovable: true });
+        let adjustbottomwall = this.height;
+        let xValueBottom = this.centerX
 
         for (let nn = 1; nn <= this.self.cols; nn++) {
-            let wall = this.self.topwall.create(xValue, adjusttopwall, 'unbrkwall');
-            this.self.unbrkWallList.push({ "x": xValue, "y": adjusttopwall })
-            xValue += this.self.wallDim;
+            let wall = this.self.bottomwall.create(xValueBottom, adjustbottomwall, 'unbrkwall');
+            this.self.unbrkWallList.push({ "x": xValueBottom, "y": adjustbottomwall })
+            xValueBottom += this.self.wallDim;
             wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
             wall.setDisplaySize(this.self.wallDim, this.self.wallDim);
         }

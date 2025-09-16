@@ -49,9 +49,9 @@ function PhaserGameSetUp() {
                     },
                     create: function () {
                         this.wallGroup = null;
-                        this.wallDim = 60
-                        this.wallDimy = 60
-                        this.wallDimx = 60
+                        this.wallDim = 50
+                        this.wallDimy = 50
+                        this.wallDimx = 50
                         this.holdItemDim = 74
                         this.cols = 13//odd
                         this.rows = 6//even
@@ -75,15 +75,13 @@ function PhaserGameSetUp() {
                         }
 
                         this.createWalls = function () {
-                            self.wallGroup = this.physics.add.group();
+                            
                             self.createLeftWall();
                             self.createTopWall();
                             self.createInsideWall()
                             self.createRightWall()
                             self.createBoottomWall()
-                            /*self.createTopWall();
-                            self.createRightWall();
-                            self.createBottomWall();*/
+
 
                         }
 
