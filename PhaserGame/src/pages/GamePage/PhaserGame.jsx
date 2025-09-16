@@ -1,4 +1,4 @@
-import React, { useEffect, useRef,useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Wall from './Classes/WallClass';
 import Player from './Classes/PlayerClass';
@@ -74,17 +74,17 @@ function PhaserGameSetUp() {
                         //Classes
                         this.Wall = new Wall(this)
                         this.Player = new Player(this)
-                        
+
                         //assign this to self
                         const self = this
 
                         //game setUp
                         this.createBackground = function () {
-                            self.add.sprite(-70,-500,'ground').setOrigin(0,0).setScale(0.8)
+                            self.add.sprite(-70, -500, 'ground').setOrigin(0, 0).setScale(0.8)
                         }
 
                         this.createWalls = function () {
-                            
+
                             self.createLeftWall();
                             self.createTopWall();
                             self.createInsideWall()
@@ -113,7 +113,10 @@ function PhaserGameSetUp() {
                         this.createPlayer = function () {
                             self.Player.createPlayer()
 
-                            console.log(self.player)
+                            self.Player.playerAnimation()
+                        }
+                        this.handlePlayerMovement = function () {
+                            self.Player.handlePlayerMovement()
                         }
 
 
@@ -122,9 +125,21 @@ function PhaserGameSetUp() {
                         this.createWalls()
                         this.createPlayer()
 
-                        
+                        //enable keyboard press
+                        this.cursors = this.input.keyboard.createCursorKeys();
+
+                        //Collision functions
+                        this.physics.add.collider(this.player, this.outsidewall);
+                        this.physics.add.collider(this.player, this.insidewall);
+                        this.physics.add.collider(this.player, this.rightwall);
+                        this.physics.add.collider(this.player, this.bottomwall);
+                        this.physics.add.collider(this.player, this.topwall);
+
+
+
                     },
                     update: function () {
+                        this.handlePlayerMovement()
                     }
                 },
                 parent: gameRef.current,
@@ -139,7 +154,7 @@ function PhaserGameSetUp() {
                 }
             };
         }
-    },[]);
+    }, []);
 
     return <div ref={gameRef} style={{ margin: "0", display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", backgroundColor: "#282c34" }} />;
 }

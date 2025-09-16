@@ -28,7 +28,7 @@ class Wall {
             let wall = this.self.outsidewall.create(xValueleft, adjustwallleft, 'unbrkwall');
             this.self.unbrkWallList.push({ "x": xValueleft, "y": adjustwallleft })
             adjustwallleft += this.self.wallDim;
-            wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
+            //wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
             wall.setDisplaySize(this.self.wallDim, this.self.wallDim);
         }
     }
@@ -43,7 +43,7 @@ class Wall {
             let wall = this.self.topwall.create(xValue, adjusttopwall, 'unbrkwall');
             this.self.unbrkWallList.push({ "x": xValue, "y": adjusttopwall })
             xValue += this.self.wallDim;
-            wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
+            //wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
             wall.setDisplaySize(this.self.wallDim, this.self.wallDim);
         }
     }
@@ -61,7 +61,7 @@ class Wall {
                 {
                     let wall = this.self.insidewall.create(xValue, adjustinsidewall, 'unbrkwall');
                     this.self.unbrkWallList.push({ "x": xValue, "y": adjustinsidewall })
-                    wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
+                    //wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
                     wall.setDisplaySize(this.self.wallDim, this.self.wallDim);
                 }
                 adjustinsidewall += this.self.wallDim;
@@ -78,7 +78,7 @@ class Wall {
             let wall = this.self.rightwall.create(xValueRight, adjustwallRight, 'unbrkwall');
             this.self.unbrkWallList.push({ "x": xValueRight, "y": adjustwallRight })
             adjustwallRight += this.self.wallDim;
-            wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
+            //wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
             wall.setDisplaySize(this.self.wallDim, this.self.wallDim);
         }
     }
@@ -91,11 +91,12 @@ class Wall {
             let wall = this.self.bottomwall.create(xValueBottom, adjustbottomwall, 'unbrkwall');
             this.self.unbrkWallList.push({ "x": xValueBottom, "y": adjustbottomwall })
             xValueBottom += this.self.wallDim;
-            wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
+            //wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
             wall.setDisplaySize(this.self.wallDim, this.self.wallDim);
         }
     }
 }
+
 
 
 export default Wall
