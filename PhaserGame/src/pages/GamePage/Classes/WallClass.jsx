@@ -23,9 +23,9 @@ class Wall {
     assignInsideWallDimension() {
         if (this.self.stage == 1) {
             this.insideWallDimension = [{ "col": 3, "row": 2 }, { "col": 4, "row": 2 }, { "col": 3, "row": 3 }, { "col": 3, "row": 5 },
-                { "col": 3, "row": 6 }, { "col": 4, "row": 6 }, { "col": 9, "row": 2 }, { "col": 9, "row": 3 }, { "col": 8, "row": 2 },
-                { "col": 9, "row": 5 }, { "col": 9, "row": 6 }, { "col": 8, "row": 6 }, { "col": 5, "row": 4 }, { "col": 6, "row": 4 },
-                { "col": 7, "row": 4 }]
+            { "col": 3, "row": 6 }, { "col": 4, "row": 6 }, { "col": 9, "row": 2 }, { "col": 9, "row": 3 }, { "col": 8, "row": 2 },
+            { "col": 9, "row": 5 }, { "col": 9, "row": 6 }, { "col": 8, "row": 6 }, { "col": 5, "row": 4 }, { "col": 6, "row": 4 },
+            { "col": 7, "row": 4 }]
         }
         else {
             //To be placed
@@ -64,15 +64,14 @@ class Wall {
     createInsideWalls() {
         //assign key value pairs of inside breakable walls
         this.assignInsideWallDimension()
-        
+
         console.log(this.insideWallDimension)
         this.self.insidewall = this.self.physics.add.group({ immovable: true });
         let xValue = this.centerX + this.self.wallDim
         for (let col = 1; col < this.self.cols - 1; col++) {
             let adjustinsidewall = this.adjustwall + this.self.wallDim
             for (let row = 1; row < this.self.rows; row++) {
-                if (this.insideWallDimension.some(w => w.col === col && w.row === row))
-                {
+                if (this.insideWallDimension.some(w => w.col === col && w.row === row)) {
                     let wall = this.self.insidewall.create(xValue, adjustinsidewall, 'unbrkwall');
                     this.self.unbrkWallList.push({ "x": xValue, "y": adjustinsidewall })
                     //wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
@@ -109,6 +108,59 @@ class Wall {
             wall.setDisplaySize(this.self.wallDim, this.self.wallDim);
         }
     }
+    createRandomInsideWalls(count = 5) {
+        if (!this.insideWallDimension) {
+            this.assignInsideWallDimension();
+        }
+
+        // Get player's current grid position
+        const playerCol = Math.round((this.self.player.x - this.centerX) / this.self.wallDim);
+        const playerRow = Math.round((this.self.player.y - this.adjustwall) / this.self.wallDim);
+
+        // Build a list of free positions
+        let availablePositions = [];
+        for (let col = 1; col < this.self.cols - 1; col++) {
+            for (let row = 1; row < this.self.rows; row++) {
+                const alreadyHasWall = this.insideWallDimension.some(w => w.col === col && w.row === row);
+                const isPlayerHere = (col === playerCol && row === playerRow);
+
+                if (!alreadyHasWall && !isPlayerHere) {
+                    availablePositions.push({ col, row });
+                }
+            }
+        }
+
+        if (availablePositions.length === 0) {
+            console.warn("No free positions available to place walls.");
+            return;
+        }
+
+        // Shuffle available positions
+        for (let i = availablePositions.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [availablePositions[i], availablePositions[j]] = [availablePositions[j], availablePositions[i]];
+        }
+
+        // Pick up to "count" positions
+        const chosenPositions = availablePositions.slice(0, count);
+
+        // Place walls
+        chosenPositions.forEach(({ col, row }) => {
+            const xValue = this.centerX + col * this.self.wallDim;
+            const yValue = this.adjustwall + row * this.self.wallDim;
+
+            let wall = this.self.insidewall.create(xValue, yValue, 'unbrkwall');
+            this.self.unbrkWallList.push({ x: xValue, y: yValue });
+            wall.setDisplaySize(this.self.wallDim, this.self.wallDim);
+
+            // Register wall
+            this.insideWallDimension.push({ col, row });
+
+            console.log(`Random wall placed at col=${col}, row=${row}`);
+        });
+    }
+
+
 }
 
 

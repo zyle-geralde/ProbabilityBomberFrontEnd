@@ -92,6 +92,7 @@ function PhaserGameSetUp() {
                             self.createInsideWall()
                             self.createRightWall()
                             self.createBoottomWall()
+                            self.createRandomInsideWall()
 
 
                         }
@@ -112,6 +113,9 @@ function PhaserGameSetUp() {
                         this.createBoottomWall = function () {
                             self.Wall.createBottomWalls()
                         }
+                        this.createRandomInsideWall = function () {
+                            self.Wall.createRandomInsideWalls()
+                        }
                         this.createPlayer = function () {
                             self.Player.createPlayer()
 
@@ -124,8 +128,9 @@ function PhaserGameSetUp() {
 
                         //Method calls
                         this.createBackground()
-                        this.createWalls()
                         this.createPlayer()
+                        this.createWalls()
+                        
 
                         //enable keyboard press
                         this.cursors = this.input.keyboard.createCursorKeys();
