@@ -80,6 +80,7 @@ function PhaserGameSetUp() {
                             self.createTopWall();
                             self.createInsideWall()
                             self.createRightWall()
+                            self.createBoottomWall()
                             /*self.createTopWall();
                             self.createRightWall();
                             self.createBottomWall();*/
@@ -109,6 +110,9 @@ function PhaserGameSetUp() {
                         }
                         this.createRightWall = function () {
                             self.Wall.createRightWalls()
+                        }
+                        this.createBoottomWall = function () {
+                            self.Wall.createBottomWalls()
                         }
 
 
