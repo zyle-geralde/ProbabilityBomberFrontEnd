@@ -97,7 +97,5 @@ class Wall {
     }
 }
 
-/*const leftWall = new Wall(self)
-                            leftWall.createLeftWalls()*/
 
 export default Wall

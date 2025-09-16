@@ -1,6 +1,7 @@
 import React, { useEffect, useRef,useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Wall from './Classes/WallClass';
+import Player from './Classes/PlayerClass';
 
 function PhaserGameSetUp() {
     const gameRef = useRef(null);
@@ -48,6 +49,7 @@ function PhaserGameSetUp() {
                         });
                     },
                     create: function () {
+                        //Wall
                         this.wallGroup = null;
                         this.wallDim = 45
                         this.wallDimy = 45
@@ -65,8 +67,15 @@ function PhaserGameSetUp() {
                         this.unbrkWallList = []
                         this.brkWallList = []
                         this.brkWallGroup = null
+
+                        //Player
+                        this.player = null
+
+                        //Classes
                         this.Wall = new Wall(this)
+                        this.Player = new Player(this)
                         
+                        //assign this to self
                         const self = this
 
                         //game setUp
@@ -87,17 +96,6 @@ function PhaserGameSetUp() {
 
                         this.createLeftWall = function () {
 
-
-                            /*self.outsidewall = self.physics.add.group({ immovable: true });
-                            let adjustwall = self.wallDim;
-                            for (let nn = 0; nn < self.rows; nn++) {
-                                let wall = self.outsidewall.create(0, adjustwall, 'unbrkwall');
-                                self.unbrkWallList.push({ "x": 0, "y": adjustwall })
-                                adjustwall += self.wallDim;
-                                wall.body.setSize(self.wallDimx, self.wallDimy);
-                                wall.setDisplaySize(self.wallDim, self.wallDim);
-                            }*/
-
                             self.Wall.createLeftWalls()
                         }
                         this.createTopWall = function () {
@@ -112,11 +110,17 @@ function PhaserGameSetUp() {
                         this.createBoottomWall = function () {
                             self.Wall.createBottomWalls()
                         }
+                        this.createPlayer = function () {
+                            self.Player.createPlayer()
+
+                            console.log(self.player)
+                        }
 
 
                         //Method calls
                         this.createBackground()
                         this.createWalls()
+                        this.createPlayer()
 
                         
                     },
