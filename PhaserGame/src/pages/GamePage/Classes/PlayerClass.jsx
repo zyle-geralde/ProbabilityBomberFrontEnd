@@ -11,7 +11,7 @@ class Player {
     }
     createPlayer() {
         this.self.player = this.self.physics.add.sprite(this.x, this.y, 'character');
-        this.self.player.body.setSize(40, 40);
+        this.self.player.body.setSize(30, 50);
         this.self.player.setDisplaySize(40, 40);
         this.self.player.setCollideWorldBounds(true);
     }

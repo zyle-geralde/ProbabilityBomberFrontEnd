@@ -49,6 +49,8 @@ function PhaserGameSetUp() {
                         });
                     },
                     create: function () {
+                        //GameInfo
+                        this.stage = 1;
                         //Wall
                         this.wallGroup = null;
                         this.wallDim = 45

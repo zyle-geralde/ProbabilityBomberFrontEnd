@@ -16,6 +16,20 @@ class Wall {
         this.width = this.centerX + ((this.self.cols - 1) * this.self.wallDim);
         this.height = this.adjustwall + (this.self.rows * this.self.wallDim);
 
+        //stores a json format fo rows and cols Ex. {rows:30, cols:30}
+        this.insideWallDimension = null
+
+    }
+    assignInsideWallDimension() {
+        if (this.self.stage == 1) {
+            this.insideWallDimension = [{ "col": 3, "row": 2 }, { "col": 4, "row": 2 }, { "col": 3, "row": 3 }, { "col": 3, "row": 5 },
+                { "col": 3, "row": 6 }, { "col": 4, "row": 6 }, { "col": 9, "row": 2 }, { "col": 9, "row": 3 }, { "col": 8, "row": 2 },
+                { "col": 9, "row": 5 }, { "col": 9, "row": 6 }, { "col": 8, "row": 6 }, { "col": 5, "row": 4 }, { "col": 6, "row": 4 },
+                { "col": 7, "row": 4 }]
+        }
+        else {
+            //To be placed
+        }
     }
     createLeftWalls() {
         //For centering
@@ -48,6 +62,8 @@ class Wall {
         }
     }
     createInsideWalls() {
+        this.assignInsideWallDimension()
+        console.log(this.insideWallDimension)
         this.self.insidewall = this.self.physics.add.group({ immovable: true });
         let xValue = this.centerX + this.self.wallDim
         for (let col = 1; col < this.self.cols - 1; col++) {
