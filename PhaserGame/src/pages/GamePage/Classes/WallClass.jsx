@@ -108,22 +108,20 @@ class Wall {
             wall.setDisplaySize(this.self.wallDim, this.self.wallDim);
         }
     }
-    createRandomInsideWalls(count = 5) {
+    createRandomInsideWalls(count = 6) {
         if (!this.insideWallDimension) {
             this.assignInsideWallDimension();
         }
-
-        // Get player's current grid position
+        //Get player current grid position
         const playerCol = Math.round((this.self.player.x - this.centerX) / this.self.wallDim);
         const playerRow = Math.round((this.self.player.y - this.adjustwall) / this.self.wallDim);
 
-        // Build a list of free positions
+        //Build a list of free positions
         let availablePositions = [];
         for (let col = 1; col < this.self.cols - 1; col++) {
             for (let row = 1; row < this.self.rows; row++) {
                 const alreadyHasWall = this.insideWallDimension.some(w => w.col === col && w.row === row);
                 const isPlayerHere = (col === playerCol && row === playerRow);
-
                 if (!alreadyHasWall && !isPlayerHere) {
                     availablePositions.push({ col, row });
                 }
@@ -135,28 +133,26 @@ class Wall {
             return;
         }
 
-        // Shuffle available positions
+        //Shuffle available positions
         for (let i = availablePositions.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [availablePositions[i], availablePositions[j]] = [availablePositions[j], availablePositions[i]];
         }
 
-        // Pick up to "count" positions
+        //Pick up to "count" positions
         const chosenPositions = availablePositions.slice(0, count);
 
-        // Place walls
+        //Assign physics
+        this.self.breakablewall = this.self.physics.add.group({ immovable: true });
+        //Place walls
         chosenPositions.forEach(({ col, row }) => {
             const xValue = this.centerX + col * this.self.wallDim;
             const yValue = this.adjustwall + row * this.self.wallDim;
-
-            let wall = this.self.insidewall.create(xValue, yValue, 'unbrkwall');
-            this.self.unbrkWallList.push({ x: xValue, y: yValue });
+            let wall = this.self.breakablewall.create(xValue, yValue, 'brkwall');
+            this.self.brkWallList.push({ x: xValue, y: yValue });
             wall.setDisplaySize(this.self.wallDim, this.self.wallDim);
 
-            // Register wall
-            this.insideWallDimension.push({ col, row });
-
-            console.log(`Random wall placed at col=${col}, row=${row}`);
+            console.log(`Random wall placed at col: ${col}, row:${row}`);
         });
     }
 

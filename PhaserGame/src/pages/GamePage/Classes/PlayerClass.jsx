@@ -14,6 +14,9 @@ class Player {
         this.self.player.body.setSize(30, 50);
         this.self.player.setDisplaySize(40, 40);
         this.self.player.setCollideWorldBounds(true);
+
+        //Make sure that player always come on top
+         this.self.player.setDepth(1000); 
     }
 
     playerAnimation() {

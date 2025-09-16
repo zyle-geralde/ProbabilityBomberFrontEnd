@@ -61,6 +61,7 @@ function PhaserGameSetUp() {
                         this.rows = 8//even
                         this.totalWallWidth = this.cols * this.wallDim;
                         this.totalWallHeight = this.rows * this.wallDim;
+                        this.breakablewall = null
                         this.outsidewall = null;
                         this.insidewall = null
                         this.topwall = null;
@@ -68,7 +69,6 @@ function PhaserGameSetUp() {
                         this.bottomwall = null;
                         this.unbrkWallList = []
                         this.brkWallList = []
-                        this.brkWallGroup = null
 
                         //Player
                         this.player = null
@@ -141,6 +141,7 @@ function PhaserGameSetUp() {
                         this.physics.add.collider(this.player, this.rightwall);
                         this.physics.add.collider(this.player, this.bottomwall);
                         this.physics.add.collider(this.player, this.topwall);
+                        this.physics.add.collider(this.player, this.breakablewall);
 
 
 
