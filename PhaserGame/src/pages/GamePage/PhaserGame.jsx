@@ -134,10 +134,7 @@ function PhaserGameSetUp() {
                             self.Player.dropBomb()
                         }
                         this.handlePlayerBomb = function () {
-                            if (Phaser.Input.Keyboard.JustDown(self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A))) {
-                                console.log("GO")
-                                this.dropBomb()
-                            }
+                            self.Player.handlePlayerBomb()
                         }
 
 

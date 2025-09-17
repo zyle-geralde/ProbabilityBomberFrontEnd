@@ -1,7 +1,7 @@
 import Bomb from "./BombClass"
 class Player {
 
-    constructor(self,Wall) {
+    constructor(self, Wall) {
         this.self = self
         this.x = 550
         this.y = 70
@@ -90,6 +90,12 @@ class Player {
 
         let bomb = new Bomb(this.self, gridX, gridY, gridCol, gridRow)
         bomb.createBomb()
+    }
+    handlePlayerBomb() {
+        if (Phaser.Input.Keyboard.JustDown(this.self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A))) {
+            console.log("GO")
+            this.self.dropBomb()
+        }
     }
 }
 
