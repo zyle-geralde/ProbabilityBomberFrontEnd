@@ -1,12 +1,13 @@
-
+import Bomb from "./BombClass"
 class Player {
 
-    constructor(self) {
+    constructor(self,Wall) {
         this.self = self
         this.x = 550
         this.y = 70
         this.speed = 150
-        
+        this.Wall = Wall
+
 
     }
     createPlayer() {
@@ -16,7 +17,7 @@ class Player {
         this.self.player.setCollideWorldBounds(true);
 
         //Make sure that player always come on top
-         this.self.player.setDepth(1000); 
+        this.self.player.setDepth(1000);
     }
 
     playerAnimation() {
@@ -66,6 +67,29 @@ class Player {
 
             this.self.player.anims.play('stopright');
         }
+    }
+    dropBomb() {
+        const gridCol = Math.round((this.self.player.x - this.self.Wall.centerX) / this.self.wallDim);
+        const gridRow = Math.round((this.self.player.y - this.self.Wall.adjustwall) / this.self.wallDim);
+
+        //Convert grid coordinates to pixel
+        const gridX = this.self.Wall.centerX + gridCol * this.self.wallDim;
+        const gridY = this.self.Wall.adjustwall + gridRow * this.self.wallDim;
+
+        //check bomb limit
+        if (this.self.bombLocation.length >= this.self.bombLimit) {
+            console.log("bomb exceed limit");
+            return;
+        }
+
+        //check duplicate position
+        if (this.self.bombLocation.some(bomb => bomb.x === gridX && bomb.y === gridY)) {
+            console.log("location taken");
+            return;
+        }
+
+        let bomb = new Bomb(this.self, gridX, gridY, gridCol, gridRow)
+        bomb.createBomb()
     }
 }
 

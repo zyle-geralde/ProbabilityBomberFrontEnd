@@ -73,9 +73,15 @@ function PhaserGameSetUp() {
                         //Player
                         this.player = null
 
+                        //Bomb
+                        this.bombLocation = []
+                        this.bombLimit = 100
+                        this.bombGroup = this.physics.add.group({ immovable: true });
+
+
                         //Classes
                         this.Wall = new Wall(this)
-                        this.Player = new Player(this)
+                        this.Player = new Player(this,this.Wall)
 
                         //assign this to self
                         const self = this
@@ -124,13 +130,22 @@ function PhaserGameSetUp() {
                         this.handlePlayerMovement = function () {
                             self.Player.handlePlayerMovement()
                         }
+                        this.dropBomb = function () {
+                            self.Player.dropBomb()
+                        }
+                        this.handlePlayerBomb = function () {
+                            if (Phaser.Input.Keyboard.JustDown(self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A))) {
+                                console.log("GO")
+                                this.dropBomb()
+                            }
+                        }
 
 
                         //Method calls
                         this.createBackground()
                         this.createPlayer()
                         this.createWalls()
-                        
+
 
                         //enable keyboard press
                         this.cursors = this.input.keyboard.createCursorKeys();
@@ -148,6 +163,7 @@ function PhaserGameSetUp() {
                     },
                     update: function () {
                         this.handlePlayerMovement()
+                        this.handlePlayerBomb()
                     }
                 },
                 parent: gameRef.current,
