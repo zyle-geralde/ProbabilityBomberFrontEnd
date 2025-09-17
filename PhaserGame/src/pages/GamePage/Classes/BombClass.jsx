@@ -56,9 +56,42 @@ class Bomb {
             console.log(`Bomb destroyed at col:${this.gridCol}, row:${this.gridRow}`);
 
             //Create explosion
-            this.centerExplosion = new Explosion(this.self, this.gridX, this.gridY, this.gridCol, this.gridRow)
-            
-            this.centerExplosion.createExplosion();
+            let centerExplosion = new Explosion(this.self, this.gridX, this.gridY, this.gridCol, this.gridRow).createExplosion();
+            //Top explosion
+            let topExplosion = new Explosion(
+                this.self,
+                this.gridX,
+                this.gridY - this.self.wallDim,
+                this.gridCol,
+                this.gridRow - 1
+            ).createExplosion();
+
+            //Bottom explosion
+            let bottomExplosion = new Explosion(
+                this.self,
+                this.gridX,
+                this.gridY + this.self.wallDim,
+                this.gridCol,
+                this.gridRow + 1
+            ).createExplosion();
+
+            //Left explosion
+            let leftExplosion = new Explosion(
+                this.self,
+                this.gridX - this.self.wallDim,
+                this.gridY,
+                this.gridCol - 1,
+                this.gridRow
+            ).createExplosion();
+
+            //Right explosion
+            let rightExplosion = new Explosion(
+                this.self,
+                this.gridX + this.self.wallDim,
+                this.gridY,
+                this.gridCol + 1,
+                this.gridRow
+            ).createExplosion();
         }
     }
 }
