@@ -1,3 +1,4 @@
+import Explosion from "./ExplosionClass";
 class Bomb {
     constructor(self, x, y, col, row) {
         this.self = self
@@ -6,13 +7,14 @@ class Bomb {
         this.gridCol = col
         this.gridRow = row
         this.bomb = null
+        this.bombSize = this.self.wallDim - 7
         this.flashTween = null; //tween instead of timer
 
     }
     createBomb() {
         //create bomb
         this.bomb = this.self.bombGroup.create(this.gridX, this.gridY, 'bomb');
-        this.bomb.setDisplaySize(this.self.wallDim - 7, this.self.wallDim - 7);
+        this.bomb.setDisplaySize(this.bombSize, this.bombSize);
 
         //store location
         this.self.bombLocation.push({ x: this.gridX, y: this.gridY });
@@ -53,6 +55,10 @@ class Bomb {
 
             console.log(`Bomb destroyed at col:${this.gridCol}, row:${this.gridRow}`);
 
+            //Create explosion
+            this.centerExplosion = new Explosion(this.self, this.gridX, this.gridY, this.gridCol, this.gridRow)
+            
+            this.centerExplosion.createExplosion();
         }
     }
 }

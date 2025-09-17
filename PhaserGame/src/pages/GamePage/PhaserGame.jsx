@@ -78,6 +78,11 @@ function PhaserGameSetUp() {
                         this.bombLimit = 100
                         this.bombGroup = this.physics.add.group({ immovable: true });
 
+                        //Explosion
+                        this.explosionLocation = []
+                        this.explosionLimit = 1
+                        this.explosionGroup = this.physics.add.group({ immovable: true });
+
 
                         //Classes
                         this.Wall = new Wall(this)
