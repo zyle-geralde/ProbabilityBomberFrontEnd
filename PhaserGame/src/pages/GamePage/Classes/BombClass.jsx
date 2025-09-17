@@ -56,7 +56,16 @@ class Bomb {
             console.log(`Bomb destroyed at col:${this.gridCol}, row:${this.gridRow}`);
 
             //Create explosion
-            let centerExplosion = new Explosion(this.self, this.gridX, this.gridY, this.gridCol, this.gridRow).createExplosion();
+
+            //Center explosion
+            let centerExplosion = new Explosion(
+                this.self,
+                this.gridX,
+                this.gridY,
+                this.gridCol,
+                this.gridRow
+            ).createExplosion();
+            
             //Top explosion
             let topExplosion = new Explosion(
                 this.self,
