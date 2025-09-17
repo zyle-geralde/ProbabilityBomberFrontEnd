@@ -6,6 +6,8 @@ class Bomb {
         this.gridCol = col
         this.gridRow = row
         this.bomb = null
+        this.flashTween = null; //tween instead of timer
+
     }
     createBomb() {
         //create bomb
@@ -17,6 +19,16 @@ class Bomb {
 
         console.log(`Bomb placed at col:${this.gridCol}, row:${this.gridRow}`);
 
+
+        this.flashTween = this.self.tweens.add({
+            targets: this.bomb,
+            alpha: 0.3,
+            duration: 500,
+            yoyo: true,
+            repeat: -1
+        });
+
+
         //schedule destruction after 2 seconds
         this.self.time.delayedCall(2000, () => {
             this.destroyBomb();
@@ -24,6 +36,12 @@ class Bomb {
     }
     destroyBomb() {
         if (this.bomb) {
+
+            // stop flashing tween
+            if (this.flashTween) {
+                this.flashTween.stop();
+                this.flashTween = null;
+            }
 
             //Destroy the bomb
             this.bomb.destroy()
