@@ -1,5 +1,5 @@
-class Explosion{
-    constructor(self,x, y, col, row) {
+class Explosion {
+    constructor(self, x, y, col, row) {
         this.self = self
         this.gridX = x;
         this.gridY = y;
@@ -22,13 +22,40 @@ class Explosion{
         }
 
 
+        // Create explosion sprite
         this.explosion = this.self.explosionGroup.create(this.gridX, this.gridY, 'explode');
         this.explosion.setDisplaySize(this.explosionSize, this.explosionSize);
 
+        // Start invisible
+        this.explosion.setAlpha(0);
+
         //store location
-        this.self.explosionLocation.push({ x: this.gridX, y: this.gridY});
+        this.self.explosionLocation.push({ x: this.gridX, y: this.gridY });
 
         console.log(`Explosion placed at col:${this.gridCol}, row:${this.gridRow}`);
+
+        // Tween: fade in → fade out
+        this.self.tweens.add({
+            targets: this.explosion,
+            alpha: { from: 0, to: 1 }, // fade in
+            duration: 100,
+            yoyo: true, //fade out after fade in
+            hold: 400,  //stay visible for a short moment
+            onComplete: () => {
+                this.destroyExplosion();
+            }
+        });
+    }
+    destroyExplosion() {
+        //Destroy Explosion
+        this.explosion.destroy()
+
+        //Remove the location of the explosion
+        this.self.explosionLocation = this.self.explosionLocation.filter(
+            pos => !(pos.x === this.gridX && pos.y === this.gridY)
+        );
+
+        console.log(`Explosion destroyed at col:${this.gridCol}, row:${this.gridRow}`);
     }
 }
 
