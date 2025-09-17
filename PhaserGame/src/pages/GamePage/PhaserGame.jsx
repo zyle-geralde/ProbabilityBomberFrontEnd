@@ -86,7 +86,7 @@ function PhaserGameSetUp() {
 
                         //Classes
                         this.Wall = new Wall(this)
-                        this.Player = new Player(this,this.Wall)
+                        this.Player = new Player(this, this.Wall)
 
                         //assign this to self
                         const self = this
@@ -159,6 +159,24 @@ function PhaserGameSetUp() {
                         this.physics.add.collider(this.player, this.bottomwall);
                         this.physics.add.collider(this.player, this.topwall);
                         this.physics.add.collider(this.player, this.breakablewall);
+
+                        //OverlapFunctions
+                        //Explosion overlaps with breakable wall
+                        this.physics.add.overlap(this.explosionGroup, this.breakablewall, (explosion, wall) => {
+
+                            self.tweens.add({
+                                targets: wall,
+                                alpha: 0,
+                                duration: 100,
+                                onComplete: () => wall.destroy()
+                            });
+
+                            this.brkWallList = this.brkWallList.filter(w => !(w.x === wall.x && w.y === wall.y));
+
+                            console.log(`Breakable wall destroyed at x:${wall.x}, y:${wall.y}`);
+                        });
+
+
 
 
 
