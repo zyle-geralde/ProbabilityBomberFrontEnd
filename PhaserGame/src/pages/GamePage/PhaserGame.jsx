@@ -141,6 +141,11 @@ function PhaserGameSetUp() {
                         this.handlePlayerBomb = function () {
                             self.Player.handlePlayerBomb()
                         }
+                        this.handlePlayerHit = () => {
+
+                            self.Player.handlePlayerHit()
+                        };
+
 
 
                         //Method calls
@@ -174,6 +179,12 @@ function PhaserGameSetUp() {
                             this.brkWallList = this.brkWallList.filter(w => !(w.x === wall.x && w.y === wall.y));
 
                             console.log(`Breakable wall destroyed at x:${wall.x}, y:${wall.y}`);
+                        });
+                        // Explosion overlaps with player
+                        this.physics.add.overlap(this.player, this.explosionGroup, () => {
+                            if (!this.player.isHit) {
+                                this.handlePlayerHit();
+                            }
                         });
 
 

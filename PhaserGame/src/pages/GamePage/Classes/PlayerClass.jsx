@@ -97,6 +97,26 @@ class Player {
             this.self.dropBomb()
         }
     }
+    handlePlayerHit() {
+        this.self.player.isHit = true; //Prevent repeated triggers during animation
+
+        this.self.tweens.add({
+            targets: this.self.player,
+            tint: { from: 0xffffff, to: 0xff0000 }, // normal to red
+            duration: 200,
+            yoyo: true,
+            repeat: 1,
+            onComplete: () => {
+                this.self.player.clearTint();
+
+            }
+        });
+
+        this.self.time.delayedCall(3000, () => {
+            this.self.player.isHit = false;
+            console.log("Player can be hit again");
+        });
+    }
 }
 
 export default Player
