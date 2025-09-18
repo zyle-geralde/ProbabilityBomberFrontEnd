@@ -21,6 +21,8 @@ import ProfilePage from "./pages/ProfilePage/UserProfile";
 import ClassPerformancePage from "./pages/PerformanceTracking/ClassPerformancePage";
 import LessonResourcePage from "./pages/LessonPage/LessonResourcePage/LessonResourcePage";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
+import LoginPage from "./pages/AuthenticationPages/LoginPage";
+import RegisterPage from "./pages/AuthenticationPages/RegisterPage";
 
 
 export function App() {
@@ -68,67 +70,9 @@ export function App() {
   return (
     <div>
       <Routes>
-        <Route
-          path="/login"
-          element={
-            <LoginForm
-              email={email}
-              password={password}
-              role={role}
-              onChange={handleChange}
-              onLogin={handleLogin}
-              onForgotPassword={() => navigate(ViewStates.FORGOT_PASSWORD)}
-              error={error}
-              setRole={setRole}
-            />
-          }
-        />
-
-        <Route
-          path="/"
-          element={
-            <LoginForm
-              email={email}
-              password={password}
-              role={role}
-              onChange={handleChange}
-              onLogin={handleLogin}
-              onForgotPassword={() => navigate(ViewStates.FORGOT_PASSWORD)}
-              error={error}
-              setRole={ setRole}
-            />
-          }
-        />
-        <Route
-          path="/loginForTeachers"
-          element={
-            <LoginForm
-              email={email}
-              password={password}
-              role={role}
-              onChange={handleChange}
-              onLogin={handleLogin}
-              onForgotPassword={() => navigate(ViewStates.FORGOT_PASSWORD)}
-              error={error}
-              setRole={ setRole}
-            />
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <RegisterForm
-              userName={userName}
-              email={email}
-              password={password}
-              role={role}
-              onChange={handleChange}
-              onRegister={handleRegister}
-              error={error}
-              setRole={ setRole}
-            />
-          }
-        />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
 
         <Route
           path="/registerForTeachers"
