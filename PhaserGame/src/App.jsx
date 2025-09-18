@@ -21,8 +21,13 @@ import ProfilePage from "./pages/ProfilePage/UserProfile";
 import ClassPerformancePage from "./pages/PerformanceTracking/ClassPerformancePage";
 import LessonResourcePage from "./pages/LessonPage/LessonResourcePage/LessonResourcePage";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
+
+// Authentication Pages
 import LoginPage from "./pages/AuthenticationPages/LoginPage";
 import RegisterPage from "./pages/AuthenticationPages/RegisterPage";
+
+// Stage Pages
+import StagePage from "./pages/StagePages/StagePageTemplate";
 
 
 export function App() {
@@ -89,18 +94,6 @@ export function App() {
             />
           }
         />
-        {/* <Route
-          path="/teacher_profile"
-          element={
-            userData ? (
-            <TeacherProfile
-            userData={userData}
-            onUpdatePassword={() => navigate(ViewStates.PASSWORD)}
-            />) : (
-              <p>Loading...</p>
-            )
-          }
-        /> */}
         <Route
           path="/password"
           element={
@@ -132,6 +125,8 @@ export function App() {
             />
           }
         />
+        <Route path="/stagePage" element={<StagePage userData={userData} />} />
+
         <Route path="/phaserGame" element={userData?(<PhaserGame
           userData={ userData}
         /> ):(<div>Loading ...</div>)} />
