@@ -152,6 +152,9 @@ function PhaserGameSetUp() {
 
                             self.Player.handlePlayerHit()
                         };
+                        this.startItemSpawnLoop = function () {
+                            this.Wall.startItemSpawnLoop();
+                        }
                         
 
 
@@ -161,6 +164,7 @@ function PhaserGameSetUp() {
                         this.createPlayer()
                         this.createWalls()
                         this.createRandomItems()
+                        this.startItemSpawnLoop()
 
 
                         //enable keyboard press

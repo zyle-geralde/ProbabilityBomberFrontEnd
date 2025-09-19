@@ -200,6 +200,18 @@ class Wall {
             console.warn(`Only placed ${placed} items after ${attempts} attempts.`);
         }
     }
+    startItemSpawnLoop(interval = 7000) {
+        this.self.time.addEvent({
+            delay: interval, //every 5 seconds
+            callback: () => {
+                if (this.self.itemLocation.length < this.self.itemLimit) {
+                    this.createRandomItems(1); //create 1 item only
+                }
+            },
+            callbackScope: this,
+            loop: true,
+        });
+    }
 
 
 
