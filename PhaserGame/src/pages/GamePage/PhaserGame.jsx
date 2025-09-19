@@ -197,7 +197,7 @@ function PhaserGameSetUp() {
                         });
                         // Explosion overlaps with player
                         this.physics.add.overlap(this.player, this.explosionGroup, () => {
-                            if (!this.player.isHit) {
+                            if (!this.player.isHit && this.Player.shieldSprite == null) {
                                 this.handlePlayerHit();
                             }
                         });
