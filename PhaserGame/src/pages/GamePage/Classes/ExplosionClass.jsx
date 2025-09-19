@@ -9,7 +9,8 @@ class Explosion {
         this.explosionSize = this.self.wallDim - 7
     }
 
-    createExplosion() {
+    createExplosion(direction) {
+
 
         //check if this explosion overlaps with an unbreakable wall
         const blocked = this.self.unbrkWallList.some(
@@ -17,6 +18,18 @@ class Explosion {
         );
 
         if (blocked) {
+            if (direction == "top") {
+                this.self.disableTopExplosion = true
+            }
+            else if (direction == "bottom") {
+                this.self.disableBottomExplosion = true
+            }
+            else if (direction == "left") {
+                this.self.disableLeftExplosion = true
+            }
+            else if (direction == "right") {
+                this.self.disableRightExplosion = true
+            }
             console.log(`Explosion blocked at col:${this.gridCol}, row:${this.gridRow}`);
             return null; //don’t create explosion
         }
@@ -42,6 +55,10 @@ class Explosion {
             yoyo: true, //fade out after fade in
             hold: 400,  //stay visible for a short moment
             onComplete: () => {
+                this.self.disableTopExplosion = false
+                this.self.disableBottomExplosion = false
+                this.self.disableLeftExplosion = false
+                this.self.disableRightExplosion = false
                 this.destroyExplosion();
             }
         });

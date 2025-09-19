@@ -83,6 +83,11 @@ function PhaserGameSetUp() {
                         this.explosionLocation = []
                         this.explosionLimit = 1
                         this.explosionGroup = this.physics.add.group({ immovable: true });
+                        this.explosionRange = 2;
+                        this.disableRightExplosion = false
+                        this.disableLeftExplosion = false
+                        this.disableTopExplosion = false
+                        this.disableBottomExplosion = false
 
                         //Item
                         this.itemLocation = []
@@ -157,7 +162,7 @@ function PhaserGameSetUp() {
                         this.startItemSpawnLoop = function () {
                             this.Wall.startItemSpawnLoop(this.singleItemSpawnDuration);
                         }
-                        
+
 
 
 

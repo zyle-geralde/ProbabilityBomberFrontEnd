@@ -10,6 +10,8 @@ class Bomb {
         this.bombSize = this.self.wallDim - 7
         this.flashTween = null; //tween instead of timer
 
+
+
     }
     createBomb() {
         //create bomb
@@ -65,42 +67,54 @@ class Bomb {
                 this.gridCol,
                 this.gridRow
             ).createExplosion();
-            
-            //Top explosion
-            let topExplosion = new Explosion(
-                this.self,
-                this.gridX,
-                this.gridY - this.self.wallDim,
-                this.gridCol,
-                this.gridRow - 1
-            ).createExplosion();
 
-            //Bottom explosion
-            let bottomExplosion = new Explosion(
-                this.self,
-                this.gridX,
-                this.gridY + this.self.wallDim,
-                this.gridCol,
-                this.gridRow + 1
-            ).createExplosion();
+            for (var expLoop = 1; expLoop <= this.self.explosionRange; expLoop++) {
+                //Top explosion
+                if (!this.self.disableTopExplosion) {
+                    let topExplosion = new Explosion(
+                        this.self,
+                        this.gridX,
+                        this.gridY - this.self.wallDim * expLoop,
+                        this.gridCol,
+                        this.gridRow - expLoop
+                    ).createExplosion("top");
+                }
 
-            //Left explosion
-            let leftExplosion = new Explosion(
-                this.self,
-                this.gridX - this.self.wallDim,
-                this.gridY,
-                this.gridCol - 1,
-                this.gridRow
-            ).createExplosion();
 
-            //Right explosion
-            let rightExplosion = new Explosion(
-                this.self,
-                this.gridX + this.self.wallDim,
-                this.gridY,
-                this.gridCol + 1,
-                this.gridRow
-            ).createExplosion();
+                //Bottom explosion
+                if (!this.self.disableBottomExplosion) {
+                    let bottomExplosion = new Explosion(
+                        this.self,
+                        this.gridX,
+                        this.gridY + this.self.wallDim * expLoop,
+                        this.gridCol,
+                        this.gridRow + expLoop
+                    ).createExplosion("bottom");
+                }
+
+                //Left explosion
+                if (!this.self.disableLeftExplosion) {
+                    let leftExplosion = new Explosion(
+                        this.self,
+                        this.gridX - this.self.wallDim * expLoop,
+                        this.gridY,
+                        this.gridCol - expLoop,
+                        this.gridRow
+                    ).createExplosion("left");
+                }
+
+                //Right explosion
+                if (!this.self.disableRightExplosion) {
+                    let rightExplosion = new Explosion(
+                        this.self,
+                        this.gridX + this.self.wallDim * expLoop,
+                        this.gridY,
+                        this.gridCol + expLoop,
+                        this.gridRow
+                    ).createExplosion("right");
+                }
+            }
+
         }
     }
 }
