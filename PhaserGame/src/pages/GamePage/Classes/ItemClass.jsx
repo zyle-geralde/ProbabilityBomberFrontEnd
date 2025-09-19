@@ -16,11 +16,16 @@ class Item{
 
         this.self.itemLocation.push({ x: this.gridX, y: this.gridY });
 
-        /*// Optional: mark which grid this item belongs to
-        this.item.gridCol = this.gridCol;
-        this.item.gridRow = this.gridRow;
+        //add float animation (go up/down repeatedly)
+        this.self.tweens.add({
+            targets: this.item,
+            y: this.item.y - 2,    //move up by 10 pixels
+            duration: 1000,          //0.8s up
+            yoyo: true,             //then go back down
+            repeat: -1,             //infinite loop
+            ease: 'Sine.easeInOut', //smooth motion
+        });
 
-        return this.item;*/
     }
 
 }

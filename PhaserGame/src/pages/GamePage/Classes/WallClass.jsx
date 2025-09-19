@@ -1,3 +1,4 @@
+import Item from "./ItemClass";
 class Wall {
 
     constructor(self) {
@@ -155,6 +156,51 @@ class Wall {
             console.log(`Random wall placed at col: ${col}, row:${row}`);
         });
     }
+
+    createRandomItems(count = 5) {
+        let attempts = 0;
+        let placed = 0;
+
+        while (placed < count && attempts < 500) {
+            attempts++;
+
+            //random col/row inside bounds
+            const col = Phaser.Math.Between(1, this.self.cols - 2);
+            const row = Phaser.Math.Between(1, this.self.rows - 2);
+
+            const gridX = this.centerX + col * this.self.wallDim;
+            const gridY = this.adjustwall + row * this.self.wallDim;
+
+            //check overlap with unbreakable & breakable walls
+            const overlapWall =
+                this.self.unbrkWallList.some(w => w.x === gridX && w.y === gridY) ||
+                this.self.brkWallList.some(w => w.x === gridX && w.y === gridY);
+
+            //check overlap with player
+            const playerCol = Math.round((this.self.player.x - this.centerX) / this.self.wallDim);
+            const playerRow = Math.round((this.self.player.y - this.adjustwall) / this.self.wallDim);
+            const overlapPlayer = (col === playerCol && row === playerRow);
+
+            //check overlap with existing items
+            const overlapItem = this.self.itemLocation.some(i => i.x === gridX && i.y === gridY);
+
+            if (!overlapWall && !overlapPlayer && !overlapItem) {
+                //random texture
+                const textures = ["bombItem", "explodeItem", "shieldItem", "bootsItem", "heartItem"];
+                const texture = Phaser.Utils.Array.GetRandom(textures);
+
+                const item = new Item(this.self, gridX, gridY, col, row, texture);
+                item.create();
+
+                placed++;
+            }
+        }
+
+        if (placed < count) {
+            console.warn(`Only placed ${placed} items after ${attempts} attempts.`);
+        }
+    }
+
 
 
 }

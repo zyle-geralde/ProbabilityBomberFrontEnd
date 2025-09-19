@@ -142,6 +142,9 @@ function PhaserGameSetUp() {
                         this.dropBomb = function () {
                             self.Player.dropBomb()
                         }
+                        this.createRandomItems = function () {
+                            self.Wall.createRandomItems(self.itemLimit)
+                        }
                         this.handlePlayerBomb = function () {
                             self.Player.handlePlayerBomb()
                         }
@@ -149,6 +152,7 @@ function PhaserGameSetUp() {
 
                             self.Player.handlePlayerHit()
                         };
+                        
 
 
 
@@ -156,6 +160,7 @@ function PhaserGameSetUp() {
                         this.createBackground()
                         this.createPlayer()
                         this.createWalls()
+                        this.createRandomItems()
 
 
                         //enable keyboard press
