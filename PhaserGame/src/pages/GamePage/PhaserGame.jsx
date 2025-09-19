@@ -59,6 +59,7 @@ function PhaserGameSetUp() {
                         this.holdItemDim = 74
                         this.cols = 13//odd
                         this.rows = 8//even
+                        this.insideWallCount = 6
                         this.totalWallWidth = this.cols * this.wallDim;
                         this.totalWallHeight = this.rows * this.wallDim;
                         this.breakablewall = null
@@ -87,6 +88,7 @@ function PhaserGameSetUp() {
                         this.itemLocation = []
                         this.itemLimit = 5
                         this.itemGroup = this.physics.add.group({ immovable: true });
+                        this.singleItemSpawnDuration = 1000//7 seconds
 
                         //Classes
                         this.Wall = new Wall(this)
@@ -107,7 +109,7 @@ function PhaserGameSetUp() {
                             self.createInsideWall()
                             self.createRightWall()
                             self.createBoottomWall()
-                            self.createRandomInsideWall()
+                            self.createRandomInsideWall(this.insideWallCount)
 
 
                         }
@@ -153,7 +155,7 @@ function PhaserGameSetUp() {
                             self.Player.handlePlayerHit()
                         };
                         this.startItemSpawnLoop = function () {
-                            this.Wall.startItemSpawnLoop();
+                            this.Wall.startItemSpawnLoop(this.singleItemSpawnDuration);
                         }
                         
 
@@ -213,6 +215,10 @@ function PhaserGameSetUp() {
 
                             console.log(`Item acuired at x:${item.x}, y:${item.y}`);
                             console.log(this.itemLocation)
+
+                            if (item.texture.key === 'shieldItem') {
+                                this.Player.activateShield(5000);
+                            }
                         });
 
 
@@ -223,6 +229,7 @@ function PhaserGameSetUp() {
                     update: function () {
                         this.handlePlayerMovement()
                         this.handlePlayerBomb()
+                        this.Player.updateShield();
                     }
                 },
                 parent: gameRef.current,

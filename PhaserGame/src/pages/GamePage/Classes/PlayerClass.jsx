@@ -8,7 +8,7 @@ class Player {
         this.speed = 150
         this.Wall = Wall
 
-
+        this.shieldSprite = null;
     }
     createPlayer() {
         this.self.player = this.self.physics.add.sprite(this.x, this.y, 'character');
@@ -18,6 +18,46 @@ class Player {
 
         //Make sure that player always come on top
         this.self.player.setDepth(1000);
+    }
+
+    activateShield(duration = 5000) {
+        // If already has shield, reset timer
+        if (this.shieldSprite) {
+            this.shieldSprite.destroy();
+            this.shieldSprite = null;
+        }
+
+        // Create shield sprite around the player
+        this.shieldSprite = this.self.add.sprite(this.self.player.x, this.self.player.y, 'shield');
+        this.shieldSprite.setScale(0.6);
+        this.shieldSprite.setDisplaySize(this.self.wallDim - 15, this.self.wallDim - 15);
+        this.shieldSprite.setDepth(1001); // above player
+
+        this.self.tweens.add({
+            targets: this.shieldSprite,
+            alpha: { from: 1, to: 0.5 }, 
+            duration: 500,               
+            yoyo: true,                  
+            repeat: -1,                  
+            ease: 'Sine.easeInOut'       
+        });
+
+        // Destroy after duration
+        this.self.time.delayedCall(duration, () => {
+            if (this.shieldSprite) {
+                this.shieldSprite.destroy();
+                this.shieldSprite = null;
+                console.log("Shield expired");
+            }
+        });
+    }
+
+    //Keep shield following player
+    updateShield() {
+        if (this.shieldSprite) {
+            this.shieldSprite.x = this.self.player.x;
+            this.shieldSprite.y = this.self.player.y;
+        }
     }
 
     playerAnimation() {

@@ -202,7 +202,7 @@ class Wall {
     }
     startItemSpawnLoop(interval = 7000) {
         this.self.time.addEvent({
-            delay: interval, //every 5 seconds
+            delay: interval, //every 7 seconds
             callback: () => {
                 if (this.self.itemLocation.length < this.self.itemLimit) {
                     this.createRandomItems(1); //create 1 item only
