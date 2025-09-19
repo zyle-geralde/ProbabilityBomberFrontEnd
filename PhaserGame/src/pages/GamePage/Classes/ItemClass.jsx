@@ -1,4 +1,4 @@
-class Item{
+class Item {
     constructor(self, x, y, col, row, texture) {
         this.self = self;
         this.gridX = x;
@@ -15,6 +15,17 @@ class Item{
         this.item.setDisplaySize(this.itemSize, this.itemSize);
 
         this.self.itemLocation.push({ x: this.gridX, y: this.gridY });
+
+        //Start fully transparent
+        this.item.setAlpha(0);
+
+        //Fade in effect
+        this.self.tweens.add({
+            targets: this.item,
+            alpha: 1,           
+            duration: 100,      
+            ease: 'Linear'
+        });
 
         //add float animation (go up/down repeatedly)
         this.self.tweens.add({

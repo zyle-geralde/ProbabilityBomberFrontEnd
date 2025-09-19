@@ -88,7 +88,7 @@ function PhaserGameSetUp() {
                         this.itemLocation = []
                         this.itemLimit = 5
                         this.itemGroup = this.physics.add.group({ immovable: true });
-                        this.singleItemSpawnDuration = 1000//7 seconds
+                        this.singleItemSpawnDuration = 2000//7 seconds
 
                         //Classes
                         this.Wall = new Wall(this)
