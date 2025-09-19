@@ -16,6 +16,8 @@ class Player {
         this.shieldTween = null;
 
         this.speedTimer = null
+
+        this.explosionBuffTimer = null
     }
     createPlayer() {
         this.self.player = this.self.physics.add.sprite(this.x, this.y, 'character');
@@ -130,6 +132,33 @@ class Player {
             console.log(`No more life (Life: ${this.life})`)
         }
        
+    }
+    activateExplosionBuff(duration = 5000) {
+        if (this.explosionBuffTimer) {
+            //remove the scheduled event from the Time manager
+            try {
+                this.self.time.removeEvent(this.explosionBuffTimer);
+                console.log("Timer Removed")
+            } catch (e) {
+                //fallback: if removeEvent isn't available, try to call remove on the timer
+                if (typeof this.explosionBuffTimer.remove === 'function') {
+                    this.explosionBuffTimer.remove();
+                }
+            }
+            this.explosionBuffTimer = null;
+        }
+
+        this.self.explosionRange = 2
+        console.log("Explosion Buff activated "+this.self.explosionRange)
+
+        this.explosionBuffTimer = this.self.time.delayedCall(duration, () => {
+
+            this.self.explosionRange = 1
+            this.explosionBuffTimer = null;
+            console.log("Explosion Buff removed "+this.explosionRange)
+            console.log("Timer Removed")
+        });
+        
     }
 
     //Keep shield following player

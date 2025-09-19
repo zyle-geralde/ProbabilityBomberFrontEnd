@@ -83,7 +83,7 @@ function PhaserGameSetUp() {
                         this.explosionLocation = []
                         this.explosionLimit = 1
                         this.explosionGroup = this.physics.add.group({ immovable: true });
-                        this.explosionRange = 2;
+                        this.explosionRange = 1;
                         this.disableRightExplosion = false
                         this.disableLeftExplosion = false
                         this.disableTopExplosion = false
@@ -235,6 +235,9 @@ function PhaserGameSetUp() {
                             }
                             else if (item.texture.key === "bootsItem") {
                                 this.Player.activateSpeed(5000)
+                            }
+                            else if (item.texture.key === "explodeItem") {
+                                this.Player.activateExplosionBuff(5000)
                             }
                         });
 
