@@ -89,6 +89,16 @@ class Player {
         console.log(`Life: ${this.life}`)
 
     }
+    decreaseLife() {
+        if (this.life > 0) {
+            this.life -= 1;
+            console.log(`Life: ${this.life}`)
+        }
+        else {
+            console.log(`No more life (Life: ${this.life})`)
+        }
+       
+    }
 
     //Keep shield following player
     updateShield() {
