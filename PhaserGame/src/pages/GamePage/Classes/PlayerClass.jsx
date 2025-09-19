@@ -9,6 +9,8 @@ class Player {
         this.Wall = Wall
 
         this.shieldSprite = null;
+        this.shieldTimer = null;
+        this.shieldTween = null;
     }
     createPlayer() {
         this.self.player = this.self.physics.add.sprite(this.x, this.y, 'character');
@@ -21,7 +23,28 @@ class Player {
     }
 
     activateShield(duration = 5000) {
-        // If already has shield, reset timer
+
+        if (this.shieldTimer) {
+            //remove the scheduled event from the Time manager
+            try {
+                this.self.time.removeEvent(this.shieldTimer);
+                console.log("Timer Removed")
+            } catch (e) {
+                //fallback: if removeEvent isn't available, try to call remove on the timer
+                if (typeof this.shieldTimer.remove === 'function') {
+                    this.shieldTimer.remove();
+                }
+            }
+            this.shieldTimer = null;
+        }
+
+        //stop previous tween if exists
+        if (this.shieldTween) {
+            try { this.shieldTween.stop(); } catch (e) {}
+            this.shieldTween = null;
+            console.log("Tween removed")
+        }
+        //If already has shield, reset timer
         if (this.shieldSprite) {
             this.shieldSprite.destroy();
             this.shieldSprite = null;
@@ -33,22 +56,29 @@ class Player {
         this.shieldSprite.setDisplaySize(this.self.wallDim - 15, this.self.wallDim - 15);
         this.shieldSprite.setDepth(1001); // above player
 
-        this.self.tweens.add({
+        this.shieldTween = this.self.tweens.add({
             targets: this.shieldSprite,
-            alpha: { from: 1, to: 0.5 }, 
-            duration: 500,               
-            yoyo: true,                  
-            repeat: -1,                  
-            ease: 'Sine.easeInOut'       
+            alpha: { from: 1, to: 0.5 },
+            duration: 500,
+            yoyo: true,
+            repeat: -1,
+            ease: 'Sine.easeInOut'
         });
 
         // Destroy after duration
-        this.self.time.delayedCall(duration, () => {
+        this.shieldTimer = this.self.time.delayedCall(duration, () => {
             if (this.shieldSprite) {
                 this.shieldSprite.destroy();
                 this.shieldSprite = null;
                 console.log("Shield expired");
             }
+            if (this.shieldTween) {
+                try { this.shieldTween.stop(); } catch (e) {}
+                this.shieldTween = null;
+                console.log("Tween Removed")
+            }
+            this.shieldTimer = null;
+            console.log("Timer Removed")
         });
     }
 
