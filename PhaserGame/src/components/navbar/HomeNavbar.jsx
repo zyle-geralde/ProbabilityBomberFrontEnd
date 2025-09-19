@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as AuthController from "../../controllers/AuthController";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
+
 
 function HomeNavbar() {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -37,7 +40,7 @@ return (
           onClick={() => setShowDropdown(!showDropdown)}
           className="text-xl px-2 py-1 hover:scale-110 transition-transform"
         >
-          ⚙️
+          <FontAwesomeIcon icon={faGear} />
         </button>
 
         {/* Dropdown */}

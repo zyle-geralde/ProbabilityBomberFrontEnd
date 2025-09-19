@@ -16,8 +16,8 @@ import PasswordResetLink from './components/views/PasswordResetLink';
 import LessonPage from "./pages/LessonPage/LessonPage";
 import QuizSettingPage from "./pages/QuizSettingPage/QuizSettingPage";
 import ClassPage from "./pages/ClassPage/ClassPage";
-import StudentProfile from "./pages/ProfilePage/StudentProfile";
-import ProfilePage from "./pages/ProfilePage/UserProfile";
+import ProfilePage from "./pages/ProfilePage/ProfilePage";
+// import ProfilePage from "./pages/ProfilePage/UserProfile";
 import ClassPerformancePage from "./pages/PerformanceTracking/ClassPerformancePage";
 import LessonResourcePage from "./pages/LessonPage/LessonResourcePage/LessonResourcePage";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
@@ -25,6 +25,7 @@ import ProtectedRoute from "./components/routes/ProtectedRoute";
 // Authentication Pages
 import LoginPage from "./pages/AuthenticationPages/LoginPage";
 import RegisterPage from "./pages/AuthenticationPages/RegisterPage";
+import ForgotPasswordPage from "./pages/AuthenticationPages/ForgotPasswordPage";
 
 // Stage Pages
 import StagePage from "./pages/StagePages/StagePageTemplate";
@@ -78,6 +79,7 @@ export function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/studentProfile" element={<ProfilePage />} />
 
         <Route
           path="/registerForTeachers"
@@ -108,7 +110,7 @@ export function App() {
         <Route
           path="/forgot_password"
           element={
-            <ForgotPassword
+            <ForgotPasswordPage
               email={email}
               onChange={handleChange}
               onForgotPassword={handleForgotPassword}

@@ -9,7 +9,7 @@ export default function StagePage() {
     {/* Breadcrumb + Header Container with background */}
     <div className="relative min-h-[300px] text-white overflow-hidden">
     {/* Background overlay (gradient) */}
-    <div className="absolute inset-0 bg-gradient-to-b from-rose-300 to-[#641B2E] opacity-70"></div>
+    <div className="absolute inset-0 bg-gradient-to-b from-rose-300 to-[#641B2E] opacity-80"></div>
 
     {/* Background image */}
     <img
@@ -34,8 +34,8 @@ export default function StagePage() {
 
         {/* Header */}
         <div className="text-center">
-        <h1 className="text-4xl font-bold mb-2">Stage name 01</h1>
-        <p className="text-gray-200">
+        <h1 className="!text-6xl text-center font-bold mb-2">Stage name 01</h1>
+        <p className="!mt-10 flex-col md:flex-row items-center justify-center gap-6 text-gray-200 text-lg">
             Sample text is being used as a placeholder.
         </p>
         </div>

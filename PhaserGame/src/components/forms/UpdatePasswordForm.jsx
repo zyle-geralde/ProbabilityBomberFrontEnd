@@ -1,30 +1,37 @@
-import HomeNavbar from "../navbar/HomeNavbar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLock } from "@fortawesome/free-solid-svg-icons";
 
-import "./UpdatePasswordForm.css";
-
-function UpdatePasswordForm({ onChange, onUpdate, error }) {
+function UpdatePasswordForm({onChange, onUpdate, error }) {
   return (
-    <>
-      <HomeNavbar/>
-      <div className="update-pass-page-wrapper">
-        <div className="update-pass-container">
-          <h2>Enter New Password</h2>
+    <div className="w-full max-w-sm mx-auto">
+      <p className="text-gray-600 mb-4 text-center">
+        Enter your new password below to update your account.
+      </p>
 
-          <div className="input-group">
-            <label htmlFor="userName">New Password</label>
-            <input
-              type="password"
-              name="password"
-              onChange={onChange}
-              placeholder="New Password"
-            />
-            <button onClick={onUpdate}>Confirm</button>
-          </div>
-          {error && <p>Error: {error}</p>}
-        </div>
-        
+      {/* Password input with icon */}
+      <div className="relative mb-3">
+        <FontAwesomeIcon
+          icon={faLock}
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+        />
+        <input
+          type="password"
+          name="password"
+          onChange={onChange}
+          placeholder="Enter new password"
+          className="w-full border p-2 !pl-12 rounded"
+        />
       </div>
-    </>
+
+      {error && <p className="text-red-500 mb-3">{error}</p>}
+
+      <button
+        onClick={onUpdate}
+        className="w-full bg-[#641B2E] text-white py-2 rounded hover:bg-[#531626] transition"
+      >
+        Confirm
+      </button>
+    </div>
   );
 }
 

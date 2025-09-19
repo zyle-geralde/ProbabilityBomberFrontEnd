@@ -1,5 +1,6 @@
 import { useState } from "react";
 import LoginForm from "./../../components/forms/LoginForm";
+import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 
 function LoginPage() {
   const [formData, setFormData] = useState({

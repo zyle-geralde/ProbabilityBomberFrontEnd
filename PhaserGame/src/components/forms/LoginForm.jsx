@@ -124,7 +124,7 @@ function LoginForm({ email, password, onChange, onLogin, error }) {
               id="password"
               name="password"
               value={password}
-              placeholder="Password (min 8 characters)"
+              placeholder="Enter your password"
               onChange={onChange}
               className="w-full outline-none"
             />
