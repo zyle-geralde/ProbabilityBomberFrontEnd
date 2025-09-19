@@ -204,11 +204,16 @@ function PhaserGameSetUp() {
                         // Player overlaps with item
                         this.physics.add.overlap(this.player, this.itemGroup, (player, item) => {
 
+                            //disable body to prevent overlap
+                            item.disableBody(true, false);
+
                             self.tweens.add({
                                 targets: item,
                                 alpha: 0,
                                 duration: 100,
-                                onComplete: () => item.destroy()
+                                onComplete: () => {
+                                    item.destroy()
+                                }
                             });
 
                             this.itemLocation = this.itemLocation.filter(i => !(i.x === item.x && item.y === item.y));
@@ -218,6 +223,9 @@ function PhaserGameSetUp() {
 
                             if (item.texture.key === 'shieldItem') {
                                 this.Player.activateShield(5000);
+                            }
+                            else if (item.texture.key === 'heartItem') {
+                                this.Player.lifeItemOverlap();
                             }
                         });
 

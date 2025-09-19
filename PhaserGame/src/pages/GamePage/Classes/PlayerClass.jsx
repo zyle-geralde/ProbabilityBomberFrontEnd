@@ -7,6 +7,7 @@ class Player {
         this.y = 70
         this.speed = 150
         this.Wall = Wall
+        this.life = 10;
 
         this.shieldSprite = null;
         this.shieldTimer = null;
@@ -80,6 +81,13 @@ class Player {
             this.shieldTimer = null;
             console.log("Timer Removed")
         });
+    }
+
+    lifeItemOverlap() {
+        
+        this.life += 1;
+        console.log(`Life: ${this.life}`)
+
     }
 
     //Keep shield following player
