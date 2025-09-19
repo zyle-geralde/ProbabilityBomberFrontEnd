@@ -195,6 +195,21 @@ function PhaserGameSetUp() {
                                 this.handlePlayerHit();
                             }
                         });
+                        // Player overlaps with item
+                        this.physics.add.overlap(this.player, this.itemGroup, (player, item) => {
+
+                            self.tweens.add({
+                                targets: item,
+                                alpha: 0,
+                                duration: 100,
+                                onComplete: () => item.destroy()
+                            });
+
+                            this.itemLocation = this.itemLocation.filter(i => !(i.x === item.x && item.y === item.y));
+
+                            console.log(`Item acuired at x:${item.x}, y:${item.y}`);
+                            console.log(this.itemLocation)
+                        });
 
 
 
