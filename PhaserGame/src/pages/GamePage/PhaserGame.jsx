@@ -228,6 +228,9 @@ function PhaserGameSetUp() {
                             else if (item.texture.key === 'heartItem') {
                                 this.Player.lifeItemOverlap();
                             }
+                            else if (item.texture.key === "bootsItem") {
+                                this.Player.activateSpeed(5000)
+                            }
                         });
 
 

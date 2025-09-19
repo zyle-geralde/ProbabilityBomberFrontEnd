@@ -6,12 +6,16 @@ class Player {
         this.x = 550
         this.y = 70
         this.speed = 150
+        this.additionalSpeed = 350
+        this.originalSpeed = 150
         this.Wall = Wall
         this.life = 10;
 
         this.shieldSprite = null;
         this.shieldTimer = null;
         this.shieldTween = null;
+
+        this.speedTimer = null
     }
     createPlayer() {
         this.self.player = this.self.physics.add.sprite(this.x, this.y, 'character');
@@ -21,6 +25,34 @@ class Player {
 
         //Make sure that player always come on top
         this.self.player.setDepth(1000);
+    }
+    activateSpeed(duration = 5000) {
+
+        
+        if (this.speedTimer) {
+            //remove the scheduled event from the Time manager
+            try {
+                this.self.time.removeEvent(this.speedTimer);
+                console.log("Timer Removed")
+            } catch (e) {
+                //fallback: if removeEvent isn't available, try to call remove on the timer
+                if (typeof this.speedTimer.remove === 'function') {
+                    this.speedTimer.remove();
+                }
+            }
+            this.speedTimer = null;
+        }
+
+        this.speed = this.additionalSpeed
+        console.log("Speed activated "+this.speed)
+
+        this.speedTimer = this.self.time.delayedCall(duration, () => {
+
+            this.speed = this.originalSpeed
+            this.speedTimer = null;
+            console.log("Speed removed "+this.speed)
+            console.log("Timer Removed")
+        });
     }
 
     activateShield(duration = 5000) {
