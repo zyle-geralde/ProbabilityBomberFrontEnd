@@ -22,14 +22,14 @@ function HomeNavbar() {
   };
 
 return (
-  <nav className="bg-[#641B2E] text-white px-4 py-2">
+  <nav className="bg-[#641B2E] text-white px-5 py-3">
     <div className="max-w-7xl mx-auto flex justify-between items-center w-full">
       {/* Logo */}
       <a href={isTeacher ? "/classPage" : "/lessonPage"} className="shrink-0">
         <img
-          src="./images/probability_bomber_logo.png"
+          src="./images/logo_white_text.png"
           alt="Logo"
-          className="w-[100px] cursor-pointer"
+          className="w-47 cursor-pointer "
         />
       </a>
 

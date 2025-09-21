@@ -26,9 +26,16 @@ import ProtectedRoute from "./components/routes/ProtectedRoute";
 import LoginPage from "./pages/AuthenticationPages/LoginPage";
 import RegisterPage from "./pages/AuthenticationPages/RegisterPage";
 import ForgotPasswordPage from "./pages/AuthenticationPages/ForgotPasswordPage";
+import ResetPasswordLinkPage from "./pages/AuthenticationPages/ResetPasswordLinkPage";
+import ResetPasswordPage from "./pages/AuthenticationPages/ResetPasswordPage";
+
 
 // Stage Pages
 import StagePage from "./pages/StagePages/StagePageTemplate";
+import Stage01Page from "./pages/StagePages/Stage01Page";
+import Stage02Page from "./pages/StagePages/Stage02Page";
+import Stage03Page from "./pages/StagePages/Stage03Page";
+import TutorialPage from "./pages/StagePages/TutorialPage";
 
 
 export function App() {
@@ -127,7 +134,15 @@ export function App() {
             />
           }
         />
+        <Route path="/reset-password-link" element={<ResetPasswordLinkPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        
+
         <Route path="/stagePage" element={<StagePage userData={userData} />} />
+        <Route path="/stage01Page" element={<Stage01Page userData={userData} />} />
+        <Route path="/stage02Page" element={<Stage02Page userData={userData} />} />
+        <Route path="/stage03Page" element={<Stage03Page userData={userData} />} />
+        <Route path="/tutorialPage" element={<TutorialPage userData={userData} />} />
 
         <Route path="/phaserGame" element={userData?(<PhaserGame
           userData={ userData}
