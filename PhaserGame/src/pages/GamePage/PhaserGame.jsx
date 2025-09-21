@@ -95,6 +95,11 @@ function PhaserGameSetUp() {
                         this.itemGroup = this.physics.add.group({ immovable: true });
                         this.singleItemSpawnDuration = 2000//7 seconds
 
+                        //Enemy
+                        this.enemyLimit = 5
+                        this.enemyGroup = this.physics.add.group({ immovable: true })
+                        this.singleEnemySpawnDuration = 2000//7 seconds
+
                         //Classes
                         this.Wall = new Wall(this)
                         this.Player = new Player(this, this.Wall)
@@ -162,6 +167,9 @@ function PhaserGameSetUp() {
                         this.startItemSpawnLoop = function () {
                             this.Wall.startItemSpawnLoop(this.singleItemSpawnDuration);
                         }
+                        this.createStartingEnemies = function () {
+                            this.Wall.createStartingEnemies()
+                        }
 
 
 
@@ -172,6 +180,7 @@ function PhaserGameSetUp() {
                         this.createWalls()
                         this.createRandomItems()
                         this.startItemSpawnLoop()
+                        this.createStartingEnemies()
 
 
                         //enable keyboard press
@@ -240,9 +249,6 @@ function PhaserGameSetUp() {
                                 this.Player.activateExplosionBuff(5000)
                             }
                         });
-
-
-
 
 
                     },

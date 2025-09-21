@@ -1,4 +1,6 @@
 import Item from "./ItemClass";
+import Enemy from "./EnemyClass";
+
 class Wall {
 
     constructor(self) {
@@ -123,7 +125,11 @@ class Wall {
             for (let row = 1; row < this.self.rows; row++) {
                 const alreadyHasWall = this.insideWallDimension.some(w => w.col === col && w.row === row);
                 const isPlayerHere = (col === playerCol && row === playerRow);
-                if (!alreadyHasWall && !isPlayerHere) {
+
+                const coordinateList = [[5, 3], [7, 3], [6, 5], [4, 4], [8, 4]]
+                const isInCoordinateList = coordinateList.some(([c, r]) => c === col && r === row);
+
+                if (!alreadyHasWall && !isPlayerHere && !isInCoordinateList) {
                     availablePositions.push({ col, row });
                 }
             }
@@ -199,6 +205,25 @@ class Wall {
         if (placed < count) {
             console.warn(`Only placed ${placed} items after ${attempts} attempts.`);
         }
+    }
+    createStartingEnemies() {
+
+        const col = 5;
+        const row = 3;
+
+        const gridX = this.centerX + col * this.self.wallDim;
+        const gridY = this.adjustwall + row * this.self.wallDim;
+        const colList = [5, 7, 6, 4, 8]
+        const rowList = [3, 3, 5, 4, 4]
+        const gridXList = [this.centerX + colList[0] * this.self.wallDim, this.centerX + colList[1] * this.self.wallDim, this.centerX + colList[2] * this.self.wallDim, this.centerX + colList[3] * this.self.wallDim, this.centerX + colList[4] * this.self.wallDim]
+        const gridYList = [this.adjustwall + rowList[0] * this.self.wallDim, this.adjustwall + rowList[1] * this.self.wallDim, this.adjustwall + rowList[2] * this.self.wallDim, this.adjustwall + rowList[3] * this.self.wallDim, this.adjustwall + rowList[4] * this.self.wallDim]
+
+        for (var enemyLoop = 0; enemyLoop < 5; enemyLoop++) {
+            const enemySpawn = new Enemy(this.self, gridXList[enemyLoop], gridYList[enemyLoop], colList[enemyLoop], rowList[enemyLoop], "ghost", 1);
+
+            enemySpawn.createEnemy()
+        }
+
     }
     startItemSpawnLoop(interval = 7000) {
         this.self.time.addEvent({
