@@ -66,8 +66,43 @@ function LessonPage({ userData }) {
 
 
       {!classId && !isTeacher? (
-        <div className="no-class-message">
-          <h2>No Classes Assigned yet</h2>
+        <div className="lesson-page-wrapper">
+          <div class="welcome">
+            <h2>Welcome to the Quiz Catalog</h2>
+            <p>Challenge yourself with our curated quiz collection</p>
+          </div>
+
+          <div className="lesson-page-container">
+            <div className="lesson-panel">
+              
+              <div className="lesson-card">
+                <div className="lesson-image">
+                  <img src="lesson-image.jpg" alt="Lesson Image"></img>
+                </div>
+
+                <div className="lesson-description">
+                  <h2>Lesson Title</h2>
+                  <p>Lesson subtitle or description</p>
+                </div>
+              </div>
+
+              <div className="lesson-card">
+                <div className="lesson-image">
+                  <img src="lesson-image.jpg" alt="Lesson Image"></img>
+                </div>
+
+                <div className="lesson-description">
+                  <h2>Lesson Title</h2>
+                  <p>Lesson subtitle or description</p>
+                </div>
+              </div>
+
+            </div>
+
+            <div className="leaderboard-panel">
+              <p>leaderboard</p>
+            </div>
+          </div>
         </div>
       ) : (
         <div className="teacher-lesson-page-container">

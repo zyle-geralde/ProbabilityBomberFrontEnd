@@ -67,15 +67,73 @@ body{
 }
 
 
-/* No Comment Div */
+/* No Comment Div 
 .no-class-message {
     display: flex;
     align-items: center;
     height: 500px;
-    /* padding: 2rem; */
+     padding: 2rem; 
     text-align: center;
     padding-top: 5em;
     color: #555;
     justify-content: center;
   }
-  
+  */
+
+  .welcome {
+      background-color: #eee;
+      text-align: center;
+      padding: 20px;
+      border-bottom: 1px solid #ccc;
+    }
+    .welcome h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .welcome p {
+      margin: 5px 0 0;
+      font-size: 16px;
+      color: #555;
+    }
+    .lesson-page-container {
+      display: flex;
+      min-height: 70vh;
+    }
+    .lesson-panel {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;        /* gap-6 */
+        padding: 1.5rem;    /* p-6 */
+        align-items: flex-start; /* items-start */
+        width: 60%;
+        background-color: #f4f4f4;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+    .leaderboard-panel {
+      width: 40%;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      overflow: hidden;
+    }
+
+    .lesson-card{
+        flex: none;
+        width: 16rem; /* w-64 */
+        border-radius: 1rem; /* rounded-2xl */
+        overflow: hidden;
+        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1),
+                    0 4px 6px -4px rgba(0,0,0,0.1); /* shadow-lg */
+        background-color: #ffffff; /* bg-white */
+    }
+
+    .lesson-image {
+        background-color: powderblue;
+        height: 6rem;
+    }
+
+    .lesson-image img {
+        width: 100%;
+        object-fit: cover;
+    }
