@@ -74,7 +74,7 @@ function LessonPage({ userData }) {
 
           <div className="lesson-page-container">
             <div className="lesson-panel">
-              
+
               <div className="lesson-card">
                 <div className="lesson-image">
                   <img src="lesson-image.jpg" alt="Lesson Image"></img>
@@ -100,7 +100,24 @@ function LessonPage({ userData }) {
             </div>
 
             <div className="leaderboard-panel">
-              <p>leaderboard</p>
+              <div className="leaderboard">
+                <div className="lesson-leaderboard-header">MY TABLE</div>
+                    <div className="row">
+                    <div className="rank">1</div>
+                    <div className="name">Kevin</div>
+                    <div className="score">123</div>
+                </div>
+                    <div className="row">
+                    <div className="rank">2</div>
+                    <div className="name">Josh</div>
+                    <div className="score">123</div>
+                </div>
+                <div class="row">
+                    <div className="rank">3</div>
+                    <div className="name">Steve</div>
+                    <div className="score">123</div>
+                </div>    
+            </div>
             </div>
           </div>
         </div>
