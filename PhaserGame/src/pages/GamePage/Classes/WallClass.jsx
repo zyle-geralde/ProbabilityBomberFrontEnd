@@ -186,7 +186,7 @@ class Wall {
 
             if (!overlapWall && !overlapPlayer && !overlapItem) {
                 //random texture
-                const textures = ["bombItem", "explodeItem", "shieldItem", "bootsItem", "heartItem"];
+                const textures = ["explodeItem", "shieldItem", "bootsItem", "heartItem"];
                 const texture = Phaser.Utils.Array.GetRandom(textures);
 
                 const item = new Item(this.self, gridX, gridY, col, row, texture);
