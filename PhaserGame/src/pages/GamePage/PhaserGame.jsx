@@ -170,6 +170,20 @@ function PhaserGameSetUp() {
                         this.createStartingEnemies = function () {
                             this.Wall.createStartingEnemies()
                         }
+                        this.handleEnemyCollision = (enemy) => { enemy.getData("ref").changeDirection() };
+                        this.handleEnemyBehavior = () =>{
+                            this.enemyGroup.children.iterate((enemySprite) => {
+                                if (!enemySprite) return;
+
+                                const enemy = enemySprite.getData('ref');
+                                if (!enemy) return;
+
+                                // chance per frame to change direction
+                                if (Phaser.Math.Between(0, 1000) < 7) {
+                                    enemy.changeDirection();
+                                }
+                            });
+                        }
 
 
 
@@ -194,30 +208,12 @@ function PhaserGameSetUp() {
                         this.physics.add.collider(this.player, this.topwall);
                         this.physics.add.collider(this.player, this.breakablewall);
 
-                        this.physics.add.collider(this.enemyGroup, this.outsidewall, (enemy) => {
-                            enemy.getData("ref").changeDirection();//getData("ref") is used to get the Enemy class. enemy parameter is only a sprite.
-                            console.log(`Left Collide`)
-                        });
-                        this.physics.add.collider(this.enemyGroup, this.insidewall, (enemy) => {
-                            enemy.getData("ref").changeDirection();
-                            console.log(`Inside Collide`)
-                        });
-                        this.physics.add.collider(this.enemyGroup, this.breakablewall, (enemy) => {
-                            enemy.getData("ref").changeDirection();
-                            console.log(`breakable`)
-                        });
-                        this.physics.add.collider(this.enemyGroup, this.rightwall, (enemy) => {
-                            enemy.getData("ref").changeDirection();
-                            console.log(`Right Collide`)
-                        });
-                        this.physics.add.collider(this.enemyGroup, this.bottomwall, (enemy) => {
-                            enemy.getData("ref").changeDirection();
-                            console.log(`Bottom Collide`)
-                        });
-                        this.physics.add.collider(this.enemyGroup, this.topwall, (enemy) => {
-                            enemy.getData("ref").changeDirection();
-                            console.log(`Top Collide`)
-                        });
+                        this.physics.add.collider(this.enemyGroup, this.outsidewall, this.handleEnemyCollision);
+                        this.physics.add.collider(this.enemyGroup, this.insidewall, this.handleEnemyCollision);
+                        this.physics.add.collider(this.enemyGroup, this.breakablewall, this.handleEnemyCollision);
+                        this.physics.add.collider(this.enemyGroup, this.rightwall, this.handleEnemyCollision);
+                        this.physics.add.collider(this.enemyGroup, this.bottomwall, this.handleEnemyCollision);
+                        this.physics.add.collider(this.enemyGroup, this.topwall, this.handleEnemyCollision);
 
                         //OverlapFunctions
                         //Explosion overlaps with breakable wall
@@ -281,18 +277,7 @@ function PhaserGameSetUp() {
                         this.handlePlayerMovement()
                         this.handlePlayerBomb()
                         this.Player.updateShield();
-
-                        // iterate enemy sprites to occasionally change direction
-                        this.enemyGroup.children.iterate((enemySprite) => {
-                            if (!enemySprite) return;
-                            const enemy = enemySprite.getData('ref');
-                            if (!enemy) return;
-
-                            // chance per frame to change direction (tweak to taste)
-                            if (Phaser.Math.Between(0, 1000) < 7) { // ~0.3% per frame
-                                enemy.changeDirection();
-                            }
-                        });
+                        this.handleEnemyBehavior()
                     }
                 },
                 parent: gameRef.current,
