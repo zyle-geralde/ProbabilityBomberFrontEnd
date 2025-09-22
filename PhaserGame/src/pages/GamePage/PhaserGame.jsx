@@ -45,6 +45,7 @@ function PhaserGameSetUp() {
                         this.load.image('fastenemy', 'images/fastenemy.png')
                         this.load.image('advanceenemy', 'images/advanceenemy.png')
                         this.load.image('sideItemFixed', 'images/sideItem.png')
+                        this.load.image('redHexagon', 'images/redHexagon.png')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 42,
                             frameHeight: 72,
@@ -116,11 +117,45 @@ function PhaserGameSetUp() {
                             self.add.sprite(-70, -500, 'ground').setOrigin(0, 0).setScale(0.8)
                         }
                         this.createSideItems = function () {
+                            let yPos = 100;
+                            let yPosAdd = 85
+
                             // Add sprite and scale it up
-                            const heartFix = this.add.image(300, 100, 'sideItemFixed');
+                            const heartFix = this.add.image(300, yPos, 'sideItemFixed');
                             // Scale from 32 → 100 pixels
-                            const scale = 80 / 32;
-                            heartFix.setScale(scale);
+                            const scaleh = 80 / 32;
+                            heartFix.setScale(scaleh);
+                            yPos += yPosAdd
+
+                            const bootsFix = this.add.image(300, yPos, 'sideItemFixed');
+                            const scaleb = 80 / 32;
+                            bootsFix.setScale(scaleb);
+                            yPos += yPosAdd
+
+                            const explosionFix = this.add.image(300, yPos, 'sideItemFixed');
+                            const scalee = 80 / 32;
+                            explosionFix.setScale(scalee);
+                            yPos += yPosAdd
+
+                            const shieldFix = this.add.image(300, yPos, 'sideItemFixed');
+                            const scales = 80 / 32;
+                            shieldFix.setScale(scales);
+
+                            yPos = 142
+                            //redHexagon
+                            const redHexagon1 = this.add.image(300, yPos, 'redHexagon');
+                            const scalerH1 = 40 / 32;
+                            redHexagon1.setScale(scalerH1);
+                            yPos+=yPosAdd
+
+                            const redHexagon2 = this.add.image(300, yPos, 'redHexagon');
+                            const scalerH2 = 40 / 32;
+                            redHexagon2.setScale(scalerH2);
+                            yPos += yPosAdd
+                            
+                            const redHexagon3 = this.add.image(300, yPos, 'redHexagon');
+                            const scalerH3 = 40 / 32;
+                            redHexagon3.setScale(scalerH3);
 
                         }
 
