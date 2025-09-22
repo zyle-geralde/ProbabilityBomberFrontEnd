@@ -1,87 +1,100 @@
 import { useState } from "react";
 import LoginForm from "./../../components/forms/LoginForm";
-import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 
-function LoginPage() {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    role: "student",
-  });
-  const [error, setError] = useState("");
+function LoginPage({ email, password, role ,onChange, onLogin, onForgotPassword, error,setRole }) {
+  // // Use props as initial values if provided
+  // const [formData, setFormData] = useState({
+  //   email: initialEmail,
+  //   password: initialPassword,
+  //   role: "student",
+  // });
 
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  }
+  // const [error, setError] = useState(parentError || "");
 
-  async function handleLogin() {
-    try {
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+  // // Handle input change
+  // function handleChange(e) {
+  //   const { name, value } = e.target;
 
-      if (!res.ok) throw new Error("Invalid credentials");
-    } catch (err) {
-      setError(err.message);
-    }
-  }
+  //   // Call parent handler if provided
+  //   if (parentOnChange) {
+  //     parentOnChange(e);
+  //   } else {
+  //     setFormData((prev) => ({ ...prev, [name]: value }));
+  //   }
 
-function handleForgotPassword() {
-    console.log("Forgot password clicked");
-}
+  //   // Update role if role field changed and parent handler exists
+  //   if (name === "role" && parentSetRole) parentSetRole(value);
+  // }
+
+  // // Handle login
+  // async function handleLogin() {
+  //   if (parentOnLogin) {
+  //     parentOnLogin(formData);
+  //     return;
+  //   }
+
+  //   try {
+  //     const res = await fetch("/api/login", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(formData),
+  //     });
+
+  //     if (!res.ok) throw new Error("Invalid credentials");
+  //   } catch (err) {
+  //     setError(err.message);
+  //   }
+  // }
+
+  // // Handle forgot password
+  // function handleForgotPassword() {
+  //   if (parentOnForgotPassword) {
+  //     parentOnForgotPassword();
+  //   } else {
+  //     console.log("Forgot password clicked");
+  //   }
+  // }
 
   return (
     <div className="w-full grid grid-cols-1 md:grid-cols-5 min-h-screen">
       {/* Left side */}
       <div className="relative md:col-span-3 flex flex-col justify-center items-center text-white p-12 overflow-hidden">
-        {/* Background image */}
         <div className="absolute inset-0 bg-[url('/images/authentication_background.png')] bg-cover bg-center" />
-        {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-b to-[#641B2E]/50" />
-
-        {/* Content */}
         <div className="relative z-10 flex flex-col items-center">
-          {/* Logo */}
           <img
             src="/images/probability_bomber_logo.png"
             alt="Probability Bomber Logo"
             className="w-[500px] h-auto mb-6"
           />
-
-          {/* Text Section */}
           <div className="text-center max-w-md backdrop-blur-md ">
             <h1 className="text-4xl font-extrabold !text-gray-900 mb-4">
-              Welcome to{" "}
-              <span className="font-bold text-[#641B2E]">
-                Probability Bomber
-              </span>
+              Welcome to <span className="font-bold text-[#641B2E]">Probability Bomber</span>
             </h1>
             <p className="text-lg text-gray-900 leading-relaxed">
               Where learning feels like playing —{" "}
-              <span className="font-semibold text-[#641B2E]">
-                level up your mind
-              </span>.
+              <span className="font-semibold text-[#641B2E]">level up your mind</span>.
             </p>
           </div>
         </div>
       </div>
 
       {/* Right side */}
-      <div className=" md:col-span-2 flex justify-center items-center bg-gray-100 p-6">
+      <div className="md:col-span-2 flex justify-center items-center bg-gray-100 p-6">
         <LoginForm
-          email={formData.email}
-          password={formData.password}
-          onChange={handleChange}
-          onLogin={handleLogin}
-          onForgotPassword={handleForgotPassword}
+          email={email}
+          password={password}
+          role={role}
+          onChange={onChange}
+          onLogin={onLogin}
+          onForgotPassword={onForgotPassword}
           error={error}
+          setRole={ setRole}
         />
+
+        
       </div>
     </div>
-
   );
 }
 

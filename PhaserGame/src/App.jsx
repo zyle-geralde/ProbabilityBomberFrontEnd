@@ -84,9 +84,31 @@ export function App() {
   return (
     <div>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage 
+              email={email}
+              password={password}
+              role={role}
+              onChange={handleChange}
+              onLogin={handleLogin}
+              onForgotPassword={() => navigate(ViewStates.FORGOT_PASSWORD)}
+              error={error}
+              setRole={setRole}
+              />
+            } 
+          />
+        <Route path="/" element={<LoginPage 
+              email={email}
+              password={password}
+              role={role}
+              onChange={handleChange}
+              onLogin={handleLogin}
+              onForgotPassword={() => navigate(ViewStates.FORGOT_PASSWORD)}
+              error={error}
+              setRole={setRole}
+              />} />
+        <Route path="/register" element={<RegisterPage/>
+            }
+        />
         <Route path="/studentProfile" element={<ProfilePage />} />
 
         <Route
