@@ -79,8 +79,18 @@ import { Link } from "react-router-dom";
 
 // export default LoginForm;
 
-function LoginForm({ email, password, onChange, onLogin, error }) {
+function LoginForm({ email, password, role, onChange, onLogin, onForgotPassword, error,setRole }) {
   const [showPassword, setShowPassword] = useState(false);
+  const isTeacherLog = location.pathname === "/loginForTeachers"
+
+  useEffect(() => { 
+    if (isTeacherLog) {
+      setRole("teacher")
+    }
+    else {
+      setRole("student")
+    }
+  },[])
 
   return (
     <div className="w-full max-w-sm mx-auto">
@@ -128,6 +138,15 @@ function LoginForm({ email, password, onChange, onLogin, error }) {
               onChange={onChange}
               className="w-full outline-none"
             />
+
+            <div className="input-group" style={{opacity:"0"}}>
+            <select name="role" value={role} onChange={onChange} style={{width:"2px",height:"2px"}}>
+              <option value="">Select role</option>
+              <option value="teacher">Teacher</option>
+              <option value="student">Student</option>
+            </select>
+          </div>
+
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
