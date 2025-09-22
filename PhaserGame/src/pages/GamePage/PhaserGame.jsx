@@ -1,6 +1,7 @@
-import React, { useEffect, useRef,useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Wall from './Classes/WallClass';
+import Player from './Classes/PlayerClass';
 
 function PhaserGameSetUp() {
     const gameRef = useRef(null);
@@ -48,15 +49,20 @@ function PhaserGameSetUp() {
                         });
                     },
                     create: function () {
+                        //GameInfo
+                        this.stage = 1;
+                        //Wall
                         this.wallGroup = null;
-                        this.wallDim = 60
-                        this.wallDimy = 60
-                        this.wallDimx = 60
+                        this.wallDim = 45
+                        this.wallDimy = 45
+                        this.wallDimx = 45
                         this.holdItemDim = 74
                         this.cols = 13//odd
-                        this.rows = 6//even
+                        this.rows = 8//even
+                        this.insideWallCount = 6
                         this.totalWallWidth = this.cols * this.wallDim;
                         this.totalWallHeight = this.rows * this.wallDim;
+                        this.breakablewall = null
                         this.outsidewall = null;
                         this.insidewall = null
                         this.topwall = null;
@@ -64,41 +70,62 @@ function PhaserGameSetUp() {
                         this.bottomwall = null;
                         this.unbrkWallList = []
                         this.brkWallList = []
-                        this.brkWallGroup = null
+
+                        //Player
+                        this.player = null
+
+                        //Bomb
+                        this.bombLocation = []
+                        this.bombLimit = 100
+                        this.bombGroup = this.physics.add.group({ immovable: true });
+
+                        //Explosion
+                        this.explosionLocation = []
+                        this.explosionLimit = 1
+                        this.explosionGroup = this.physics.add.group({ immovable: true });
+                        this.explosionRange = 1;
+                        this.disableRightExplosion = false
+                        this.disableLeftExplosion = false
+                        this.disableTopExplosion = false
+                        this.disableBottomExplosion = false
+
+                        //Item
+                        this.itemLocation = []
+                        this.itemLimit = 5
+                        this.itemGroup = this.physics.add.group({ immovable: true });
+                        this.singleItemSpawnDuration = 2000//7 seconds
+
+                        //Enemy
+                        this.enemyLimit = 10
+                        this.enemyStartingLimit = 5
+                        this.enemyGroup = this.physics.add.group()
+                        this.singleEnemySpawnDuration = 2000//7 seconds
+
+                        //Classes
                         this.Wall = new Wall(this)
-                        
+                        this.Player = new Player(this, this.Wall)
+
+                        //assign this to self
                         const self = this
 
                         //game setUp
                         this.createBackground = function () {
-                            self.add.sprite(-70,-500,'ground').setOrigin(0,0).setScale(0.8)
+                            self.add.sprite(-70, -500, 'ground').setOrigin(0, 0).setScale(0.8)
                         }
 
                         this.createWalls = function () {
-                            self.wallGroup = this.physics.add.group();
+
                             self.createLeftWall();
                             self.createTopWall();
                             self.createInsideWall()
                             self.createRightWall()
                             self.createBoottomWall()
-                            /*self.createTopWall();
-                            self.createRightWall();
-                            self.createBottomWall();*/
+                            self.createRandomInsideWall(this.insideWallCount)
+
 
                         }
 
                         this.createLeftWall = function () {
-
-
-                            /*self.outsidewall = self.physics.add.group({ immovable: true });
-                            let adjustwall = self.wallDim;
-                            for (let nn = 0; nn < self.rows; nn++) {
-                                let wall = self.outsidewall.create(0, adjustwall, 'unbrkwall');
-                                self.unbrkWallList.push({ "x": 0, "y": adjustwall })
-                                adjustwall += self.wallDim;
-                                wall.body.setSize(self.wallDimx, self.wallDimy);
-                                wall.setDisplaySize(self.wallDim, self.wallDim);
-                            }*/
 
                             self.Wall.createLeftWalls()
                         }
@@ -114,15 +141,172 @@ function PhaserGameSetUp() {
                         this.createBoottomWall = function () {
                             self.Wall.createBottomWalls()
                         }
+                        this.createRandomInsideWall = function () {
+                            self.Wall.createRandomInsideWalls()
+                        }
+                        this.createPlayer = function () {
+                            self.Player.createPlayer()
+
+                            self.Player.playerAnimation()
+                        }
+                        this.handlePlayerMovement = function () {
+                            self.Player.handlePlayerMovement()
+                        }
+                        this.dropBomb = function () {
+                            self.Player.dropBomb()
+                        }
+                        this.createRandomItems = function () {
+                            self.Wall.createRandomItems(self.itemLimit)
+                        }
+                        this.handlePlayerBomb = function () {
+                            self.Player.handlePlayerBomb()
+                        }
+                        this.handlePlayerHit = () => {
+
+                            self.Player.handlePlayerHit()
+                        };
+                        this.startItemSpawnLoop = function () {
+                            this.Wall.startItemSpawnLoop(this.singleItemSpawnDuration);
+                        }
+                        this.startEnemySpawnLoop = function () {
+                            this.Wall.startEnemySpawnLoop(this.singleEnemySpawnDuration)
+                        }
+                        this.createStartingEnemies = function () {
+                            this.Wall.createStartingEnemies()
+                        }
+                        this.handleEnemyCollision = (enemy) => { enemy.getData("ref").changeDirection() };
+                        this.handleEnemyBehavior = () =>{
+                            this.enemyGroup.children.iterate((enemySprite) => {
+                                if (!enemySprite) return;
+
+                                const enemy = enemySprite.getData('ref');
+                                if (!enemy) return;
+
+                                // chance per frame to change direction
+                                if (Phaser.Math.Between(0, 1000) < 7) {
+                                    enemy.changeDirection();
+                                }
+                            });
+                        }
+                        this.hanldeExplosionWallOverlap = (explosion, wall) => {
+
+                            self.tweens.add({
+                                targets: wall,
+                                alpha: 0,
+                                duration: 100,
+                                onComplete: () => wall.destroy()
+                            });
+
+                            this.brkWallList = this.brkWallList.filter(w => !(w.x === wall.x && w.y === wall.y));
+
+                            console.log(`Breakable wall destroyed at x:${wall.x}, y:${wall.y}`);
+                        }
+                        this.handleExplosionPlayerOverlap = () => {
+                            if (!this.player.isHit && this.Player.shieldSprite == null) {
+                                this.handlePlayerHit();
+                                this.Player.decreaseLife()
+                            }
+                        }
+                        this.handleItemPlayerOverlap = (player, item) => {
+
+                            //disable body to prevent overlap
+                            item.disableBody(true, false);
+
+                            self.tweens.add({
+                                targets: item,
+                                alpha: 0,
+                                duration: 100,
+                                onComplete: () => {
+                                    item.destroy()
+                                }
+                            });
+
+                            this.itemLocation = this.itemLocation.filter(i => !(i.x === item.x && item.y === item.y));
+
+                            console.log(`Item acuired at x:${item.x}, y:${item.y}`);
+                            console.log(this.itemLocation)
+
+                            if (item.texture.key === 'shieldItem') {
+                                this.Player.activateShield(5000);
+                            }
+                            else if (item.texture.key === 'heartItem') {
+                                this.Player.lifeItemOverlap();
+                            }
+                            else if (item.texture.key === "bootsItem") {
+                                this.Player.activateSpeed(5000)
+                            }
+                            else if (item.texture.key === "explodeItem") {
+                                this.Player.activateExplosionBuff(5000)
+                            }
+                        }
+                        this.handlePlayerEnemyOverlap = () => {
+                            if (!this.player.isHit && this.Player.shieldSprite == null) {
+                                this.handlePlayerHit();
+                                this.Player.decreaseLife()
+                            }
+                        }
+
+
 
 
                         //Method calls
                         this.createBackground()
+                        this.createPlayer()
                         this.createWalls()
+                        this.createRandomItems()
+                        this.startItemSpawnLoop()
+                        this.startEnemySpawnLoop()
+                        this.createStartingEnemies()
 
+
+                        //enable keyboard press
+                        this.cursors = this.input.keyboard.createCursorKeys();
+
+                        //Collision functions
+                        this.physics.add.collider(this.player, this.outsidewall);
+                        this.physics.add.collider(this.player, this.insidewall);
+                        this.physics.add.collider(this.player, this.rightwall);
+                        this.physics.add.collider(this.player, this.bottomwall);
+                        this.physics.add.collider(this.player, this.topwall);
+                        this.physics.add.collider(this.player, this.breakablewall);
+
+                        this.physics.add.collider(this.enemyGroup, this.outsidewall, this.handleEnemyCollision);
+                        this.physics.add.collider(this.enemyGroup, this.rightwall, this.handleEnemyCollision);
+                        this.physics.add.collider(this.enemyGroup, this.bottomwall, this.handleEnemyCollision);
+                        this.physics.add.collider(this.enemyGroup, this.topwall, this.handleEnemyCollision);
+                        this.physics.add.collider(this.enemyGroup, this.insidewall, (enemy, wall) => {
+                            
+                            const ref = enemy.getData('ref');
+                            console.log(ref.enemyType)
+                            if (ref && ref.enemyType !== 3) {
+                                this.handleEnemyCollision(enemy);
+                            }
+                        });
+                        this.physics.add.collider(this.enemyGroup, this.breakablewall, (enemy, wall) => {
+                            const ref = enemy.getData('ref');
+                            console.log(ref.enemyType)
+                            if (ref && ref.enemyType !== 3) {
+                                this.handleEnemyCollision(enemy);
+                            }
+                        });
                         
+
+                        //OverlapFunctions
+                        //Explosion overlaps with breakable wall
+                        this.physics.add.overlap(this.explosionGroup, this.breakablewall,this.hanldeExplosionWallOverlap);
+                        // Explosion overlaps with player
+                        this.physics.add.overlap(this.player, this.explosionGroup, this.handleExplosionPlayerOverlap);
+                        // Player overlaps with item
+                        this.physics.add.overlap(this.player, this.itemGroup, this.handleItemPlayerOverlap);
+                        this.physics.add.overlap(this.player, this.enemyGroup, this.handlePlayerEnemyOverlap);
+
+
                     },
                     update: function () {
+                        this.handlePlayerMovement()
+                        this.handlePlayerBomb()
+                        this.Player.updateShield();
+                        this.handleEnemyBehavior()
                     }
                 },
                 parent: gameRef.current,
@@ -137,7 +321,7 @@ function PhaserGameSetUp() {
                 }
             };
         }
-    },[]);
+    }, []);
 
     return <div ref={gameRef} style={{ margin: "0", display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", backgroundColor: "#282c34" }} />;
 }
