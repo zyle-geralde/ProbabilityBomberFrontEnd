@@ -66,8 +66,60 @@ function LessonPage({ userData }) {
 
 
       {!classId && !isTeacher? (
-        <div className="no-class-message">
-          <h2>No Classes Assigned yet</h2>
+        <div className="lesson-page-wrapper">
+          <div class="welcome">
+            <h2>Welcome to the Quiz Catalog</h2>
+            <p>Challenge yourself with our curated quiz collection</p>
+          </div>
+
+          <div className="lesson-page-container">
+            <div className="lesson-panel">
+
+              <div className="lesson-card">
+                <div className="lesson-image">
+                  <img src="lesson-image.jpg" alt="Lesson Image"></img>
+                </div>
+
+                <div className="lesson-description">
+                  <h2>Lesson Title</h2>
+                  <p>Lesson subtitle or description</p>
+                </div>
+              </div>
+
+              <div className="lesson-card">
+                <div className="lesson-image">
+                  <img src="lesson-image.jpg" alt="Lesson Image"></img>
+                </div>
+
+                <div className="lesson-description">
+                  <h2>Lesson Title</h2>
+                  <p>Lesson subtitle or description</p>
+                </div>
+              </div>
+
+            </div>
+
+            <div className="leaderboard-panel">
+              <div className="leaderboard">
+                <div className="lesson-leaderboard-header">MY TABLE</div>
+                    <div className="row">
+                    <div className="rank">1</div>
+                    <div className="name">Kevin</div>
+                    <div className="score">123</div>
+                </div>
+                    <div className="row">
+                    <div className="rank">2</div>
+                    <div className="name">Josh</div>
+                    <div className="score">123</div>
+                </div>
+                <div class="row">
+                    <div className="rank">3</div>
+                    <div className="name">Steve</div>
+                    <div className="score">123</div>
+                </div>    
+            </div>
+            </div>
+          </div>
         </div>
       ) : (
         <div className="teacher-lesson-page-container">

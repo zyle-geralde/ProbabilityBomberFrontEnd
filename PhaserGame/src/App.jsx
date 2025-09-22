@@ -21,6 +21,7 @@ import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import ClassPerformancePage from "./pages/PerformanceTracking/ClassPerformancePage";
 import LessonResourcePage from "./pages/LessonPage/LessonResourcePage/LessonResourcePage";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
+import PhaserGameSetUp from "./pages/GamePage/PhaserGame";
 
 // Authentication Pages
 import LoginPage from "./pages/AuthenticationPages/LoginPage";
