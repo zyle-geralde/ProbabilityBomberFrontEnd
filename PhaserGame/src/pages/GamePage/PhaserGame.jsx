@@ -176,7 +176,7 @@ function PhaserGameSetUp() {
                             this.Wall.createStartingEnemies()
                         }
                         this.handleEnemyCollision = (enemy) => { enemy.getData("ref").changeDirection() };
-                        this.handleEnemyBehavior = () =>{
+                        this.handleEnemyBehavior = () => {
                             this.enemyGroup.children.iterate((enemySprite) => {
                                 if (!enemySprite) return;
 
@@ -202,6 +202,19 @@ function PhaserGameSetUp() {
 
                             console.log(`Breakable wall destroyed at x:${wall.x}, y:${wall.y}`);
                         }
+                        this.handleExplosionEnemyOverlap = (explosion, enemy) => {
+                            //Fade out then destroy
+                            this.tweens.add({
+                                targets: enemy,
+                                alpha: 0,
+                                duration: 100,
+                                onComplete: () => {
+                                    enemy.destroy();
+                                }
+                            });
+
+                            console.log("Enemy destroyed at", enemy.x, enemy.y);
+                        };
                         this.handleExplosionPlayerOverlap = () => {
                             if (!this.player.isHit && this.Player.shieldSprite == null) {
                                 this.handlePlayerHit();
@@ -283,12 +296,12 @@ function PhaserGameSetUp() {
                         this.physics.add.collider(this.advanceEnemyGroup, this.bottomwall, this.handleEnemyCollision);
                         this.physics.add.collider(this.advanceEnemyGroup, this.topwall, this.handleEnemyCollision);
 
-                        
-                        
+
+
 
                         //OverlapFunctions
                         //Explosion overlaps with breakable wall
-                        this.physics.add.overlap(this.explosionGroup, this.breakablewall,this.hanldeExplosionWallOverlap);
+                        this.physics.add.overlap(this.explosionGroup, this.breakablewall, this.hanldeExplosionWallOverlap);
                         // Explosion overlaps with player
                         this.physics.add.overlap(this.player, this.explosionGroup, this.handleExplosionPlayerOverlap);
                         // Player overlaps with item
@@ -296,6 +309,12 @@ function PhaserGameSetUp() {
                         //Player overlaps with enemy
                         this.physics.add.overlap(this.player, this.enemyGroup, this.handlePlayerEnemyOverlap);
                         this.physics.add.overlap(this.player, this.advanceEnemyGroup, this.handlePlayerEnemyOverlap);
+                        //Explosion and enemy overlap
+                        //Explosion kills normal enemies
+                        this.physics.add.overlap(this.explosionGroup, this.enemyGroup, this.handleExplosionEnemyOverlap);
+
+                        //Explosion kills advanced enemies
+                        this.physics.add.overlap(this.explosionGroup, this.advanceEnemyGroup, this.handleExplosionEnemyOverlap);
 
 
                     },
