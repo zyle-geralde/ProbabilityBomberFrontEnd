@@ -184,6 +184,57 @@ function PhaserGameSetUp() {
                                 }
                             });
                         }
+                        this.hanldeExplosionWallOverlap = (explosion, wall) => {
+
+                            self.tweens.add({
+                                targets: wall,
+                                alpha: 0,
+                                duration: 100,
+                                onComplete: () => wall.destroy()
+                            });
+
+                            this.brkWallList = this.brkWallList.filter(w => !(w.x === wall.x && w.y === wall.y));
+
+                            console.log(`Breakable wall destroyed at x:${wall.x}, y:${wall.y}`);
+                        }
+                        this.handleExplosionPlayerOverlap = () => {
+                            if (!this.player.isHit && this.Player.shieldSprite == null) {
+                                this.handlePlayerHit();
+                                this.Player.decreaseLife()
+                            }
+                        }
+                        this.handleItemPlayerOverlap = (player, item) => {
+
+                            //disable body to prevent overlap
+                            item.disableBody(true, false);
+
+                            self.tweens.add({
+                                targets: item,
+                                alpha: 0,
+                                duration: 100,
+                                onComplete: () => {
+                                    item.destroy()
+                                }
+                            });
+
+                            this.itemLocation = this.itemLocation.filter(i => !(i.x === item.x && item.y === item.y));
+
+                            console.log(`Item acuired at x:${item.x}, y:${item.y}`);
+                            console.log(this.itemLocation)
+
+                            if (item.texture.key === 'shieldItem') {
+                                this.Player.activateShield(5000);
+                            }
+                            else if (item.texture.key === 'heartItem') {
+                                this.Player.lifeItemOverlap();
+                            }
+                            else if (item.texture.key === "bootsItem") {
+                                this.Player.activateSpeed(5000)
+                            }
+                            else if (item.texture.key === "explodeItem") {
+                                this.Player.activateExplosionBuff(5000)
+                            }
+                        }
 
 
 
@@ -217,59 +268,11 @@ function PhaserGameSetUp() {
 
                         //OverlapFunctions
                         //Explosion overlaps with breakable wall
-                        this.physics.add.overlap(this.explosionGroup, this.breakablewall, (explosion, wall) => {
-
-                            self.tweens.add({
-                                targets: wall,
-                                alpha: 0,
-                                duration: 100,
-                                onComplete: () => wall.destroy()
-                            });
-
-                            this.brkWallList = this.brkWallList.filter(w => !(w.x === wall.x && w.y === wall.y));
-
-                            console.log(`Breakable wall destroyed at x:${wall.x}, y:${wall.y}`);
-                        });
+                        this.physics.add.overlap(this.explosionGroup, this.breakablewall,this.hanldeExplosionWallOverlap);
                         // Explosion overlaps with player
-                        this.physics.add.overlap(this.player, this.explosionGroup, () => {
-                            if (!this.player.isHit && this.Player.shieldSprite == null) {
-                                this.handlePlayerHit();
-                                this.Player.decreaseLife()
-                            }
-                        });
+                        this.physics.add.overlap(this.player, this.explosionGroup, this.handleExplosionPlayerOverlap);
                         // Player overlaps with item
-                        this.physics.add.overlap(this.player, this.itemGroup, (player, item) => {
-
-                            //disable body to prevent overlap
-                            item.disableBody(true, false);
-
-                            self.tweens.add({
-                                targets: item,
-                                alpha: 0,
-                                duration: 100,
-                                onComplete: () => {
-                                    item.destroy()
-                                }
-                            });
-
-                            this.itemLocation = this.itemLocation.filter(i => !(i.x === item.x && item.y === item.y));
-
-                            console.log(`Item acuired at x:${item.x}, y:${item.y}`);
-                            console.log(this.itemLocation)
-
-                            if (item.texture.key === 'shieldItem') {
-                                this.Player.activateShield(5000);
-                            }
-                            else if (item.texture.key === 'heartItem') {
-                                this.Player.lifeItemOverlap();
-                            }
-                            else if (item.texture.key === "bootsItem") {
-                                this.Player.activateSpeed(5000)
-                            }
-                            else if (item.texture.key === "explodeItem") {
-                                this.Player.activateExplosionBuff(5000)
-                            }
-                        });
+                        this.physics.add.overlap(this.player, this.itemGroup, this.handleItemPlayerOverlap);
 
 
                     },
