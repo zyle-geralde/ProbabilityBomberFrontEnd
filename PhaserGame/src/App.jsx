@@ -16,12 +16,27 @@ import PasswordResetLink from './components/views/PasswordResetLink';
 import LessonPage from "./pages/LessonPage/LessonPage";
 import QuizSettingPage from "./pages/QuizSettingPage/QuizSettingPage";
 import ClassPage from "./pages/ClassPage/ClassPage";
-import StudentProfile from "./pages/ProfilePage/StudentProfile";
-import ProfilePage from "./pages/ProfilePage/UserProfile";
+import ProfilePage from "./pages/ProfilePage/ProfilePage";
+// import ProfilePage from "./pages/ProfilePage/UserProfile";
 import ClassPerformancePage from "./pages/PerformanceTracking/ClassPerformancePage";
 import LessonResourcePage from "./pages/LessonPage/LessonResourcePage/LessonResourcePage";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
 import PhaserGameSetUp from "./pages/GamePage/PhaserGame";
+
+// Authentication Pages
+import LoginPage from "./pages/AuthenticationPages/LoginPage";
+import RegisterPage from "./pages/AuthenticationPages/RegisterPage";
+import ForgotPasswordPage from "./pages/AuthenticationPages/ForgotPasswordPage";
+import ResetPasswordLinkPage from "./pages/AuthenticationPages/ResetPasswordLinkPage";
+import ResetPasswordPage from "./pages/AuthenticationPages/ResetPasswordPage";
+
+
+// Stage Pages
+import StagePage from "./pages/StagePages/StagePageTemplate";
+import Stage01Page from "./pages/StagePages/Stage01Page";
+import Stage02Page from "./pages/StagePages/Stage02Page";
+import Stage03Page from "./pages/StagePages/Stage03Page";
+import TutorialPage from "./pages/StagePages/TutorialPage";
 
 
 export function App() {
@@ -69,58 +84,10 @@ export function App() {
   return (
     <div>
       <Routes>
-        <Route
-          path="/login"
-          element={
-            <LoginForm
-              email={email}
-              password={password}
-              role={role}
-              onChange={handleChange}
-              onLogin={handleLogin}
-              onForgotPassword={() => navigate(ViewStates.FORGOT_PASSWORD)}
-              error={error}
-              setRole={setRole}
-            />
-          }
-        />
-
-        <Route
-          path="/"
-          element={
-            <PhaserGameSetUp/>
-          }
-        />
-        <Route
-          path="/loginForTeachers"
-          element={
-            <LoginForm
-              email={email}
-              password={password}
-              role={role}
-              onChange={handleChange}
-              onLogin={handleLogin}
-              onForgotPassword={() => navigate(ViewStates.FORGOT_PASSWORD)}
-              error={error}
-              setRole={ setRole}
-            />
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <RegisterForm
-              userName={userName}
-              email={email}
-              password={password}
-              role={role}
-              onChange={handleChange}
-              onRegister={handleRegister}
-              error={error}
-              setRole={ setRole}
-            />
-          }
-        />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/studentProfile" element={<ProfilePage />} />
 
         <Route
           path="/registerForTeachers"
@@ -137,18 +104,6 @@ export function App() {
             />
           }
         />
-        {/* <Route
-          path="/teacher_profile"
-          element={
-            userData ? (
-            <TeacherProfile
-            userData={userData}
-            onUpdatePassword={() => navigate(ViewStates.PASSWORD)}
-            />) : (
-              <p>Loading...</p>
-            )
-          }
-        /> */}
         <Route
           path="/password"
           element={
@@ -163,7 +118,7 @@ export function App() {
         <Route
           path="/forgot_password"
           element={
-            <ForgotPassword
+            <ForgotPasswordPage
               email={email}
               onChange={handleChange}
               onForgotPassword={handleForgotPassword}
@@ -180,6 +135,16 @@ export function App() {
             />
           }
         />
+        <Route path="/reset-password-link" element={<ResetPasswordLinkPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        
+
+        <Route path="/stagePage" element={<StagePage userData={userData} />} />
+        <Route path="/stage01Page" element={<Stage01Page userData={userData} />} />
+        <Route path="/stage02Page" element={<Stage02Page userData={userData} />} />
+        <Route path="/stage03Page" element={<Stage03Page userData={userData} />} />
+        <Route path="/tutorialPage" element={<TutorialPage userData={userData} />} />
+
         <Route path="/phaserGame" element={userData?(<PhaserGame
           userData={ userData}
         /> ):(<div>Loading ...</div>)} />
