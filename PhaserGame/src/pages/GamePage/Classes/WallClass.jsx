@@ -219,7 +219,7 @@ class Wall {
         const gridYList = [this.adjustwall + rowList[0] * this.self.wallDim, this.adjustwall + rowList[1] * this.self.wallDim, this.adjustwall + rowList[2] * this.self.wallDim, this.adjustwall + rowList[3] * this.self.wallDim, this.adjustwall + rowList[4] * this.self.wallDim]
 
         for (var enemyLoop = 0; enemyLoop < this.self.enemyLimit; enemyLoop++) {
-            const enemySpawn = new Enemy(this.self, gridXList[enemyLoop], gridYList[enemyLoop], colList[enemyLoop], rowList[enemyLoop], "ghost", 1);
+            const enemySpawn = new Enemy(this.self, gridXList[enemyLoop], gridYList[enemyLoop], colList[enemyLoop], rowList[enemyLoop], "advanceenemy", 3);
 
             enemySpawn.createEnemy()
             enemySpawn.enemy.setData("ref", enemySpawn);

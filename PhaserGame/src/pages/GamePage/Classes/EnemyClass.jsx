@@ -11,8 +11,8 @@ class Enemy {
         this.enemyType = enemyType
 
         this.speed = 50;
+        this.boostSpeed = 50;
         this.direction = Phaser.Utils.Array.GetRandom(["up", "down", "left", "right"]);
-        this.previousDirection = null;
     }
     createEnemy() {
         this.enemy = this.self.enemyGroup.create(this.gridX, this.gridY, this.texture);
@@ -37,16 +37,39 @@ class Enemy {
     setVelocityByDirection() {
         switch (this.direction) {
             case "up":
-                this.enemy.setVelocity(0, -this.speed);
+                if (this.enemyType == 2) {
+                    this.enemy.setVelocity(0, -(this.speed+this.boostSpeed));
+                }
+                else{
+                    this.enemy.setVelocity(0, -this.speed);
+                }
+                
                 break;
             case "down":
-                this.enemy.setVelocity(0, this.speed);
+                if (this.enemyType == 2) {
+                    this.enemy.setVelocity(0, (this.speed+this.boostSpeed));
+                }
+                else {
+                    this.enemy.setVelocity(0, this.speed);
+                }
                 break;
             case "left":
-                this.enemy.setVelocity(-this.speed, 0);
+                if (this.enemyType == 2) {
+                    this.enemy.setVelocity(-(this.speed+this.boostSpeed),0);
+                }
+                else {
+                    this.enemy.setVelocity(-this.speed, 0);
+                }
+                
                 break;
             case "right":
-                this.enemy.setVelocity(this.speed, 0);
+                if (this.enemyType == 2) {
+                    this.enemy.setVelocity((this.speed+this.boostSpeed),0);
+                }
+                else {
+                    this.enemy.setVelocity(this.speed, 0);
+                }
+                
                 break;
         }
     }
