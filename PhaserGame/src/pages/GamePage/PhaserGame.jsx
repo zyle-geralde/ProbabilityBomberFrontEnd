@@ -97,7 +97,7 @@ function PhaserGameSetUp() {
 
                         //Enemy
                         this.enemyLimit = 5
-                        this.enemyGroup = this.physics.add.group({ immovable: true })
+                        this.enemyGroup = this.physics.add.group()
                         this.singleEnemySpawnDuration = 2000//7 seconds
 
                         //Classes
@@ -193,6 +193,31 @@ function PhaserGameSetUp() {
                         this.physics.add.collider(this.player, this.bottomwall);
                         this.physics.add.collider(this.player, this.topwall);
                         this.physics.add.collider(this.player, this.breakablewall);
+
+                        this.physics.add.collider(this.enemyGroup, this.outsidewall, (enemy) => {
+                            enemy.getData("ref").changeDirection();//getData("ref") is used to get the Enemy class. enemy parameter is only a sprite.
+                            console.log(`Left Collide`)
+                        });
+                        this.physics.add.collider(this.enemyGroup, this.insidewall, (enemy) => {
+                            enemy.getData("ref").changeDirection();
+                            console.log(`Inside Collide`)
+                        });
+                        this.physics.add.collider(this.enemyGroup, this.breakablewall, (enemy) => {
+                            enemy.getData("ref").changeDirection();
+                            console.log(`breakable`)
+                        });
+                        this.physics.add.collider(this.enemyGroup, this.rightwall, (enemy) => {
+                            enemy.getData("ref").changeDirection();
+                            console.log(`Right Collide`)
+                                                });
+                        this.physics.add.collider(this.enemyGroup, this.bottomwall, (enemy) => {
+                            enemy.getData("ref").changeDirection();
+                            console.log(`Bottom Collide`)
+                                                });
+                        this.physics.add.collider(this.enemyGroup, this.topwall, (enemy) => {
+                            enemy.getData("ref").changeDirection();
+                            console.log(`Top Collide`)
+                        });
 
                         //OverlapFunctions
                         //Explosion overlaps with breakable wall
