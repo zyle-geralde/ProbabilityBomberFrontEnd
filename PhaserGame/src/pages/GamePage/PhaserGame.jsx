@@ -20,6 +20,7 @@ function PhaserGameSetUp() {
                         debug: false,
                     },
                 },
+                pixelArt: true,
                 scene: {
                     preload: function () {
                         this.load.image('ground', 'images/background-whiteArtboard 1.png');
@@ -43,6 +44,7 @@ function PhaserGameSetUp() {
                         this.load.image('winloseback', 'images/winloseback.jpg')
                         this.load.image('fastenemy', 'images/fastenemy.png')
                         this.load.image('advanceenemy', 'images/advanceenemy.png')
+                        this.load.image('sideItemFixed', 'images/sideItem.png')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 42,
                             frameHeight: 72,
@@ -112,6 +114,14 @@ function PhaserGameSetUp() {
                         //game setUp
                         this.createBackground = function () {
                             self.add.sprite(-70, -500, 'ground').setOrigin(0, 0).setScale(0.8)
+                        }
+                        this.createSideItems = function () {
+                            // Add sprite and scale it up
+                            const heartFix = this.add.image(300, 100, 'sideItemFixed');
+                            // Scale from 32 → 100 pixels
+                            const scale = 80 / 32;
+                            heartFix.setScale(scale);
+
                         }
 
                         this.createWalls = function () {
@@ -264,13 +274,14 @@ function PhaserGameSetUp() {
 
 
                         //Method calls
-                        this.createBackground()
+                        //this.createBackground()
                         this.createPlayer()
                         this.createWalls()
                         this.createRandomItems()
                         this.startItemSpawnLoop()
                         this.startEnemySpawnLoop()
                         this.createStartingEnemies()
+                        this.createSideItems()
 
 
                         //enable keyboard press
