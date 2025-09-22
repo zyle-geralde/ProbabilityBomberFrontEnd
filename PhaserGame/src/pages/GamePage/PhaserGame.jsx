@@ -96,7 +96,8 @@ function PhaserGameSetUp() {
                         this.singleItemSpawnDuration = 2000//7 seconds
 
                         //Enemy
-                        this.enemyLimit = 5
+                        this.enemyLimit = 10
+                        this.enemyStartingLimit = 5
                         this.enemyGroup = this.physics.add.group()
                         this.singleEnemySpawnDuration = 2000//7 seconds
 
@@ -274,13 +275,16 @@ function PhaserGameSetUp() {
                         this.physics.add.collider(this.enemyGroup, this.bottomwall, this.handleEnemyCollision);
                         this.physics.add.collider(this.enemyGroup, this.topwall, this.handleEnemyCollision);
                         this.physics.add.collider(this.enemyGroup, this.insidewall, (enemy, wall) => {
+                            
                             const ref = enemy.getData('ref');
+                            console.log(ref.enemyType)
                             if (ref && ref.enemyType !== 3) {
                                 this.handleEnemyCollision(enemy);
                             }
                         });
                         this.physics.add.collider(this.enemyGroup, this.breakablewall, (enemy, wall) => {
                             const ref = enemy.getData('ref');
+                            console.log(ref.enemyType)
                             if (ref && ref.enemyType !== 3) {
                                 this.handleEnemyCollision(enemy);
                             }

@@ -218,7 +218,7 @@ class Wall {
         const gridXList = [this.centerX + colList[0] * this.self.wallDim, this.centerX + colList[1] * this.self.wallDim, this.centerX + colList[2] * this.self.wallDim, this.centerX + colList[3] * this.self.wallDim, this.centerX + colList[4] * this.self.wallDim]
         const gridYList = [this.adjustwall + rowList[0] * this.self.wallDim, this.adjustwall + rowList[1] * this.self.wallDim, this.adjustwall + rowList[2] * this.self.wallDim, this.adjustwall + rowList[3] * this.self.wallDim, this.adjustwall + rowList[4] * this.self.wallDim]
 
-        for (var enemyLoop = 0; enemyLoop < this.self.enemyLimit; enemyLoop++) {
+        for (var enemyLoop = 0; enemyLoop < this.self.enemyStartingLimit; enemyLoop++) {
             const enemySpawn = new Enemy(this.self, gridXList[enemyLoop], gridYList[enemyLoop], colList[enemyLoop], rowList[enemyLoop], "ghost", 1);
 
             enemySpawn.createEnemy()
@@ -287,8 +287,8 @@ class Wall {
             delay: interval, //every 7 seconds
             callback: () => {
                 // this.self.enemyLimit
-                if (this.self.enemyGroup.getChildren().length < 8) {
-                    this.createSingleEnemies(1,1); //create 1 item only
+                if (this.self.enemyGroup.getChildren().length < this.self.enemyLimit) {
+                    this.createSingleEnemies(1,3); //create 1 item only
                 
                 }
             },
