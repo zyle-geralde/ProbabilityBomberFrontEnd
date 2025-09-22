@@ -235,6 +235,12 @@ function PhaserGameSetUp() {
                                 this.Player.activateExplosionBuff(5000)
                             }
                         }
+                        this.handlePlayerEnemyOverlap = () => {
+                            if (!this.player.isHit && this.Player.shieldSprite == null) {
+                                this.handlePlayerHit();
+                                this.Player.decreaseLife()
+                            }
+                        }
 
 
 
@@ -273,6 +279,7 @@ function PhaserGameSetUp() {
                         this.physics.add.overlap(this.player, this.explosionGroup, this.handleExplosionPlayerOverlap);
                         // Player overlaps with item
                         this.physics.add.overlap(this.player, this.itemGroup, this.handleItemPlayerOverlap);
+                        this.physics.add.overlap(this.player, this.enemyGroup, this.handlePlayerEnemyOverlap);
 
 
                     },
