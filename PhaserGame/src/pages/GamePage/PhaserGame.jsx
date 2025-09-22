@@ -209,8 +209,8 @@ function PhaserGameSetUp() {
                         this.physics.add.collider(this.player, this.breakablewall);
 
                         this.physics.add.collider(this.enemyGroup, this.outsidewall, this.handleEnemyCollision);
-                        this.physics.add.collider(this.enemyGroup, this.insidewall, this.handleEnemyCollision);
-                        this.physics.add.collider(this.enemyGroup, this.breakablewall, this.handleEnemyCollision);
+                        this.physics.add.collider(this.enemyGroup.getChildren().filter(enemy => enemy.getData('ref').enemyType !== 3), this.insidewall, this.handleEnemyCollision);
+                        this.physics.add.collider(this.enemyGroup.getChildren().filter(enemy => enemy.getData('ref').enemyType !== 3), this.breakablewall, this.handleEnemyCollision);
                         this.physics.add.collider(this.enemyGroup, this.rightwall, this.handleEnemyCollision);
                         this.physics.add.collider(this.enemyGroup, this.bottomwall, this.handleEnemyCollision);
                         this.physics.add.collider(this.enemyGroup, this.topwall, this.handleEnemyCollision);
