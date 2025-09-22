@@ -226,12 +226,70 @@ class Wall {
         }
 
     }
+    createSingleEnemies(count = 1,enemyLevel = 1) {
+        let attempts = 0;
+        let placed = 0;
+
+        while (placed < count && attempts < 500) {
+            attempts++;
+
+            //random col/row inside bounds
+            const col = Phaser.Math.Between(1, this.self.cols - 2);
+            const row = Phaser.Math.Between(1, this.self.rows - 2);
+
+            const gridX = this.centerX + col * this.self.wallDim;
+            const gridY = this.adjustwall + row * this.self.wallDim;
+
+            //check overlap with unbreakable & breakable walls
+            const overlapWall =
+                this.self.unbrkWallList.some(w => w.x === gridX && w.y === gridY) ||
+                this.self.brkWallList.some(w => w.x === gridX && w.y === gridY);
+
+            //check overlap with player
+            const playerCol = Math.round((this.self.player.x - this.centerX) / this.self.wallDim);
+            const playerRow = Math.round((this.self.player.y - this.adjustwall) / this.self.wallDim);
+            const overlapPlayer = (col === playerCol && row === playerRow);
+
+
+            if (!overlapWall && !overlapPlayer) {
+                //random texture
+                /*const textures = ["explodeItem", "shieldItem", "bootsItem", "heartItem"];
+                const texture = Phaser.Utils.Array.GetRandom(textures);*/
+
+                const enemyImageList = ["ghost", "fastenemy", "advanceenemy"]
+                const enemySpawn = new Enemy(this.self, gridX,gridY, col, row, enemyImageList[enemyLevel-1], enemyLevel);
+
+                enemySpawn.createEnemy()
+                enemySpawn.enemy.setData("ref", enemySpawn);
+
+                placed++;
+            }
+        }
+
+        if (placed < count) {
+            console.warn(`Only placed ${placed} items after ${attempts} attempts.`);
+        }
+    }
     startItemSpawnLoop(interval = 7000) {
         this.self.time.addEvent({
             delay: interval, //every 7 seconds
             callback: () => {
                 if (this.self.itemLocation.length < this.self.itemLimit) {
                     this.createRandomItems(1); //create 1 item only
+                }
+            },
+            callbackScope: this,
+            loop: true,
+        });
+    }
+    startEnemySpawnLoop(interval = 7000) {
+        this.self.time.addEvent({
+            delay: interval, //every 7 seconds
+            callback: () => {
+                // this.self.enemyLimit
+                if (this.self.enemyGroup.getChildren().length < 8) {
+                    this.createSingleEnemies(1,1); //create 1 item only
+                
                 }
             },
             callbackScope: this,

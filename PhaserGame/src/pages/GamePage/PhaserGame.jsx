@@ -167,6 +167,9 @@ function PhaserGameSetUp() {
                         this.startItemSpawnLoop = function () {
                             this.Wall.startItemSpawnLoop(this.singleItemSpawnDuration);
                         }
+                        this.startEnemySpawnLoop = function () {
+                            this.Wall.startEnemySpawnLoop(this.singleEnemySpawnDuration)
+                        }
                         this.createStartingEnemies = function () {
                             this.Wall.createStartingEnemies()
                         }
@@ -251,6 +254,7 @@ function PhaserGameSetUp() {
                         this.createWalls()
                         this.createRandomItems()
                         this.startItemSpawnLoop()
+                        this.startEnemySpawnLoop()
                         this.createStartingEnemies()
 
 
@@ -266,11 +270,22 @@ function PhaserGameSetUp() {
                         this.physics.add.collider(this.player, this.breakablewall);
 
                         this.physics.add.collider(this.enemyGroup, this.outsidewall, this.handleEnemyCollision);
-                        this.physics.add.collider(this.enemyGroup.getChildren().filter(enemy => enemy.getData('ref').enemyType !== 3), this.insidewall, this.handleEnemyCollision);
-                        this.physics.add.collider(this.enemyGroup.getChildren().filter(enemy => enemy.getData('ref').enemyType !== 3), this.breakablewall, this.handleEnemyCollision);
                         this.physics.add.collider(this.enemyGroup, this.rightwall, this.handleEnemyCollision);
                         this.physics.add.collider(this.enemyGroup, this.bottomwall, this.handleEnemyCollision);
                         this.physics.add.collider(this.enemyGroup, this.topwall, this.handleEnemyCollision);
+                        this.physics.add.collider(this.enemyGroup, this.insidewall, (enemy, wall) => {
+                            const ref = enemy.getData('ref');
+                            if (ref && ref.enemyType !== 3) {
+                                this.handleEnemyCollision(enemy);
+                            }
+                        });
+                        this.physics.add.collider(this.enemyGroup, this.breakablewall, (enemy, wall) => {
+                            const ref = enemy.getData('ref');
+                            if (ref && ref.enemyType !== 3) {
+                                this.handleEnemyCollision(enemy);
+                            }
+                        });
+                        
 
                         //OverlapFunctions
                         //Explosion overlaps with breakable wall
