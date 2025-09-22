@@ -99,6 +99,7 @@ function PhaserGameSetUp() {
                         this.enemyLimit = 10
                         this.enemyStartingLimit = 5
                         this.enemyGroup = this.physics.add.group()
+                        this.advanceEnemyGroup = this.physics.add.group()
                         this.singleEnemySpawnDuration = 2000//7 seconds
 
                         //Classes
@@ -274,21 +275,15 @@ function PhaserGameSetUp() {
                         this.physics.add.collider(this.enemyGroup, this.rightwall, this.handleEnemyCollision);
                         this.physics.add.collider(this.enemyGroup, this.bottomwall, this.handleEnemyCollision);
                         this.physics.add.collider(this.enemyGroup, this.topwall, this.handleEnemyCollision);
-                        this.physics.add.collider(this.enemyGroup, this.insidewall, (enemy, wall) => {
-                            
-                            const ref = enemy.getData('ref');
-                            console.log(ref.enemyType)
-                            if (ref && ref.enemyType !== 3) {
-                                this.handleEnemyCollision(enemy);
-                            }
-                        });
-                        this.physics.add.collider(this.enemyGroup, this.breakablewall, (enemy, wall) => {
-                            const ref = enemy.getData('ref');
-                            console.log(ref.enemyType)
-                            if (ref && ref.enemyType !== 3) {
-                                this.handleEnemyCollision(enemy);
-                            }
-                        });
+                        this.physics.add.collider(this.enemyGroup, this.insidewall, this.handleEnemyCollision);
+                        this.physics.add.collider(this.enemyGroup, this.breakablewall, this.handleEnemyCollision);
+
+                        this.physics.add.collider(this.advanceEnemyGroup, this.outsidewall, this.handleEnemyCollision);
+                        this.physics.add.collider(this.advanceEnemyGroup, this.rightwall, this.handleEnemyCollision);
+                        this.physics.add.collider(this.advanceEnemyGroup, this.bottomwall, this.handleEnemyCollision);
+                        this.physics.add.collider(this.advanceEnemyGroup, this.topwall, this.handleEnemyCollision);
+
+                        
                         
 
                         //OverlapFunctions
@@ -298,7 +293,9 @@ function PhaserGameSetUp() {
                         this.physics.add.overlap(this.player, this.explosionGroup, this.handleExplosionPlayerOverlap);
                         // Player overlaps with item
                         this.physics.add.overlap(this.player, this.itemGroup, this.handleItemPlayerOverlap);
+                        //Player overlaps with enemy
                         this.physics.add.overlap(this.player, this.enemyGroup, this.handlePlayerEnemyOverlap);
+                        this.physics.add.overlap(this.player, this.advanceEnemyGroup, this.handlePlayerEnemyOverlap);
 
 
                     },

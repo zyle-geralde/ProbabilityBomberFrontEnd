@@ -287,7 +287,7 @@ class Wall {
             delay: interval, //every 7 seconds
             callback: () => {
                 // this.self.enemyLimit
-                if (this.self.enemyGroup.getChildren().length < this.self.enemyLimit) {
+                if (this.self.enemyGroup.getChildren().length + this.self.advanceEnemyGroup.getChildren().length < this.self.enemyLimit) {
                     this.createSingleEnemies(1,3); //create 1 item only
                 
                 }

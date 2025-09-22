@@ -15,7 +15,12 @@ class Enemy {
         this.direction = Phaser.Utils.Array.GetRandom(["up", "down", "left", "right"]);
     }
     createEnemy() {
-        this.enemy = this.self.enemyGroup.create(this.gridX, this.gridY, this.texture);
+        if (this.enemyType == 3) {
+            this.enemy = this.self.advanceEnemyGroup.create(this.gridX, this.gridY, this.texture);
+        }
+        else {
+            this.enemy = this.self.enemyGroup.create(this.gridX, this.gridY, this.texture);
+        }
         this.enemy.setDisplaySize(this.enemySize, this.enemySize);
         this.enemy.setDepth(1002);
 
