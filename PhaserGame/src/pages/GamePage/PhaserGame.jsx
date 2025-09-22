@@ -209,11 +209,11 @@ function PhaserGameSetUp() {
                         this.physics.add.collider(this.enemyGroup, this.rightwall, (enemy) => {
                             enemy.getData("ref").changeDirection();
                             console.log(`Right Collide`)
-                                                });
+                        });
                         this.physics.add.collider(this.enemyGroup, this.bottomwall, (enemy) => {
                             enemy.getData("ref").changeDirection();
                             console.log(`Bottom Collide`)
-                                                });
+                        });
                         this.physics.add.collider(this.enemyGroup, this.topwall, (enemy) => {
                             enemy.getData("ref").changeDirection();
                             console.log(`Top Collide`)
@@ -281,6 +281,18 @@ function PhaserGameSetUp() {
                         this.handlePlayerMovement()
                         this.handlePlayerBomb()
                         this.Player.updateShield();
+
+                        // iterate enemy sprites to occasionally change direction
+                        this.enemyGroup.children.iterate((enemySprite) => {
+                            if (!enemySprite) return;
+                            const enemy = enemySprite.getData('ref');
+                            if (!enemy) return;
+
+                            // chance per frame to change direction (tweak to taste)
+                            if (Phaser.Math.Between(0, 1000) < 7) { // ~0.3% per frame
+                                enemy.changeDirection();
+                            }
+                        });
                     }
                 },
                 parent: gameRef.current,

@@ -7,11 +7,12 @@ class Enemy {
         this.gridRow = row;
         this.texture = texture;
         this.enemy = null;
-        this.enemySize = this.self.wallDim - 10;
+        this.enemySize = this.self.wallDim;
         this.enemyType = enemyType
 
         this.speed = 50;
         this.direction = Phaser.Utils.Array.GetRandom(["up", "down", "left", "right"]);
+        this.previousDirection = null;
     }
     createEnemy() {
         this.enemy = this.self.enemyGroup.create(this.gridX, this.gridY, this.texture);
