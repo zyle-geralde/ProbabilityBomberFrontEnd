@@ -49,7 +49,9 @@ function PhaserGameSetUp() {
                         this.load.image('redHexagon', 'images/redHexagon.png')
                         this.load.image('bootsItemBG', 'images/bootsItemBG.png')
                         this.load.image('shieldFixedBG', 'images/shieldFixedBG.png')
-                        this.load.image('leftBanner','images/leftBanner.png')
+                        this.load.image('leftBanner', 'images/leftBanner.png')
+                        this.load.image('rightBanner', 'images/rightBanner.png')
+                        this.load.image('middleBanner','images/middleBanner.png')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 42,
                             frameHeight: 72,
@@ -156,8 +158,14 @@ function PhaserGameSetUp() {
                             self.SideItem.stopThrobShield()
                         };
                         this.createProbQuestionHolder = function () {
-                            const item = self.add.image(500, 60, "leftBanner");
-                            item.setDisplaySize(100,100)
+                            const leftBannerVar = self.add.image(570, 70, "leftBanner");
+                            leftBannerVar.setDisplaySize(200, 140)
+                            
+                            const middleBannerVar = self.add.image(700, 70, "middleBanner");
+                            middleBannerVar.setDisplaySize(200, 140)
+                            
+                            const rightBannerVar = self.add.image(900, 70, "rightBanner");
+                            rightBannerVar.setDisplaySize(200,140)
                         }
 
 
