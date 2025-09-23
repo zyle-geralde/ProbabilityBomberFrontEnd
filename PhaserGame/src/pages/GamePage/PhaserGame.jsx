@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Wall from './Classes/WallClass';
 import Player from './Classes/PlayerClass';
+import SideItems from './Classes/SideItems';
 
 function PhaserGameSetUp() {
     const gameRef = useRef(null);
@@ -120,6 +121,7 @@ function PhaserGameSetUp() {
                         //Classes
                         this.Wall = new Wall(this)
                         this.Player = new Player(this, this.Wall)
+                        this.SideItem = new SideItems(this)
 
                         //assign this to self
                         const self = this
@@ -128,182 +130,29 @@ function PhaserGameSetUp() {
                         this.createBackground = function () {
                             self.add.sprite(-70, -500, 'ground').setOrigin(0, 0).setScale(0.8)
                         }
-
                         this.createSideItems = function () {
-                            let yPos = 100;
-                            const yPosAdd = 85;
-
-                            // 🔑 helper for items with optional text
-                            const addItem = (texture, size, text = null) => {
-                                const item = this.add.image(300, yPos, texture);
-                                item.setDisplaySize(size, size);
-
-                                let label = null;
-                                if (text !== null) {
-                                    label = this.add.text(item.x, item.y, text, {
-                                        fontSize: Math.floor(size / 2) + 'px',
-                                        color: '#ffffff',
-                                        fontStyle: 'bold',
-                                        stroke: '#000',
-                                        strokeThickness: 2
-                                    }).setOrigin(0.5);
-                                }
-
-                                yPos += yPosAdd;
-                                return { item, label };
-                            };
-
-                            // --- Fixed side items (scaled versions) ---
-                            ['sideItemFixed', 'sideItemFixed', 'sideItemFixed', 'sideItemFixed']
-                                .forEach(() => {
-                                    const item = this.add.image(300, yPos, 'sideItemFixed');
-                                    item.setScale(80 / 32);
-                                    yPos += yPosAdd;
-                                });
-
-                            // --- Hexagons ---
-                            yPos = 142;
-                            ['redHexagon', 'redHexagon', 'redHexagon']
-                                .forEach(() => {
-                                    const item = this.add.image(300, yPos, 'redHexagon');
-                                    item.setScale(40 / 32);
-                                    yPos += yPosAdd;
-                                });
-
-                            // --- Fixed Items with display size + optional text ---
-                            yPos = 100;
-
-                            // Heart with life counter
-                            const { item: heartFixed, label: lifeText } = addItem('heartFixed', 45, this.Player.life);
-                            this.heartImage = heartFixed;
-                            this.lifeSideItem = lifeText;
-
-                            //Explode
-                            //addItem('explodeFixed', 45)
-                            const { item: explodeFixed } = addItem('explodeFixed', 45);
-                            this.explodeImage = explodeFixed; //keep reference for tween
-
-                            // Boots
-                            const { item: bootsFixed } = addItem('bootsItemBG', 45);
-                            this.bootsImage = bootsFixed; // keep reference for tween
-
-                            // Shield
-                            const { item: shieldFixed } = addItem('shieldFixedBG', 45);
-                            this.shieldImage = shieldFixed; // keep reference for tween
-
+                            this.SideItem.createSideItems()
                         };
-
-
-                        // 🔑 throb effect
                         this.throbHeart = () => {
-                            if (this.heartImage) {
-                                const currentScaleX = this.heartImage.scaleX;
-                                const currentScaleY = this.heartImage.scaleY;
-
-                                this.tweens.add({
-                                    targets: this.heartImage,
-                                    scaleX: { from: currentScaleX, to: currentScaleX * 1.3 },
-                                    scaleY: { from: currentScaleY, to: currentScaleY * 1.3 },
-                                    duration: 150,
-                                    yoyo: true,
-                                    ease: 'Sine.easeInOut'
-                                });
-                            }
+                            this.SideItem.throbHeart()
                         };
-
                         this.throbExplosion = () => {
-                            if (this.explodeImage) {
-                                const currentScaleX = this.explodeImage.scaleX;
-                                const currentScaleY = this.explodeImage.scaleY;
-
-                                // if there's already a tween, don't add duplicates
-                                if (this.explodeTween && this.explodeTween.isPlaying()) return;
-
-                                this.explodeTween = this.tweens.add({
-                                    targets: this.explodeImage,
-                                    scaleX: { from: currentScaleX, to: currentScaleX * 1.3 },
-                                    scaleY: { from: currentScaleY, to: currentScaleY * 1.3 },
-                                    duration: 250,
-                                    yoyo: true,
-                                    repeat: -1, // keeps throbbing
-                                    ease: 'Sine.easeInOut'
-                                });
-                            }
+                            this.SideItem.throbExplosion()
                         };
-
                         this.stopThrobExplosion = () => {
-                            if (this.explodeTween) {
-                                this.explodeTween.stop();
-                                this.explodeTween = null;
-
-                                // reset to normal scale
-                                if (this.explodeImage) {
-                                    this.explodeImage.setScale(45 / this.explodeImage.width);
-                                }
-                            }
+                            this.SideItem.stopThrobExplosion()
                         };
-
-                        // 🔑 throb Boots
                         this.throbBoots = () => {
-                            if (this.bootsImage) {
-                                const currentScaleX = this.bootsImage.scaleX;
-                                const currentScaleY = this.bootsImage.scaleY;
-
-                                if (this.bootsTween && this.bootsTween.isPlaying()) return;
-
-                                this.bootsTween = this.tweens.add({
-                                    targets: this.bootsImage,
-                                    scaleX: { from: currentScaleX, to: currentScaleX * 1.3 },
-                                    scaleY: { from: currentScaleY, to: currentScaleY * 1.3 },
-                                    duration: 250,
-                                    yoyo: true,
-                                    repeat: -1,
-                                    ease: 'Sine.easeInOut'
-                                });
-                            }
+                            this.SideItem.throbBoots()
                         };
-
                         this.stopThrobBoots = () => {
-                            if (this.bootsTween) {
-                                this.bootsTween.stop();
-                                this.bootsTween = null;
-
-                                // reset to normal scale
-                                if (this.bootsImage) {
-                                    this.bootsImage.setScale(45 / this.bootsImage.width);
-                                }
-                            }
+                            this.SideItem.stopThrobBoots()
                         };
-
-                        // 🔑 throb Shield
                         this.throbShield = () => {
-                            if (this.shieldImage) {
-                                const currentScaleX = this.shieldImage.scaleX;
-                                const currentScaleY = this.shieldImage.scaleY;
-
-                                if (this.shieldTweenSide && this.shieldTweenSide.isPlaying()) return;
-
-                                this.shieldTweenSide = this.tweens.add({
-                                    targets: this.shieldImage,
-                                    scaleX: { from: currentScaleX, to: currentScaleX * 1.3 },
-                                    scaleY: { from: currentScaleY, to: currentScaleY * 1.3 },
-                                    duration: 250,
-                                    yoyo: true,
-                                    repeat: -1,
-                                    ease: 'Sine.easeInOut'
-                                });
-                            }
+                            this.SideItem.throbShield()
                         };
-
                         this.stopThrobShield = () => {
-                            if (this.shieldTweenSide) {
-                                this.shieldTweenSide.stop();
-                                this.shieldTweenSide = null;
-
-                                if (this.shieldImage) {
-                                    this.shieldImage.setScale(45 / this.shieldImage.width);
-                                }
-                            }
+                            this.SideItem.stopThrobShield()
                         };
 
 
