@@ -122,11 +122,18 @@ class Player {
         this.life += 1;
         console.log(`Life: ${this.life}`)
 
+        if (this.self.lifeSideItem) {
+            this.self.lifeSideItem.setText(this.life);
+        }
+
     }
     decreaseLife() {
         if (this.life > 0) {
             this.life -= 1;
             console.log(`Life: ${this.life}`)
+            if (this.self.lifeSideItem) {
+                this.self.lifeSideItem.setText(this.life);
+            }
         }
         else {
             console.log(`No more life (Life: ${this.life})`)

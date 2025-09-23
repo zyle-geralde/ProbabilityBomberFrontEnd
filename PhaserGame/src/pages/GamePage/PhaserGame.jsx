@@ -107,6 +107,9 @@ function PhaserGameSetUp() {
                         this.advanceEnemyGroup = this.physics.add.group()
                         this.singleEnemySpawnDuration = 2000//7 seconds
 
+                        //SideItems
+                        this.lifeSideItem = null;
+
                         //Classes
                         this.Wall = new Wall(this)
                         this.Player = new Player(this, this.Wall)
@@ -120,53 +123,55 @@ function PhaserGameSetUp() {
                         }
                         this.createSideItems = function () {
                             let yPos = 100;
-                            let yPosAdd = 85;
+                            const yPosAdd = 85;
                         
-                            // helper for adding a sprite at current yPos and auto-scaling
-                            const addItem = (texture, targetSize) => {
+                            // universal helper
+                            const addItem = (texture, size, text = null) => {
+                                if (texture == "heartFixed") {
+                                    self.heartImage = addItem('heartFixed', 45, this.Player.life);
+                                }
                                 const item = self.add.image(300, yPos, texture);
-                                item.setScale(targetSize / 32);
+                                item.setDisplaySize(size, size);
+                        
+                                // If text is given, overlay it
+                                if (text !== null) {
+                                    self.lifeSideItem = self.add.text(item.x, item.y, text, {
+                                        fontSize: Math.floor(size / 2.5) + 'px',
+                                        color: '#ffffff',
+                                        fontStyle: 'bold',
+                                        stroke: '#000',
+                                        strokeThickness: 1.5
+                                    });
+                                    self.lifeSideItem.setOrigin(0.5);
+                                }
+                        
                                 yPos += yPosAdd;
                                 return item;
                             };
                         
-                            // Fixed side items (target size = 80px)
-                            const sideItems = ['sideItemFixed', 'sideItemFixed', 'sideItemFixed', 'sideItemFixed'];
-                            sideItems.forEach(() => addItem('sideItemFixed', 80));
+                            // --- Fixed Side Items (scaled versions) ---
+                            ['sideItemFixed', 'sideItemFixed', 'sideItemFixed', 'sideItemFixed']
+                                .forEach(() => {
+                                    const item = self.add.image(300, yPos, 'sideItemFixed');
+                                    item.setScale(80 / 32);
+                                    yPos += yPosAdd;
+                                });
                         
-                            // Reset yPos for hexagons
+                            // --- Hexagons ---
                             yPos = 142;
+                            ['redHexagon', 'redHexagon', 'redHexagon']
+                                .forEach(() => {
+                                    const item = self.add.image(300, yPos, 'redHexagon');
+                                    item.setScale(40 / 32);
+                                    yPos += yPosAdd;
+                                });
                         
-                            // Red hexagons (target size = 40px)
-                            const hexagons = ['redHexagon', 'redHexagon', 'redHexagon'];
-                            hexagons.forEach(() => addItem('redHexagon', 40));
-
-                            yPos = 100
-                            //Fixed Item dislpay
-                            const heartFixed = self.add.image(300, yPos, 'heartFixed');
-                            heartFixed.setDisplaySize(45, 45)
-
-                            //Add a number
-                            const heartText = self.add.text(heartFixed.x, heartFixed.y, self.Player.life, {
-                                fontSize: '20px',
-                                color: '#ffffff',
-                                fontStyle: 'bold'
-                            });
-                            heartText.setOrigin(0.5);
-
-                            yPos += yPosAdd
-                            
-                            //explodeFixed
-                            const explodeFixed = this.add.image(300, yPos, 'explodeFixed');
-                            explodeFixed.setDisplaySize(45, 45)
-                            yPos += yPosAdd
-
-                            const bootsItemBG = this.add.image(300, yPos, 'bootsItemBG');
-                            bootsItemBG.setDisplaySize(45, 45)
-                            yPos += yPosAdd
-
-                            const shieldFixedBG = this.add.image(300, yPos, 'shieldFixedBG');
-                            shieldFixedBG.setDisplaySize(45, 45)
+                            // --- Fixed Items w/ Display Size ---
+                            yPos = 100;
+                            addItem('heartFixed', 45, self.Player.life);
+                            addItem('explodeFixed', 45);
+                            addItem('bootsItemBG', 45);
+                            addItem('shieldFixedBG', 45);
                         };
                         
 
