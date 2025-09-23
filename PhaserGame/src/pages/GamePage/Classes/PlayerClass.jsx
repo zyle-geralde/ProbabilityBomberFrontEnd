@@ -158,12 +158,17 @@ class Player {
         }
 
         this.self.explosionRange = 2
-        console.log("Explosion Buff activated "+this.self.explosionRange)
+        console.log("Explosion Buff activated " + this.self.explosionRange)
+        
+        this.self.throbExplosion();
 
         this.explosionBuffTimer = this.self.time.delayedCall(duration, () => {
 
             this.self.explosionRange = 1
             this.explosionBuffTimer = null;
+
+            this.self.stopThrobExplosion();
+            
             console.log("Explosion Buff removed "+this.explosionRange)
             console.log("Timer Removed")
         });

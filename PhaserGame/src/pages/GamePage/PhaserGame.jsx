@@ -109,6 +109,9 @@ function PhaserGameSetUp() {
 
                         //SideItems
                         this.lifeSideItem = null;
+                        this.heartImage = null;
+                        this.explodeImage = null;
+                        this.explodeTween = null
 
                         //Classes
                         this.Wall = new Wall(this)
@@ -215,18 +218,20 @@ function PhaserGameSetUp() {
                             // --- Fixed Items with display size + optional text ---
                             yPos = 100;
 
-                            // ❤️ Heart with life counter
+                            // Heart with life counter
                             const { item: heartFixed, label: lifeText } = addItem('heartFixed', 45, this.Player.life);
-                            this.heartImage = heartFixed;        // keep reference for tween
-                            this.lifeSideItem = lifeText;        // keep reference for updates
+                            this.heartImage = heartFixed;
+                            this.lifeSideItem = lifeText;
 
-                            // 💥 Explode
-                            addItem('explodeFixed', 45);
+                            //Explode
+                            //addItem('explodeFixed', 45)
+                            const { item: explodeFixed } = addItem('explodeFixed', 45);
+                            this.explodeImage = explodeFixed; //keep reference for tween
 
-                            // 👟 Boots
+                            // Boots
                             addItem('bootsItemBG', 45);
 
-                            // 🛡️ Shield
+                            // Shield
                             addItem('shieldFixedBG', 45);
                         };
 
@@ -245,6 +250,38 @@ function PhaserGameSetUp() {
                                     yoyo: true,
                                     ease: 'Sine.easeInOut'
                                 });
+                            }
+                        };
+
+                        this.throbExplosion = () => {
+                            if (this.explodeImage) {
+                                const currentScaleX = this.explodeImage.scaleX;
+                                const currentScaleY = this.explodeImage.scaleY;
+
+                                // if there's already a tween, don't add duplicates
+                                if (this.explodeTween && this.explodeTween.isPlaying()) return;
+
+                                this.explodeTween = this.tweens.add({
+                                    targets: this.explodeImage,
+                                    scaleX: { from: currentScaleX, to: currentScaleX * 1.3 },
+                                    scaleY: { from: currentScaleY, to: currentScaleY * 1.3 },
+                                    duration: 250,
+                                    yoyo: true,
+                                    repeat: -1, // keeps throbbing
+                                    ease: 'Sine.easeInOut'
+                                });
+                            }
+                        };
+
+                        this.stopThrobExplosion = () => {
+                            if (this.explodeTween) {
+                                this.explodeTween.stop();
+                                this.explodeTween = null;
+
+                                // reset to normal scale
+                                if (this.explodeImage) {
+                                    this.explodeImage.setScale(45 / this.explodeImage.width);
+                                }
                             }
                         };
 
