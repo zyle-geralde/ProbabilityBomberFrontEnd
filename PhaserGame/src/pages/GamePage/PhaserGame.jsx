@@ -128,55 +128,6 @@ function PhaserGameSetUp() {
                         this.createBackground = function () {
                             self.add.sprite(-70, -500, 'ground').setOrigin(0, 0).setScale(0.8)
                         }
-                        /*this.createSideItems = function () {
-                            let yPos = 100;
-                            const yPosAdd = 85;
-                        
-                            // 🔑 universal helper
-                            const addItem = (texture, size, text = null) => {
-                                const item = self.add.image(300, yPos, texture);
-                                item.setDisplaySize(size, size);
-                        
-                                // If text is given, overlay it
-                                if (text !== null) {
-                                    self.lifeSideItem = self.add.text(item.x, item.y, text, {
-                                        fontSize: Math.floor(size / 2.5) + 'px',
-                                        color: '#ffffff',
-                                        fontStyle: 'bold',
-                                        stroke: '#000',
-                                        strokeThickness: 1.5
-                                    });
-                                    self.lifeSideItem.setOrigin(0.5);
-                                }
-                        
-                                yPos += yPosAdd;
-                                return item;
-                            };
-                        
-                            // --- Fixed Side Items (scaled versions) ---
-                            ['sideItemFixed', 'sideItemFixed', 'sideItemFixed', 'sideItemFixed']
-                                .forEach(() => {
-                                    const item = self.add.image(300, yPos, 'sideItemFixed');
-                                    item.setScale(80 / 32);
-                                    yPos += yPosAdd;
-                                });
-                        
-                            // --- Hexagons ---
-                            yPos = 142;
-                            ['redHexagon', 'redHexagon', 'redHexagon']
-                                .forEach(() => {
-                                    const item = self.add.image(300, yPos, 'redHexagon');
-                                    item.setScale(40 / 32);
-                                    yPos += yPosAdd;
-                                });
-                        
-                            // --- Fixed Items w/ Display Size ---
-                            yPos = 100;
-                            addItem('heartFixed', 45, self.Player.life);
-                            addItem('explodeFixed', 45);
-                            addItem('bootsItemBG', 45);
-                            addItem('shieldFixedBG', 45);
-                        };*/
 
                         this.createSideItems = function () {
                             let yPos = 100;
