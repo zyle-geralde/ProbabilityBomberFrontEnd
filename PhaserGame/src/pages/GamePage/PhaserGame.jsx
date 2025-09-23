@@ -121,15 +121,12 @@ function PhaserGameSetUp() {
                         this.createBackground = function () {
                             self.add.sprite(-70, -500, 'ground').setOrigin(0, 0).setScale(0.8)
                         }
-                        this.createSideItems = function () {
+                        /*this.createSideItems = function () {
                             let yPos = 100;
                             const yPosAdd = 85;
                         
-                            // universal helper
+                            // 🔑 universal helper
                             const addItem = (texture, size, text = null) => {
-                                if (texture == "heartFixed") {
-                                    self.heartImage = addItem('heartFixed', 45, this.Player.life);
-                                }
                                 const item = self.add.image(300, yPos, texture);
                                 item.setDisplaySize(size, size);
                         
@@ -172,8 +169,86 @@ function PhaserGameSetUp() {
                             addItem('explodeFixed', 45);
                             addItem('bootsItemBG', 45);
                             addItem('shieldFixedBG', 45);
+                        };*/
+
+                        this.createSideItems = function () {
+                            let yPos = 100;
+                            const yPosAdd = 85;
+
+                            // 🔑 helper for items with optional text
+                            const addItem = (texture, size, text = null) => {
+                                const item = this.add.image(300, yPos, texture);
+                                item.setDisplaySize(size, size);
+
+                                let label = null;
+                                if (text !== null) {
+                                    label = this.add.text(item.x, item.y, text, {
+                                        fontSize: Math.floor(size / 2) + 'px',
+                                        color: '#ffffff',
+                                        fontStyle: 'bold',
+                                        stroke: '#000',
+                                        strokeThickness: 2
+                                    }).setOrigin(0.5);
+                                }
+
+                                yPos += yPosAdd;
+                                return { item, label };
+                            };
+
+                            // --- Fixed side items (scaled versions) ---
+                            ['sideItemFixed', 'sideItemFixed', 'sideItemFixed', 'sideItemFixed']
+                                .forEach(() => {
+                                    const item = this.add.image(300, yPos, 'sideItemFixed');
+                                    item.setScale(80 / 32);
+                                    yPos += yPosAdd;
+                                });
+
+                            // --- Hexagons ---
+                            yPos = 142;
+                            ['redHexagon', 'redHexagon', 'redHexagon']
+                                .forEach(() => {
+                                    const item = this.add.image(300, yPos, 'redHexagon');
+                                    item.setScale(40 / 32);
+                                    yPos += yPosAdd;
+                                });
+
+                            // --- Fixed Items with display size + optional text ---
+                            yPos = 100;
+
+                            // ❤️ Heart with life counter
+                            const { item: heartFixed, label: lifeText } = addItem('heartFixed', 45, this.Player.life);
+                            this.heartImage = heartFixed;        // keep reference for tween
+                            this.lifeSideItem = lifeText;        // keep reference for updates
+
+                            // 💥 Explode
+                            addItem('explodeFixed', 45);
+
+                            // 👟 Boots
+                            addItem('bootsItemBG', 45);
+
+                            // 🛡️ Shield
+                            addItem('shieldFixedBG', 45);
                         };
-                        
+
+
+                        // 🔑 throb effect
+                        this.throbHeart = () => {
+                            if (this.heartImage) {
+                                const currentScaleX = this.heartImage.scaleX;
+                                const currentScaleY = this.heartImage.scaleY;
+
+                                this.tweens.add({
+                                    targets: this.heartImage,
+                                    scaleX: { from: currentScaleX, to: currentScaleX * 1.3 },
+                                    scaleY: { from: currentScaleY, to: currentScaleY * 1.3 },
+                                    duration: 150,
+                                    yoyo: true,
+                                    ease: 'Sine.easeInOut'
+                                });
+                            }
+                        };
+
+
 
                         this.createWalls = function () {
 

@@ -124,6 +124,7 @@ class Player {
 
         if (this.self.lifeSideItem) {
             this.self.lifeSideItem.setText(this.life);
+            this.self.throbHeart()
         }
 
     }
@@ -133,6 +134,7 @@ class Player {
             console.log(`Life: ${this.life}`)
             if (this.self.lifeSideItem) {
                 this.self.lifeSideItem.setText(this.life);
+                this.self.throbHeart()
             }
         }
         else {
