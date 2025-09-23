@@ -49,6 +49,7 @@ function PhaserGameSetUp() {
                         this.load.image('redHexagon', 'images/redHexagon.png')
                         this.load.image('bootsItemBG', 'images/bootsItemBG.png')
                         this.load.image('shieldFixedBG', 'images/shieldFixedBG.png')
+                        this.load.image('leftBanner','images/leftBanner.png')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 42,
                             frameHeight: 72,
@@ -131,29 +132,33 @@ function PhaserGameSetUp() {
                             self.add.sprite(-70, -500, 'ground').setOrigin(0, 0).setScale(0.8)
                         }
                         this.createSideItems = function () {
-                            this.SideItem.createSideItems()
+                            self.SideItem.createSideItems()
                         };
                         this.throbHeart = () => {
-                            this.SideItem.throbHeart()
+                            self.SideItem.throbHeart()
                         };
                         this.throbExplosion = () => {
-                            this.SideItem.throbExplosion()
+                            self.SideItem.throbExplosion()
                         };
                         this.stopThrobExplosion = () => {
-                            this.SideItem.stopThrobExplosion()
+                            self.SideItem.stopThrobExplosion()
                         };
                         this.throbBoots = () => {
-                            this.SideItem.throbBoots()
+                            self.SideItem.throbBoots()
                         };
                         this.stopThrobBoots = () => {
-                            this.SideItem.stopThrobBoots()
+                            self.SideItem.stopThrobBoots()
                         };
                         this.throbShield = () => {
-                            this.SideItem.throbShield()
+                            self.SideItem.throbShield()
                         };
                         this.stopThrobShield = () => {
-                            this.SideItem.stopThrobShield()
+                            self.SideItem.stopThrobShield()
                         };
+                        this.createProbQuestionHolder = function () {
+                            const item = self.add.image(500, 60, "leftBanner");
+                            item.setDisplaySize(100,100)
+                        }
 
 
 
@@ -210,13 +215,13 @@ function PhaserGameSetUp() {
                             self.Player.handlePlayerHit()
                         };
                         this.startItemSpawnLoop = function () {
-                            this.Wall.startItemSpawnLoop(this.singleItemSpawnDuration);
+                            self.Wall.startItemSpawnLoop(this.singleItemSpawnDuration);
                         }
                         this.startEnemySpawnLoop = function () {
-                            this.Wall.startEnemySpawnLoop(this.singleEnemySpawnDuration)
+                            self.Wall.startEnemySpawnLoop(this.singleEnemySpawnDuration)
                         }
                         this.createStartingEnemies = function () {
-                            this.Wall.createStartingEnemies()
+                            self.Wall.createStartingEnemies()
                         }
                         this.handleEnemyCollision = (enemy) => { enemy.getData("ref").changeDirection() };
                         this.handleEnemyBehavior = () => {
@@ -315,6 +320,7 @@ function PhaserGameSetUp() {
                         this.startEnemySpawnLoop()
                         this.createStartingEnemies()
                         this.createSideItems()
+                        this.createProbQuestionHolder()
 
 
                         //enable keyboard press
