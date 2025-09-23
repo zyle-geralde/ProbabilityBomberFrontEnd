@@ -110,8 +110,12 @@ function PhaserGameSetUp() {
                         //SideItems
                         this.lifeSideItem = null;
                         this.heartImage = null;
+                        this.bootsImage = null
+                        this.shieldImage = null
                         this.explodeImage = null;
                         this.explodeTween = null
+                        this.bootsTween = null;
+                        this.shieldTweenSide = null
 
                         //Classes
                         this.Wall = new Wall(this)
@@ -229,10 +233,13 @@ function PhaserGameSetUp() {
                             this.explodeImage = explodeFixed; //keep reference for tween
 
                             // Boots
-                            addItem('bootsItemBG', 45);
+                            const { item: bootsFixed } = addItem('bootsItemBG', 45);
+                            this.bootsImage = bootsFixed; // keep reference for tween
 
                             // Shield
-                            addItem('shieldFixedBG', 45);
+                            const { item: shieldFixed } = addItem('shieldFixedBG', 45);
+                            this.shieldImage = shieldFixed; // keep reference for tween
+
                         };
 
 
@@ -281,6 +288,69 @@ function PhaserGameSetUp() {
                                 // reset to normal scale
                                 if (this.explodeImage) {
                                     this.explodeImage.setScale(45 / this.explodeImage.width);
+                                }
+                            }
+                        };
+
+                        // 🔑 throb Boots
+                        this.throbBoots = () => {
+                            if (this.bootsImage) {
+                                const currentScaleX = this.bootsImage.scaleX;
+                                const currentScaleY = this.bootsImage.scaleY;
+
+                                if (this.bootsTween && this.bootsTween.isPlaying()) return;
+
+                                this.bootsTween = this.tweens.add({
+                                    targets: this.bootsImage,
+                                    scaleX: { from: currentScaleX, to: currentScaleX * 1.3 },
+                                    scaleY: { from: currentScaleY, to: currentScaleY * 1.3 },
+                                    duration: 250,
+                                    yoyo: true,
+                                    repeat: -1,
+                                    ease: 'Sine.easeInOut'
+                                });
+                            }
+                        };
+
+                        this.stopThrobBoots = () => {
+                            if (this.bootsTween) {
+                                this.bootsTween.stop();
+                                this.bootsTween = null;
+
+                                // reset to normal scale
+                                if (this.bootsImage) {
+                                    this.bootsImage.setScale(45 / this.bootsImage.width);
+                                }
+                            }
+                        };
+
+                        // 🔑 throb Shield
+                        this.throbShield = () => {
+                            if (this.shieldImage) {
+                                const currentScaleX = this.shieldImage.scaleX;
+                                const currentScaleY = this.shieldImage.scaleY;
+
+                                if (this.shieldTweenSide && this.shieldTweenSide.isPlaying()) return;
+
+                                this.shieldTweenSide = this.tweens.add({
+                                    targets: this.shieldImage,
+                                    scaleX: { from: currentScaleX, to: currentScaleX * 1.3 },
+                                    scaleY: { from: currentScaleY, to: currentScaleY * 1.3 },
+                                    duration: 250,
+                                    yoyo: true,
+                                    repeat: -1,
+                                    ease: 'Sine.easeInOut'
+                                });
+                            }
+                        };
+
+                        this.stopThrobShield = () => {
+                            if (this.shieldTweenSide) {
+                                this.shieldTweenSide.stop();
+                                this.shieldTweenSide = null;
+
+                                if (this.shieldImage) {
+                                    this.shieldImage.setScale(45 / this.shieldImage.width);
                                 }
                             }
                         };

@@ -46,12 +46,16 @@ class Player {
         }
 
         this.speed = this.additionalSpeed
-        console.log("Speed activated "+this.speed)
+        console.log("Speed activated " + this.speed)
+        
+        this.self.throbBoots();
 
         this.speedTimer = this.self.time.delayedCall(duration, () => {
 
             this.speed = this.originalSpeed
             this.speedTimer = null;
+            this.self.stopThrobBoots();
+
             console.log("Speed removed "+this.speed)
             console.log("Timer Removed")
         });
@@ -91,6 +95,8 @@ class Player {
         this.shieldSprite.setDisplaySize(this.self.wallDim - 15, this.self.wallDim - 15);
         this.shieldSprite.setDepth(1001); // above player
 
+        this.self.throbShield();
+
         this.shieldTween = this.self.tweens.add({
             targets: this.shieldSprite,
             alpha: { from: 1, to: 0.5 },
@@ -113,6 +119,8 @@ class Player {
                 console.log("Tween Removed")
             }
             this.shieldTimer = null;
+
+            this.self.stopThrobShield();
             console.log("Timer Removed")
         });
     }
