@@ -38,14 +38,16 @@ function PhaserGameSetUp() {
                         this.load.image('heart', 'images/heart.png')
                         this.load.image('shield', 'images/defence.png')
                         this.load.image('boots', 'images/speed.png')
-                        this.load.image('heartFixed', 'images/heartFixed.png')
-                        this.load.image('explodeFixed', 'images/explodeFixed.png')
+                        this.load.image('heartFixed', 'images/heartFixedBG.png')
+                        this.load.image('explodeFixed', 'images/explodeFixedBG.png')
                         this.load.image('bombFixed', 'images/bombFixed.png')
                         this.load.image('winloseback', 'images/winloseback.jpg')
                         this.load.image('fastenemy', 'images/fastenemy.png')
                         this.load.image('advanceenemy', 'images/advanceenemy.png')
                         this.load.image('sideItemFixed', 'images/sideItem.png')
                         this.load.image('redHexagon', 'images/redHexagon.png')
+                        this.load.image('bootsItemBG', 'images/bootsItemBG.png')
+                        this.load.image('shieldFixedBG', 'images/shieldFixedBG.png')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 42,
                             frameHeight: 72,
@@ -118,46 +120,55 @@ function PhaserGameSetUp() {
                         }
                         this.createSideItems = function () {
                             let yPos = 100;
-                            let yPosAdd = 85
+                            let yPosAdd = 85;
+                        
+                            // helper for adding a sprite at current yPos and auto-scaling
+                            const addItem = (texture, targetSize) => {
+                                const item = self.add.image(300, yPos, texture);
+                                item.setScale(targetSize / 32);
+                                yPos += yPosAdd;
+                                return item;
+                            };
+                        
+                            // Fixed side items (target size = 80px)
+                            const sideItems = ['sideItemFixed', 'sideItemFixed', 'sideItemFixed', 'sideItemFixed'];
+                            sideItems.forEach(() => addItem('sideItemFixed', 80));
+                        
+                            // Reset yPos for hexagons
+                            yPos = 142;
+                        
+                            // Red hexagons (target size = 40px)
+                            const hexagons = ['redHexagon', 'redHexagon', 'redHexagon'];
+                            hexagons.forEach(() => addItem('redHexagon', 40));
 
-                            // Add sprite and scale it up
-                            const heartFix = this.add.image(300, yPos, 'sideItemFixed');
-                            // Scale from 32 → 100 pixels
-                            const scaleh = 80 / 32;
-                            heartFix.setScale(scaleh);
-                            yPos += yPosAdd
+                            yPos = 100
+                            //Fixed Item dislpay
+                            const heartFixed = self.add.image(300, yPos, 'heartFixed');
+                            heartFixed.setDisplaySize(45, 45)
 
-                            const bootsFix = this.add.image(300, yPos, 'sideItemFixed');
-                            const scaleb = 80 / 32;
-                            bootsFix.setScale(scaleb);
-                            yPos += yPosAdd
+                            //Add a number
+                            const heartText = self.add.text(heartFixed.x, heartFixed.y, self.Player.life, {
+                                fontSize: '20px',
+                                color: '#ffffff',
+                                fontStyle: 'bold'
+                            });
+                            heartText.setOrigin(0.5);
 
-                            const explosionFix = this.add.image(300, yPos, 'sideItemFixed');
-                            const scalee = 80 / 32;
-                            explosionFix.setScale(scalee);
-                            yPos += yPosAdd
-
-                            const shieldFix = this.add.image(300, yPos, 'sideItemFixed');
-                            const scales = 80 / 32;
-                            shieldFix.setScale(scales);
-
-                            yPos = 142
-                            //redHexagon
-                            const redHexagon1 = this.add.image(300, yPos, 'redHexagon');
-                            const scalerH1 = 40 / 32;
-                            redHexagon1.setScale(scalerH1);
-                            yPos+=yPosAdd
-
-                            const redHexagon2 = this.add.image(300, yPos, 'redHexagon');
-                            const scalerH2 = 40 / 32;
-                            redHexagon2.setScale(scalerH2);
                             yPos += yPosAdd
                             
-                            const redHexagon3 = this.add.image(300, yPos, 'redHexagon');
-                            const scalerH3 = 40 / 32;
-                            redHexagon3.setScale(scalerH3);
+                            //explodeFixed
+                            const explodeFixed = this.add.image(300, yPos, 'explodeFixed');
+                            explodeFixed.setDisplaySize(45, 45)
+                            yPos += yPosAdd
 
-                        }
+                            const bootsItemBG = this.add.image(300, yPos, 'bootsItemBG');
+                            bootsItemBG.setDisplaySize(45, 45)
+                            yPos += yPosAdd
+
+                            const shieldFixedBG = this.add.image(300, yPos, 'shieldFixedBG');
+                            shieldFixedBG.setDisplaySize(45, 45)
+                        };
+                        
 
                         this.createWalls = function () {
 
