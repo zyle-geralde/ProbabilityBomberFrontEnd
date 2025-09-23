@@ -13,7 +13,7 @@ class Wall {
         this.centerX = (this.self.sys.game.config.width - this.totalWidth) / 2;
 
         // keep walls at the top (no vertical centering)
-        this.adjustwall = 31;
+        this.adjustwall = 300;
 
         // "rightmost" and "bottommost" coordinates
         this.width = this.centerX + ((this.self.cols - 1) * this.self.wallDim);
