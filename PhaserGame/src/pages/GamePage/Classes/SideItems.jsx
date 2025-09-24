@@ -4,7 +4,7 @@ class SideItems {
     }
 
     createSideItems() {
-        let yPos = 100;
+        let yPos = 150;
         const yPosAdd = 85;
 
         //helper for items with optional text
@@ -36,7 +36,7 @@ class SideItems {
             });
 
         // --- Hexagons ---
-        yPos = 142;
+        yPos = 192;
         ['redHexagon', 'redHexagon', 'redHexagon']
             .forEach(() => {
                 const item = this.self.add.image(300, yPos, 'redHexagon');
@@ -45,7 +45,7 @@ class SideItems {
             });
 
         // --- Fixed Items with display size + optional text ---
-        yPos = 100;
+        yPos = 150;
 
         // Heart with life counter
         const { item: heartFixed, label: lifeText } = addItem('heartFixed', 45, this.self.Player.life);
