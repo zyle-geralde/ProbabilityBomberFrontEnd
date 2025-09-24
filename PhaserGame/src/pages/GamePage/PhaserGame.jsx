@@ -121,6 +121,10 @@ function PhaserGameSetUp() {
                         this.bootsTween = null;
                         this.shieldTweenSide = null
 
+                        //Banner
+                        this.bottomBannerHeight = 100
+                        this.bottomBannerY = 150
+
                         //Classes
                         this.Wall = new Wall(this)
                         this.Player = new Player(this, this.Wall)
@@ -165,9 +169,9 @@ function PhaserGameSetUp() {
                             };
                             // bottom row
                             const bottomBanners = [
-                                { x: 555, y: 150, texture: "leftBanner", w: 185, h: 100 },
-                                { x: 740, y: 150, texture: "middleBanner", w: 185, h: 100 },
-                                { x: 925, y: 150, texture: "rightBanner", w: 185, h: 100 },
+                                { x: 555, y: self.bottomBannerY, texture: "leftBanner", w: 185, h: self.bottomBannerHeight },
+                                { x: 740, y: self.bottomBannerY, texture: "middleBanner", w: 185, h: self.bottomBannerHeight },
+                                { x: 925, y: self.bottomBannerY, texture: "rightBanner", w: 185, h: self.bottomBannerHeight },
                             ];
                             // top row
                             const topBanners = [

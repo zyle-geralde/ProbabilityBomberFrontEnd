@@ -4,7 +4,7 @@ class Player {
     constructor(self, Wall) {
         this.self = self
         this.x = 550
-        this.y = 70
+        this.y = 300
         this.speed = 150
         this.additionalSpeed = 350
         this.originalSpeed = 150

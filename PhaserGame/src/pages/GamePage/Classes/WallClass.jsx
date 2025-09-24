@@ -14,7 +14,7 @@ class Wall {
 
         // keep walls at the top (no vertical centering)
         //31 orig
-        this.adjustwall = 240;
+        this.adjustwall = this.self.bottomBannerHeight + this.self.bottomBannerY - 1;
 
         // "rightmost" and "bottommost" coordinates
         this.width = this.centerX + ((this.self.cols - 1) * this.self.wallDim);
