@@ -52,6 +52,12 @@ function PhaserGameSetUp() {
                         this.load.image('leftBanner', 'images/leftSmallBanner.png')
                         this.load.image('middleBanner', 'images/middleSmallBanner.png')
                         this.load.image('rightBanner', 'images/rightSmallBanner.png')
+                        this.load.image('blackCircle', 'images/blackCircle.png')
+                        this.load.image('blueCircle', 'images/blueCircle.png')
+                        this.load.image('greenCircle', 'images/greenCircle.png')
+                        this.load.image('orangeCircle', 'images/orangeCircle.png')
+                        this.load.image('redCircle', 'images/redCircle.png')
+                        this.load.image('whiteCircle', 'images/whiteCircle.png')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 42,
                             frameHeight: 72,
