@@ -165,9 +165,9 @@ function PhaserGameSetUp() {
                             };
                             // bottom row
                             const bottomBanners = [
-                                { x: 555, y: 150, texture: "leftBanner", w: 185, h: 90 },
-                                { x: 740, y: 150, texture: "middleBanner", w: 185, h: 90 },
-                                { x: 925, y: 150, texture: "rightBanner", w: 185, h: 90 },
+                                { x: 555, y: 150, texture: "leftBanner", w: 185, h: 100 },
+                                { x: 740, y: 150, texture: "middleBanner", w: 185, h: 100 },
+                                { x: 925, y: 150, texture: "rightBanner", w: 185, h: 100 },
                             ];
                             // top row
                             const topBanners = [
