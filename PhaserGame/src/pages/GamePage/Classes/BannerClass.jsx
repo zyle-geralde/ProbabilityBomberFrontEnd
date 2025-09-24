@@ -85,49 +85,62 @@ class Banner {
         this.bottomContainer.add([textBefore, redCircle, textAfter]);
     }
     addTopTextWithCircle(imageNames) {
-    if (!this.topContainer) {
-        console.warn("Top container not created yet. Call createProbQuestionHolder() first.");
-        return;
-    }
+        if (!this.topContainer) {
+            console.warn("Top container not created yet. Call createProbQuestionHolder() first.");
+            return;
+        }
 
-    // Middle banner center (x=740 is your middle banner's x)
-    const centerX = 740;
-    const y = 70;
+        // Middle banner center
+        const centerX = 740;
+        const y = 70;
 
-    // Randomly pick 2 or 3 terms
-    const termCount = Phaser.Math.Between(2, 3);
+        // Randomly pick 2 or 3 terms
+        const termCount = Phaser.Math.Between(2, 4);
 
-    // Measure approximate width per term (number + "x" + circle + spacing)
-    const termWidth = 90; // adjust if spacing looks off
-    const totalWidth = termCount * termWidth;
-    let startX = centerX - totalWidth / 2 + termWidth / 2;
+        // Measure approximate width per term
+        const termWidth = 90; // adjust spacing if needed
+        const totalWidth = termCount * termWidth + 100; // +100 for "Given"
+        let startX = centerX - totalWidth / 2;
 
-    const objectsToAdd = [];
+        const objectsToAdd = [];
 
-    for (let i = 0; i < termCount; i++) {
-        // Random number (1–9)
-        const num = Phaser.Math.Between(1, 9);
-
-        // Random circle image
-        const circle = imageNames[Math.floor(Math.random() * imageNames.length)];
-
-        // Number text
-        const numberText = this.self.add.text(startX - 15, y, ` ${num} x`, {
+        // --- Add "Given" text first ---
+        const givenText = this.self.add.text(startX+20, y, "Given:", {
             fontSize: "24px",
             color: "#fff",
             fontStyle: "bold"
         }).setOrigin(0.5);
+        objectsToAdd.push(givenText);
 
-        // Circle image
-        const circleImg = this.self.add.image(startX + 35, y, circle).setDisplaySize(30, 30);
+        // Move startX forward for the terms
+        startX += 100;
 
-        objectsToAdd.push(numberText, circleImg);
+        // --- Add random terms ---
+        for (let i = 0; i < termCount; i++) {
+            // Random number (1–9)
+            const num = Phaser.Math.Between(1, 9);
 
-        startX += termWidth;
+            // Random circle image
+            const circle = imageNames[Math.floor(Math.random() * imageNames.length)];
+
+            // Number text
+            const numberText = this.self.add.text(startX - 15, y, `${num} x`, {
+                fontSize: "24px",
+                color: "#fff",
+                fontStyle: "bold"
+            }).setOrigin(0.5);
+
+            // Circle image
+            const circleImg = this.self.add.image(startX + 25, y, circle).setDisplaySize(30, 30);
+
+            objectsToAdd.push(numberText, circleImg);
+
+            startX += termWidth;
+        }
+
+        // Add everything into the top container
+        this.topContainer.add(objectsToAdd);
     }
-
-    this.topContainer.add(objectsToAdd);
-}
 }
 
 export default Banner

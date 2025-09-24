@@ -132,6 +132,9 @@ function PhaserGameSetUp() {
                         this.bottomBannerHeight = 100
                         this.bottomBannerY = 150
 
+                        //Probability questions and answer
+                        this.probabilityNumbers = [1,2,3,4,5,6]
+
                         //Classes
                         this.Wall = new Wall(this)
                         this.Player = new Player(this, this.Wall)
