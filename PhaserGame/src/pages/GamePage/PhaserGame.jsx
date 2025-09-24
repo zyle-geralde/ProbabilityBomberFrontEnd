@@ -49,9 +49,9 @@ function PhaserGameSetUp() {
                         this.load.image('redHexagon', 'images/redHexagon.png')
                         this.load.image('bootsItemBG', 'images/bootsItemBG.png')
                         this.load.image('shieldFixedBG', 'images/shieldFixedBG.png')
-                        this.load.image('leftBanner', 'images/leftBanner.png')
-                        this.load.image('rightBanner', 'images/rightBanner.png')
-                        this.load.image('middleBanner','images/middleBanner.png')
+                        this.load.image('leftBanner', 'images/leftSmallBanner.png')
+                        this.load.image('middleBanner', 'images/middleSmallBanner.png')
+                        this.load.image('rightBanner', 'images/rightSmallBanner.png')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 42,
                             frameHeight: 72,
@@ -158,15 +158,28 @@ function PhaserGameSetUp() {
                             self.SideItem.stopThrobShield()
                         };
                         this.createProbQuestionHolder = function () {
-                            const leftBannerVar = self.add.image(570, 70, "leftBanner");
-                            leftBannerVar.setDisplaySize(200, 140)
-                            
-                            const middleBannerVar = self.add.image(700, 70, "middleBanner");
-                            middleBannerVar.setDisplaySize(200, 140)
-                            
-                            const rightBannerVar = self.add.image(900, 70, "rightBanner");
-                            rightBannerVar.setDisplaySize(200,140)
-                        }
+                            const addBanner = (x, y, texture, w, h) => {
+                                const banner = self.add.image(x, y, texture);
+                                banner.setDisplaySize(w, h);
+                                return banner;
+                            };
+                            // bottom row
+                            const bottomBanners = [
+                                { x: 555, y: 150, texture: "leftBanner", w: 185, h: 90 },
+                                { x: 740, y: 150, texture: "middleBanner", w: 185, h: 90 },
+                                { x: 925, y: 150, texture: "rightBanner", w: 185, h: 90 },
+                            ];
+                            // top row
+                            const topBanners = [
+                                { x: 540, y: 70, texture: "leftBanner", w: 200, h: 140 },
+                                { x: 740, y: 70, texture: "middleBanner", w: 200, h: 140 },
+                                { x: 940, y: 70, texture: "rightBanner", w: 200, h: 140 },
+                            ];
+                            // create all banners
+                            [...bottomBanners, ...topBanners].forEach(cfg =>
+                                addBanner(cfg.x, cfg.y, cfg.texture, cfg.w, cfg.h)
+                            );
+                        };
 
 
 
