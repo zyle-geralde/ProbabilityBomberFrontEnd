@@ -57,6 +57,9 @@ class StageOne {
         // Randomly pick 2 or 3 terms
         const termCount = Phaser.Math.Between(2, 4);
 
+        // Clone imageNames so we can remove used colors
+        let availableImages = [...imageNames];
+
         // Measure approximate width per term
         const termWidth = 90; // adjust spacing if needed
         const totalWidth = termCount * termWidth + 100; // +100 for "Given"
@@ -75,23 +78,22 @@ class StageOne {
         // Move startX forward for the terms
         startX += 100;
 
-        // --- Add random terms ---
-        for (let i = 0; i < termCount; i++) {
-            //Random number (1–9)
+        // --- Add random terms without repeating colors ---
+        for (let i = 0; i < termCount && availableImages.length > 0; i++) {
+            // Random number (1–9)
             const num = Phaser.Math.Between(1, 9);
 
-            //Random circle image
-            let circle = imageNames[Math.floor(Math.random() * imageNames.length)];
+            // Random circle image (pick from available list)
+            const randomIndex = Math.floor(Math.random() * availableImages.length);
+            const circle = availableImages[randomIndex];
 
-            //list of individual samples = {imagename: given number}
-            this.self.givenSample.push({ [circle]: num })
+            // Remove this circle from available list (avoid duplicates)
+            availableImages.splice(randomIndex, 1);
 
-            //list of colored balls chosen for given
-            this.self.coloredBallGiven.push(circle)
-
-            //calculation for sampleSize
-            this.self.sampleSize += num
-
+            // Store in givenSample and coloredBallGiven
+            this.self.givenSample.push({ [circle]: num });
+            this.self.coloredBallGiven.push(circle);
+            this.self.sampleSize += num;
 
             // Number text
             const numberText = this.self.add.text(startX - 15, y, `${num} x`, {
@@ -108,46 +110,38 @@ class StageOne {
             startX += termWidth;
         }
 
-        //Picking a color from the given
-        let selectedColor = this.self.coloredBallGiven[Math.floor(Math.random() * this.self.coloredBallGiven.length)];
-        this.self.colorPicked = selectedColor
+        // Pick one of the used colors as target
+        let selectedColor = this.self.coloredBallGiven[
+            Math.floor(Math.random() * this.self.coloredBallGiven.length)
+        ];
+        this.self.colorPicked = selectedColor;
 
-
-        //Find GCD for answer
-        // Find numerator
+        // --- Find GCD and reduce fraction ---
         let numerator = 0;
-
         this.self.givenSample.forEach(entry => {
             if (entry[this.self.colorPicked] !== undefined) {
                 numerator = entry[this.self.colorPicked];
             }
         });
-
-        // Denominator = total sample size
         let denominator = this.self.sampleSize;
 
-        // --- Helper function to get GCD ---
         const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
-
-        // Reduce fraction
         const divisor = gcd(numerator, denominator);
-        numerator = numerator / divisor;
-        denominator = denominator / divisor;
+        numerator /= divisor;
+        denominator /= divisor;
 
-        // Save reduced probability answer
         this.self.probAnswer = [numerator, denominator];
-
-        console.log("Reduced Probability Answer:", this.self.probAnswer);
-
 
         // Add everything into the top container
         this.self.topContainer.add(objectsToAdd);
-        console.log(this.self.givenSample)
-        console.log(this.self.coloredBallGiven)
-        console.log(this.self.sampleSize)
-        console.log(this.self.colorPicked)
-        console.log(this.self.probAnswer)
+
+        console.log("Samples:", this.self.givenSample);
+        console.log("Colors:", this.self.coloredBallGiven);
+        console.log("Sample size:", this.self.sampleSize);
+        console.log("Picked:", this.self.colorPicked);
+        console.log("Reduced Answer:", this.self.probAnswer);
     }
+
 }
 
 export default StageOne
