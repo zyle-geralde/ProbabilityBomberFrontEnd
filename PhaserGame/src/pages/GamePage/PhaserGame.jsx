@@ -251,8 +251,14 @@ function PhaserGameSetUp() {
                                 else {
                                     this.textAfter.setText(") = -- / --");
                                 }
-                                
+
                                 this.textIndicator = 1;
+
+                                //Reset wallText visuals and pressable state
+                                this.wallTextGroup.children.iterate(wallText => {
+                                    wallText.setAlpha(1); // fully visible again
+                                    wallText.setData("pressed", false);
+                                });
                             }
                         };
                         this.handleEnemyCollision = (enemy) => { enemy.getData("ref").changeDirection() };
@@ -343,6 +349,11 @@ function PhaserGameSetUp() {
                             if (this.wallTextGroup) {
                                 this.physics.overlap(this.player, this.wallTextGroup, (player, wallText) => {
                                     if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S))) {
+                                        if (wallText.getData("pressed")) {
+                                            
+                                            return;
+                                        }
+
                                         if (this.textIndicator > 2) {
                                             return
                                         }
@@ -399,6 +410,10 @@ function PhaserGameSetUp() {
                                             }
 
                                             this.textAfter.setText(chars.join(""));
+
+                                            //mark wallText as pressed make it transparent
+                                            wallText.setAlpha(0.0);
+                                            wallText.setData("pressed", true);
                                         }
                                     }
                                 });
