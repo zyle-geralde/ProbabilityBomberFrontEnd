@@ -123,7 +123,7 @@ class StageOne {
                 numerator = entry[this.self.colorPicked];
             }
         });
-        
+
         if (this.self.randomSign == true) {
             numerator = this.self.sampleSize - numerator;
         }
@@ -144,6 +144,20 @@ class StageOne {
         console.log("Sample size:", this.self.sampleSize);
         console.log("Picked:", this.self.colorPicked);
         console.log("Reduced Answer:", this.self.probAnswer);
+
+        this.generateNumbersForBlocks(numerator, denominator)
+    }
+
+    generateNumbersForBlocks(numerator, denominator) {
+        this.self.probabilityNumbers = [];
+
+        this.self.probabilityNumbers.push(numerator);
+        this.self.probabilityNumbers.push(denominator);
+
+        for (let loop = 1; loop <= 4; loop++) {
+            let randNum = Math.floor(Math.random() * 30) + 1;
+            this.self.probabilityNumbers.push(randNum);
+        }
     }
 
 }

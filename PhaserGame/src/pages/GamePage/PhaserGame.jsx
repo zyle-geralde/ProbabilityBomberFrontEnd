@@ -89,6 +89,8 @@ function PhaserGameSetUp() {
 
                         //Player
                         this.player = null
+                        this.numeratorAnswer = null
+                        this.denominatorAnswer = null
 
                         //Bomb
                         this.bombLocation = []
@@ -440,6 +442,7 @@ function PhaserGameSetUp() {
 
                         //Method calls
                         //this.createBackground()
+                        this.createProbQuestionHolder()
                         this.createPlayer()
                         this.createWalls()
                         this.createRandomItems()
@@ -447,7 +450,7 @@ function PhaserGameSetUp() {
                         this.startEnemySpawnLoop()
                         this.createStartingEnemies()
                         this.createSideItems()
-                        this.createProbQuestionHolder()
+                        
 
 
                         //enable keyboard press
