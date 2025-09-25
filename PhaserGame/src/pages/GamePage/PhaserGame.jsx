@@ -134,9 +134,10 @@ function PhaserGameSetUp() {
                         this.wallTextGroup = this.add.group();
                         this.textAfter = null
                         this.textIndicator = 1;
+                        this.randomSign = null
 
                         //Probability questions and answer
-                        this.probabilityNumbers = [1, 2, 25, 30, 5,45]
+                        this.probabilityNumbers = [1, 2, 25, 30, 5, 45]
 
                         //Classes
                         this.Wall = new Wall(this)
@@ -242,6 +243,18 @@ function PhaserGameSetUp() {
                         this.createStartingEnemies = function () {
                             self.Wall.createStartingEnemies()
                         }
+                        this.resetTextAfter = function () {
+                            if (this.textAfter && this.randomSign != null) {
+                                if (this.randomSign) {
+                                    this.textAfter.setText("') = -- / --");
+                                }
+                                else {
+                                    this.textAfter.setText(") = -- / --");
+                                }
+                                
+                                this.textIndicator = 1;
+                            }
+                        };
                         this.handleEnemyCollision = (enemy) => { enemy.getData("ref").changeDirection() };
                         this.handleEnemyBehavior = () => {
                             this.enemyGroup.children.iterate((enemySprite) => {
@@ -345,7 +358,7 @@ function PhaserGameSetUp() {
                                                 if (chosenNumber.length === 1) {
                                                     // replace the 2nd underscore
                                                     let underscoreIndex = chars.indexOf("-", 1);
-                                                    
+
                                                     if (underscoreIndex !== -1) {
                                                         chars[underscoreIndex + 1] = chosenNumber;
                                                         chars[underscoreIndex] = "_"
@@ -364,17 +377,17 @@ function PhaserGameSetUp() {
                                             }
                                             else if (this.textIndicator === 2) {
                                                 if (chosenNumber.length === 1) {
-                                                    
+
                                                     let underscoreIndex = chars.indexOf("-", 1);
-                                                    
+
                                                     if (underscoreIndex !== -1) {
                                                         chars[underscoreIndex] = chosenNumber;
                                                         chars[underscoreIndex + 1] = "_"
                                                     }
                                                     console.log("single digit")
-                                                    
+
                                                 } else {
-                                                     // double digit → replace 1st and 2nd underscores
+                                                    // double digit → replace 1st and 2nd underscores
                                                     let firstIdx = chars.indexOf("-");
                                                     if (firstIdx !== -1) {
                                                         chars[firstIdx] = chosenNumber[0];
@@ -391,6 +404,11 @@ function PhaserGameSetUp() {
                                 });
                             }
 
+                        }
+                        this.handleResetAnswer = function () {
+                            if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X))) {
+                                this.resetTextAfter();
+                            }
                         }
 
 
@@ -459,6 +477,7 @@ function PhaserGameSetUp() {
                         this.Player.updateShield();
                         this.handleEnemyBehavior()
                         this.handlePlayerWallTextOverlap()
+                        this.handleResetAnswer()
                     }
                 },
                 parent: gameRef.current,
