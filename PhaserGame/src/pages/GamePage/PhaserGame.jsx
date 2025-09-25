@@ -132,9 +132,11 @@ function PhaserGameSetUp() {
                         this.bottomBannerHeight = 100
                         this.bottomBannerY = 150
                         this.wallTextGroup = this.add.group();
+                        this.textAfter = null
+                        this.textIndicator = 1;
 
                         //Probability questions and answer
-                        this.probabilityNumbers = [1, 2, 3, 4, 5, 6]
+                        this.probabilityNumbers = [1, 2, 25, 30, 5,45]
 
                         //Classes
                         this.Wall = new Wall(this)
@@ -324,6 +326,72 @@ function PhaserGameSetUp() {
                                 this.Player.decreaseLife()
                             }
                         }
+                        this.handlePlayerWallTextOverlap = function () {
+                            if (this.wallTextGroup) {
+                                this.physics.overlap(this.player, this.wallTextGroup, (player, wallText) => {
+                                    if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S))) {
+                                        if (this.textIndicator > 2) {
+                                            return
+                                        }
+                                        if (this.textAfter) {
+                                            const chosenNumber = wallText.text;   // number from wall
+                                            let currentText = this.textAfter.text;
+
+                                            // Split into characters so we can replace specific underscores
+                                            let chars = currentText.split("");
+                                            console.log(chars)
+
+                                            if (this.textIndicator === 1) {
+                                                if (chosenNumber.length === 1) {
+                                                    // replace the 2nd underscore
+                                                    let underscoreIndex = chars.indexOf("-", 1);
+                                                    
+                                                    if (underscoreIndex !== -1) {
+                                                        chars[underscoreIndex + 1] = chosenNumber;
+                                                        chars[underscoreIndex] = "_"
+                                                    }
+                                                    console.log("single digit")
+                                                } else {
+                                                    // double digit → replace 1st and 2nd underscores
+                                                    let firstIdx = chars.indexOf("-");
+                                                    if (firstIdx !== -1) {
+                                                        chars[firstIdx] = chosenNumber[0];
+                                                        let secondIdx = chars.indexOf("-", firstIdx + 1);
+                                                        if (secondIdx !== -1) chars[secondIdx] = chosenNumber[1];
+                                                    }
+                                                }
+                                                this.textIndicator = 2;
+                                            }
+                                            else if (this.textIndicator === 2) {
+                                                if (chosenNumber.length === 1) {
+                                                    
+                                                    let underscoreIndex = chars.indexOf("-", 1);
+                                                    
+                                                    if (underscoreIndex !== -1) {
+                                                        chars[underscoreIndex] = chosenNumber;
+                                                        chars[underscoreIndex + 1] = "_"
+                                                    }
+                                                    console.log("single digit")
+                                                    
+                                                } else {
+                                                     // double digit → replace 1st and 2nd underscores
+                                                    let firstIdx = chars.indexOf("-");
+                                                    if (firstIdx !== -1) {
+                                                        chars[firstIdx] = chosenNumber[0];
+                                                        let secondIdx = chars.indexOf("-", firstIdx + 1);
+                                                        if (secondIdx !== -1) chars[secondIdx] = chosenNumber[1];
+                                                    }
+                                                }
+                                                this.textIndicator = 3
+                                            }
+
+                                            this.textAfter.setText(chars.join(""));
+                                        }
+                                    }
+                                });
+                            }
+
+                        }
 
 
 
@@ -390,14 +458,7 @@ function PhaserGameSetUp() {
                         this.handlePlayerBomb()
                         this.Player.updateShield();
                         this.handleEnemyBehavior()
-
-                        if (this.wallTextGroup) {
-                            this.physics.overlap(this.player, this.wallTextGroup, (player, wallText) => {
-                                if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S))) {
-                                    console.log("HelloWorld");
-                                }
-                            });
-                        }
+                        this.handlePlayerWallTextOverlap()
                     }
                 },
                 parent: gameRef.current,

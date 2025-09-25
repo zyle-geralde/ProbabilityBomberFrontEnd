@@ -36,53 +36,40 @@ class Banner {
             return;
         }
 
-        let textBefore = null
-        let redCircle = null
-        let textAfter = null
-        if (!randomSign) {
-            // Text BEFORE the circle
-            textBefore = this.self.add.text(640, this.self.bottomBannerY, "P(", {
-                fontSize: "27px",
-                color: "#fff",
-                fontStyle: "bold",
-                align: "center"
-            }).setOrigin(0.5);
-
-            // Circle image
-            redCircle = this.self.add.image(672, this.self.bottomBannerY, imageName).setDisplaySize(30, 30);
-
-            // Text AFTER the circle
-            textAfter = this.self.add.text(760, this.self.bottomBannerY, ") = _ / _", {
-                fontSize: "27px",
-                color: "#fff",
-                fontStyle: "bold",
-                align: "center"
-            }).setOrigin(0.5);
-        }
-        else {
-            // Text BEFORE the circle
-            textBefore = this.self.add.text(640, this.self.bottomBannerY, "P(", {
-                fontSize: "27px",
-                color: "#fff",
-                fontStyle: "bold",
-                align: "center"
-            }).setOrigin(0.5);
-
-            // Circle image
-            redCircle = this.self.add.image(672, this.self.bottomBannerY, imageName).setDisplaySize(30, 30);
-
-            // Text AFTER the circle
-            textAfter = this.self.add.text(760, this.self.bottomBannerY, " ') = _ / _", {
-                fontSize: "27px",
-                color: "#fff",
-                fontStyle: "bold",
-                align: "center"
-            }).setOrigin(0.5);
+            // Destroy previous textAfter if it exists
+        if (this.self.textAfter) {
+            this.self.textAfter.destroy();
+            this.self.textAfter = null
         }
 
+        const xBase = 640;   // textBefore x
+        const yBase = this.self.bottomBannerY;
+
+        // Text BEFORE the circle
+        const textBefore = this.self.add.text(xBase, yBase, "P(", {
+            fontSize: "27px",
+            color: "#fff",
+            fontStyle: "bold",
+            align: "center"
+        }).setOrigin(0.5);
+
+        // Circle image
+        const redCircle = this.self.add.image(672, yBase, imageName).setDisplaySize(30, 30);
+
+        // Decide AFTER text and position
+        const afterConfig = randomSign
+            ? { x: 780, text: "') = -- / --" }
+            : { x: 775, text: ") = -- / --" };
+
+        this.self.textAfter = this.self.add.text(afterConfig.x, yBase, afterConfig.text, {
+            fontSize: "27px",
+            color: "#fff",
+            fontStyle: "bold",
+            align: "center"
+        }).setOrigin(0.5);
 
         // Add them into the container (so they move with banners)
-        this.bottomContainer.add([textBefore, redCircle, textAfter]);
+        this.bottomContainer.add([textBefore, redCircle, this.self.textAfter]);
     }
     addTopTextWithCircle(imageNames) {
         if (!this.topContainer) {
@@ -105,7 +92,7 @@ class Banner {
         const objectsToAdd = [];
 
         // --- Add "Given" text first ---
-        const givenText = this.self.add.text(startX+20, y, "Given:", {
+        const givenText = this.self.add.text(startX + 20, y, "Given:", {
             fontSize: "24px",
             color: "#fff",
             fontStyle: "bold"
