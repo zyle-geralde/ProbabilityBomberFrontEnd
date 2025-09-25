@@ -135,6 +135,15 @@ function PhaserGameSetUp() {
                         this.textAfter = null
                         this.textIndicator = 1;
                         this.randomSign = null
+                        this.bottomContainer = null
+                        this.topContainer = null
+
+                        //Stage 1
+                        this.sampleSize = null
+                        this.colorPicked = null
+                        this.givenSample = []
+                        this.coloredBallGiven = []
+                        this.probAnswer = []
 
                         //Probability questions and answer
                         this.probabilityNumbers = [1, 2, 25, 30, 5, 45]
