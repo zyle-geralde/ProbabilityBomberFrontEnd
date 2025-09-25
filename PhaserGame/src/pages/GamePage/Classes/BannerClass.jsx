@@ -29,8 +29,9 @@ class Banner {
         const isComplement = [true, false]
         this.self.randomSign = isComplement[Math.floor(Math.random() * isComplement.length)];
 
-        this.stageOne.addBottomTextWithCircle(randomImage, this.self.randomSign)
         this.stageOne.addTopTextWithCircle(imageNames);
+        this.stageOne.addBottomTextWithCircle(randomImage, this.self.randomSign)
+        
     }
 
     

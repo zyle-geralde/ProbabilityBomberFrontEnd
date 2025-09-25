@@ -1,4 +1,4 @@
-class StageOne{
+class StageOne {
     constructor(self) {
         this.self = self
     }
@@ -9,7 +9,7 @@ class StageOne{
             return;
         }
 
-            // Destroy previous textAfter if it exists
+        // Destroy previous textAfter if it exists
         if (this.self.textAfter) {
             this.self.textAfter.destroy();
             this.self.textAfter = null
@@ -27,7 +27,7 @@ class StageOne{
         }).setOrigin(0.5);
 
         // Circle image
-        const redCircle = this.self.add.image(672, yBase, imageName).setDisplaySize(30, 30);
+        const redCircle = this.self.add.image(672, yBase, this.self.colorPicked).setDisplaySize(30, 30);
 
         // Decide AFTER text and position
         const afterConfig = randomSign
@@ -77,10 +77,10 @@ class StageOne{
 
         // --- Add random terms ---
         for (let i = 0; i < termCount; i++) {
-            // Random number (1–9)
+            //Random number (1–9)
             const num = Phaser.Math.Between(1, 9);
 
-            // Random circle image
+            //Random circle image
             let circle = imageNames[Math.floor(Math.random() * imageNames.length)];
 
             //list of individual samples = {imagename: given number}
@@ -89,9 +89,10 @@ class StageOne{
             //list of colored balls chosen for given
             this.self.coloredBallGiven.push(circle)
 
-            this.self.sampleSize+=num
+            //calculation for sampleSize
+            this.self.sampleSize += num
 
-            
+
             // Number text
             const numberText = this.self.add.text(startX - 15, y, `${num} x`, {
                 fontSize: "24px",
@@ -107,11 +108,45 @@ class StageOne{
             startX += termWidth;
         }
 
+        //Picking a color from the given
+        let selectedColor = this.self.coloredBallGiven[Math.floor(Math.random() * this.self.coloredBallGiven.length)];
+        this.self.colorPicked = selectedColor
+
+
+        //Find GCD for answer
+        // Find numerator
+        let numerator = 0;
+
+        this.self.givenSample.forEach(entry => {
+            if (entry[this.self.colorPicked] !== undefined) {
+                numerator = entry[this.self.colorPicked];
+            }
+        });
+
+        // Denominator = total sample size
+        let denominator = this.self.sampleSize;
+
+        // --- Helper function to get GCD ---
+        const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
+
+        // Reduce fraction
+        const divisor = gcd(numerator, denominator);
+        numerator = numerator / divisor;
+        denominator = denominator / divisor;
+
+        // Save reduced probability answer
+        this.self.probAnswer = [numerator, denominator];
+
+        console.log("Reduced Probability Answer:", this.self.probAnswer);
+
+
         // Add everything into the top container
         this.self.topContainer.add(objectsToAdd);
         console.log(this.self.givenSample)
         console.log(this.self.coloredBallGiven)
         console.log(this.self.sampleSize)
+        console.log(this.self.colorPicked)
+        console.log(this.self.probAnswer)
     }
 }
 
