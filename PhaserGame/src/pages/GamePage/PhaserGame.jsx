@@ -131,9 +131,10 @@ function PhaserGameSetUp() {
                         //Banner
                         this.bottomBannerHeight = 100
                         this.bottomBannerY = 150
+                        this.wallTextGroup = this.add.group();
 
                         //Probability questions and answer
-                        this.probabilityNumbers = [1,2,3,4,5,6]
+                        this.probabilityNumbers = [1, 2, 3, 4, 5, 6]
 
                         //Classes
                         this.Wall = new Wall(this)
@@ -389,6 +390,14 @@ function PhaserGameSetUp() {
                         this.handlePlayerBomb()
                         this.Player.updateShield();
                         this.handleEnemyBehavior()
+
+                        if (this.wallTextGroup) {
+                            this.physics.overlap(this.player, this.wallTextGroup, (player, wallText) => {
+                                if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S))) {
+                                    console.log("HelloWorld");
+                                }
+                            });
+                        }
                     }
                 },
                 parent: gameRef.current,
