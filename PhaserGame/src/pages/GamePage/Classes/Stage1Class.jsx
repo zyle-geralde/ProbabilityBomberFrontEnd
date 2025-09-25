@@ -123,6 +123,10 @@ class StageOne {
                 numerator = entry[this.self.colorPicked];
             }
         });
+        
+        if (this.self.randomSign == true) {
+            numerator = this.self.sampleSize - numerator;
+        }
         let denominator = this.self.sampleSize;
 
         const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
