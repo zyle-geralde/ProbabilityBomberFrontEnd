@@ -59,6 +59,9 @@ class StageOne {
             return;
         }
 
+        if (this.self.coloredBallGiven.length > 0) {
+            this.self.coloredBallGiven = []
+        }
         // Middle banner center
         const centerX = 740;
         const y = 70;

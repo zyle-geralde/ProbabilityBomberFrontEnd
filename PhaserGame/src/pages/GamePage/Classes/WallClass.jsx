@@ -291,6 +291,7 @@ class Wall {
             // Create wall
             let wall = this.self.breakablewall.create(xValue, yValue, "brkwall");
             wall.setDisplaySize(this.self.wallDim, this.self.wallDim);
+            wall.setAlpha(0); // start invisible
 
             // Store with unique number
             this.self.brkWallList.push({ x: xValue, y: yValue, value: randomNum });
@@ -305,6 +306,8 @@ class Wall {
             }).setOrigin(0.5);
             wallText.setDepth(1);
 
+            wallText.setAlpha(0);
+
             if (!this.self.wallTextGroup) {
                 this.self.wallTextGroup = this.self.add.group();
             }
@@ -313,6 +316,13 @@ class Wall {
             this.self.physics.add.existing(wallText);
             wallText.body.setSize(30, 30); // match text size
             wallText.body.setImmovable(true);
+
+            this.self.tweens.add({
+                targets: [wall, wallText],
+                alpha: { from: 0, to: 1 },
+                duration: 100,
+                ease: "Linear"
+            });
 
             console.log(`Wall at col:${col}, row:${row} with unique value=${randomNum}`);
         });
