@@ -74,8 +74,9 @@ function LessonPage({ userData }) {
               {/* Breadcrumb */}
               <ol className="flex items-center space-x-2 text-sm mb-4">
                 <li>
-                    Homepage /
+                    Homepage
                 </li>
+                <li className="text-white">/</li>
               </ol>
 
               {/* Header */}
@@ -102,14 +103,14 @@ function LessonPage({ userData }) {
 
                 <LessonCard
                   stage="/stagePage"
-                  image="lesson-image.jpg"
+                  image="/images/Lesson0_cardimg.jpg"
                   title="Chance 101"
                   description="Introduction to Probability — discover how randomness and chance shape the world around us."
                 />
 
                 <LessonCard
                   stage="/stage01Page"
-                  image="lesson-image.jpg"
+                  image="/images/Lesson1_cardimg.jpg"
                   title="When Events Happen"
                   description="Equally Likely & Complementary Events — learn when outcomes share the same probability and how complements balance the odds."
                 />
