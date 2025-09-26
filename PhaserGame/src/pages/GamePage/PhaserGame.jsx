@@ -426,7 +426,7 @@ function PhaserGameSetUp() {
                                                     }
                                                 }
                                                 this.denominatorAnswer = parseInt(chosenNumber)
-                                                
+
                                                 //Checking answer
                                                 if (parseInt(this.numeratorAnswer) !== parseInt(this.probAnswer[0]) || parseInt(this.denominatorAnswer) !== parseInt(this.probAnswer[1])) {
                                                     console.log("Wrong")
@@ -451,7 +451,7 @@ function PhaserGameSetUp() {
                                                             this.resetTextAfter();
 
                                                             //change problem
-                                                            
+
                                                         }
                                                     });
 
@@ -462,7 +462,7 @@ function PhaserGameSetUp() {
                                                     this.allowInputs = false;
                                                     this.tweens.add({
                                                         targets: [this.textAfter, this.textBottom],
-                                                        alpha: { from: 1, to: 0.3 }, 
+                                                        alpha: { from: 1, to: 0.3 },
                                                         duration: 500,
                                                         repeat: 1,
                                                         yoyo: true,
@@ -476,6 +476,38 @@ function PhaserGameSetUp() {
                                                             this.textBottom.setColor("#ffffff");
                                                             this.textAfter.setAlpha(1); // reset visibility
                                                             this.textBottom.setAlpha(1); // reset visibility
+
+
+                                                            //Destroy random inside walls
+                                                            if (this.breakablewall) {
+                                                                this.breakablewall.children.iterate(wall => {
+                                                                    if (wall) {
+                                                                        this.tweens.add({
+                                                                            targets: wall,
+                                                                            alpha: 0,
+                                                                            duration: 300,
+                                                                            onComplete: () => {
+                                                                                this.brkWallList = []
+                                                                                wall.destroy()
+                                                                            }
+
+                                                                        });
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            //Destroy wall text numbers
+                                                            if (this.wallTextGroup) {
+                                                                this.wallTextGroup.children.iterate(wallText => {
+                                                                    this.tweens.add({
+                                                                        targets: wallText,
+                                                                        alpha: 0,
+                                                                        duration: 300,
+                                                                        onComplete: () => wallText.destroy()
+                                                                    });
+                                                                });
+                                                            }
+
                                                             this.resetTextAfter();
                                                             this.Banner.createProbQuestionHolder()
                                                         }
