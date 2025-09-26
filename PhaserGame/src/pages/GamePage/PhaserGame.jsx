@@ -273,6 +273,9 @@ function PhaserGameSetUp() {
                                     wallText.setAlpha(1); // fully visible again
                                     wallText.setData("pressed", false);
                                 });
+
+                                this.numeratorAnswer = null
+                                this.denominatorAnswer = null
                             }
                         };
                         this.handleEnemyCollision = (enemy) => { enemy.getData("ref").changeDirection() };
@@ -398,6 +401,7 @@ function PhaserGameSetUp() {
                                                         if (secondIdx !== -1) chars[secondIdx] = chosenNumber[1];
                                                     }
                                                 }
+                                                this.numeratorAnswer = parseInt(chosenNumber)
                                                 this.textIndicator = 2;
                                             }
                                             else if (this.textIndicator === 2) {
@@ -420,15 +424,16 @@ function PhaserGameSetUp() {
                                                         if (secondIdx !== -1) chars[secondIdx] = chosenNumber[1];
                                                     }
                                                 }
-
+                                                this.denominatorAnswer = parseInt(chosenNumber)
+                                                
                                                 //Checking answer
-                                                if (this.numeratorAnswer !== this.probAnswer[0] || this.denominatorAnswer !== this.probAnswer[1]) {
+                                                if (parseInt(this.numeratorAnswer) !== parseInt(this.probAnswer[0]) || parseInt(this.denominatorAnswer) !== parseInt(this.probAnswer[1])) {
                                                     console.log("Wrong")
 
                                                     this.allowInputs = false;
                                                     this.tweens.add({
                                                         targets: [this.textAfter, this.textBottom],
-                                                        alpha: { from: 1, to: 0 },   // fade in/out
+                                                        alpha: { from: 1, to: 0.3 },   // fade in/out
                                                         duration: 500,               // quick blink
                                                         repeat: 1,                   // number of flickers
                                                         yoyo: true,
@@ -449,6 +454,27 @@ function PhaserGameSetUp() {
                                                 }
                                                 else {
                                                     console.log("Correct")
+
+                                                    this.allowInputs = false;
+                                                    this.tweens.add({
+                                                        targets: [this.textAfter, this.textBottom],
+                                                        alpha: { from: 1, to: 0.3 }, 
+                                                        duration: 500,
+                                                        repeat: 1,
+                                                        yoyo: true,
+                                                        onStart: () => {
+                                                            this.textAfter.setColor("#00ff00"); // green
+                                                            this.textBottom.setColor("#00ff00");
+                                                        },
+                                                        onComplete: () => {
+                                                            this.allowInputs = true;
+                                                            this.textAfter.setColor("#ffffff"); // reset to white
+                                                            this.textBottom.setColor("#ffffff");
+                                                            this.textAfter.setAlpha(1); // reset visibility
+                                                            this.textBottom.setAlpha(1); // reset visibility
+                                                            this.resetTextAfter();
+                                                        }
+                                                    });
                                                 }
                                                 this.textIndicator = 3
                                             }
