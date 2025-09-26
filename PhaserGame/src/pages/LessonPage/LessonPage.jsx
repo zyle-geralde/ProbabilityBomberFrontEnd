@@ -10,6 +10,7 @@ import HomeNavbar from '../../components/navbar/HomeNavbar';
 import Leaderboard from '../../components/high-score-table/Leaderboard';
 import ViewStudents from '../../components/viewstudents/ViewStudents';
 import LevelCard from '../../components/quiz-card/LevelCard';
+import LessonCard from "../../components/lesson-card/LessonCard";
 import { useGetAllQuiz } from '../../hooks/UseQuiz';
 import * as AuthController from '../../controllers/AuthController';
 import { useTeacherClasses } from '../../hooks/UseTeacher';
@@ -64,8 +65,6 @@ function LessonPage({ userData }) {
             {"<"}
         </button>}
 
-
-      {!classId && !isTeacher? (
         <div className="lesson-page-wrapper">
           <div class="welcome">
             <h2>Welcome to the Quiz Catalog</h2>
@@ -73,142 +72,46 @@ function LessonPage({ userData }) {
           </div>
 
           <div className="lesson-page-container">
-            <div className="lesson-panel">
+            <div className="lesson-panel flex flex-wrap gap-6 p-6 items-start justify-center w-full bg-gray-100 box-border">
 
-              <div className="lesson-card">
-                <div className="lesson-image">
-                  <img src="lesson-image.jpg" alt="Lesson Image"></img>
-                </div>
+                <LessonCard
+                  image="lesson-image.jpg"
+                  title="Tutorial"
+                  description="Get to know the game!"
+                />
 
-                <div className="lesson-description">
-                  <h2>Lesson Title</h2>
-                  <p>Lesson subtitle or description</p>
-                </div>
-              </div>
+                <LessonCard
+                  image="lesson-image.jpg"
+                  title="Chance 101"
+                  description="Introduction to Probability — discover how randomness and chance shape the world around us."
+                />
 
-              <div className="lesson-card">
-                <div className="lesson-image">
-                  <img src="lesson-image.jpg" alt="Lesson Image"></img>
-                </div>
+                <LessonCard
+                  image="lesson-image.jpg"
+                  title="When Events Happen"
+                  description="Equally Likely & Complementary Events — learn when outcomes share the same probability and how complements balance the odds."
+                />
 
-                <div className="lesson-description">
-                  <h2>Lesson Title</h2>
-                  <p>Lesson subtitle or description</p>
-                </div>
-              </div>
+                <LessonCard
+                  image="lesson-image.jpg"
+                  title="Probability in Action"
+                  description="Types of Probability — explore classical, experimental, and subjective approaches to calculating chance."
+                />
 
-            </div>
+                <LessonCard
+                  image="lesson-image.jpg"
+                  title="When Events Collide"
+                  description="Mutually and Not Mutually Exclusive Events — see what happens when events overlap (or don’t)."
+                />
 
-            <div className="leaderboard-panel">
-              <div className="leaderboard">
-                <div className="lesson-leaderboard-header">MY TABLE</div>
-                    <div className="row">
-                    <div className="rank">1</div>
-                    <div className="name">Kevin</div>
-                    <div className="score">123</div>
-                </div>
-                    <div className="row">
-                    <div className="rank">2</div>
-                    <div className="name">Josh</div>
-                    <div className="score">123</div>
-                </div>
-                <div class="row">
-                    <div className="rank">3</div>
-                    <div className="name">Steve</div>
-                    <div className="score">123</div>
-                </div>    
-            </div>
+                <LessonCard
+                  image="lesson-image.jpg"
+                  title="Predicting the Unpredictable"
+                  description="Random Variables — uncover how probabilities are tied to numbers, from coin flips to real-world data."
+                />
             </div>
           </div>
         </div>
-      ) : (
-        <div className="teacher-lesson-page-container">
-          {/* Sidebar Selector */}
-          <div className="selector-area">
-            <div className="lesson-selector-container">
-              <div className="title">Activities</div>
-              <button
-                className={`lesson-button ${selectedTab === 'course' ? 'active' : ''}`}
-                onClick={() => setSelectedTab('course')}
-              >
-                Course
-              </button>
-              <button
-                className={`lesson-button ${selectedTab === 'created' ? 'active' : ''}`}
-                onClick={() => setSelectedTab('created')}
-              >
-                Created by Teacher
-              </button>
-
-              {isTeacher && (
-                <>
-                  <button className={`lesson-button ${selectedTab === 'students' ? 'active' : ''}`} onClick={() => setSelectedTab('students')}>
-                    View Students
-                  </button>
-                  <button className={`lesson-button ${selectedTab === 'students' ? 'active' : ''}`} onClick={() => navigate('/classPerformancePage', {state: { classId }})}>
-                    Class Performance
-                    </button>
-                </>
-              )}
-
-            </div>
-          </div>
-
-          {/* Main Lesson Content */}
-          <div className="main-content">
-            <div className="lesson-card-area">
-              <div className="lesson-card-area-title">
-                Discrete Structures 2: Probabilities
-              </div>
-
-              <div className="list-of-lessons">
-                {selectedTab === 'course' && (
-                  <ListOfLessons
-                    userData={userData}
-                    title={title}
-                    classId={classId}
-                    uid={uid}
-                    setstudentLeaderBoards={setstudentLeaderBoards}
-                  />
-                )}
-                {selectedTab === 'created' && (
-                  <div className="level-selector-container">
-                      {filteredList.map((level, index) => (
-                        <LevelCard
-                          key={index}
-                          title={level.quizName}
-                          duration={level.duration}
-                          score={0}
-                          avgScore={0}
-                          avgTimeFinished={level.duration}
-                          quizInfo={level}
-                          classTitle={title}
-                          uid={uid}
-                          userData={userData}
-                          setstudentLeaderBoards={setstudentLeaderBoards}
-                      />
-                    ))}
-                  </div>
-                )}
-                {selectedTab === 'students' && (
-                  <ViewStudents userData={userData} className={title} />
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Leaderboard */}
-          <div className="leaderboard-container">
-            <Leaderboard
-                title="Leaderboard"
-                showTime={true}
-                showRank={true}
-                showScore={true}
-                studentLeaderBoards={studentLeaderBoards}
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 }

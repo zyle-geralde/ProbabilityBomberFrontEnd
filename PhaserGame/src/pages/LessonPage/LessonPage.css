@@ -57,16 +57,6 @@ body{
     display: none; /* Hides the scrollbar completely */
 }
 
-.leaderboard-container {
-    grid-area: leaderboard;
-    background-color: #f9f9f9;
-    max-height: fit-content;
-    border-radius: 15px;
-    border: 1px solid black;
-    box-shadow: 4px 4px black;
-}
-
-
 /* No Comment Div 
 .no-class-message {
     display: flex;
@@ -98,85 +88,4 @@ body{
     .lesson-page-container {
       display: flex;
       min-height: 70vh;
-    }
-    .lesson-panel {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1.5rem;        /* gap-6 */
-        padding: 1.5rem;    /* p-6 */
-        align-items: flex-start; /* items-start */
-        width: 60%;
-        background-color: #f4f4f4;
-        padding: 20px;
-        box-sizing: border-box;
-    }
-
-    .lesson-card{
-        flex: none;
-        width: 16rem; /* w-64 */
-        border-radius: 1rem; /* rounded-2xl */
-        overflow: hidden;
-        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1),
-                    0 4px 6px -4px rgba(0,0,0,0.1); /* shadow-lg */
-        background-color: #ffffff; /* bg-white */
-    }
-
-    .lesson-image {
-        background-color: powderblue;
-        height: 6rem;
-    }
-
-    .lesson-image img {
-        width: 100%;
-        object-fit: cover;
-    }
-
-    .leaderboard-panel {
-        margin: 2rem;
-        width: 40%;
-        background: white;
-        border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        overflow: hidden;
-        border-style: solid;
-        border-color: black;
-    }
-
-    .lesson-leaderboard-header {
-      background-color: white;
-      color: black;
-      text-align: center;
-      padding: 10px;
-      font-size: 1.2em;
-      font-weight: bold;
-    }
-
-    .row {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 15px;
-      border-bottom: 1px solid #ddd;
-      border-radius: 100px;
-      background-color: gold;
-      margin-top: 0.5rem;
-      margin-bottom: 0.5rem;
-      
-    }
-
-    .row:last-child {
-      border-bottom: none;
-    }
-
-    .rank {
-      width: 30px;
-      font-weight: bold;
-    }
-
-    .name {
-      flex: 1;
-    }
-
-    .score {
-      width: 50px;
-      text-align: right;
     }
