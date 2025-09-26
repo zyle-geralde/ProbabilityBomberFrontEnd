@@ -160,6 +160,24 @@ class StageOne {
         }
     }
 
+    addBothBannerText() {
+        
+        //For Stage 1
+        const imageNames = ["redCircle", "whiteCircle", "blueCircle", "blackCircle", "greenCircle", "orangeCircle"]
+
+        const randomImage = imageNames[Math.floor(Math.random() * imageNames.length)];
+
+        const isComplement = [true, false]
+        this.self.randomSign = isComplement[Math.floor(Math.random() * isComplement.length)];
+
+        this.addTopTextWithCircle(imageNames);
+        this.addBottomTextWithCircle(randomImage, this.self.randomSign)
+    }
+
+    addChecking() {
+        
+    }
+
 }
 
 export default StageOne

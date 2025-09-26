@@ -21,16 +21,7 @@ class Banner {
 
         this.self.topContainer = this.self.add.container(0, 0, [topLeft, topMid, topRight]);
 
-        //For Stage 1
-        const imageNames = ["redCircle", "whiteCircle", "blueCircle", "blackCircle", "greenCircle", "orangeCircle"]
-
-        const randomImage = imageNames[Math.floor(Math.random() * imageNames.length)];
-
-        const isComplement = [true, false]
-        this.self.randomSign = isComplement[Math.floor(Math.random() * isComplement.length)];
-
-        this.stageOne.addTopTextWithCircle(imageNames);
-        this.stageOne.addBottomTextWithCircle(randomImage, this.self.randomSign)
+        this.stageOne.addBothBannerText()
         
     }
 

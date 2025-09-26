@@ -417,6 +417,13 @@ function PhaserGameSetUp() {
                                                         if (secondIdx !== -1) chars[secondIdx] = chosenNumber[1];
                                                     }
                                                 }
+
+                                                if (this.numeratorAnswer !== this.probAnswer[0] || this.denominatorAnswer !== this.probAnswer[1]) {
+                                                    console.log("Wrong")
+                                                }
+                                                else {
+                                                    console.log("Correct")
+                                                }
                                                 this.textIndicator = 3
                                             }
 
