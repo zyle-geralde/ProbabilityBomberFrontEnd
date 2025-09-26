@@ -14,6 +14,14 @@ class StageOne {
             this.self.textAfter.destroy();
             this.self.textAfter = null
         }
+        if (this.self.textBottom) {
+            this.self.textBottom.destroy()
+            this.self.textBottom = null
+        }
+        if (this.self.redCircle) {
+            this.self.redCircle.destroy()
+            this.self.redCircle = null
+        }
 
         const xBase = 640;   // textBefore x
         const yBase = this.self.bottomBannerY;
@@ -27,7 +35,7 @@ class StageOne {
         }).setOrigin(0.5);
 
         // Circle image
-        const redCircle = this.self.add.image(672, yBase, this.self.colorPicked).setDisplaySize(30, 30);
+        this.self.redCircle = this.self.add.image(672, yBase, this.self.colorPicked).setDisplaySize(30, 30);
 
         // Decide AFTER text and position
         const afterConfig = randomSign
@@ -42,7 +50,8 @@ class StageOne {
         }).setOrigin(0.5);
 
         // Add them into the container (so they move with banners)
-        this.self.bottomContainer.add([this.self.textBottom, redCircle, this.self.textAfter]);
+        this.self.bottomContainer.add(this.self.redCircle);
+        this.self.bottomContainer.add([this.self.textBottom, this.self.textAfter]);
     }
     addTopTextWithCircle(imageNames) {
         if (!this.self.topContainer) {
@@ -66,6 +75,7 @@ class StageOne {
         let startX = centerX - totalWidth / 2;
 
         const objectsToAdd = [];
+        const imageToAdd = []
 
         // --- Add "Given" text first ---
         const givenText = this.self.add.text(startX + 20, y, "Given:", {
@@ -105,7 +115,9 @@ class StageOne {
             // Circle image
             const circleImg = this.self.add.image(startX + 25, y, circle).setDisplaySize(30, 30);
 
-            objectsToAdd.push(numberText, circleImg);
+            imageToAdd.push(circleImg);
+            objectsToAdd.push(numberText)
+        
 
             startX += termWidth;
         }
@@ -137,6 +149,7 @@ class StageOne {
         this.self.probAnswer = [numerator, denominator];
 
         // Add everything into the top container
+        this.self.topContainer.add(imageToAdd);
         this.self.topContainer.add(objectsToAdd);
 
         console.log("Samples:", this.self.givenSample);
@@ -161,7 +174,6 @@ class StageOne {
     }
 
     addBothBannerText() {
-        
         //For Stage 1
         const imageNames = ["redCircle", "whiteCircle", "blueCircle", "blackCircle", "greenCircle", "orangeCircle"]
 
@@ -174,9 +186,6 @@ class StageOne {
         this.addBottomTextWithCircle(randomImage, this.self.randomSign)
     }
 
-    addChecking() {
-        
-    }
 
 }
 

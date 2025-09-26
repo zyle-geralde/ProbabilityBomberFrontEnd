@@ -142,6 +142,7 @@ function PhaserGameSetUp() {
                         this.bottomContainer = null
                         this.topContainer = null
                         this.textBottom = null
+                        this.redCircle = null
 
                         //Stage 1
                         this.sampleSize = null
@@ -448,6 +449,9 @@ function PhaserGameSetUp() {
                                                             this.textAfter.setAlpha(1); // reset visibility
                                                             this.textBottom.setAlpha(1); // reset visibility
                                                             this.resetTextAfter();
+
+                                                            //change problem
+                                                            
                                                         }
                                                     });
 
@@ -473,6 +477,7 @@ function PhaserGameSetUp() {
                                                             this.textAfter.setAlpha(1); // reset visibility
                                                             this.textBottom.setAlpha(1); // reset visibility
                                                             this.resetTextAfter();
+                                                            this.Banner.createProbQuestionHolder()
                                                         }
                                                     });
                                                 }
