@@ -75,30 +75,35 @@ function LessonPage({ userData }) {
             <div className="lesson-panel flex flex-wrap gap-6 p-6 items-start justify-center w-full bg-gray-100 box-border">
 
                 <LessonCard
+                  stage="/tutorialPage"
                   image="lesson-image.jpg"
                   title="Tutorial"
-                  description="Get to know the game!"
+                  description="Learn the basics of the game here. This tutorial will walk you through movement, interactions, and scoring so you’re ready for the main stages."
                 />
 
                 <LessonCard
+                  stage="/stagePage"
                   image="lesson-image.jpg"
                   title="Chance 101"
                   description="Introduction to Probability — discover how randomness and chance shape the world around us."
                 />
 
                 <LessonCard
+                  stage="/stage01Page"
                   image="lesson-image.jpg"
                   title="When Events Happen"
                   description="Equally Likely & Complementary Events — learn when outcomes share the same probability and how complements balance the odds."
                 />
 
                 <LessonCard
+                  stage="/stage02Page"
                   image="lesson-image.jpg"
                   title="Probability in Action"
                   description="Types of Probability — explore classical, experimental, and subjective approaches to calculating chance."
                 />
 
                 <LessonCard
+                  stage="/stage03Page"
                   image="lesson-image.jpg"
                   title="When Events Collide"
                   description="Mutually and Not Mutually Exclusive Events — see what happens when events overlap (or don’t)."
