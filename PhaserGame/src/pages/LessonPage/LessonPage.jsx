@@ -58,19 +58,38 @@ function LessonPage({ userData }) {
   return (
     <div>
       <HomeNavbar />
-      {isTeacher && <button
-            className='btn btn-danger'style={{"marginLeft":"40px","marginTop":"30px"}}
-                onClick={() => navigate('/classPage')}
-            >
-            {"<"}
-        </button>}
+      <div className="lesson-page-wrapper">
 
-        <div className="lesson-page-wrapper">
-          <div class="welcome">
-            <h2>Welcome to the Quiz Catalog</h2>
-            <p>Challenge yourself with our curated quiz collection</p>
+          <div className="header-container relative min-h-[300px] text-white overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-b from-rose-300 to-[#641B2E] opacity-80"></div>
+
+            <img
+                src="/images/authentication_background.png"
+                alt="Stage Background"
+                className="absolute inset-0 w-full h-full object-cover opacity-30"
+                onError={(e) => (e.currentTarget.style.display = "none")}
+            />
+
+            <div class="welcome-Header relative z-20 max-w-7xl mx-auto px-4 lg:px-8 py-16">
+              {/* Breadcrumb */}
+              <ol className="flex items-center space-x-2 text-sm mb-4">
+                <li>
+                    Homepage /
+                </li>
+              </ol>
+
+              {/* Header */}
+              <div className="text-center">
+                <h1 className="!text-6xl text-center font-bold mb-2">Welcome to the Quiz Catalog</h1>
+                <p className="!mt-10 flex-col md:flex-row items-center justify-center gap-6 text-gray-200 text-lg">
+                    Challenge yourself with our curated quiz collection.
+                </p>
+              </div>
+            </div>
           </div>
+          
 
+          {/* Content */}
           <div className="lesson-page-container">
             <div className="lesson-panel flex flex-wrap gap-6 p-6 items-start justify-center w-full bg-gray-100 box-border">
 
