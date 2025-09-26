@@ -19,7 +19,7 @@ class StageOne {
         const yBase = this.self.bottomBannerY;
 
         // Text BEFORE the circle
-        const textBefore = this.self.add.text(xBase, yBase, "P(", {
+        this.self.textBottom = this.self.add.text(xBase, yBase, "P(", {
             fontSize: "27px",
             color: "#fff",
             fontStyle: "bold",
@@ -42,7 +42,7 @@ class StageOne {
         }).setOrigin(0.5);
 
         // Add them into the container (so they move with banners)
-        this.self.bottomContainer.add([textBefore, redCircle, this.self.textAfter]);
+        this.self.bottomContainer.add([this.self.textBottom, redCircle, this.self.textAfter]);
     }
     addTopTextWithCircle(imageNames) {
         if (!this.self.topContainer) {

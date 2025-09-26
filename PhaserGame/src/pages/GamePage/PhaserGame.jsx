@@ -67,6 +67,8 @@ function PhaserGameSetUp() {
                     create: function () {
                         //GameInfo
                         this.stage = 1;
+                        this.allowInputs = true
+
                         //Wall
                         this.wallGroup = null;
                         this.wallDim = 45
@@ -139,6 +141,7 @@ function PhaserGameSetUp() {
                         this.randomSign = null
                         this.bottomContainer = null
                         this.topContainer = null
+                        this.textBottom = null
 
                         //Stage 1
                         this.sampleSize = null
@@ -359,7 +362,7 @@ function PhaserGameSetUp() {
                         this.handlePlayerWallTextOverlap = function () {
                             if (this.wallTextGroup) {
                                 this.physics.overlap(this.player, this.wallTextGroup, (player, wallText) => {
-                                    if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S))) {
+                                    if (this.allowInputs == true && Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S))) {
                                         if (wallText.getData("pressed")) {
 
                                             return;
@@ -418,19 +421,27 @@ function PhaserGameSetUp() {
                                                     }
                                                 }
 
+                                                //Checking answer
                                                 if (this.numeratorAnswer !== this.probAnswer[0] || this.denominatorAnswer !== this.probAnswer[1]) {
                                                     console.log("Wrong")
 
+                                                    this.allowInputs = false;
                                                     this.tweens.add({
-                                                        targets: this.textAfter,
+                                                        targets: [this.textAfter, this.textBottom],
                                                         alpha: { from: 1, to: 0 },   // fade in/out
                                                         duration: 500,               // quick blink
                                                         repeat: 1,                   // number of flickers
                                                         yoyo: true,
-                                                        onStart: () => this.textAfter.setColor("#ff0000"),
+                                                        onStart: () => {
+                                                            this.textAfter.setColor("#ff0000")
+                                                            this.textBottom.setColor("#ff0000")
+                                                        },
                                                         onComplete: () => {
+                                                            this.allowInputs = true
                                                             this.textAfter.setColor("#ffffff");
+                                                            this.textBottom.setColor("#ffffff")
                                                             this.textAfter.setAlpha(1); // reset visibility
+                                                            this.textBottom.setAlpha(1); // reset visibility
                                                             this.resetTextAfter();
                                                         }
                                                     });
@@ -454,7 +465,7 @@ function PhaserGameSetUp() {
 
                         }
                         this.handleResetAnswer = function () {
-                            if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X))) {
+                            if (this.allowInputs && Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X))) {
                                 this.resetTextAfter();
                             }
                         }
