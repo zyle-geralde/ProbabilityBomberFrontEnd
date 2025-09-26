@@ -361,7 +361,7 @@ function PhaserGameSetUp() {
                                 this.physics.overlap(this.player, this.wallTextGroup, (player, wallText) => {
                                     if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S))) {
                                         if (wallText.getData("pressed")) {
-                                            
+
                                             return;
                                         }
 
@@ -420,6 +420,21 @@ function PhaserGameSetUp() {
 
                                                 if (this.numeratorAnswer !== this.probAnswer[0] || this.denominatorAnswer !== this.probAnswer[1]) {
                                                     console.log("Wrong")
+
+                                                    this.tweens.add({
+                                                        targets: this.textAfter,
+                                                        alpha: { from: 1, to: 0 },   // fade in/out
+                                                        duration: 500,               // quick blink
+                                                        repeat: 1,                   // number of flickers
+                                                        yoyo: true,
+                                                        onStart: () => this.textAfter.setColor("#ff0000"),
+                                                        onComplete: () => {
+                                                            this.textAfter.setColor("#ffffff");
+                                                            this.textAfter.setAlpha(1); // reset visibility
+                                                            this.resetTextAfter();
+                                                        }
+                                                    });
+
                                                 }
                                                 else {
                                                     console.log("Correct")
@@ -457,7 +472,7 @@ function PhaserGameSetUp() {
                         this.startEnemySpawnLoop()
                         this.createStartingEnemies()
                         this.createSideItems()
-                        
+
 
 
                         //enable keyboard press
