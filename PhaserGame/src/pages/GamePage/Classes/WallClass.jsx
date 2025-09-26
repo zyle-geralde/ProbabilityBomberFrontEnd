@@ -203,6 +203,121 @@ class Wall {
         });
     }
 
+    createRandomInsideWallsEnemyAdjustment(count = 6) {
+        if (!this.insideWallDimension) {
+            this.assignInsideWallDimension();
+        }
+
+        const playerCol = Math.round((this.self.player.x - this.centerX) / this.self.wallDim);
+        const playerRow = Math.round((this.self.player.y - this.adjustwall) / this.self.wallDim);
+
+        //Build a list of free positions
+        let availablePositions = [];
+        for (let col = 1; col < this.self.cols - 1; col++) {
+            for (let row = 1; row < this.self.rows; row++) {
+                const alreadyHasWall = this.insideWallDimension.some(w => w.col === col && w.row === row);
+                const isPlayerHere = (col === playerCol && row === playerRow);
+
+                const coordinateList = [[5, 3], [7, 3], [6, 5], [4, 4], [8, 4]];
+                const isInCoordinateList = coordinateList.some(([c, r]) => c === col && r === row);
+
+                //NEW: check enemy overlap
+                const gridX = this.centerX + col * this.self.wallDim;
+                const gridY = this.adjustwall + row * this.self.wallDim;
+
+                let isEnemyHere = false;
+
+                if (this.self.enemyGroup) {
+                    this.self.enemyGroup.getChildren().forEach(enemy => {
+                        if (Math.round((enemy.x - this.centerX) / this.self.wallDim) === col &&
+                            Math.round((enemy.y - this.adjustwall) / this.self.wallDim) === row) {
+                            isEnemyHere = true;
+                        }
+                    });
+                }
+
+                if (this.self.advanceEnemyGroup) {
+                    this.self.advanceEnemyGroup.getChildren().forEach(enemy => {
+                        if (Math.round((enemy.x - this.centerX) / this.self.wallDim) === col &&
+                            Math.round((enemy.y - this.adjustwall) / this.self.wallDim) === row) {
+                            isEnemyHere = true;
+                        }
+                    });
+                }
+
+                if (!alreadyHasWall && !isPlayerHere && !isInCoordinateList && !isEnemyHere) {
+                    availablePositions.push({ col, row });
+                }
+            }
+        }
+
+        if (availablePositions.length === 0) {
+            console.warn("No free positions available to place walls.");
+            return;
+        }
+
+        // Shuffle positions
+        for (let i = availablePositions.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [availablePositions[i], availablePositions[j]] = [availablePositions[j], availablePositions[i]];
+        }
+
+        // Pick up to "count" positions
+        const chosenPositions = availablePositions.slice(0, count);
+
+        // Copy probability numbers so we don’t mutate the original
+        let availableNumbers = [...this.self.probabilityNumbers];
+
+        // Shuffle the numbers for randomness
+        for (let i = availableNumbers.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [availableNumbers[i], availableNumbers[j]] = [availableNumbers[j], availableNumbers[i]];
+        }
+
+        this.self.breakablewall = this.self.physics.add.group({ immovable: true });
+
+        chosenPositions.forEach(({ col, row }, index) => {
+            if (availableNumbers.length === 0) {
+                console.warn("Ran out of unique numbers to assign.");
+                return;
+            }
+
+            const xValue = this.centerX + col * this.self.wallDim;
+            const yValue = this.adjustwall + row * this.self.wallDim;
+
+            // Get and remove a unique number
+            const randomNum = availableNumbers.pop();
+
+            // Create wall
+            let wall = this.self.breakablewall.create(xValue, yValue, "brkwall");
+            wall.setDisplaySize(this.self.wallDim, this.self.wallDim);
+
+            // Store with unique number
+            this.self.brkWallList.push({ x: xValue, y: yValue, value: randomNum });
+
+            // Add number overlay
+            const wallText = this.self.add.text(xValue, yValue, randomNum, {
+                fontSize: "27px",
+                color: "#bd0202ff",
+                fontStyle: "bold",
+                stroke: "#000000",    // black outline
+                strokeThickness: 3    // thickness of stroke
+            }).setOrigin(0.5);
+            wallText.setDepth(1);
+
+            if (!this.self.wallTextGroup) {
+                this.self.wallTextGroup = this.self.add.group();
+            }
+            this.self.wallTextGroup.add(wallText);
+
+            this.self.physics.add.existing(wallText);
+            wallText.body.setSize(30, 30); // match text size
+            wallText.body.setImmovable(true);
+
+            console.log(`Wall at col:${col}, row:${row} with unique value=${randomNum}`);
+        });
+    }
+
 
     createRandomItems(count = 5) {
         let attempts = 0;

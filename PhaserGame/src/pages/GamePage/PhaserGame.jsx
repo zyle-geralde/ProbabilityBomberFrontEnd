@@ -480,21 +480,35 @@ function PhaserGameSetUp() {
 
                                                             //Destroy random inside walls
                                                             if (this.breakablewall) {
-                                                                this.breakablewall.children.iterate(wall => {
+                                                                let walls = this.breakablewall.getChildren();
+                                                                let totalWalls = walls.length;  // ✅ dynamic count
+                                                                let destroyed = 0;
+
+                                                                walls.forEach(wall => {
                                                                     if (wall) {
                                                                         this.tweens.add({
                                                                             targets: wall,
                                                                             alpha: 0,
                                                                             duration: 300,
                                                                             onComplete: () => {
-                                                                                this.brkWallList = []
-                                                                                wall.destroy()
-                                                                            }
+                                                                                wall.destroy();
+                                                                                destroyed++;
 
+                                                                                //respawn only when ALL are destroyed
+                                                                                if (destroyed === totalWalls) {
+                                                                                    this.brkWallList = [];
+                                                                                    this.Wall.createRandomInsideWallsEnemyAdjustment();
+
+                                                                                    this.physics.add.collider(this.player, this.breakablewall);
+                                                                                    this.physics.add.collider(this.enemyGroup, this.breakablewall, this.handleEnemyCollision);
+                                                                                    this.physics.add.overlap(this.explosionGroup, this.breakablewall, this.hanldeExplosionWallOverlap);
+                                                                                }
+                                                                            }
                                                                         });
                                                                     }
                                                                 });
                                                             }
+
 
                                                             //Destroy wall text numbers
                                                             if (this.wallTextGroup) {
