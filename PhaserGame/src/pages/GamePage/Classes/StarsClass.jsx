@@ -42,13 +42,13 @@ class Stars {
             });
         };
 
-        if (this.self.pointCount == 1) {
+        if (this.self.pointCount == 7) {
             this.self.star1 = animateStar(this.self.star1, 1150, 90) || this.self.star1;
         }
-        if (this.self.pointCount == 2) {
+        if (this.self.pointCount == 14) {
             this.self.star2 = animateStar(this.self.star2, 1192, 70) || this.self.star2;
         }
-        if (this.self.pointCount == 3) {
+        if (this.self.pointCount == 21) {
             this.self.star3 = animateStar(this.self.star3, 1234, 90) || this.self.star3;
         }
     }
