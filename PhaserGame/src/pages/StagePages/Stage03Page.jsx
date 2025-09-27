@@ -14,7 +14,7 @@ export default function Stage03Page() {
 
     {/* Background image */}
     <img
-        src="/images/authentication_background.png"
+        src="/images/candy.jpg"
         alt="Stage Background"
         className="absolute inset-0 w-full h-full object-cover opacity-30"
         onError={(e) => (e.currentTarget.style.display = "none")}
