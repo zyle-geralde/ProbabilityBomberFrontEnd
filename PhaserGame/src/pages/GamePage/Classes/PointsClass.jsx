@@ -11,6 +11,14 @@ class Points {
             stroke: "#000000",    // black outline
         }).setOrigin(0.5);
     }
+    addPoints() {
+        //Add points
+        this.self.pointCount += 1;
+        if (this.self.pointText) {
+            this.self.pointText.destroy()
+            this.self.pointText = null;
+        }
+    }
 }
 
 export default Points
