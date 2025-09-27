@@ -31,9 +31,10 @@ function PhaserGameSetUp() {
                     preload: function () {
                         this.load.image("background1", 'images/backgroundDispF.png');
                         this.load.image("background2", 'images/backgroundDispS.png')
+                        this.load.image("background3", 'images/backgroundDisp3.png')
                         this.load.image('ground', 'images/background-whiteArtboard 1.png');
                         this.load.image('unbrkwall', 'images/newUnbrkWall.png');
-                        this.load.image('brkwall', 'images/newBrkWall.png')
+                        this.load.image('brkwall', 'images/backgroundDisp3.png')
                         this.load.image('bomb', 'images/bomb.png')
                         this.load.image('bombItem', 'images/bombItem.png')
                         this.load.image('explodeItem', 'images/explodeItem.png')
@@ -199,7 +200,7 @@ function PhaserGameSetUp() {
                             for (let col = 0; col < cols; col++) {
                                 for (let row = 0; row < rows; row++) {
                                     // alternate between background1 and background2
-                                    const texture = (col + row) % 2 === 0 ? "background1" : "background2";
+                                    const texture = (col + row) % 2 === 0 ? "background2" : "background2";
                                     const x = col * tileSize + tileSize / 2;
                                     const y = row * tileSize + tileSize / 2;
 
