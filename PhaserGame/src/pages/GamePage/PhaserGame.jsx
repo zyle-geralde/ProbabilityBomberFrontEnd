@@ -29,9 +29,11 @@ function PhaserGameSetUp() {
                 pixelArt: true,
                 scene: {
                     preload: function () {
+                        this.load.image("background1", 'images/backgroundDispF.png');
+                        this.load.image("background2", 'images/backgroundDispS.png')
                         this.load.image('ground', 'images/background-whiteArtboard 1.png');
-                        this.load.image('unbrkwall', 'images/unbreakable-WallArtboard 1.png');
-                        this.load.image('brkwall', 'images/breakable-WallArtboard 1.png')
+                        this.load.image('unbrkwall', 'images/newUnbrkWall.png');
+                        this.load.image('brkwall', 'images/newBrkWall.png')
                         this.load.image('bomb', 'images/bomb.png')
                         this.load.image('bombItem', 'images/bombItem.png')
                         this.load.image('explodeItem', 'images/explodeItem.png')
@@ -190,15 +192,29 @@ function PhaserGameSetUp() {
 
                         //game setUp
                         this.createBackground = function () {
-                            self.add.sprite(-70, -500, 'ground').setOrigin(0, 0).setScale(0.8)
-                        }
+                            const tileSize = 120;
+                            const cols = Math.ceil(this.sys.game.config.width / tileSize);
+                            const rows = Math.ceil(this.sys.game.config.height / tileSize);
+
+                            for (let col = 0; col < cols; col++) {
+                                for (let row = 0; row < rows; row++) {
+                                    // alternate between background1 and background2
+                                    const texture = (col + row) % 2 === 0 ? "background1" : "background2";
+                                    const x = col * tileSize + tileSize / 2;
+                                    const y = row * tileSize + tileSize / 2;
+
+                                    this.add.image(x, y, texture).setDisplaySize(tileSize, tileSize);
+                                }
+                            }
+                        };
+
                         this.createPoints = function () {
                             self.Points.createPoints()
                         }
                         this.createStars = function () {
                             self.Stars.createStars()
                         }
-                        this.createTimer = function (){
+                        this.createTimer = function () {
                             this.Timer.startTimer()
                         }
                         this.createSideItems = function () {
@@ -328,7 +344,7 @@ function PhaserGameSetUp() {
 
 
                         //Method calls
-                        //this.createBackground()
+                        this.createBackground()
                         this.createTimer()
                         this.createProbQuestionHolder()
                         this.createPoints()
