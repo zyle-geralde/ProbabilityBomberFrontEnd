@@ -62,6 +62,12 @@ class StageOne {
         if (this.self.coloredBallGiven.length > 0) {
             this.self.coloredBallGiven = []
         }
+        if (this.self.givenSample.length > 0) {
+            this.self.givenSample = []
+        }
+        if (this.self.sampleSize) {
+            this.self.sampleSize = null
+        }
         // Middle banner center
         const centerX = 740;
         const y = 70;
