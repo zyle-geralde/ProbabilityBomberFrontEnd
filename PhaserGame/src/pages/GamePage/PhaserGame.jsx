@@ -7,6 +7,7 @@ import Banner from './Classes/BannerClass';
 import OverlapCollision from './Classes/OverlapCollisionClass';
 import Points from './Classes/PointsClass';
 import Stars from './Classes/StarsClass';
+import Timer from './Classes/TimerClass';
 
 function PhaserGameSetUp() {
     const gameRef = useRef(null);
@@ -169,6 +170,10 @@ function PhaserGameSetUp() {
                         this.star2 = null
                         this.star3 = null
 
+                        //Timer
+                        this.startTime = null
+                        this.timeText = null
+
 
                         //Classes
                         this.Wall = new Wall(this)
@@ -178,6 +183,7 @@ function PhaserGameSetUp() {
                         this.OverlapCollision = new OverlapCollision(this)
                         this.Points = new Points(this)
                         this.Stars = new Stars(this)
+                        this.Timer = new Timer(this)
 
                         //assign this to self
                         const self = this
@@ -191,6 +197,9 @@ function PhaserGameSetUp() {
                         }
                         this.createStars = function () {
                             self.Stars.createStars()
+                        }
+                        this.createTimer = function (){
+                            this.Timer.startTimer()
                         }
                         this.createSideItems = function () {
                             self.SideItem.createSideItems()
@@ -320,6 +329,7 @@ function PhaserGameSetUp() {
 
                         //Method calls
                         //this.createBackground()
+                        this.createTimer()
                         this.createProbQuestionHolder()
                         this.createPoints()
                         this.createStars()
@@ -385,6 +395,7 @@ function PhaserGameSetUp() {
                         this.handleEnemyBehavior()
                         this.handlePlayerWallTextOverlap()
                         this.handleResetAnswer()
+                        this.Timer.updateTimer()
                     }
                 },
                 parent: gameRef.current,
