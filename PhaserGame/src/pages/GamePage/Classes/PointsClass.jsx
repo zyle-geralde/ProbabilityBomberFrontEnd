@@ -4,7 +4,7 @@ class Points {
     }
 
     createPoints() {
-        this.self.pointText = this.self.add.text(1200, 20, `Points: ${this.self.pointCount}`, {
+        this.self.pointText = this.self.add.text(1200, 140, `Points: ${this.self.pointCount}`, {
             fontSize: "23px",
             color: "#ffffffff",
             fontStyle: "bold",

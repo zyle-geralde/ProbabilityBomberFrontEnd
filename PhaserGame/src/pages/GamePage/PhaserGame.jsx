@@ -6,6 +6,7 @@ import SideItems from './Classes/SideItems';
 import Banner from './Classes/BannerClass';
 import OverlapCollision from './Classes/OverlapCollisionClass';
 import Points from './Classes/PointsClass';
+import Stars from './Classes/StarsClass';
 
 function PhaserGameSetUp() {
     const gameRef = useRef(null);
@@ -61,6 +62,8 @@ function PhaserGameSetUp() {
                         this.load.image('orangeCircle', 'images/orangeCircle.png')
                         this.load.image('redCircle', 'images/redCircle.png')
                         this.load.image('whiteCircle', 'images/whiteCircle.png')
+                        this.load.image('fullStar', 'images/fullStar.png')
+                        this.load.image('halfStar', 'images/halfStar.png')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 42,
                             frameHeight: 72,
@@ -160,6 +163,12 @@ function PhaserGameSetUp() {
                         this.pointCount = 0
                         this.pointText = null
 
+                        //Stars
+                        this.numberOfStars = 0
+                        this.star1 = null
+                        this.star2 = null
+                        this.star3 = null
+
 
                         //Classes
                         this.Wall = new Wall(this)
@@ -168,6 +177,7 @@ function PhaserGameSetUp() {
                         this.Banner = new Banner(this)
                         this.OverlapCollision = new OverlapCollision(this)
                         this.Points = new Points(this)
+                        this.Stars = new Stars(this)
 
                         //assign this to self
                         const self = this
@@ -178,6 +188,9 @@ function PhaserGameSetUp() {
                         }
                         this.createPoints = function () {
                             self.Points.createPoints()
+                        }
+                        this.createStars = function () {
+                            self.Stars.createStars()
                         }
                         this.createSideItems = function () {
                             self.SideItem.createSideItems()
@@ -309,6 +322,7 @@ function PhaserGameSetUp() {
                         //this.createBackground()
                         this.createProbQuestionHolder()
                         this.createPoints()
+                        this.createStars()
                         this.createPlayer()
                         this.createWalls()
                         this.createRandomItems()
