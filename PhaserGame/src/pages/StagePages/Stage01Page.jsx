@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import HomeNavbar from "../../components/navbar/HomeNavbar";
 
 export default function Stage01Page() {
@@ -24,9 +25,9 @@ export default function Stage01Page() {
         {/* Breadcrumb */}
         <ol className="flex items-center space-x-2 text-sm mb-4">
         <li>
-            <a href="/" className="text-white hover:text-gray-200 font-medium">
+            <Link to="/lessonPage" className="text-white hover:text-gray-200 font-medium">
             Homepage
-            </a>
+            </Link>
         </li>
         <li className="text-white">/</li>
         <li className="text-white font-medium min-w-0">Stage 1</li>

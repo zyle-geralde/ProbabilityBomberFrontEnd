@@ -1,12 +1,21 @@
 import React, { useState } from "react";
 import HomeNavbar from "../../components/navbar/HomeNavbar";
+import LessonProgress from "../../components/statistic/LessonProgress";
+import CompletionBreakdown from "../../components/statistic/CompletionBreakdown";
 import UpdatePasswordForm from "../../components/forms/UpdatePasswordForm";
+import Achievements from "../../components/statistic/Achievements";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faUserTag,faExclamationCircle, faEnvelope, faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("statistics"); // default is statistics
-
+  const stages = [
+    // Change to get actual data
+  { title: "Basic Probability", score: 80, durationMinutes: 20 },
+  { title: "Independent & Dependent Probability", score: 65, durationMinutes: 30 },
+  { title: "Bayes’ Theorem", score: 90, durationMinutes: 25 },
+  ];
   return (
     <>
       <HomeNavbar />
@@ -25,15 +34,15 @@ export default function ProfilePage() {
         <div className="relative z-20 max-w-7xl mx-auto px-4 lg:px-8 py-16">
           <ol className="flex items-center space-x-2 text-sm mb-4">
             <li>
-              <a href="/" className="text-white hover:text-gray-200 font-medium">
+              <Link to="/lessonPage" className="text-white hover:text-gray-200 font-medium">
                 Homepage
-              </a>
+              </Link>
             </li>
             <li className="text-white">/</li>
             <li className="text-white font-medium min-w-0">Profile</li>
           </ol>
 
- {/* Username + Info */}
+            {/* Username + Info */}
             <h1 className="!text-6xl text-center font-bold mb-2">Username</h1>
             <div className="flex mt-10 flex-col md:flex-row items-center justify-center gap-6 text-gray-200 text-lg">
             <span className="flex items-center gap-2">
@@ -91,10 +100,10 @@ export default function ProfilePage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                 <h2 className="text-lg font-bold text-gray-900 mb-4">
-                  Lesson Progress
+                  Stage Progress
                 </h2>
-                <div className="h-32 bg-gray-50 border rounded-lg flex items-center justify-center text-gray-400">
-                  Progress chart placeholder
+                <div className="h-fit">
+                  <LessonProgress stages={stages} />
                 </div>
               </div>
 
@@ -102,16 +111,16 @@ export default function ProfilePage() {
                 <h2 className="text-lg font-bold text-gray-900 mb-4">
                   Completion Breakdown
                 </h2>
-                <div className="h-32 bg-gray-50 border rounded-lg flex items-center justify-center text-gray-400">
-                  Breakdown chart placeholder
+                <div className="h-fit">
+                  <CompletionBreakdown stages={stages} />
                 </div>
               </div>
             </div>
 
             <div className="mt-8 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h2 className="text-lg font-bold text-gray-900 mb-4">Achievement</h2>
-              <div className="h-24 bg-gray-50 border rounded-lg flex items-center justify-center text-gray-400">
-                Achievement placeholder
+              <div className="h-fit">
+                <Achievements/>
               </div>
             </div>
           </>
