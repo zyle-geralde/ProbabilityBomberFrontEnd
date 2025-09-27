@@ -1,5 +1,6 @@
 import React from "react";
 import HomeNavbar from "../../components/navbar/HomeNavbar";
+import { Link } from "react-router-dom";
 
 export default function TutorialPage() {
   return (
@@ -24,9 +25,9 @@ export default function TutorialPage() {
         {/* Breadcrumb */}
         <ol className="flex items-center space-x-2 text-sm mb-4">
         <li>
-            <a href="/" className="text-white hover:text-gray-200 font-medium">
+            <Link to="/lessonPage" className="text-white hover:text-gray-200 font-medium">
             Homepage
-            </a>
+            </Link>
         </li>
         <li className="text-white">/</li>
         <li className="text-white font-medium min-w-0">Tutorial</li>
@@ -37,7 +38,7 @@ export default function TutorialPage() {
         <h1 className="!text-6xl text-center font-bold mb-2">Tutorial</h1>
         <p className="!mt-10 flex-col md:flex-row items-center justify-center gap-6 text-gray-200 text-lg">
             Learn the basics of the game here. This tutorial will walk you through
-            movement, interactions, and scoring so you’re ready for the main stages.Sample text is being used as a placeholder.
+            movement, interactions, and scoring so you’re ready for the main stages.
         </p>
         </div>
     </div>
