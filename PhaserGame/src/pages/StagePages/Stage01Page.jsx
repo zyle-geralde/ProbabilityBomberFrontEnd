@@ -14,7 +14,7 @@ export default function Stage01Page() {
 
     {/* Background image */}
     <img
-        src="/images/authentication_background.png"
+        src="/images/deck_of_cards.jpg"
         alt="Stage Background"
         className="absolute inset-0 w-full h-full object-cover opacity-30"
         onError={(e) => (e.currentTarget.style.display = "none")}
