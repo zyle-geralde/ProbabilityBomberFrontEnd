@@ -5,6 +5,7 @@ import Player from './Classes/PlayerClass';
 import SideItems from './Classes/SideItems';
 import Banner from './Classes/BannerClass';
 import OverlapCollision from './Classes/OverlapCollisionClass';
+import Points from './Classes/PointsClass';
 
 function PhaserGameSetUp() {
     const gameRef = useRef(null);
@@ -155,12 +156,18 @@ function PhaserGameSetUp() {
                         //Probability questions and answer
                         this.probabilityNumbers = [1, 2, 25, 30, 5, 45]
 
+                        //Points
+                        this.pointCount = 0
+                        this.pointText = null
+
+
                         //Classes
                         this.Wall = new Wall(this)
                         this.Player = new Player(this, this.Wall)
                         this.SideItem = new SideItems(this)
                         this.Banner = new Banner(this)
                         this.OverlapCollision = new OverlapCollision(this)
+                        this.Points = new Points(this)
 
                         //assign this to self
                         const self = this
@@ -168,6 +175,9 @@ function PhaserGameSetUp() {
                         //game setUp
                         this.createBackground = function () {
                             self.add.sprite(-70, -500, 'ground').setOrigin(0, 0).setScale(0.8)
+                        }
+                        this.createPoints = function () {
+                            self.Points.createPoints()
                         }
                         this.createSideItems = function () {
                             self.SideItem.createSideItems()
@@ -269,17 +279,17 @@ function PhaserGameSetUp() {
                         }
                         this.hanldeExplosionWallOverlap = (explosion, wall) => {
 
-                            self.OverlapCollision.hanldeExplosionWallOverlap(explosion,wall)
+                            self.OverlapCollision.hanldeExplosionWallOverlap(explosion, wall)
                         }
                         this.handleExplosionEnemyOverlap = (explosion, enemy) => {
-                           self.OverlapCollision.handleExplosionEnemyOverlap(explosion, enemy)
+                            self.OverlapCollision.handleExplosionEnemyOverlap(explosion, enemy)
                         };
                         this.handleExplosionPlayerOverlap = () => {
                             self.OverlapCollision.handleExplosionPlayerOverlap()
                         }
                         this.handleItemPlayerOverlap = (player, item) => {
 
-                           self.OverlapCollision.handleItemPlayerOverlap(player, item)
+                            self.OverlapCollision.handleItemPlayerOverlap(player, item)
                         }
                         this.handlePlayerEnemyOverlap = () => {
                             self.OverlapCollision.handlePlayerEnemyOverlap()
@@ -298,6 +308,7 @@ function PhaserGameSetUp() {
                         //Method calls
                         //this.createBackground()
                         this.createProbQuestionHolder()
+                        this.createPoints()
                         this.createPlayer()
                         this.createWalls()
                         this.createRandomItems()

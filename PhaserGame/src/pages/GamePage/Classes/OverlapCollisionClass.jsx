@@ -220,6 +220,15 @@ class OverlapCollision {
                                         this.self.textAfter.setAlpha(1); // reset visibility
                                         this.self.textBottom.setAlpha(1); // reset visibility
 
+                                        //Add points
+                                        this.self.pointCount += 1;
+                                        if (this.self.pointText) {
+                                            this.self.pointText.destroy()
+                                            this.self.pointText = null;
+                                        }
+
+                                        this.self.pointText = this.self.Points.createPoints()
+
 
                                         //Destroy random inside walls
                                         if (this.self.breakablewall) {
