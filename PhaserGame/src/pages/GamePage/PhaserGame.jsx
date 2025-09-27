@@ -4,6 +4,7 @@ import Wall from './Classes/WallClass';
 import Player from './Classes/PlayerClass';
 import SideItems from './Classes/SideItems';
 import Banner from './Classes/BannerClass';
+import OverlapCollision from './Classes/OverlapCollisionClass';
 
 function PhaserGameSetUp() {
     const gameRef = useRef(null);
@@ -159,6 +160,7 @@ function PhaserGameSetUp() {
                         this.Player = new Player(this, this.Wall)
                         this.SideItem = new SideItems(this)
                         this.Banner = new Banner(this)
+                        this.OverlapCollision = new OverlapCollision(this)
 
                         //assign this to self
                         const self = this
@@ -259,292 +261,35 @@ function PhaserGameSetUp() {
                             self.Wall.createStartingEnemies()
                         }
                         this.resetTextAfter = function () {
-                            if (this.textAfter && this.randomSign != null) {
-                                if (this.randomSign) {
-                                    this.textAfter.setText("') = -- / --");
-                                }
-                                else {
-                                    this.textAfter.setText(") = -- / --");
-                                }
-
-                                this.textIndicator = 1;
-
-                                //Reset wallText visuals and pressable state
-                                this.wallTextGroup.children.iterate(wallText => {
-                                    wallText.setAlpha(1); // fully visible again
-                                    wallText.setData("pressed", false);
-                                });
-
-                                this.numeratorAnswer = null
-                                this.denominatorAnswer = null
-                            }
+                            self.OverlapCollision.resetTextAfter()
                         };
                         this.handleEnemyCollision = (enemy) => { enemy.getData("ref").changeDirection() };
                         this.handleEnemyBehavior = () => {
-                            this.enemyGroup.children.iterate((enemySprite) => {
-                                if (!enemySprite) return;
-
-                                const enemy = enemySprite.getData('ref');
-                                if (!enemy) return;
-
-                                // chance per frame to change direction
-                                if (Phaser.Math.Between(0, 1000) < 7) {
-                                    enemy.changeDirection();
-                                }
-                            });
+                            self.OverlapCollision.handleEnemyBehavior()
                         }
                         this.hanldeExplosionWallOverlap = (explosion, wall) => {
 
-                            self.tweens.add({
-                                targets: wall,
-                                alpha: 0,
-                                duration: 100,
-                                onComplete: () => wall.destroy()
-                            });
-
-                            this.brkWallList = this.brkWallList.filter(w => !(w.x === wall.x && w.y === wall.y));
-
-                            console.log(`Breakable wall destroyed at x:${wall.x}, y:${wall.y}`);
+                            self.OverlapCollision.hanldeExplosionWallOverlap(explosion,wall)
                         }
                         this.handleExplosionEnemyOverlap = (explosion, enemy) => {
-                            //Fade out then destroy
-                            this.tweens.add({
-                                targets: enemy,
-                                alpha: 0,
-                                duration: 100,
-                                onComplete: () => {
-                                    enemy.destroy();
-                                }
-                            });
-
-                            console.log("Enemy destroyed at", enemy.x, enemy.y);
+                           self.OverlapCollision.handleExplosionEnemyOverlap(explosion, enemy)
                         };
                         this.handleExplosionPlayerOverlap = () => {
-                            if (!this.player.isHit && this.Player.shieldSprite == null) {
-                                this.handlePlayerHit();
-                                this.Player.decreaseLife()
-                            }
+                            self.OverlapCollision.handleExplosionPlayerOverlap()
                         }
                         this.handleItemPlayerOverlap = (player, item) => {
 
-                            //disable body to prevent overlap
-                            item.disableBody(true, false);
-
-                            self.tweens.add({
-                                targets: item,
-                                alpha: 0,
-                                duration: 100,
-                                onComplete: () => {
-                                    item.destroy()
-                                }
-                            });
-
-                            this.itemLocation = this.itemLocation.filter(i => !(i.x === item.x && item.y === item.y));
-
-                            console.log(`Item acuired at x:${item.x}, y:${item.y}`);
-                            console.log(this.itemLocation)
-
-                            if (item.texture.key === 'shieldItem') {
-                                this.Player.activateShield(5000);
-                            }
-                            else if (item.texture.key === 'heartItem') {
-                                this.Player.lifeItemOverlap();
-                            }
-                            else if (item.texture.key === "bootsItem") {
-                                this.Player.activateSpeed(5000)
-                            }
-                            else if (item.texture.key === "explodeItem") {
-                                this.Player.activateExplosionBuff(5000)
-                            }
+                           self.OverlapCollision.handleItemPlayerOverlap(player, item)
                         }
                         this.handlePlayerEnemyOverlap = () => {
-                            if (!this.player.isHit && this.Player.shieldSprite == null) {
-                                this.handlePlayerHit();
-                                this.Player.decreaseLife()
-                            }
+                            self.OverlapCollision.handlePlayerEnemyOverlap()
                         }
                         this.handlePlayerWallTextOverlap = function () {
-                            if (this.wallTextGroup) {
-                                this.physics.overlap(this.player, this.wallTextGroup, (player, wallText) => {
-                                    if (this.allowInputs == true && Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S))) {
-                                        if (wallText.getData("pressed")) {
-
-                                            return;
-                                        }
-
-                                        if (this.textIndicator > 2) {
-                                            return
-                                        }
-                                        if (this.textAfter) {
-                                            const chosenNumber = wallText.text;   // number from wall
-                                            let currentText = this.textAfter.text;
-
-                                            // Split into characters so we can replace specific underscores
-                                            let chars = currentText.split("");
-                                            console.log(chars)
-
-                                            if (this.textIndicator === 1) {
-                                                if (chosenNumber.length === 1) {
-                                                    // replace the 2nd underscore
-                                                    let underscoreIndex = chars.indexOf("-", 1);
-
-                                                    if (underscoreIndex !== -1) {
-                                                        chars[underscoreIndex + 1] = chosenNumber;
-                                                        chars[underscoreIndex] = "_"
-                                                    }
-                                                    console.log("single digit")
-                                                } else {
-                                                    // double digit → replace 1st and 2nd underscores
-                                                    let firstIdx = chars.indexOf("-");
-                                                    if (firstIdx !== -1) {
-                                                        chars[firstIdx] = chosenNumber[0];
-                                                        let secondIdx = chars.indexOf("-", firstIdx + 1);
-                                                        if (secondIdx !== -1) chars[secondIdx] = chosenNumber[1];
-                                                    }
-                                                }
-                                                this.numeratorAnswer = parseInt(chosenNumber)
-                                                this.textIndicator = 2;
-                                            }
-                                            else if (this.textIndicator === 2) {
-                                                if (chosenNumber.length === 1) {
-
-                                                    let underscoreIndex = chars.indexOf("-", 1);
-
-                                                    if (underscoreIndex !== -1) {
-                                                        chars[underscoreIndex] = chosenNumber;
-                                                        chars[underscoreIndex + 1] = "_"
-                                                    }
-                                                    console.log("single digit")
-
-                                                } else {
-                                                    // double digit → replace 1st and 2nd underscores
-                                                    let firstIdx = chars.indexOf("-");
-                                                    if (firstIdx !== -1) {
-                                                        chars[firstIdx] = chosenNumber[0];
-                                                        let secondIdx = chars.indexOf("-", firstIdx + 1);
-                                                        if (secondIdx !== -1) chars[secondIdx] = chosenNumber[1];
-                                                    }
-                                                }
-                                                this.denominatorAnswer = parseInt(chosenNumber)
-
-                                                //Checking answer
-                                                if (parseInt(this.numeratorAnswer) !== parseInt(this.probAnswer[0]) || parseInt(this.denominatorAnswer) !== parseInt(this.probAnswer[1])) {
-                                                    console.log("Wrong")
-
-                                                    this.allowInputs = false;
-                                                    this.tweens.add({
-                                                        targets: [this.textAfter, this.textBottom],
-                                                        alpha: { from: 1, to: 0.3 },   // fade in/out
-                                                        duration: 500,               // quick blink
-                                                        repeat: 1,                   // number of flickers
-                                                        yoyo: true,
-                                                        onStart: () => {
-                                                            this.textAfter.setColor("#ff0000")
-                                                            this.textBottom.setColor("#ff0000")
-                                                        },
-                                                        onComplete: () => {
-                                                            this.allowInputs = true
-                                                            this.textAfter.setColor("#ffffff");
-                                                            this.textBottom.setColor("#ffffff")
-                                                            this.textAfter.setAlpha(1); // reset visibility
-                                                            this.textBottom.setAlpha(1); // reset visibility
-                                                            this.resetTextAfter();
-
-                                                            //change problem
-
-                                                        }
-                                                    });
-
-                                                }
-                                                else {
-                                                    console.log("Correct")
-
-                                                    this.allowInputs = false;
-                                                    this.tweens.add({
-                                                        targets: [this.textAfter, this.textBottom],
-                                                        alpha: { from: 1, to: 0.3 },
-                                                        duration: 500,
-                                                        repeat: 1,
-                                                        yoyo: true,
-                                                        onStart: () => {
-                                                            this.textAfter.setColor("#00ff00"); // green
-                                                            this.textBottom.setColor("#00ff00");
-                                                        },
-                                                        onComplete: () => {
-                                                            this.allowInputs = true;
-                                                            this.textAfter.setColor("#ffffff"); // reset to white
-                                                            this.textBottom.setColor("#ffffff");
-                                                            this.textAfter.setAlpha(1); // reset visibility
-                                                            this.textBottom.setAlpha(1); // reset visibility
-
-
-                                                            //Destroy random inside walls
-                                                            if (this.breakablewall) {
-                                                                let walls = this.breakablewall.getChildren();
-                                                                let totalWalls = walls.length;  // ✅ dynamic count
-                                                                let destroyed = 0;
-
-                                                                walls.forEach(wall => {
-                                                                    if (wall) {
-                                                                        this.tweens.add({
-                                                                            targets: wall,
-                                                                            alpha: 0,
-                                                                            duration: 300,
-                                                                            onComplete: () => {
-                                                                                wall.destroy();
-                                                                                destroyed++;
-
-                                                                                //respawn only when ALL are destroyed
-                                                                                if (destroyed === totalWalls) {
-                                                                                    this.brkWallList = [];
-                                                                                    this.Wall.createRandomInsideWallsEnemyAdjustment();
-
-                                                                                    this.physics.add.collider(this.player, this.breakablewall);
-                                                                                    this.physics.add.collider(this.enemyGroup, this.breakablewall, this.handleEnemyCollision);
-                                                                                    this.physics.add.overlap(this.explosionGroup, this.breakablewall, this.hanldeExplosionWallOverlap);
-                                                                                }
-                                                                            }
-                                                                        });
-                                                                    }
-                                                                });
-                                                            }
-
-
-                                                            //Destroy wall text numbers
-                                                            if (this.wallTextGroup) {
-                                                                this.wallTextGroup.children.iterate(wallText => {
-                                                                    this.tweens.add({
-                                                                        targets: wallText,
-                                                                        alpha: 0,
-                                                                        duration: 300,
-                                                                        onComplete: () => wallText.destroy()
-                                                                    });
-                                                                });
-                                                            }
-
-                                                            this.resetTextAfter();
-                                                            this.Banner.createProbQuestionHolder()
-                                                        }
-                                                    });
-                                                }
-                                                this.textIndicator = 3
-                                            }
-
-                                            this.textAfter.setText(chars.join(""));
-
-                                            //mark wallText as pressed make it transparent
-                                            wallText.setAlpha(0.0);
-                                            wallText.setData("pressed", true);
-                                        }
-                                    }
-                                });
-                            }
+                            self.OverlapCollision.handlePlayerWallTextOverlap()
 
                         }
                         this.handleResetAnswer = function () {
-                            if (this.allowInputs && Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X))) {
-                                this.resetTextAfter();
-                            }
+                            self.OverlapCollision.handleResetAnswer()
                         }
 
 
