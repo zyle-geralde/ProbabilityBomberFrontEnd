@@ -2,59 +2,6 @@ import { useState } from "react";
 import LoginForm from "./../../components/forms/LoginForm";
 
 function LoginPage({ email, password, role ,onChange, onLogin, onForgotPassword, error,setRole }) {
-  // // Use props as initial values if provided
-  // const [formData, setFormData] = useState({
-  //   email: initialEmail,
-  //   password: initialPassword,
-  //   role: "student",
-  // });
-
-  // const [error, setError] = useState(parentError || "");
-
-  // // Handle input change
-  // function handleChange(e) {
-  //   const { name, value } = e.target;
-
-  //   // Call parent handler if provided
-  //   if (parentOnChange) {
-  //     parentOnChange(e);
-  //   } else {
-  //     setFormData((prev) => ({ ...prev, [name]: value }));
-  //   }
-
-  //   // Update role if role field changed and parent handler exists
-  //   if (name === "role" && parentSetRole) parentSetRole(value);
-  // }
-
-  // // Handle login
-  // async function handleLogin() {
-  //   if (parentOnLogin) {
-  //     parentOnLogin(formData);
-  //     return;
-  //   }
-
-  //   try {
-  //     const res = await fetch("/api/login", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify(formData),
-  //     });
-
-  //     if (!res.ok) throw new Error("Invalid credentials");
-  //   } catch (err) {
-  //     setError(err.message);
-  //   }
-  // }
-
-  // // Handle forgot password
-  // function handleForgotPassword() {
-  //   if (parentOnForgotPassword) {
-  //     parentOnForgotPassword();
-  //   } else {
-  //     console.log("Forgot password clicked");
-  //   }
-  // }
-
   return (
     <div className="w-full grid grid-cols-1 md:grid-cols-5 min-h-screen">
       {/* Left side */}

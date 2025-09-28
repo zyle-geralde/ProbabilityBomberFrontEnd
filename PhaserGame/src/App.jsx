@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
 
@@ -29,6 +29,7 @@ import RegisterPage from "./pages/AuthenticationPages/RegisterPage";
 import ForgotPasswordPage from "./pages/AuthenticationPages/ForgotPasswordPage";
 import ResetPasswordLinkPage from "./pages/AuthenticationPages/ResetPasswordLinkPage";
 import ResetPasswordPage from "./pages/AuthenticationPages/ResetPasswordPage";
+import EmailConfirmationPage from "./pages/AuthenticationPages/EmailConfirmationPage";
 
 
 // Stage Pages
@@ -40,14 +41,22 @@ import TutorialPage from "./pages/StagePages/TutorialPage";
 
 
 export function App() {
+  const location = useLocation();
   const navigate = useNavigate();
-
+  const [fullName, setFullName] = useState('');
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
   const [error, setError] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  // Clear error on route change
+  useEffect(() => {
+    setError(null);
+  }, [location.pathname]);
+
 
   useEffect(() => {
     const storedUser = localStorage.getItem("userData");
@@ -59,6 +68,9 @@ export function App() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     switch (name) {
+      case 'fullName':
+      setFullName(value);
+      break;
       case 'userName':
         setUserName(value);
         break;
@@ -67,6 +79,9 @@ export function App() {
         break;
       case 'password':
         setPassword(value);
+        break;
+      case 'confirmPassword':
+        setConfirmPassword(value);
         break;
       case 'role':
         setRole(value);
@@ -77,7 +92,7 @@ export function App() {
   };
   
   const handleLogin = () => AuthController.loginUser({ email, password, role, setUserData, setError, navigate });
-  const handleRegister = () => AuthController.registerUser({ userName, email, password, role, setError, navigate });
+  const handleRegister = () => AuthController.registerUser({ fullName, userName, email, password, confirmPassword, setError, navigate });
   const handleUpdatePassword = () => AuthController.updatePassword({ password, setError, navigate });
   const handleForgotPassword = () => AuthController.forgotPassword({ email, setError, setUserData, navigate });
 
@@ -96,6 +111,7 @@ export function App() {
               />
             } 
           />
+
         <Route path="/" element={<LoginPage 
               email={email}
               password={password}
@@ -106,9 +122,24 @@ export function App() {
               error={error}
               setRole={setRole}
               />} />
-        <Route path="/register" element={<RegisterPage/>
-            }
+
+
+        <Route
+          path="/register"
+          element={
+            <RegisterPage
+              onRegister={handleRegister}
+              fullName={fullName}
+              userName={userName}
+              email={email}
+              password={password}
+              confirmPassword={confirmPassword}
+              onChange={handleChange}
+              error={error}
+            />
+          }
         />
+
         <Route path="/studentProfile" element={<ProfilePage />} />
 
         <Route
@@ -157,8 +188,11 @@ export function App() {
             />
           }
         />
-        <Route path="/reset-password-link" element={<ResetPasswordLinkPage />} />
+        <Route path="/reset-password-link" element={<ResetPasswordLinkPage 
+              userData={userData}
+              onLogin={() => navigate(ViewStates.LOGIN)}/>} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/email-confirmation" element={<EmailConfirmationPage />} />
         
 
         <Route path="/stagePage" element={<StagePage userData={userData} />} />
