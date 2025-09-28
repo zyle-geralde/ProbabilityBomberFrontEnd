@@ -25,14 +25,20 @@ export const loginUser = async ({ email, password, role, setUserData, setError, 
   }
 };
 
-export const registerUser = async ( { userName, email, password, role, setError, navigate } ) => {
+export const registerUser = async ({ fullName, userName, email, password, confirmPassword, setError, navigate }) => {
   try {
-    await AuthService.registerUser(userName, email, password, role);
-    console.log("Good")
+    await AuthService.registerUser(fullName, userName, email, password, confirmPassword, setError, navigate);
+    // console.log("Registration successful");
+    setError(null);
     navigate( ViewStates.LOGIN );
-  } catch (error) {
-    console.error("Registration failed:", error.message);
-    setError(error.message);
+    } catch (error) {
+    // Axios errors contain response.data
+    if (error.response && error.response.data && error.response.data.error) {
+      setError(error.response.data.error); // show backend message
+    } else {
+      setError(error.message || "Registration failed, try again");
+    }
+    // console.error("Registration failed:", error.message);
   }
 };
 
@@ -50,8 +56,8 @@ export const updatePassword = async ( {password, setError, navigate} ) => {
 export const forgotPassword = async ( {email, setError, setUserData, navigate} ) => {
   try {
     const response = await AuthService.forgotPassword(email);
-    navigate( ViewStates.PASSWORD_RESET_LINK)
-    setUserData( response.data.resetLink)
+    navigate("/email-confirmation")
+    setUserData( response.resetLink)
   } catch (error) {
     console.error("Forgot password failed:", error.message);
     setError( error.message );

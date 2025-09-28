@@ -1,7 +1,7 @@
 // /services/authService.js
 import api from '../api';
 import { auth } from '../firebaseConfig';
-import { signInWithEmailAndPassword, getAuth, signOut } from 'firebase/auth';
+import { signInWithEmailAndPassword, getAuth, signOut, sendPasswordResetEmail } from 'firebase/auth';
 
 export const firebaseLoginAndGetToken = async (email, password) => {
   const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -22,9 +22,9 @@ export const loginWithToken = async (token, role) => {
   });
 };
 
-export const registerUser = async (name, email, password, role) => {
-  console.log("Debug: ", name, email, password, role )
-  return api.post('/auth/register/', { name, email, password, role});
+export const registerUser = async (fullname, username, email, password, confirm_password) => {
+  // console.log("Debug: ", fullname, username, email, password, confirm_password)
+  return api.post('/auth/register/', { fullname, username, email, password, confirm_password});
 };
 
 export const resetPassword = async (newPassword) => {
@@ -32,5 +32,17 @@ export const resetPassword = async (newPassword) => {
 };
 
 export const forgotPassword = async (email) => {
-  return api.post('/auth/forget_password/', { email });
+  const baseUrl =
+    import.meta.env.MODE === "development"
+      ? "http://localhost:5173"
+      : "https://yourdomain.com"; // replace with your deployed domain
+
+  const actionCodeSettings = {
+    url: `${baseUrl}/reset-password`,
+    handleCodeInApp: true,
+  };
+
+  await sendPasswordResetEmail(auth, email, actionCodeSettings);
+
+  return { message: "Password reset email sent" };
 };
