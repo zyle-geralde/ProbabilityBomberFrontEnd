@@ -76,14 +76,24 @@ export const logoutUser = async ({ navigate }) => {
   }
 };
 
-{/*Added some Utility functions*/}
+{/*Added some Utility functions should create seperate util folder*/}
 
-export const getCurrentUserRole = () => {
-  const userData = JSON.parse(localStorage.getItem("userData"));
-  return userData?.role || null; 
+export const getUser = () => {
+  return JSON.parse(localStorage.getItem("userData")) || null;
 };
 
-export const getUsername = () => {
-  const userData = JSON.parse(localStorage.getItem("userData"));
-  return userData?.name || "Guest";
+export const getFullName = () => getUser()?.fullname || "Guest";
+export const getUsername = () => getUser()?.username || "Guest";
+export const getEmail = () => getUser()?.email || "";
+export const getDateCreated = () => {
+  const user = JSON.parse(localStorage.getItem("userData")) || null;
+  const ts = user?.createdAt;
+
+  if (!ts) return "";
+
+  if (ts._seconds) {
+    return new Date(ts._seconds * 1000).toLocaleDateString();
+  }
+
+  return ts;
 };
