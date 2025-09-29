@@ -73,12 +73,12 @@ class Wall {
                     fontStyle: 'bold'
                 }).setOrigin(0.5).setDepth(10000);*/
 
-                this.self.add.image((width / 2) - 200, height / 2 - 100, "leftFinalBanner").setOrigin(0.5).setDepth(10000).setDisplaySize(100, 150);
-                this.self.add.image(width / 2, height / 2 - 100, "middleFinalBanner").setOrigin(0.5).setDepth(10000).setDisplaySize(300, 150);
-                this.self.add.image((width / 2) + 150, height / 2 - 100, "rightFinalBanner").setOrigin(0.5).setDepth(10000).setDisplaySize(100, 150);
+                this.self.add.image((width / 2) - 250, height / 2 - 100, "leftFinalBanner").setOrigin(0.5).setDepth(10000).setDisplaySize(100, 150);
+                this.self.add.image(width / 2, height / 2 - 100, "middleFinalBanner").setOrigin(0.5).setDepth(10000).setDisplaySize(400, 150);
+                this.self.add.image((width / 2) + 200, height / 2 - 100, "rightFinalBanner").setOrigin(0.5).setDepth(10000).setDisplaySize(100, 150);
 
-                const congratsText = this.self.add.text(width / 2, height / 2 - 100, '🎉 Congratulations! 🎉', {
-                    fontSize: '48px',
+                const congratsText = this.self.add.text((width / 2) - 20, height / 2 - 100, '🎉 Congratulations! 🎉', {
+                    fontSize: '36px',
                     fill: '#ffffff',
                     fontStyle: 'bold'
                 }).setOrigin(0.5).setDepth(10001);
