@@ -22,6 +22,10 @@ class Wall {
 
         //stores a json format fo rows and cols Ex. {rows:30, cols:30}
         this.insideWallDimension = null
+        this.displayStar1 = null
+        this.displayStar2 = null
+        this.displayStar3 = null
+
 
     }
     createBackground() {
@@ -61,7 +65,7 @@ class Wall {
         // Tween fade-in effect
         this.self.tweens.add({
             targets: overlay,
-            alpha: 0.5,          // final opacity
+            alpha: 0.7,          // final opacity
             duration: 800,       // fade-in time (ms)
             ease: 'Power2',      // easing curve
             delay: 1000,
@@ -72,66 +76,29 @@ class Wall {
                 this.self.add.image(width / 2, height / 2 - 100, "middleFinalBanner").setOrigin(0.5).setDepth(10050).setDisplaySize(200, 150);
                 this.self.add.image((width / 2) + 150, height / 2 - 100, "rightFinalBanner").setOrigin(0.5).setDepth(10050).setDisplaySize(100, 150);
 
+                //Congrats text
                 const congratsText = this.self.add.text((width / 2) , height / 2 - 100, '🎉 Great Job 🎉', {
                     fontSize: '36px',
                     fill: '#ffffff',
                     fontStyle: 'bold'
                 }).setOrigin(0.5).setDepth(10051);
 
-                //Backgorund Banner
-                //
-                /*const tileSize = 120;
-
-                const cols = Math.ceil(600 / tileSize);
-                const rows = Math.ceil(360 / tileSize);
-
-                // total block width & height
-                const blockWidth = cols * tileSize;
-                const blockHeight = rows * tileSize;
-
-                // center offsets
-                const offsetX = (this.self.sys.game.config.width / 2 - blockWidth / 2) - 26;
-                const offsetY = (this.self.sys.game.config.height / 2 - blockHeight / 2) + 70;
-
-                for (let col = 0; col < cols; col++) {
-                    for (let row = 0; row < rows; row++) {
-                        // texture (currently same both sides, but you can alternate)
-                        const texture = (col + row) % 2 === 0 ? "tileDisplay" : "tileDisplay";
-
-                        const x = offsetX + col * tileSize + tileSize / 2;
-                        const y = offsetY + row * tileSize + tileSize / 2;
-
-                        this.self.add.image(x, y, texture)
-                            .setOrigin(0.5)
-                            .setDepth(10049)
-                            .setDisplaySize(tileSize, tileSize);
-                    }
-                }*/
+                //display image
                 this.self.add.image(width / 2, height / 2 + 50, "tileDisplay").setOrigin(0.5).setDepth(10049).setDisplaySize(450, 300);
-                // Points display
 
-                /*const pointsText = this.self.add.text(width / 2, height / 2, `Points: ${this.self.pointCount}`, {
-                    fontSize: '32px',
-                    fill: '#ffff00'
-                }).setOrigin(0.5).setDepth(10000);
-
-                // Stars display
-                const starsText = this.self.add.text(width / 2, height / 2 + 60, `Stars: ${this.self.numberOfStars}`, {
-                    fontSize: '32px',
-                    fill: '#00ff00'
-                }).setOrigin(0.5).setDepth(10000);
-
-                // Restart button
-                const restartText = this.self.add.text(width / 2, height / 2 + 150, '🔄 Restart', {
-                    fontSize: '28px',
+                //star display
+                const star_size = 50
+                this.displayStar1 = this.self.numberOfStars >= 1?this.self.add.image((width / 2) - (star_size+10), height / 2 + 30, "fullStar").setOrigin(0.5).setDepth(10050).setDisplaySize(star_size,star_size):this.self.add.image((width / 2) - (star_size+10), height / 2 + 30, "halfStar").setOrigin(0.5).setDepth(10050).setDisplaySize(star_size,star_size);
+                this.displayStar2 = this.self.numberOfStars >= 2?this.self.add.image((width / 2), height / 2, "fullStar").setOrigin(0.5).setDepth(10050).setDisplaySize(star_size,star_size):this.self.add.image((width / 2), height / 2,  "halfStar").setOrigin(0.5).setDepth(10050).setDisplaySize(star_size,star_size);
+                this.displayStar2 = this.self.numberOfStars >= 3 ? this.self.add.image((width / 2) + (star_size + 10), height / 2 + 30, "fullStar").setOrigin(0.5).setDepth(10050).setDisplaySize(star_size, star_size) :this.self.add.image((width / 2) + (star_size+10), height / 2 + 30, "halfStar").setOrigin(0.5).setDepth(10050).setDisplaySize(star_size, star_size);
+                
+                //Points display
+                //Congrats text
+                const pointsText = this.self.add.text((width / 2) , (height / 2) + star_size + 20 , this.self.pointCount, {
+                    fontSize: '48px',
                     fill: '#ffffff',
-                    backgroundColor: '#ff0000',
-                    padding: { x: 12, y: 6 }
-                }).setOrigin(0.5).setDepth(10000).setInteractive();
-
-                restartText.on('pointerdown', () => {
-                    this.self.scene.restart(); // restarts the scene
-                });*/
+                    fontStyle: 'bold'
+                }).setOrigin(0.5).setDepth(10051);
             }
         });
     }
