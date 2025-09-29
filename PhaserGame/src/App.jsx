@@ -218,7 +218,20 @@ export function App() {
           setUserData = {setUserData}
         /> ):(<div>Loading ...</div>)} />
         
-        <Route path="/profilePage" element={<ProfilePage />} />
+        <Route 
+          path="/profilePage" 
+          element={
+            userData ? (
+              <ProfilePage userData={userData} 
+              password={password}
+              onChange={handleChange}
+              onUpdate={handleUpdatePassword}
+              error={error} />
+            ) : (
+              <div>Loading...</div>
+            )
+          } 
+        />
         <Route path="/classPerformancePage" element={
           <ProtectedRoute allowedRoles={['teacher']}>
             <ClassPerformancePage/>
