@@ -9,7 +9,7 @@ class Player {
         this.additionalSpeed = 350
         this.originalSpeed = 150
         this.Wall = Wall
-        this.life = 10;
+        this.life = 3;
 
         this.shieldSprite = null;
         this.shieldTimer = null;
@@ -144,9 +144,14 @@ class Player {
                 this.self.lifeSideItem.setText(this.life);
                 this.self.throbHeart()
             }
+            if (this.life == 0) {
+                this.self.Wall.createFinishPage()
+                this.self.physics.pause();
+            }
         }
         else {
-            console.log(`No more life (Life: ${this.life})`)
+
+
         }
        
     }

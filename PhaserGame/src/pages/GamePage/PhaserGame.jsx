@@ -68,6 +68,9 @@ function PhaserGameSetUp() {
                         this.load.image('whiteCircle', 'images/whiteCircle.png')
                         this.load.image('fullStar', 'images/fullStar.png')
                         this.load.image('halfStar', 'images/halfStar.png')
+                        this.load.image('leftFinalBanner', 'images/leftFinalBanner.png')
+                        this.load.image('middleFinalBanner', 'images/middleFinalBanner.png')
+                        this.load.image('rightFinalBanner', 'images/rightFinalBanner.png')
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 42,
                             frameHeight: 72,
@@ -77,7 +80,7 @@ function PhaserGameSetUp() {
                         //GameInfo
                         this.stage = 1;
                         this.allowInputs = true
-
+                        this.isGameDone = false
                         //Wall
                         this.wallGroup = null;
                         this.wallDim = 45
@@ -194,6 +197,30 @@ function PhaserGameSetUp() {
                         //game setUp
                         this.createBackground = function () {
                             self.Wall.createBackground()
+                        };
+                        this.createFinishPage = function () {
+                            //Disable inputs
+                            this.allowInputs = false;
+                            this.input.keyboard.enabled = false;
+                            this.input.enabled = false;
+
+                            //Create a full screen black rectangle (initially invisible)
+                            const overlay = this.add.graphics();
+                            overlay.fillStyle(0x000000, 1); //full black
+                            overlay.fillRect(0, 0, this.sys.game.config.width, this.sys.game.config.height);
+                            overlay.setAlpha(0); //start transparent
+
+                            //Put overlay above everything else
+                            overlay.setScrollFactor(0);
+                            overlay.setDepth(9999);
+
+                            //Tween fade-in effect
+                            this.tweens.add({
+                                targets: overlay,
+                                alpha: 0.5,          //final opacity
+                                duration: 800,       //fade-in time (ms)
+                                ease: 'Power2'       //easing curve
+                            });
                         };
 
                         this.createPoints = function () {

@@ -40,6 +40,76 @@ class Wall {
             }
         }
     }
+    createFinishPage() {
+        // Disable inputs
+        this.self.allowInputs = false;
+        this.self.input.keyboard.enabled = false;
+        this.self.input.enabled = false;
+
+        // Create a full screen black rectangle (initially invisible)
+        const overlay = this.self.add.graphics();
+        overlay.fillStyle(0x000000, 1); // full black
+        overlay.fillRect(0, 0, this.self.sys.game.config.width, this.self.sys.game.config.height);
+        overlay.setAlpha(0); // start transparent
+
+        // Put overlay above everything else
+        overlay.setScrollFactor(0);
+        overlay.setDepth(9999);
+
+        const { width, height } = this.self.scale;
+
+        // Tween fade-in effect
+        this.self.tweens.add({
+            targets: overlay,
+            alpha: 0.5,          // final opacity
+            duration: 800,       // fade-in time (ms)
+            ease: 'Power2',      // easing curve
+            delay: 1000,
+            onComplete: () => {
+                // Only create these AFTER overlay fade-in finishes
+                /*const congratsText = this.self.add.text(width / 2, height / 2 - 100, '🎉 Congratulations! 🎉', {
+                    fontSize: '48px',
+                    fill: '#ffffff',
+                    fontStyle: 'bold'
+                }).setOrigin(0.5).setDepth(10000);*/
+
+                this.self.add.image((width / 2) - 200, height / 2 - 100, "leftFinalBanner").setOrigin(0.5).setDepth(10000).setDisplaySize(100, 150);
+                this.self.add.image(width / 2, height / 2 - 100, "middleFinalBanner").setOrigin(0.5).setDepth(10000).setDisplaySize(300, 150);
+                this.self.add.image((width / 2) + 150, height / 2 - 100, "rightFinalBanner").setOrigin(0.5).setDepth(10000).setDisplaySize(100, 150);
+
+                const congratsText = this.self.add.text(width / 2, height / 2 - 100, '🎉 Congratulations! 🎉', {
+                    fontSize: '48px',
+                    fill: '#ffffff',
+                    fontStyle: 'bold'
+                }).setOrigin(0.5).setDepth(10001);
+
+                // Points display
+                /*const pointsText = this.self.add.text(width / 2, height / 2, `Points: ${this.self.pointCount}`, {
+                    fontSize: '32px',
+                    fill: '#ffff00'
+                }).setOrigin(0.5).setDepth(10000);
+
+                // Stars display
+                const starsText = this.self.add.text(width / 2, height / 2 + 60, `Stars: ${this.self.numberOfStars}`, {
+                    fontSize: '32px',
+                    fill: '#00ff00'
+                }).setOrigin(0.5).setDepth(10000);
+
+                // Restart button
+                const restartText = this.self.add.text(width / 2, height / 2 + 150, '🔄 Restart', {
+                    fontSize: '28px',
+                    fill: '#ffffff',
+                    backgroundColor: '#ff0000',
+                    padding: { x: 12, y: 6 }
+                }).setOrigin(0.5).setDepth(10000).setInteractive();
+
+                restartText.on('pointerdown', () => {
+                    this.self.scene.restart(); // restarts the scene
+                });*/
+            }
+        });
+    }
+
     assignInsideWallDimension() {
         if (this.self.stage == 1) {
             this.insideWallDimension = [{ "col": 3, "row": 2 }, { "col": 4, "row": 2 }, { "col": 3, "row": 3 }, { "col": 3, "row": 5 },
