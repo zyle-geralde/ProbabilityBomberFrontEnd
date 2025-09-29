@@ -145,6 +145,7 @@ class Player {
                 this.self.throbHeart()
             }
             if (this.life == 0) {
+                this.self.Timer.stopTimer()
                 this.self.Wall.createFinishPage()
                 this.self.physics.pause();
             }

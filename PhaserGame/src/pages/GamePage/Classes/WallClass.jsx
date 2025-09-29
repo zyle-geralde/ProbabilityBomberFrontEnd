@@ -99,6 +99,14 @@ class Wall {
                     fill: '#ffffff',
                     fontStyle: 'bold'
                 }).setOrigin(0.5).setDepth(10051);
+
+                const gameDuration = this.self.Timer.getElapsedTime()
+
+                const gameDurationText = this.self.add.text((width / 2) , (height / 2) + star_size + 50 , gameDuration, {
+                    fontSize: '48px',
+                    fill: '#ffffff',
+                    fontStyle: 'bold'
+                }).setOrigin(0.5).setDepth(10051);
             }
         });
     }
