@@ -193,20 +193,7 @@ function PhaserGameSetUp() {
 
                         //game setUp
                         this.createBackground = function () {
-                            const tileSize = 120;
-                            const cols = Math.ceil(this.sys.game.config.width / tileSize);
-                            const rows = Math.ceil(this.sys.game.config.height / tileSize);
-
-                            for (let col = 0; col < cols; col++) {
-                                for (let row = 0; row < rows; row++) {
-                                    // alternate between background1 and background2
-                                    const texture = (col + row) % 2 === 0 ? "background2" : "background2";
-                                    const x = col * tileSize + tileSize / 2;
-                                    const y = row * tileSize + tileSize / 2;
-
-                                    this.add.image(x, y, texture).setDisplaySize(tileSize, tileSize);
-                                }
-                            }
+                            self.Wall.createBackground()
                         };
 
                         this.createPoints = function () {

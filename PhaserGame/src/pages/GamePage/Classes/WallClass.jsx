@@ -24,13 +24,29 @@ class Wall {
         this.insideWallDimension = null
 
     }
+    createBackground() {
+        const tileSize = 120;
+        const cols = Math.ceil(this.self.sys.game.config.width / tileSize);
+        const rows = Math.ceil(this.self.sys.game.config.height / tileSize);
+
+        for (let col = 0; col < cols; col++) {
+            for (let row = 0; row < rows; row++) {
+                // alternate between background1 and background2
+                const texture = (col + row) % 2 === 0 ? "background2" : "background2";
+                const x = col * tileSize + tileSize / 2;
+                const y = row * tileSize + tileSize / 2;
+
+                this.self.add.image(x, y, texture).setDisplaySize(tileSize, tileSize);
+            }
+        }
+    }
     assignInsideWallDimension() {
         if (this.self.stage == 1) {
             this.insideWallDimension = [{ "col": 3, "row": 2 }, { "col": 4, "row": 2 }, { "col": 3, "row": 3 }, { "col": 3, "row": 5 },
             { "col": 3, "row": 6 }, { "col": 4, "row": 6 }, { "col": 9, "row": 2 }, { "col": 9, "row": 3 }, { "col": 8, "row": 2 },
             { "col": 9, "row": 5 }, { "col": 9, "row": 6 }, { "col": 8, "row": 6 }, { "col": 5, "row": 4 }, { "col": 6, "row": 4 },
             { "col": 7, "row": 4 }]
-            
+
             //Modified version, try this later after expansion
             /* this.insideWallDimension = [{ "col": 3, "row": 2 }, { "col": 4, "row": 2 },
             { "col": 3, "row": 6 }, { "col": 4, "row": 6 }, { "col": 9, "row": 2 }, { "col": 8, "row": 2 },
