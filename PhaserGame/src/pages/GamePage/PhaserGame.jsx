@@ -72,6 +72,7 @@ function PhaserGameSetUp() {
                         this.load.image('leftFinalBanner', 'images/leftFinalBanner.png')
                         this.load.image('middleFinalBanner', 'images/middleFinalBanner.png')
                         this.load.image('rightFinalBanner', 'images/rightFinalBanner.png')
+                        this.load.image("backGameButton", "images/backGameButton.png")
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 42,
                             frameHeight: 72,

@@ -48,7 +48,7 @@ class Wall {
         // Disable inputs
         this.self.allowInputs = false;
         this.self.input.keyboard.enabled = false;
-        this.self.input.enabled = false;
+        //this.self.input.enabled = false;
 
         // Create a full screen black rectangle (initially invisible)
         const overlay = this.self.add.graphics();
@@ -66,47 +66,87 @@ class Wall {
         this.self.tweens.add({
             targets: overlay,
             alpha: 0.7,          // final opacity
-            duration: 800,       // fade-in time (ms)
+            duration: 2000,       // fade-in time (ms)
             ease: 'Power2',      // easing curve
             delay: 1000,
             onComplete: () => {
-
                 //Final Banner
-                this.self.add.image((width / 2) - 150, height / 2 - 100, "leftFinalBanner").setOrigin(0.5).setDepth(10050).setDisplaySize(100, 150);
-                this.self.add.image(width / 2, height / 2 - 100, "middleFinalBanner").setOrigin(0.5).setDepth(10050).setDisplaySize(200, 150);
-                this.self.add.image((width / 2) + 150, height / 2 - 100, "rightFinalBanner").setOrigin(0.5).setDepth(10050).setDisplaySize(100, 150);
+                const leftBanner = this.self.add.image((width / 2) - 150, height / 2 - 150, "leftFinalBanner")
+                    .setOrigin(0.5).setDepth(10050).setDisplaySize(100, 150).setAlpha(0);
+                const middleBanner = this.self.add.image(width / 2, height / 2 - 150, "middleFinalBanner")
+                    .setOrigin(0.5).setDepth(10050).setDisplaySize(200, 150).setAlpha(0);
+                const rightBanner = this.self.add.image((width / 2) + 150, height / 2 - 150, "rightFinalBanner")
+                    .setOrigin(0.5).setDepth(10050).setDisplaySize(100, 150).setAlpha(0);
 
                 //Congrats text
-                const congratsText = this.self.add.text((width / 2) , height / 2 - 100, '🎉 Great Job 🎉', {
+                const congratsText = this.self.add.text((width / 2), height / 2 - 150, '🎉 Great Job 🎉', {
                     fontSize: '36px',
                     fill: '#ffffff',
                     fontStyle: 'bold'
-                }).setOrigin(0.5).setDepth(10051);
+                }).setOrigin(0.5).setDepth(10051).setAlpha(0);
 
                 //display image
-                this.self.add.image(width / 2, height / 2 + 50, "tileDisplay").setOrigin(0.5).setDepth(10049).setDisplaySize(450, 300);
+                const tileDisplay = this.self.add.image(width / 2, height / 2 + 35, "tileDisplay")
+                    .setOrigin(0.5).setDepth(10049).setDisplaySize(450, 410).setAlpha(0);
 
                 //star display
-                const star_size = 50
-                this.displayStar1 = this.self.numberOfStars >= 1?this.self.add.image((width / 2) - (star_size+10), height / 2 + 30, "fullStar").setOrigin(0.5).setDepth(10050).setDisplaySize(star_size,star_size):this.self.add.image((width / 2) - (star_size+10), height / 2 + 30, "halfStar").setOrigin(0.5).setDepth(10050).setDisplaySize(star_size,star_size);
-                this.displayStar2 = this.self.numberOfStars >= 2?this.self.add.image((width / 2), height / 2, "fullStar").setOrigin(0.5).setDepth(10050).setDisplaySize(star_size,star_size):this.self.add.image((width / 2), height / 2,  "halfStar").setOrigin(0.5).setDepth(10050).setDisplaySize(star_size,star_size);
-                this.displayStar2 = this.self.numberOfStars >= 3 ? this.self.add.image((width / 2) + (star_size + 10), height / 2 + 30, "fullStar").setOrigin(0.5).setDepth(10050).setDisplaySize(star_size, star_size) :this.self.add.image((width / 2) + (star_size+10), height / 2 + 30, "halfStar").setOrigin(0.5).setDepth(10050).setDisplaySize(star_size, star_size);
-                
+                const star_size = 50;
+                const star1 = this.self.numberOfStars >= 1 ?
+                    this.self.add.image((width / 2) - (star_size + 10), height / 2 - 15, "fullStar") :
+                    this.self.add.image((width / 2) - (star_size + 10), height / 2 - 15, "halfStar");
+                star1.setOrigin(0.5).setDepth(10050).setDisplaySize(star_size, star_size).setAlpha(0);
+
+                const star2 = this.self.numberOfStars >= 2 ?
+                    this.self.add.image((width / 2), height / 2 - 45, "fullStar") :
+                    this.self.add.image((width / 2), height / 2 - 45, "halfStar");
+                star2.setOrigin(0.5).setDepth(10050).setDisplaySize(star_size, star_size).setAlpha(0);
+
+                const star3 = this.self.numberOfStars >= 3 ?
+                    this.self.add.image((width / 2) + (star_size + 10), height / 2 - 15, "fullStar") :
+                    this.self.add.image((width / 2) + (star_size + 10), height / 2 - 15, "halfStar");
+                star3.setOrigin(0.5).setDepth(10050).setDisplaySize(star_size, star_size).setAlpha(0);
+
                 //Points display
-                //Congrats text
-                const pointsText = this.self.add.text((width / 2) , (height / 2) + star_size + 20 , this.self.pointCount, {
+                const pointsText = this.self.add.text((width / 2), (height / 2) + star_size - 25, this.self.pointCount, {
                     fontSize: '48px',
                     fill: '#ffffff',
                     fontStyle: 'bold'
-                }).setOrigin(0.5).setDepth(10051);
+                }).setOrigin(0.5).setDepth(10051).setAlpha(0);
 
-                const gameDuration = this.self.Timer.getElapsedTime()
-
-                const gameDurationText = this.self.add.text((width / 2) , (height / 2) + star_size + 50 , gameDuration, {
+                //Duration count
+                const gameDuration = this.self.Timer.getElapsedTime();
+                const gameDurationText = this.self.add.text((width / 2), (height / 2) + star_size + 35, gameDuration, {
                     fontSize: '48px',
                     fill: '#ffffff',
                     fontStyle: 'bold'
-                }).setOrigin(0.5).setDepth(10051);
+                }).setOrigin(0.5).setDepth(10051).setAlpha(0);
+
+                //Back button disp
+                const backGameButtonDips = this.self.add.image((width / 2), height / 2 + 155, "unbrkwall")
+                    .setOrigin(0.5).setDepth(10050).setDisplaySize(150, star_size).setAlpha(0).setInteractive({ useHandCursor: true });
+
+                //Back button
+                const backButtonText = this.self.add.text((width / 2), (height / 2) + star_size + 105, "Back", {
+                    fontSize: '24px',
+                    fill: '#000000',
+                    fontStyle: 'bold'
+                }).setOrigin(0.5).setDepth(10051).setAlpha(0).setInteractive({ useHandCursor: true });
+
+
+                // 🎬 Fade in all UI together
+                this.self.tweens.add({
+                    targets: [
+                        leftBanner, middleBanner, rightBanner,
+                        congratsText, tileDisplay,
+                        star1, star2, star3,
+                        pointsText, gameDurationText,
+                        backGameButtonDips, backButtonText
+                    ],
+                    alpha: 1,
+                    duration: 800,
+                    ease: 'Power2'
+                });
+
             }
         });
     }
