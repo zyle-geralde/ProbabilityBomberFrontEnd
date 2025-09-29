@@ -8,7 +8,8 @@ class Points {
             fontSize: "23px",
             color: "#ffffffff",
             fontStyle: "bold",
-            stroke: "#000000",    // black outline
+            stroke: "#000000",
+            strokeThickness: 3// black outline
         }).setOrigin(0.5);
     }
     addPoints() {

@@ -66,24 +66,50 @@ class Wall {
             ease: 'Power2',      // easing curve
             delay: 1000,
             onComplete: () => {
-                // Only create these AFTER overlay fade-in finishes
-                /*const congratsText = this.self.add.text(width / 2, height / 2 - 100, '🎉 Congratulations! 🎉', {
-                    fontSize: '48px',
-                    fill: '#ffffff',
-                    fontStyle: 'bold'
-                }).setOrigin(0.5).setDepth(10000);*/
 
-                this.self.add.image((width / 2) - 250, height / 2 - 100, "leftFinalBanner").setOrigin(0.5).setDepth(10000).setDisplaySize(100, 150);
-                this.self.add.image(width / 2, height / 2 - 100, "middleFinalBanner").setOrigin(0.5).setDepth(10000).setDisplaySize(400, 150);
-                this.self.add.image((width / 2) + 200, height / 2 - 100, "rightFinalBanner").setOrigin(0.5).setDepth(10000).setDisplaySize(100, 150);
+                //Final Banner
+                this.self.add.image((width / 2) - 150, height / 2 - 100, "leftFinalBanner").setOrigin(0.5).setDepth(10050).setDisplaySize(100, 150);
+                this.self.add.image(width / 2, height / 2 - 100, "middleFinalBanner").setOrigin(0.5).setDepth(10050).setDisplaySize(200, 150);
+                this.self.add.image((width / 2) + 150, height / 2 - 100, "rightFinalBanner").setOrigin(0.5).setDepth(10050).setDisplaySize(100, 150);
 
-                const congratsText = this.self.add.text((width / 2) - 20, height / 2 - 100, '🎉 Congratulations! 🎉', {
+                const congratsText = this.self.add.text((width / 2) , height / 2 - 100, '🎉 Great Job 🎉', {
                     fontSize: '36px',
                     fill: '#ffffff',
                     fontStyle: 'bold'
-                }).setOrigin(0.5).setDepth(10001);
+                }).setOrigin(0.5).setDepth(10051);
 
+                //Backgorund Banner
+                //
+                /*const tileSize = 120;
+
+                const cols = Math.ceil(600 / tileSize);
+                const rows = Math.ceil(360 / tileSize);
+
+                // total block width & height
+                const blockWidth = cols * tileSize;
+                const blockHeight = rows * tileSize;
+
+                // center offsets
+                const offsetX = (this.self.sys.game.config.width / 2 - blockWidth / 2) - 26;
+                const offsetY = (this.self.sys.game.config.height / 2 - blockHeight / 2) + 70;
+
+                for (let col = 0; col < cols; col++) {
+                    for (let row = 0; row < rows; row++) {
+                        // texture (currently same both sides, but you can alternate)
+                        const texture = (col + row) % 2 === 0 ? "tileDisplay" : "tileDisplay";
+
+                        const x = offsetX + col * tileSize + tileSize / 2;
+                        const y = offsetY + row * tileSize + tileSize / 2;
+
+                        this.self.add.image(x, y, texture)
+                            .setOrigin(0.5)
+                            .setDepth(10049)
+                            .setDisplaySize(tileSize, tileSize);
+                    }
+                }*/
+                this.self.add.image(width / 2, height / 2 + 50, "tileDisplay").setOrigin(0.5).setDepth(10049).setDisplaySize(450, 300);
                 // Points display
+
                 /*const pointsText = this.self.add.text(width / 2, height / 2, `Points: ${this.self.pointCount}`, {
                     fontSize: '32px',
                     fill: '#ffff00'
