@@ -1,8 +1,10 @@
 import StageOne from "./Stage1Class";
+import Stage2 from "./Stage2Class";
 class Banner {
     constructor(self) {
         this.self = self
         this.stageOne = null
+        this.stage2 = null
     }
 
     createProbQuestionHolder() {
@@ -31,10 +33,22 @@ class Banner {
 
         this.self.topContainer = this.self.add.container(0, 0, [topLeft, topMid, topRight]);
 
-        if (!this.stageOne) {
-            this.stageOne = new StageOne(this.self);
+        if (this.self.stage == 1) {
+            if (!this.stageOne) {
+                this.stageOne = new StageOne(this.self);
+            }
+            this.stageOne.addBothBannerText();
         }
-        this.stageOne.addBothBannerText();
+        else if (this.self.stage == 2) {
+            if (!this.stage2) {
+                this.stage2 = new Stage2(this.self);
+            }
+            this.stage2.addBothBannerText();
+            console.log("No errors")
+        }
+
+
+        
     }
 
 

@@ -80,7 +80,7 @@ function PhaserGameSetUp() {
                     },
                     create: function () {
                         //GameInfo
-                        this.stage = 1;
+                        this.stage = 2;
                         this.allowInputs = true
                         this.isGameDone = false
                         //Wall
@@ -164,6 +164,7 @@ function PhaserGameSetUp() {
                         this.givenSample = []
                         this.coloredBallGiven = []
                         this.probAnswer = []
+
 
                         //Probability questions and answer
                         this.probabilityNumbers = [1, 2, 25, 30, 5, 45]
