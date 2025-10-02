@@ -38,7 +38,7 @@ class Stage3 {
         // Circle image
         this.self.pickedColorImg1 = this.self.add.image(xBase + 75 - 40, yBase, this.self.colorPicked).setDisplaySize(30, 30);
 
-        this.self.textSymbol = this.self.add.text(xBase + 105 -40, yBase, "∩", {
+        this.self.textSymbol = this.self.add.text(xBase + 105 - 40, yBase, "∩", {
             fontSize: "27px",
             color: "#fff",
             fontStyle: "bold",
@@ -135,7 +135,7 @@ class Stage3 {
 
             imageToAdd.push(circleImg);
             objectsToAdd.push(numberText)
-        
+
 
             startX += termWidth;
         }
@@ -201,7 +201,7 @@ class Stage3 {
         const y = 60;
 
         // Randomly pick 2 or 3 terms
-        const termCount = Phaser.Math.Between(2, 4);
+        const termCount = Phaser.Math.Between(2, 3);
 
         // Clone imageNames so we can remove used colors
         let availableImages = [...imageNames];
@@ -228,7 +228,7 @@ class Stage3 {
         // --- Add random terms without repeating colors ---
         for (let i = 0; i < termCount && availableImages.length > 0; i++) {
             // Random number (1–9)
-            const num = Phaser.Math.Between(1, 9);
+            const num = Phaser.Math.Between(1, 3);
 
             // Random circle image (pick from available list)
             const randomIndex = Math.floor(Math.random() * availableImages.length);
@@ -287,6 +287,10 @@ class Stage3 {
 
         let denominator = this.self.sampleSize;
 
+        let returned = this.solveIntersection(this.self)
+        console.log("Returned")
+        console.log(returned)
+
 
 
         this.self.topContainer.add(imageToAdd);
@@ -309,6 +313,53 @@ class Stage3 {
         this.addTopTextWithCircle(imageNames);
         this.addBottomTextWithCircle("candy1", 1)
     }
+
+    solveIntersection(self) {
+        if (!self.colorPicked || !self.colorPicked2 || !self.givenSample || !self.sampleSize) {
+            console.warn("Missing data for solving Stage3 intersection.");
+            return null;
+        }
+
+        // --- Extract counts for each picked color ---
+        const getCount = (color) => {
+            let count = 0;
+            self.givenSample.forEach(entry => {
+                if (entry[color] !== undefined) {
+                    count = entry[color];
+                }
+            });
+            return count;
+        };
+
+        const total = self.sampleSize;
+        const countA = getCount(self.colorPicked);
+        const countB = getCount(self.colorPicked2);
+
+        let numerator, denominator;
+
+        if (self.eventType === "with replacement") {
+            // Independent
+            numerator = countA * countB;
+            denominator = total * total;
+        } else {
+            // Without replacement (dependent)
+            numerator = countA * (countB - (self.colorPicked === self.colorPicked2 ? 1 : 0));
+            denominator = total * (total - 1);
+        }
+
+        // Reduce fraction
+        const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
+        const divisor = gcd(numerator, denominator);
+        numerator /= divisor;
+        denominator /= divisor;
+
+        return {
+            expression: `P(${self.colorPicked} ∩ ${self.colorPicked2})`,
+            numerator,
+            denominator
+        };
+    }
+
 }
 
 export default Stage3
