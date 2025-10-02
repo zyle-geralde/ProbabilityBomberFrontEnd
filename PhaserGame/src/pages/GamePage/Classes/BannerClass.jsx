@@ -1,10 +1,12 @@
 import StageOne from "./Stage1Class";
 import Stage2 from "./Stage2Class";
+import Stage3 from "./Stage3";
 class Banner {
     constructor(self) {
         this.self = self
         this.stageOne = null
         this.stage2 = null
+        this.stage3 = null
     }
 
     createProbQuestionHolder() {
@@ -44,6 +46,13 @@ class Banner {
                 this.stage2 = new Stage2(this.self);
             }
             this.stage2.addBothBannerText();
+            console.log("No errors")
+        }
+        else if (this.self.stage == 3) {
+            if (!this.stage3) {
+                this.stage3 = new Stage3(this.self)
+            }
+            this.stage3.addBothBannerText()
             console.log("No errors")
         }
 

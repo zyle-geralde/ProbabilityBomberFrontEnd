@@ -30,6 +30,11 @@ function PhaserGameSetUp() {
                 scene: {
                     preload: function () {
                         this.load.image("background1", 'images/backgroundDispF.png');
+                        this.load.image("candy1", "images/candy (1).png");
+                        this.load.image("candy-cane", "images/candy-cane.png");
+                        this.load.image("candy", "images/candy.png")
+                        this.load.image("cotton-candy", "images/cotton-candy.png")
+                        this.load.image("sweets","images/sweets.png")
                         this.load.image("carddeck", "images/carddeck.jpg")
                         this.load.image("background2", 'images/backgroundDispS.png')
                         this.load.image("background3", 'images/backgroundDisp3.png')
@@ -81,7 +86,7 @@ function PhaserGameSetUp() {
                     },
                     create: function () {
                         //GameInfo
-                        this.stage = 2;
+                        this.stage = 3;
                         this.allowInputs = true
                         this.isGameDone = false
                         //Wall
@@ -168,6 +173,9 @@ function PhaserGameSetUp() {
 
                         //Stage 2
                         this.eventText = null
+
+                        //Stage 3
+                        this.colorPicked2 = null
 
 
                         //Probability questions and answer
