@@ -326,6 +326,7 @@ class OverlapCollision {
 
                                         this.self.resetTextAfter();
                                         this.self.Banner.createProbQuestionHolder()
+                                        console.log("Done")
                                     }
                                 });
                             }

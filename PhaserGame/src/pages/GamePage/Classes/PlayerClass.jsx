@@ -9,7 +9,7 @@ class Player {
         this.additionalSpeed = 350
         this.originalSpeed = 150
         this.Wall = Wall
-        this.life = 3;
+        this.life = 10;
 
         this.shieldSprite = null;
         this.shieldTimer = null;
