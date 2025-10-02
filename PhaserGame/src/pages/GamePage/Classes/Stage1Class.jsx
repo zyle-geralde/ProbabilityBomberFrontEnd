@@ -9,7 +9,7 @@ class StageOne {
             return;
         }
 
-        // Destroy previous textAfter if it exists
+        //Destroy previous textAfter if it exists
         if (this.self.textAfter) {
             this.self.textAfter.destroy();
             this.self.textAfter = null
