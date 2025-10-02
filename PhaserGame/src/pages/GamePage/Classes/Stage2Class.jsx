@@ -17,20 +17,21 @@ class Stage2 {
         const objectsToAdd = [];
 
         // --- Add "Given:" text ---
-        const givenText = this.self.add.text(centerX - 150, y, "Given:", {
-            fontSize: "24px",
+        const givenText = this.self.add.text(centerX - 220, y , "Given:\nDeck \nof \nCrads", {
+            fontSize: "20px",
             color: "#fff",
-            fontStyle: "bold"
+            fontStyle: "bold",
+            align: "center"
         }).setOrigin(0.5);
         objectsToAdd.push(givenText);
 
         // --- Add deck image next to it ---
-        const deckImage = this.self.add.image(centerX, y, deckImageKey).setDisplaySize(120, 90);
+        const deckImage = this.self.add.image(centerX -150, y, deckImageKey).setDisplaySize(50, 50);
         objectsToAdd.push(deckImage);
 
         // --- Add Event A ---
-        const eventAText = this.self.add.text(centerX, y + 100, `A: ${eventA}`, {
-            fontSize: "24px",
+        const eventAText = this.self.add.text(centerX, y - 20, `A: ${eventA}`, {
+            fontSize: "20px",
             color: "#fff",
             fontStyle: "bold",
             align: "left",
@@ -39,8 +40,8 @@ class Stage2 {
         objectsToAdd.push(eventAText);
 
         // --- Add Event B ---
-        const eventBText = this.self.add.text(centerX, y + 150, `B: ${eventB}`, {
-            fontSize: "24px",
+        const eventBText = this.self.add.text(centerX, y + 10, `B: ${eventB}`, {
+            fontSize: "20px",
             color: "#fff",
             fontStyle: "bold",
             align: "left",
@@ -88,7 +89,7 @@ class Stage2 {
 
     addBothBannerText() {
 
-        this.addTopTextDeckFormat("tileDisplay", "Red Card", "White Card")
+        this.addTopTextDeckFormat("carddeck", "Red Card", "White Card")
         this.addBottomTextWithEvents(Phaser.Math.Between(0, 1) === 1)
     }
 }
