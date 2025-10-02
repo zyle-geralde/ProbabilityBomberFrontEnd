@@ -138,7 +138,7 @@ class Stage3 {
         //Add hint text text first
         let eventTypeList = ["with replacement", "without replacement"]
         let selectedEventType = eventTypeList[Math.floor(Math.random() * eventTypeList.length)]
-        this.eventType = selectedEventType
+        this.self.eventType = selectedEventType
 
         const HintText = this.self.add.text((centerX - totalWidth / 2) + 150, y + 30, `Hint: ${selectedEventType}`, {
             fontSize: "20px",
