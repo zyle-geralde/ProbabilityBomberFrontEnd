@@ -176,6 +176,7 @@ function PhaserGameSetUp() {
 
                         //Stage 3
                         this.colorPicked2 = null
+                        this.eventType = null
 
 
                         //Probability questions and answer

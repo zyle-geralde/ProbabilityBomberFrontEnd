@@ -69,9 +69,12 @@ class Stage3 {
         if (this.self.sampleSize) {
             this.self.sampleSize = null
         }
+        if (this.self.eventType) {
+            this.self.eventType = null
+        }
         // Middle banner center
         const centerX = 740;
-        const y = 70;
+        const y = 60;
 
         // Randomly pick 2 or 3 terms
         const termCount = Phaser.Math.Between(2, 4);
@@ -132,6 +135,19 @@ class Stage3 {
             startX += termWidth;
         }
 
+        //Add hint text text first
+        let eventTypeList = ["with replacement", "without replacement"]
+        let selectedEventType = eventTypeList[Math.floor(Math.random() * eventTypeList.length)]
+        this.eventType = selectedEventType
+
+        const HintText = this.self.add.text((centerX - totalWidth / 2) + 150, y + 30, `Hint: ${selectedEventType}`, {
+            fontSize: "20px",
+            color: "#fff",
+            fontStyle: "bold"
+        }).setOrigin(0.5);
+        objectsToAdd.push(HintText);
+
+
         // Pick one of the used colors as target
         let selectedColor = this.self.coloredBallGiven[
             Math.floor(Math.random() * this.self.coloredBallGiven.length)
@@ -172,6 +188,7 @@ class Stage3 {
         console.log("Sample size:", this.self.sampleSize);
         console.log("Picked1:", this.self.colorPicked);
         console.log("Picked2:", this.self.colorPicked2);
+        console.log("EventType: ", this.self.eventType)
         //console.log("Reduced Answer:", this.self.probAnswer);
 
         //this.generateNumbersForBlocks(numerator, denominator)
