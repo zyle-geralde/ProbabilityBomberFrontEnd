@@ -249,15 +249,29 @@ class OverlapCollision {
                                     repeat: 1,
                                     yoyo: true,
                                     onStart: () => {
-                                        this.self.textAfter.setColor("#00ff00"); // green
-                                        this.self.textBottom.setColor("#00ff00");
+                                        if (this.self.stage == 2) {
+                                            this.self.textAfter.setColor("#00ff00"); // green
+                                        }
+                                        else {
+                                            this.self.textAfter.setColor("#00ff00"); // green
+                                            this.self.textBottom.setColor("#00ff00");
+                                        }
+                                        
                                     },
                                     onComplete: () => {
                                         this.self.allowInputs = true;
-                                        this.self.textAfter.setColor("#ffffff"); // reset to white
-                                        this.self.textBottom.setColor("#ffffff");
-                                        this.self.textAfter.setAlpha(1); // reset visibility
-                                        this.self.textBottom.setAlpha(1); // reset visibility
+                                        if (this.self.stage == 2) {
+                                            this.self.textAfter.setColor("#ffffff"); // reset to white
+                                            this.self.textAfter.setAlpha(1);
+                                        }
+                                        else {
+                                            this.self.textAfter.setColor("#ffffff"); // reset to white
+                                            this.self.textBottom.setColor("#ffffff");
+                                            this.self.textAfter.setAlpha(1); // reset visibility
+                                            this.self.textBottom.setAlpha(1); // reset visibility
+                                        }
+                                        
+                                        
 
                                         this.self.Points.addPoints();
 
