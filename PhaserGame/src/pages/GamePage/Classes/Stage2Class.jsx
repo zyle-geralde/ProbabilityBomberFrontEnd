@@ -170,6 +170,7 @@ class Stage2 {
         }
         if (eventName.endsWith("card")) {
             let rank = eventName.replace(" card", "").toUpperCase();
+            if(rank.length != 2) rank = rank[0]
             if (["A", "J", "Q", "K"].includes(rank) || !isNaN(rank)) {
                 return deck.filter(c => c.rank === rank);
             }
@@ -199,6 +200,9 @@ class Stage2 {
     solveUnion(eventA, eventB, deck) {
         const cardsA = this.getEventCards(eventA, deck);
         const cardsB = this.getEventCards(eventB, deck);
+
+        console.log(cardsA)
+        console.log(cardsB)
 
         // Make sets using JSON string of cards
         const setA = new Set(cardsA.map(c => JSON.stringify(c)));
