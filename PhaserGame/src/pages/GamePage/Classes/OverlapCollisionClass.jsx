@@ -4,25 +4,46 @@ class OverlapCollision {
     }
 
     resetTextAfter() {
-        if (this.self.textAfter && this.self.randomSign != null) {
-            if (this.self.randomSign) {
-                this.self.textAfter.setText("') = -- / --");
+        if (this.self.stage == 2) {
+            if (this.self.textAfter) {
+
+                this.self.textAfter.setText(this.self.eventText);
+
+
+                this.self.textIndicator = 1;
+
+                //Reset wallText visuals and pressable state
+                this.self.wallTextGroup.children.iterate(wallText => {
+                    wallText.setAlpha(1); // fully visible again
+                    wallText.setData("pressed", false);
+                });
+
+                this.self.numeratorAnswer = null
+                this.self.denominatorAnswer = null
             }
-            else {
-                this.self.textAfter.setText(") = -- / --");
-            }
-
-            this.self.textIndicator = 1;
-
-            //Reset wallText visuals and pressable state
-            this.self.wallTextGroup.children.iterate(wallText => {
-                wallText.setAlpha(1); // fully visible again
-                wallText.setData("pressed", false);
-            });
-
-            this.self.numeratorAnswer = null
-            this.self.denominatorAnswer = null
         }
+        else {
+            if (this.self.textAfter && this.self.randomSign != null) {
+                if (this.self.randomSign) {
+                    this.self.textAfter.setText("') = -- / --");
+                }
+                else {
+                    this.self.textAfter.setText(") = -- / --");
+                }
+
+                this.self.textIndicator = 1;
+
+                //Reset wallText visuals and pressable state
+                this.self.wallTextGroup.children.iterate(wallText => {
+                    wallText.setAlpha(1); // fully visible again
+                    wallText.setData("pressed", false);
+                });
+
+                this.self.numeratorAnswer = null
+                this.self.denominatorAnswer = null
+            }
+        }
+
     }
     handleEnemyBehavior() {
         this.self.enemyGroup.children.iterate((enemySprite) => {
@@ -110,14 +131,18 @@ class OverlapCollision {
         if (this.self.wallTextGroup) {
             this.self.physics.overlap(this.self.player, this.self.wallTextGroup, (player, wallText) => {
                 if (this.self.allowInputs == true && Phaser.Input.Keyboard.JustDown(this.self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S))) {
+
                     if (wallText.getData("pressed")) {
 
                         return;
                     }
 
+
+
                     if (this.self.textIndicator > 2) {
                         return
                     }
+
                     if (this.self.textAfter) {
                         const chosenNumber = wallText.text;   // number from wall
                         let currentText = this.self.textAfter.text;
@@ -182,16 +207,30 @@ class OverlapCollision {
                                     repeat: 1,                   // number of flickers
                                     yoyo: true,
                                     onStart: () => {
-                                        this.self.textAfter.setColor("#ff0000")
-                                        this.self.textBottom.setColor("#ff0000")
+                                        if (this.self.stage == 2) {
+                                            this.self.textAfter.setColor("#ff0000")
+                                        }
+                                        else {
+                                            this.self.textAfter.setColor("#ff0000")
+                                            this.self.textBottom.setColor("#ff0000")
+                                        }
                                     },
                                     onComplete: () => {
-                                        this.self.allowInputs = true
-                                        this.self.textAfter.setColor("#ffffff");
-                                        this.self.textBottom.setColor("#ffffff")
-                                        this.self.textAfter.setAlpha(1); // reset visibility
-                                        this.self.textBottom.setAlpha(1); // reset visibility
-                                        this.self.resetTextAfter();
+                                        if (this.self.stage == 2) {
+                                            this.self.allowInputs = true
+                                            this.self.textAfter.setColor("#ffffff");
+                                            this.self.textAfter.setAlpha(1); // reset visibility
+                                            this.self.resetTextAfter();
+                                        }
+                                        else {
+                                            this.self.allowInputs = true
+                                            this.self.textAfter.setColor("#ffffff");
+                                            this.self.textBottom.setColor("#ffffff")
+                                            this.self.textAfter.setAlpha(1); // reset visibility
+                                            this.self.textBottom.setAlpha(1); // reset visibility
+                                            this.self.resetTextAfter();
+                                        }
+
 
                                         //change problem
 
@@ -223,7 +262,7 @@ class OverlapCollision {
                                         this.self.Points.addPoints();
 
                                         this.self.Points.createPoints()
-                                        
+
                                         this.self.Stars.changeStars()
 
 
@@ -286,7 +325,12 @@ class OverlapCollision {
                         wallText.setData("pressed", true);
                     }
                 }
+                else {
+                }
             });
+        }
+        else {
+            console.log("No walltextgroup")
         }
     }
 

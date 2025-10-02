@@ -20,11 +20,10 @@ class Stage2 {
         console.log("Answer:", q.answer);
 
         this.self.probAnswer = [q.numerator, q.denominator];
-        console.log(this.self.probAnswer)
+        console.log(this.self.probAnswer);
 
-        this.generateNumbersForBlocks(q.numerator, q.denominator)
+        this.generateNumbersForBlocks(q.numerator, q.denominator);
 
-        //
 
         if (!this.self.topContainer) {
             console.warn("Top container not created yet. Call createProbQuestionHolder() first.");
@@ -51,7 +50,7 @@ class Stage2 {
             .setDisplaySize(50, 50);
         objectsToAdd.push(deckImage);
 
-        // ✅ Compute safe X for Event A & B (after deck image)
+        // Compute safe X for Event A & B (after deck image)
         const safeX = deckImage.x + deckImage.displayWidth / 2 + 30;
 
         // --- Add Event A ---
@@ -61,7 +60,7 @@ class Stage2 {
             fontStyle: "bold",
             align: "left",
             wordWrap: { width: 400 } // reduce wrap width
-        }).setOrigin(0, 0); // 👈 left align so it never overlaps left
+        }).setOrigin(0, 0); // left align so it never overlaps left
         objectsToAdd.push(eventAText);
 
         // --- Add Event B ---
@@ -88,9 +87,9 @@ class Stage2 {
         }
 
         // Destroy previous objects
-        if (this.self.textBottom) {
-            this.self.textBottom.destroy();
-            this.self.textBottom = null;
+        if (this.self.textAfter) {
+            this.self.textAfter.destroy();
+            this.self.textAfter = null
         }
 
         const xBase = 740;   // center alignment
@@ -100,9 +99,11 @@ class Stage2 {
         const eventText = randomSign
             ? "P(A ∪ B) = -- / --"
             : "P(B ∪ A) = -- / --";
+        
+        this.self.eventText = eventText
 
         // Create text
-        this.self.textBottom = this.self.add.text(xBase, yBase, eventText, {
+        this.self.textAfter = this.self.add.text(xBase, yBase, eventText, {
             fontSize: "27px",
             color: "#fff",
             fontStyle: "bold",
@@ -110,7 +111,7 @@ class Stage2 {
         }).setOrigin(0.5);
 
         // Add into container
-        this.self.bottomContainer.add(this.self.textBottom);
+        this.self.bottomContainer.add(this.self.textAfter);
     }
 
     addBothBannerText() {

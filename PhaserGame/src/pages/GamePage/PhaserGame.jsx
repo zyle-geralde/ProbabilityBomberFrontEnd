@@ -166,6 +166,9 @@ function PhaserGameSetUp() {
                         this.coloredBallGiven = []
                         this.probAnswer = []
 
+                        //Stage 2
+                        this.eventText = null
+
 
                         //Probability questions and answer
                         this.probabilityNumbers = [1, 2, 25, 30, 5, 45]
