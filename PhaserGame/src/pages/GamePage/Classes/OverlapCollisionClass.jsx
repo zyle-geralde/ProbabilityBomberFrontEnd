@@ -22,6 +22,24 @@ class OverlapCollision {
                 this.self.denominatorAnswer = null
             }
         }
+        else if (this.self.stage == 3) {
+            if (this.self.textAfter) {
+
+                this.self.textAfter.setText(") = -- / --");
+                
+
+                this.self.textIndicator = 1;
+
+                //Reset wallText visuals and pressable state
+                this.self.wallTextGroup.children.iterate(wallText => {
+                    wallText.setAlpha(1); // fully visible again
+                    wallText.setData("pressed", false);
+                });
+
+                this.self.numeratorAnswer = null
+                this.self.denominatorAnswer = null
+            }
+        }
         else {
             if (this.self.textAfter && this.self.randomSign != null) {
                 if (this.self.randomSign) {
