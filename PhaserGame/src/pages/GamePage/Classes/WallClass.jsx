@@ -364,7 +364,7 @@ class Wall {
                 const coordinateList = [[5, 3], [7, 3], [6, 5], [4, 4], [8, 4]];
                 const isInCoordinateList = coordinateList.some(([c, r]) => c === col && r === row);
 
-                //NEW: check enemy overlap
+                //check enemy overlap
                 const gridX = this.centerX + col * this.self.wallDim;
                 const gridY = this.adjustwall + row * this.self.wallDim;
 
@@ -597,7 +597,8 @@ class Wall {
             callback: () => {
                 // this.self.enemyLimit
                 if (this.self.enemyGroup.getChildren().length + this.self.advanceEnemyGroup.getChildren().length < this.self.enemyLimit) {
-                    this.createSingleEnemies(1, 3); //create 1 item only
+                    const randomEnemyType = this.self.availableEnemyList[Math.floor(Math.random() * this.self.availableEnemyList.length)];
+                    this.createSingleEnemies(1, randomEnemyType);
 
                 }
             },

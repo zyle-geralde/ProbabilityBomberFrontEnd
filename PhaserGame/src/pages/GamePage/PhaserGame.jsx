@@ -86,9 +86,15 @@ function PhaserGameSetUp() {
                     },
                     create: function () {
                         //GameInfo
-                        this.stage = 2;
+                        this.stage = 1;
                         this.allowInputs = true
                         this.isGameDone = false
+                        this.levelEnemyPicked = null
+                        this.levelIndic = 1
+                        this.pointNeed = 7
+                        this.durationNeed = 20
+                        this.availableEnemyList = [1]
+                        
                         //Wall
                         this.wallGroup = null;
                         this.wallDim = 45
@@ -131,12 +137,12 @@ function PhaserGameSetUp() {
 
                         //Item
                         this.itemLocation = []
-                        this.itemLimit = 5
+                        this.itemLimit = 2
                         this.itemGroup = this.physics.add.group({ immovable: true });
                         this.singleItemSpawnDuration = 2000//7 seconds
 
                         //Enemy
-                        this.enemyLimit = 10
+                        this.enemyLimit = 3
                         this.enemyStartingLimit = 5
                         this.enemyGroup = this.physics.add.group()
                         this.advanceEnemyGroup = this.physics.add.group()
@@ -388,7 +394,7 @@ function PhaserGameSetUp() {
                         this.createRandomItems()
                         this.startItemSpawnLoop()
                         this.startEnemySpawnLoop()
-                        this.createStartingEnemies()
+                        //this.createStartingEnemies()
                         this.createSideItems()
 
 
