@@ -219,7 +219,7 @@ class OverlapCollision {
 
                                 this.self.allowInputs = false;
                                 this.self.tweens.add({
-                                    targets: [this.self.textAfter, this.self.textBottom],
+                                    targets: [this.self.textAfter, this.self.textBottom,this.self.textSymbol],
                                     alpha: { from: 1, to: 0.3 },   // fade in/out
                                     duration: 500,               // quick blink
                                     repeat: 1,                   // number of flickers
@@ -229,6 +229,9 @@ class OverlapCollision {
                                             this.self.textAfter.setColor("#ff0000")
                                         }
                                         else {
+                                            if (this.self.stage == 3) {
+                                                this.self.textSymbol.setColor("#ff0000")
+                                            }
                                             this.self.textAfter.setColor("#ff0000")
                                             this.self.textBottom.setColor("#ff0000")
                                         }
@@ -241,6 +244,10 @@ class OverlapCollision {
                                             this.self.resetTextAfter();
                                         }
                                         else {
+                                            if (this.self.stage == 3) {
+                                                this.self.textSymbol.setColor("#ffffff");
+                                                this.self.textSymbol.setAlpha(1);
+                                            }
                                             this.self.allowInputs = true
                                             this.self.textAfter.setColor("#ffffff");
                                             this.self.textBottom.setColor("#ffffff")
@@ -261,7 +268,7 @@ class OverlapCollision {
 
                                 this.self.allowInputs = false;
                                 this.self.tweens.add({
-                                    targets: [this.self.textAfter, this.self.textBottom],
+                                    targets: [this.self.textAfter, this.self.textBottom, this.self.textSymbol],
                                     alpha: { from: 1, to: 0.3 },
                                     duration: 500,
                                     repeat: 1,
@@ -271,6 +278,9 @@ class OverlapCollision {
                                             this.self.textAfter.setColor("#00ff00"); // green
                                         }
                                         else {
+                                            if (this.self.stage == 3) {
+                                                this.self.textSymbol.setColor("#00ff00");
+                                            }
                                             this.self.textAfter.setColor("#00ff00"); // green
                                             this.self.textBottom.setColor("#00ff00");
                                         }
@@ -283,6 +293,10 @@ class OverlapCollision {
                                             this.self.textAfter.setAlpha(1);
                                         }
                                         else {
+                                            if (this.self.stage == 3) {
+                                                this.self.textSymbol.setColor("#ffffff");
+                                                this.self.textSymbol.setAlpha(1);
+                                            }
                                             this.self.textAfter.setColor("#ffffff"); // reset to white
                                             this.self.textBottom.setColor("#ffffff");
                                             this.self.textAfter.setAlpha(1); // reset visibility
