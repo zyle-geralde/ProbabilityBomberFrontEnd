@@ -8,6 +8,7 @@ import OverlapCollision from './Classes/OverlapCollisionClass';
 import Points from './Classes/PointsClass';
 import Stars from './Classes/StarsClass';
 import Timer from './Classes/TimerClass';
+import NextLevel from './Classes/NextLevel';
 
 function PhaserGameSetUp() {
     const gameRef = useRef(null);
@@ -215,6 +216,7 @@ function PhaserGameSetUp() {
                         this.Points = new Points(this)
                         this.Stars = new Stars(this)
                         this.Timer = new Timer(this)
+                        this.NextLevel = new NextLevel(this)
 
                         //assign this to self
                         const self = this
@@ -391,7 +393,7 @@ function PhaserGameSetUp() {
                         this.createStars()
                         this.createPlayer()
                         this.createWalls()
-                        this.createRandomItems()
+                        //this.createRandomItems()
                         this.startItemSpawnLoop()
                         this.startEnemySpawnLoop()
                         //this.createStartingEnemies()

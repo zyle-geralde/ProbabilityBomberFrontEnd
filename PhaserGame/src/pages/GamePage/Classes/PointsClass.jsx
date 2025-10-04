@@ -19,6 +19,10 @@ class Points {
             this.self.pointText.destroy()
             this.self.pointText = null;
         }
+        if (this.self.pointCount >= this.self.pointNeed) {
+            this.self.NextLevel.checkNextLevel()
+            console.log("NextLevel")
+        }
     }
 }
 
