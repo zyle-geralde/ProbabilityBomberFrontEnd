@@ -278,11 +278,12 @@ class Stage3 {
         ];
         this.self.colorPicked = selectedColor;
 
-        let selectedColor2 = this.self.coloredBallGiven[
-            Math.floor(Math.random() * this.self.coloredBallGiven.length)
+        // pick second color but exclude the first one
+        let remainingColors = this.self.coloredBallGiven.filter(c => c !== selectedColor);
+        let selectedColor2 = remainingColors[
+            Math.floor(Math.random() * remainingColors.length)
         ];
         this.self.colorPicked2 = selectedColor2;
-
         let numerator = 0;
 
         let denominator = this.self.sampleSize;
