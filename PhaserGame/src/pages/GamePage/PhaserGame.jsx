@@ -140,14 +140,14 @@ function PhaserGameSetUp() {
                         this.itemLocation = []
                         this.itemLimit = 2
                         this.itemGroup = this.physics.add.group({ immovable: true });
-                        this.singleItemSpawnDuration = 2000//7 seconds
+                        this.singleItemSpawnDuration = 4000//7 seconds
 
                         //Enemy
                         this.enemyLimit = 3
                         this.enemyStartingLimit = 5
                         this.enemyGroup = this.physics.add.group()
                         this.advanceEnemyGroup = this.physics.add.group()
-                        this.singleEnemySpawnDuration = 2000//7 seconds
+                        this.singleEnemySpawnDuration = 4000//7 seconds
 
                         //SideItems
                         this.lifeSideItem = null;
