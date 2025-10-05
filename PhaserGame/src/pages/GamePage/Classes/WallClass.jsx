@@ -86,7 +86,7 @@ class Wall {
                 }).setOrigin(0.5).setDepth(10051).setAlpha(0);
 
                 //display image
-                const tileDisplay = this.self.add.image(width / 2, height / 2 + 35, this.self.stage == 1?"tileDisplay":"titleDisplayStage2")
+                const tileDisplay = this.self.add.image(width / 2, height / 2 + 35, this.self.stage == 1?"tileDisplay": this.self.stage == 2?"titleDisplayStage2":"titleDisplayStage3")
                     .setOrigin(0.5).setDepth(10049).setDisplaySize(450, 410).setAlpha(0);
 
                 //star display
