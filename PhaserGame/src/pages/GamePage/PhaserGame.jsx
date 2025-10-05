@@ -94,7 +94,7 @@ function PhaserGameSetUp() {
                     },
                     create: function () {
                         //GameInfo
-                        this.stage = 2;
+                        this.stage = 1;
                         this.allowInputs = true
                         this.isGameDone = false
                         this.levelEnemyPicked = null
