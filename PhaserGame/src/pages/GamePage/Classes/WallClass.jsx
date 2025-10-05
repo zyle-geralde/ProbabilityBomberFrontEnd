@@ -326,7 +326,7 @@ class Wall {
             // Add number overlay
             const wallText = this.self.add.text(xValue, yValue, randomNum, {
                 fontSize: "27px",
-                color: "#bd0202ff",
+                color: "#ffffffff",
                 fontStyle: "bold",
                 stroke: "#000000",    // black outline
                 strokeThickness: 3    // thickness of stroke
@@ -442,10 +442,10 @@ class Wall {
             // Add number overlay
             const wallText = this.self.add.text(xValue, yValue, randomNum, {
                 fontSize: "27px",
-                color: "#bd0202ff",
+                color: "#ffffffff",
                 fontStyle: "bold",
-                stroke: "#000000",    // black outline
-                strokeThickness: 3    // thickness of stroke
+                stroke: "#000000",    //black outline
+                strokeThickness: 3    //thickness of stroke
             }).setOrigin(0.5);
             wallText.setDepth(1);
 
