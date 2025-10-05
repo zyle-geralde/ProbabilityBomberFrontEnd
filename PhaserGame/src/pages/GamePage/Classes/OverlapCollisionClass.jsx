@@ -26,7 +26,7 @@ class OverlapCollision {
             if (this.self.textAfter) {
 
                 this.self.textAfter.setText(") = -- / --");
-                
+
 
                 this.self.textIndicator = 1;
 
@@ -217,7 +217,7 @@ class OverlapCollision {
 
                                 this.self.allowInputs = false;
                                 this.self.tweens.add({
-                                    targets: [this.self.textAfter, this.self.textBottom,this.self.textSymbol],
+                                    targets: [this.self.textAfter, this.self.textBottom, this.self.textSymbol],
                                     alpha: { from: 1, to: 0.3 },   // fade in/out
                                     duration: 500,               // quick blink
                                     repeat: 1,                   // number of flickers
@@ -282,7 +282,7 @@ class OverlapCollision {
                                             this.self.textAfter.setColor("#00ff00"); // green
                                             this.self.textBottom.setColor("#00ff00");
                                         }
-                                        
+
                                     },
                                     onComplete: () => {
                                         this.self.allowInputs = true;
@@ -300,8 +300,8 @@ class OverlapCollision {
                                             this.self.textAfter.setAlpha(1); // reset visibility
                                             this.self.textBottom.setAlpha(1); // reset visibility
                                         }
-                                        
-                                        
+
+
 
                                         this.self.Points.addPoints();
 
@@ -312,33 +312,49 @@ class OverlapCollision {
 
                                         //Destroy random inside walls
                                         if (this.self.breakablewall) {
+
                                             let walls = this.self.breakablewall.getChildren();
                                             let totalWalls = walls.length;  //dynamic count
                                             let destroyed = 0;
+                                            console.log("Total Walsss")
+                                            if (totalWalls == 0) {
+                                                this.self.time.delayedCall(400, () => {
+                                                    this.self.brkWallList = [];
+                                                    this.self.Wall.createRandomInsideWallsEnemyAdjustment();
 
-                                            walls.forEach(wall => {
-                                                if (wall) {
-                                                    this.self.tweens.add({
-                                                        targets: wall,
-                                                        alpha: 0,
-                                                        duration: 300,
-                                                        onComplete: () => {
-                                                            wall.destroy();
-                                                            destroyed++;
+                                                    this.self.physics.add.collider(this.self.player, this.self.breakablewall);
+                                                    this.self.physics.add.collider(this.self.enemyGroup, this.self.breakablewall, this.self.handleEnemyCollision);
+                                                    this.self.physics.add.overlap(this.self.explosionGroup, this.self.breakablewall, this.self.hanldeExplosionWallOverlap);
+                                                });
+                                            }
+                                            else {
+                                                console.log(totalWalls)
 
-                                                            //respawn only when ALL are destroyed
-                                                            if (destroyed === totalWalls) {
-                                                                this.self.brkWallList = [];
-                                                                this.self.Wall.createRandomInsideWallsEnemyAdjustment();
+                                                walls.forEach(wall => {
+                                                    if (wall) {
+                                                        this.self.tweens.add({
+                                                            targets: wall,
+                                                            alpha: 0,
+                                                            duration: 300,
+                                                            onComplete: () => {
+                                                                wall.destroy();
+                                                                destroyed++;
 
-                                                                this.self.physics.add.collider(this.self.player, this.self.breakablewall);
-                                                                this.self.physics.add.collider(this.self.enemyGroup, this.self.breakablewall, this.self.handleEnemyCollision);
-                                                                this.self.physics.add.overlap(this.self.explosionGroup, this.self.breakablewall, this.self.hanldeExplosionWallOverlap);
+                                                                //respawn only when ALL are destroyed
+                                                                if (destroyed === totalWalls) {
+                                                                    this.self.brkWallList = [];
+                                                                    this.self.Wall.createRandomInsideWallsEnemyAdjustment();
+
+                                                                    this.self.physics.add.collider(this.self.player, this.self.breakablewall);
+                                                                    this.self.physics.add.collider(this.self.enemyGroup, this.self.breakablewall, this.self.handleEnemyCollision);
+                                                                    this.self.physics.add.overlap(this.self.explosionGroup, this.self.breakablewall, this.self.hanldeExplosionWallOverlap);
+                                                                }
                                                             }
-                                                        }
-                                                    });
-                                                }
-                                            });
+                                                        });
+                                                    }
+                                                });
+                                            }
+
                                         }
                                         else {
                                             console.log("no breakable walls")
@@ -353,6 +369,7 @@ class OverlapCollision {
 
                                         //Destroy wall text numbers
                                         if (this.self.wallTextGroup) {
+                                            console.log("wallText present")
                                             this.self.wallTextGroup.children.iterate(wallText => {
                                                 this.self.tweens.add({
                                                     targets: wallText,
