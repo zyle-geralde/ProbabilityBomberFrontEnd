@@ -42,15 +42,15 @@ class Stars {
             });
         };
 
-        if (this.self.pointCount == 1) {
+        if (this.self.pointCount == 5) {
             this.self.numberOfStars+=1
             this.self.star1 = animateStar(this.self.star1, 1150, 90) || this.self.star1;
         }
-        if (this.self.pointCount == 2) {
+        if (this.self.pointCount == 10) {
             this.self.numberOfStars+=1
             this.self.star2 = animateStar(this.self.star2, 1192, 70) || this.self.star2;
         }
-        if (this.self.pointCount == 3) {
+        if (this.self.pointCount == 15) {
             this.self.numberOfStars+=1
             this.self.star3 = animateStar(this.self.star3, 1234, 90) || this.self.star3;
         }
