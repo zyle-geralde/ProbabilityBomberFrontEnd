@@ -36,7 +36,7 @@ class Wall {
         for (let col = 0; col < cols; col++) {
             for (let row = 0; row < rows; row++) {
                 // alternate between background1 and background2
-                const texture = this.self.stage == 1 ? "background2" : "backgroundStage2";
+                const texture = this.self.stage == 1 ? "background2" : this.self.stage == 2? "backgroundStage2":"backgroundStage3";
                 const x = col * tileSize + tileSize / 2;
                 const y = row * tileSize + tileSize / 2;
 

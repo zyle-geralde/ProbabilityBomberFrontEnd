@@ -20,6 +20,7 @@ function PhaserGameSetUp() {
                 type: window.Phaser.AUTO,
                 width: window.innerWidth,
                 height: window.innerHeight,
+                backgroundColor: '#87ffd7',
                 physics: {
                     default: 'arcade',
                     arcade: {
@@ -45,6 +46,7 @@ function PhaserGameSetUp() {
                         this.load.image("brkableWallStage2", "images/button_square_header_blade_square_screws.png")
                         this.load.image("sideItemHoldStage2", "images/button_square_header_small_square.png")
                         this.load.image("titleDisplayStage2", "images/button_square_header_large_square.png")
+                        this.load.image("backgroundStage3", "images/extra_dirt_top.png")
                         
                         this.load.image("tileDisplay", "images/tileDisplay.png")
                         this.load.image('ground', 'images/background-whiteArtboard 1.png');
@@ -94,7 +96,7 @@ function PhaserGameSetUp() {
                     },
                     create: function () {
                         //GameInfo
-                        this.stage = 1;
+                        this.stage = 3;
                         this.allowInputs = true
                         this.isGameDone = false
                         this.levelEnemyPicked = null
