@@ -39,7 +39,9 @@ function PhaserGameSetUp() {
                         this.load.image("carddeck", "images/carddeck.jpg")
                         this.load.image("background2", 'images/backgroundDispS.png')
                         this.load.image("background3", 'images/backgroundDisp3.png')
-                        this.load.image("backgroundStage2","images/panel_square_screws.png")
+                        this.load.image("backgroundStage2", "images/panel_square_screws.png")
+                        this.load.image("unbrkableWallStage2", "images/panel_glass_screws.png")
+                        
                         this.load.image("tileDisplay", "images/tileDisplay.png")
                         this.load.image('ground', 'images/background-whiteArtboard 1.png');
                         this.load.image('unbrkwall', 'images/newUnbrkWall.png');

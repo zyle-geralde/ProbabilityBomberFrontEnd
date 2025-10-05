@@ -186,7 +186,7 @@ class Wall {
         this.self.outsidewall = this.self.physics.add.group({ immovable: true });
 
         for (let nn = 0; nn < this.self.rows; nn++) {
-            let wall = this.self.outsidewall.create(xValueleft, adjustwallleft, 'unbrkwall');
+            let wall = this.self.outsidewall.create(xValueleft, adjustwallleft, this.self.stage == 1?'unbrkwall':"unbrkableWallStage2");
             this.self.unbrkWallList.push({ "x": xValueleft, "y": adjustwallleft })
             adjustwallleft += this.self.wallDim;
             //wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
@@ -201,7 +201,7 @@ class Wall {
         //this.self.brkWallGroup = self.physics.add.group({ immovable: true })
 
         for (let nn = 1; nn <= this.self.cols - 1; nn++) {
-            let wall = this.self.topwall.create(xValue, adjusttopwall, 'unbrkwall');
+            let wall = this.self.topwall.create(xValue, adjusttopwall, this.self.stage == 1?'unbrkwall':"unbrkableWallStage2");
             this.self.unbrkWallList.push({ "x": xValue, "y": adjusttopwall })
             xValue += this.self.wallDim;
             //wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
@@ -219,7 +219,7 @@ class Wall {
             let adjustinsidewall = this.adjustwall + this.self.wallDim
             for (let row = 1; row < this.self.rows; row++) {
                 if (this.insideWallDimension.some(w => w.col === col && w.row === row)) {
-                    let wall = this.self.insidewall.create(xValue, adjustinsidewall, 'unbrkwall');
+                    let wall = this.self.insidewall.create(xValue, adjustinsidewall, this.self.stage == 1?'unbrkwall':"unbrkableWallStage2");
                     this.self.unbrkWallList.push({ "x": xValue, "y": adjustinsidewall })
                     //wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
                     wall.setDisplaySize(this.self.wallDim, this.self.wallDim);
@@ -235,7 +235,7 @@ class Wall {
         this.self.rightwall = this.self.physics.add.group({ immovable: true });
 
         for (let nn = 0; nn < this.self.rows - 1; nn++) {
-            let wall = this.self.rightwall.create(xValueRight, adjustwallRight, 'unbrkwall');
+            let wall = this.self.rightwall.create(xValueRight, adjustwallRight, this.self.stage == 1?'unbrkwall':"unbrkableWallStage2");
             this.self.unbrkWallList.push({ "x": xValueRight, "y": adjustwallRight })
             adjustwallRight += this.self.wallDim;
             //wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
@@ -248,7 +248,7 @@ class Wall {
         let xValueBottom = this.centerX
 
         for (let nn = 1; nn <= this.self.cols; nn++) {
-            let wall = this.self.bottomwall.create(xValueBottom, adjustbottomwall, 'unbrkwall');
+            let wall = this.self.bottomwall.create(xValueBottom, adjustbottomwall, this.self.stage == 1?'unbrkwall':"unbrkableWallStage2");
             this.self.unbrkWallList.push({ "x": xValueBottom, "y": adjustbottomwall })
             xValueBottom += this.self.wallDim;
             //wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
