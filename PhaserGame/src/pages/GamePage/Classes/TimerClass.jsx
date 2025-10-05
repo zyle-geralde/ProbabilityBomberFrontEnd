@@ -32,7 +32,7 @@ class Timer {
 
         this.self.timeText.setText(`Time: ${minutes}:${formattedSeconds}`);
 
-        if (minutes >= this.self.durationNeed) {
+        if (minutes >= this.self.durationNeed && this.self.levelIndic <= 9) {
             this.self.NextLevel.checkNextLevel()
             console.log("Next Level")
         }

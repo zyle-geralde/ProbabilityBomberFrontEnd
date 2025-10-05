@@ -93,7 +93,7 @@ function PhaserGameSetUp() {
                         this.levelEnemyPicked = null
                         this.levelIndic = 1
                         this.pointNeed = 7
-                        this.durationNeed = this.stage == 1? 1: 1
+                        this.durationNeed = this.stage == 1? 10:20
                         this.availableEnemyList = [1]
                         
                         //Wall
