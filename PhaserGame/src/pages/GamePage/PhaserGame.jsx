@@ -47,6 +47,9 @@ function PhaserGameSetUp() {
                         this.load.image("sideItemHoldStage2", "images/button_square_header_small_square.png")
                         this.load.image("titleDisplayStage2", "images/button_square_header_large_square.png")
                         this.load.image("backgroundStage3", "images/extra_dirt_top.png")
+                        this.load.image("unbrkableWallStage3", "images/extra_character_e.png")
+                        this.load.image("brkableWallStage3", "images/extra_crate_explosive.png")
+                        this.load.image("sideItemFixedStage3", "images/extra_stone_detail.png")
                         
                         this.load.image("tileDisplay", "images/tileDisplay.png")
                         this.load.image('ground', 'images/background-whiteArtboard 1.png');
