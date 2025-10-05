@@ -155,8 +155,6 @@ class OverlapCollision {
                         return;
                     }
 
-
-
                     if (this.self.textIndicator > 2) {
                         return
                     }
@@ -341,6 +339,15 @@ class OverlapCollision {
                                                     });
                                                 }
                                             });
+                                        }
+                                        else {
+                                            console.log("no breakable walls")
+                                            this.self.brkWallList = [];
+                                            this.self.Wall.createRandomInsideWallsEnemyAdjustment();
+
+                                            this.self.physics.add.collider(this.self.player, this.self.breakablewall);
+                                            this.self.physics.add.collider(this.self.enemyGroup, this.self.breakablewall, this.self.handleEnemyCollision);
+                                            this.self.physics.add.overlap(this.self.explosionGroup, this.self.breakablewall, this.self.hanldeExplosionWallOverlap);
                                         }
 
 
