@@ -30,8 +30,8 @@ class SideItems {
         // --- Fixed side items (scaled versions) ---
         ['sideItemFixed', 'sideItemFixed', 'sideItemFixed', 'sideItemFixed']
             .forEach(() => {
-                const item = this.self.add.image(280, yPos, 'sideItemFixed');
-                item.setScale(80 / 32);
+                const item = this.self.add.image(280, yPos, this.self.stage == 1?'sideItemFixed': "sideItemHoldStage2");
+                item.setDisplaySize(80,80)
                 yPos += yPosAdd;
             });
 
