@@ -31,6 +31,11 @@ class Timer {
         const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
 
         this.self.timeText.setText(`Time: ${minutes}:${formattedSeconds}`);
+
+        if (minutes >= this.self.durationNeed) {
+            this.self.NextLevel.checkNextLevel()
+            console.log("Next Level")
+        }
     }
 
     stopTimer() {
