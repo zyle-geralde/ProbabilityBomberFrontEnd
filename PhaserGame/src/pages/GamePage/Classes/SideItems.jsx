@@ -40,7 +40,7 @@ class SideItems {
         ['redHexagon', 'redHexagon', 'redHexagon']
             .forEach(() => {
                 const item = this.self.add.image(280, yPos, 'redHexagon');
-                item.setScale(40 / 32);
+                item.setDisplaySize(40,40);
                 yPos += yPosAdd;
             });
 

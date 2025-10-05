@@ -86,7 +86,7 @@ class Wall {
                 }).setOrigin(0.5).setDepth(10051).setAlpha(0);
 
                 //display image
-                const tileDisplay = this.self.add.image(width / 2, height / 2 + 35, "tileDisplay")
+                const tileDisplay = this.self.add.image(width / 2, height / 2 + 35, this.self.stage == 1?"tileDisplay":"titleDisplayStage2")
                     .setOrigin(0.5).setDepth(10049).setDisplaySize(450, 410).setAlpha(0);
 
                 //star display
@@ -109,7 +109,7 @@ class Wall {
                 //Points display
                 const pointsText = this.self.add.text((width / 2), (height / 2) + star_size - 25, this.self.pointCount, {
                     fontSize: '48px',
-                    fill: '#ffffff',
+                    fill: this.self.stage == 1?'#ffffff':"#000000",
                     fontStyle: 'bold'
                 }).setOrigin(0.5).setDepth(10051).setAlpha(0);
 
@@ -117,12 +117,12 @@ class Wall {
                 const gameDuration = this.self.Timer.getElapsedTime();
                 const gameDurationText = this.self.add.text((width / 2), (height / 2) + star_size + 35, gameDuration, {
                     fontSize: '48px',
-                    fill: '#ffffff',
+                    fill: this.self.stage == 1?'#ffffff':"#000000",
                     fontStyle: 'bold'
                 }).setOrigin(0.5).setDepth(10051).setAlpha(0);
 
                 //Back button disp
-                const backGameButtonDips = this.self.add.image((width / 2), height / 2 + 155, "unbrkwall")
+                const backGameButtonDips = this.self.add.image((width / 2), height / 2 + 155, this.self.stage == 1?"unbrkwall":"unbrkableWallStage2")
                     .setOrigin(0.5).setDepth(10050).setDisplaySize(150, star_size).setAlpha(0).setInteractive({ useHandCursor: true });
 
                 //Back button
