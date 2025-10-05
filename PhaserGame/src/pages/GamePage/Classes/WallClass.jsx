@@ -317,7 +317,7 @@ class Wall {
             const randomNum = availableNumbers.pop();
 
             // Create wall
-            let wall = this.self.breakablewall.create(xValue, yValue, "brkwall");
+            let wall = this.self.breakablewall.create(xValue, yValue, this.self.stage == 1?"brkwall":"brkableWallStage2");
             wall.setDisplaySize(this.self.wallDim, this.self.wallDim);
 
             // Store with unique number
@@ -432,7 +432,7 @@ class Wall {
             const randomNum = availableNumbers.pop();
 
             // Create wall
-            let wall = this.self.breakablewall.create(xValue, yValue, "brkwall");
+            let wall = this.self.breakablewall.create(xValue, yValue,  this.self.stage == 1?"brkwall":"brkableWallStage2");
             wall.setDisplaySize(this.self.wallDim, this.self.wallDim);
             wall.setAlpha(0); // start invisible
 
