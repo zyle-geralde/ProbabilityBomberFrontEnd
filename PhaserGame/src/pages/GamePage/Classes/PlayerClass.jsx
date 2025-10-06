@@ -4,12 +4,12 @@ class Player {
     constructor(self, Wall) {
         this.self = self
         this.x = 550
-        this.y = 70
+        this.y = 300
         this.speed = 150
         this.additionalSpeed = 350
         this.originalSpeed = 150
         this.Wall = Wall
-        this.life = 10;
+        this.life = 3;
 
         this.shieldSprite = null;
         this.shieldTimer = null;
@@ -46,12 +46,16 @@ class Player {
         }
 
         this.speed = this.additionalSpeed
-        console.log("Speed activated "+this.speed)
+        console.log("Speed activated " + this.speed)
+        
+        this.self.throbBoots();
 
         this.speedTimer = this.self.time.delayedCall(duration, () => {
 
             this.speed = this.originalSpeed
             this.speedTimer = null;
+            this.self.stopThrobBoots();
+
             console.log("Speed removed "+this.speed)
             console.log("Timer Removed")
         });
@@ -91,6 +95,8 @@ class Player {
         this.shieldSprite.setDisplaySize(this.self.wallDim - 15, this.self.wallDim - 15);
         this.shieldSprite.setDepth(1001); // above player
 
+        this.self.throbShield();
+
         this.shieldTween = this.self.tweens.add({
             targets: this.shieldSprite,
             alpha: { from: 1, to: 0.5 },
@@ -113,6 +119,8 @@ class Player {
                 console.log("Tween Removed")
             }
             this.shieldTimer = null;
+
+            this.self.stopThrobShield();
             console.log("Timer Removed")
         });
     }
@@ -122,14 +130,29 @@ class Player {
         this.life += 1;
         console.log(`Life: ${this.life}`)
 
+        if (this.self.lifeSideItem) {
+            this.self.lifeSideItem.setText(this.life);
+            this.self.throbHeart()
+        }
+
     }
     decreaseLife() {
         if (this.life > 0) {
             this.life -= 1;
             console.log(`Life: ${this.life}`)
+            if (this.self.lifeSideItem) {
+                this.self.lifeSideItem.setText(this.life);
+                this.self.throbHeart()
+            }
+            if (this.life == 0) {
+                this.self.Timer.stopTimer()
+                this.self.Wall.createFinishPage()
+                this.self.physics.pause();
+            }
         }
         else {
-            console.log(`No more life (Life: ${this.life})`)
+
+
         }
        
     }
@@ -149,12 +172,17 @@ class Player {
         }
 
         this.self.explosionRange = 2
-        console.log("Explosion Buff activated "+this.self.explosionRange)
+        console.log("Explosion Buff activated " + this.self.explosionRange)
+        
+        this.self.throbExplosion();
 
         this.explosionBuffTimer = this.self.time.delayedCall(duration, () => {
 
             this.self.explosionRange = 1
             this.explosionBuffTimer = null;
+
+            this.self.stopThrobExplosion();
+            
             console.log("Explosion Buff removed "+this.explosionRange)
             console.log("Timer Removed")
         });

@@ -2,6 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Wall from './Classes/WallClass';
 import Player from './Classes/PlayerClass';
+import SideItems from './Classes/SideItems';
+import Banner from './Classes/BannerClass';
+import OverlapCollision from './Classes/OverlapCollisionClass';
+import Points from './Classes/PointsClass';
+import Stars from './Classes/StarsClass';
+import Timer from './Classes/TimerClass';
+import NextLevel from './Classes/NextLevel';
 
 function PhaserGameSetUp() {
     const gameRef = useRef(null);
@@ -13,6 +20,7 @@ function PhaserGameSetUp() {
                 type: window.Phaser.AUTO,
                 width: window.innerWidth,
                 height: window.innerHeight,
+                backgroundColor: '#87ffd7',
                 physics: {
                     default: 'arcade',
                     arcade: {
@@ -20,11 +28,34 @@ function PhaserGameSetUp() {
                         debug: false,
                     },
                 },
+                pixelArt: true,
                 scene: {
                     preload: function () {
+                        this.load.image("background1", 'images/backgroundDispF.png');
+                        this.load.image("candy1", "images/candy (1).png");
+                        this.load.image("candy-cane", "images/candy-cane.png");
+                        this.load.image("candy", "images/candy.png")
+                        this.load.image("cotton-candy", "images/cotton-candy.png")
+                        this.load.image("sweets","images/sweets.png")
+                        this.load.image("carddeck", "images/carddeck.jpg")
+                        this.load.image("background2", 'images/backgroundDispS.png')
+                        this.load.image("background3", 'images/backgroundDisp3.png')
+                        this.load.image("backgroundStage2", "images/panel_square_screws.png")
+                        this.load.image("unbrkableWallStage2", "images/panel_glass_screws.png")
+                        
+                        this.load.image("brkableWallStage2", "images/button_square_header_blade_square_screws.png")
+                        this.load.image("sideItemHoldStage2", "images/button_square_header_small_square.png")
+                        this.load.image("titleDisplayStage2", "images/button_square_header_large_square.png")
+                        this.load.image("backgroundStage3", "images/extra_dirt_top.png")
+                        this.load.image("unbrkableWallStage3", "images/extra_character_e.png")
+                        this.load.image("brkableWallStage3", "images/extra_crate_explosive.png")
+                        this.load.image("sideItemFixedStage3", "images/extra_stone_detail.png")
+                        this.load.image("titleDisplayStage3", "images/extra_stone_top.png")
+                        
+                        this.load.image("tileDisplay", "images/tileDisplay.png")
                         this.load.image('ground', 'images/background-whiteArtboard 1.png');
-                        this.load.image('unbrkwall', 'images/unbreakable-WallArtboard 1.png');
-                        this.load.image('brkwall', 'images/breakable-WallArtboard 1.png')
+                        this.load.image('unbrkwall', 'images/newUnbrkWall.png');
+                        this.load.image('brkwall', 'images/backgroundDisp3.png')
                         this.load.image('bomb', 'images/bomb.png')
                         this.load.image('bombItem', 'images/bombItem.png')
                         this.load.image('explodeItem', 'images/explodeItem.png')
@@ -37,12 +68,31 @@ function PhaserGameSetUp() {
                         this.load.image('heart', 'images/heart.png')
                         this.load.image('shield', 'images/defence.png')
                         this.load.image('boots', 'images/speed.png')
-                        this.load.image('heartFixed', 'images/heartFixed.png')
-                        this.load.image('explodeFixed', 'images/explodeFixed.png')
+                        this.load.image('heartFixed', 'images/heartFixedBG.png')
+                        this.load.image('explodeFixed', 'images/explodeFixedBG.png')
                         this.load.image('bombFixed', 'images/bombFixed.png')
                         this.load.image('winloseback', 'images/winloseback.jpg')
                         this.load.image('fastenemy', 'images/fastenemy.png')
                         this.load.image('advanceenemy', 'images/advanceenemy.png')
+                        this.load.image('sideItemFixed', 'images/sideItem.png')
+                        this.load.image('redHexagon', 'images/redHexagon.png')
+                        this.load.image('bootsItemBG', 'images/bootsItemBG.png')
+                        this.load.image('shieldFixedBG', 'images/shieldFixedBG.png')
+                        this.load.image('leftBanner', 'images/leftSmallBanner.png')
+                        this.load.image('middleBanner', 'images/middleSmallBanner.png')
+                        this.load.image('rightBanner', 'images/rightSmallBanner.png')
+                        this.load.image('blackCircle', 'images/blackCircle.png')
+                        this.load.image('blueCircle', 'images/blueCircle.png')
+                        this.load.image('greenCircle', 'images/greenCircle.png')
+                        this.load.image('orangeCircle', 'images/orangeCircle.png')
+                        this.load.image('redCircle', 'images/redCircle.png')
+                        this.load.image('whiteCircle', 'images/whiteCircle.png')
+                        this.load.image('fullStar', 'images/fullStar.png')
+                        this.load.image('halfStar', 'images/halfStar.png')
+                        this.load.image('leftFinalBanner', 'images/leftFinalBanner.png')
+                        this.load.image('middleFinalBanner', 'images/middleFinalBanner.png')
+                        this.load.image('rightFinalBanner', 'images/rightFinalBanner.png')
+                        this.load.image("backGameButton", "images/backGameButton.png")
                         this.load.spritesheet('character', 'images/spritesheet (2)nncopy.png', {
                             frameWidth: 42,
                             frameHeight: 72,
@@ -51,6 +101,14 @@ function PhaserGameSetUp() {
                     create: function () {
                         //GameInfo
                         this.stage = 1;
+                        this.allowInputs = true
+                        this.isGameDone = false
+                        this.levelEnemyPicked = null
+                        this.levelIndic = 1
+                        this.pointNeed = 7
+                        this.durationNeed = this.stage == 1? 10:20
+                        this.availableEnemyList = [1]
+                        
                         //Wall
                         this.wallGroup = null;
                         this.wallDim = 45
@@ -73,10 +131,12 @@ function PhaserGameSetUp() {
 
                         //Player
                         this.player = null
+                        this.numeratorAnswer = null
+                        this.denominatorAnswer = null
 
                         //Bomb
                         this.bombLocation = []
-                        this.bombLimit = 100
+                        this.bombLimit = 2
                         this.bombGroup = this.physics.add.group({ immovable: true });
 
                         //Explosion
@@ -91,27 +151,156 @@ function PhaserGameSetUp() {
 
                         //Item
                         this.itemLocation = []
-                        this.itemLimit = 5
+                        this.itemLimit = 2
                         this.itemGroup = this.physics.add.group({ immovable: true });
-                        this.singleItemSpawnDuration = 2000//7 seconds
+                        this.singleItemSpawnDuration = 4000//7 seconds
 
                         //Enemy
-                        this.enemyLimit = 10
+                        this.enemyLimit = 3
                         this.enemyStartingLimit = 5
                         this.enemyGroup = this.physics.add.group()
-                        this.singleEnemySpawnDuration = 2000//7 seconds
+                        this.advanceEnemyGroup = this.physics.add.group()
+                        this.singleEnemySpawnDuration = 4000//7 seconds
+
+                        //SideItems
+                        this.lifeSideItem = null;
+                        this.heartImage = null;
+                        this.bootsImage = null
+                        this.shieldImage = null
+                        this.explodeImage = null;
+                        this.explodeTween = null
+                        this.bootsTween = null;
+                        this.shieldTweenSide = null
+
+                        //Banner
+                        this.bottomBannerHeight = 100
+                        this.bottomBannerY = 150
+                        this.wallTextGroup = this.add.group();
+                        this.textAfter = null
+                        this.textIndicator = 1;
+                        this.randomSign = null
+                        this.bottomContainer = null
+                        this.topContainer = null
+                        this.textBottom = null
+                        this.redCircle = null
+
+                        //Stage 1
+                        this.sampleSize = null
+                        this.colorPicked = null
+                        this.givenSample = []
+                        this.coloredBallGiven = []
+                        this.probAnswer = []
+
+                        //Stage 2
+                        this.eventText = null
+
+                        //Stage 3
+                        this.colorPicked2 = null
+                        this.eventType = null
+                        this.pickedColorImg1 = null
+                        this.pickedColorImg2 = null
+                        this.textSymbol = null
+
+
+                        //Probability questions and answer
+                        this.probabilityNumbers = [1, 2, 25, 30, 5, 45]
+
+                        //Points
+                        this.pointCount = 0
+                        this.pointText = null
+
+                        //Stars
+                        this.numberOfStars = 0
+                        this.star1 = null
+                        this.star2 = null
+                        this.star3 = null
+
+                        //Timer
+                        this.startTime = null
+                        this.timeText = null
+
 
                         //Classes
                         this.Wall = new Wall(this)
                         this.Player = new Player(this, this.Wall)
+                        this.SideItem = new SideItems(this)
+                        this.Banner = new Banner(this)
+                        this.OverlapCollision = new OverlapCollision(this)
+                        this.Points = new Points(this)
+                        this.Stars = new Stars(this)
+                        this.Timer = new Timer(this)
+                        this.NextLevel = new NextLevel(this)
 
                         //assign this to self
                         const self = this
 
                         //game setUp
                         this.createBackground = function () {
-                            self.add.sprite(-70, -500, 'ground').setOrigin(0, 0).setScale(0.8)
+                            self.Wall.createBackground()
+                        };
+                        this.createFinishPage = function () {
+                            //Disable inputs
+                            this.allowInputs = false;
+                            this.input.keyboard.enabled = false;
+                            this.input.enabled = false;
+
+                            //Create a full screen black rectangle (initially invisible)
+                            const overlay = this.add.graphics();
+                            overlay.fillStyle(0x000000, 1); //full black
+                            overlay.fillRect(0, 0, this.sys.game.config.width, this.sys.game.config.height);
+                            overlay.setAlpha(0); //start transparent
+
+                            //Put overlay above everything else
+                            overlay.setScrollFactor(0);
+                            overlay.setDepth(9999);
+
+                            //Tween fade-in effect
+                            this.tweens.add({
+                                targets: overlay,
+                                alpha: 0.5,          //final opacity
+                                duration: 800,       //fade-in time (ms)
+                                ease: 'Power2'       //easing curve
+                            });
+                        };
+
+                        this.createPoints = function () {
+                            self.Points.createPoints()
                         }
+                        this.createStars = function () {
+                            self.Stars.createStars()
+                        }
+                        this.createTimer = function () {
+                            this.Timer.startTimer()
+                        }
+                        this.createSideItems = function () {
+                            self.SideItem.createSideItems()
+                        };
+                        this.throbHeart = () => {
+                            self.SideItem.throbHeart()
+                        };
+                        this.throbExplosion = () => {
+                            self.SideItem.throbExplosion()
+                        };
+                        this.stopThrobExplosion = () => {
+                            self.SideItem.stopThrobExplosion()
+                        };
+                        this.throbBoots = () => {
+                            self.SideItem.throbBoots()
+                        };
+                        this.stopThrobBoots = () => {
+                            self.SideItem.stopThrobBoots()
+                        };
+                        this.throbShield = () => {
+                            self.SideItem.throbShield()
+                        };
+                        this.stopThrobShield = () => {
+                            self.SideItem.stopThrobShield()
+                        };
+                        this.createProbQuestionHolder = function () {
+                            self.Banner.createProbQuestionHolder()
+                        };
+
+
 
                         this.createWalls = function () {
 
@@ -166,84 +355,44 @@ function PhaserGameSetUp() {
                             self.Player.handlePlayerHit()
                         };
                         this.startItemSpawnLoop = function () {
-                            this.Wall.startItemSpawnLoop(this.singleItemSpawnDuration);
+                            self.Wall.startItemSpawnLoop(this.singleItemSpawnDuration);
                         }
                         this.startEnemySpawnLoop = function () {
-                            this.Wall.startEnemySpawnLoop(this.singleEnemySpawnDuration)
+                            self.Wall.startEnemySpawnLoop(this.singleEnemySpawnDuration)
                         }
                         this.createStartingEnemies = function () {
-                            this.Wall.createStartingEnemies()
+                            self.Wall.createStartingEnemies()
                         }
+                        this.resetTextAfter = function () {
+                            self.OverlapCollision.resetTextAfter()
+                        };
                         this.handleEnemyCollision = (enemy) => { enemy.getData("ref").changeDirection() };
-                        this.handleEnemyBehavior = () =>{
-                            this.enemyGroup.children.iterate((enemySprite) => {
-                                if (!enemySprite) return;
-
-                                const enemy = enemySprite.getData('ref');
-                                if (!enemy) return;
-
-                                // chance per frame to change direction
-                                if (Phaser.Math.Between(0, 1000) < 7) {
-                                    enemy.changeDirection();
-                                }
-                            });
+                        this.handleEnemyBehavior = () => {
+                            self.OverlapCollision.handleEnemyBehavior()
                         }
                         this.hanldeExplosionWallOverlap = (explosion, wall) => {
 
-                            self.tweens.add({
-                                targets: wall,
-                                alpha: 0,
-                                duration: 100,
-                                onComplete: () => wall.destroy()
-                            });
-
-                            this.brkWallList = this.brkWallList.filter(w => !(w.x === wall.x && w.y === wall.y));
-
-                            console.log(`Breakable wall destroyed at x:${wall.x}, y:${wall.y}`);
+                            self.OverlapCollision.hanldeExplosionWallOverlap(explosion, wall)
                         }
+                        this.handleExplosionEnemyOverlap = (explosion, enemy) => {
+                            self.OverlapCollision.handleExplosionEnemyOverlap(explosion, enemy)
+                        };
                         this.handleExplosionPlayerOverlap = () => {
-                            if (!this.player.isHit && this.Player.shieldSprite == null) {
-                                this.handlePlayerHit();
-                                this.Player.decreaseLife()
-                            }
+                            self.OverlapCollision.handleExplosionPlayerOverlap()
                         }
                         this.handleItemPlayerOverlap = (player, item) => {
 
-                            //disable body to prevent overlap
-                            item.disableBody(true, false);
-
-                            self.tweens.add({
-                                targets: item,
-                                alpha: 0,
-                                duration: 100,
-                                onComplete: () => {
-                                    item.destroy()
-                                }
-                            });
-
-                            this.itemLocation = this.itemLocation.filter(i => !(i.x === item.x && item.y === item.y));
-
-                            console.log(`Item acuired at x:${item.x}, y:${item.y}`);
-                            console.log(this.itemLocation)
-
-                            if (item.texture.key === 'shieldItem') {
-                                this.Player.activateShield(5000);
-                            }
-                            else if (item.texture.key === 'heartItem') {
-                                this.Player.lifeItemOverlap();
-                            }
-                            else if (item.texture.key === "bootsItem") {
-                                this.Player.activateSpeed(5000)
-                            }
-                            else if (item.texture.key === "explodeItem") {
-                                this.Player.activateExplosionBuff(5000)
-                            }
+                            self.OverlapCollision.handleItemPlayerOverlap(player, item)
                         }
                         this.handlePlayerEnemyOverlap = () => {
-                            if (!this.player.isHit && this.Player.shieldSprite == null) {
-                                this.handlePlayerHit();
-                                this.Player.decreaseLife()
-                            }
+                            self.OverlapCollision.handlePlayerEnemyOverlap()
+                        }
+                        this.handlePlayerWallTextOverlap = function () {
+                            self.OverlapCollision.handlePlayerWallTextOverlap()
+
+                        }
+                        this.handleResetAnswer = function () {
+                            self.OverlapCollision.handleResetAnswer()
                         }
 
 
@@ -251,12 +400,18 @@ function PhaserGameSetUp() {
 
                         //Method calls
                         this.createBackground()
+                        this.createTimer()
+                        this.createProbQuestionHolder()
+                        this.createPoints()
+                        this.createStars()
                         this.createPlayer()
                         this.createWalls()
-                        this.createRandomItems()
+                        //this.createRandomItems()
                         this.startItemSpawnLoop()
                         this.startEnemySpawnLoop()
-                        this.createStartingEnemies()
+                        //this.createStartingEnemies()
+                        this.createSideItems()
+
 
 
                         //enable keyboard press
@@ -274,31 +429,33 @@ function PhaserGameSetUp() {
                         this.physics.add.collider(this.enemyGroup, this.rightwall, this.handleEnemyCollision);
                         this.physics.add.collider(this.enemyGroup, this.bottomwall, this.handleEnemyCollision);
                         this.physics.add.collider(this.enemyGroup, this.topwall, this.handleEnemyCollision);
-                        this.physics.add.collider(this.enemyGroup, this.insidewall, (enemy, wall) => {
-                            
-                            const ref = enemy.getData('ref');
-                            console.log(ref.enemyType)
-                            if (ref && ref.enemyType !== 3) {
-                                this.handleEnemyCollision(enemy);
-                            }
-                        });
-                        this.physics.add.collider(this.enemyGroup, this.breakablewall, (enemy, wall) => {
-                            const ref = enemy.getData('ref');
-                            console.log(ref.enemyType)
-                            if (ref && ref.enemyType !== 3) {
-                                this.handleEnemyCollision(enemy);
-                            }
-                        });
-                        
+                        this.physics.add.collider(this.enemyGroup, this.insidewall, this.handleEnemyCollision);
+                        this.physics.add.collider(this.enemyGroup, this.breakablewall, this.handleEnemyCollision);
+
+                        this.physics.add.collider(this.advanceEnemyGroup, this.outsidewall, this.handleEnemyCollision);
+                        this.physics.add.collider(this.advanceEnemyGroup, this.rightwall, this.handleEnemyCollision);
+                        this.physics.add.collider(this.advanceEnemyGroup, this.bottomwall, this.handleEnemyCollision);
+                        this.physics.add.collider(this.advanceEnemyGroup, this.topwall, this.handleEnemyCollision);
+
+
+
 
                         //OverlapFunctions
                         //Explosion overlaps with breakable wall
-                        this.physics.add.overlap(this.explosionGroup, this.breakablewall,this.hanldeExplosionWallOverlap);
+                        this.physics.add.overlap(this.explosionGroup, this.breakablewall, this.hanldeExplosionWallOverlap);
                         // Explosion overlaps with player
                         this.physics.add.overlap(this.player, this.explosionGroup, this.handleExplosionPlayerOverlap);
                         // Player overlaps with item
                         this.physics.add.overlap(this.player, this.itemGroup, this.handleItemPlayerOverlap);
+                        //Player overlaps with enemy
                         this.physics.add.overlap(this.player, this.enemyGroup, this.handlePlayerEnemyOverlap);
+                        this.physics.add.overlap(this.player, this.advanceEnemyGroup, this.handlePlayerEnemyOverlap);
+                        //Explosion and enemy overlap
+                        //Explosion kills normal enemies
+                        this.physics.add.overlap(this.explosionGroup, this.enemyGroup, this.handleExplosionEnemyOverlap);
+
+                        //Explosion kills advanced enemies
+                        this.physics.add.overlap(this.explosionGroup, this.advanceEnemyGroup, this.handleExplosionEnemyOverlap);
 
 
                     },
@@ -307,6 +464,9 @@ function PhaserGameSetUp() {
                         this.handlePlayerBomb()
                         this.Player.updateShield();
                         this.handleEnemyBehavior()
+                        this.handlePlayerWallTextOverlap()
+                        this.handleResetAnswer()
+                        this.Timer.updateTimer()
                     }
                 },
                 parent: gameRef.current,

@@ -201,9 +201,7 @@ export function App() {
         <Route path="/stage03Page" element={<Stage03Page userData={userData} />} />
         <Route path="/tutorialPage" element={<TutorialPage userData={userData} />} />
 
-        <Route path="/phaserGame" element={userData?(<PhaserGame
-          userData={ userData}
-        /> ):(<div>Loading ...</div>)} />
+        <Route path="/phaserGame" element={<PhaserGameSetUp></PhaserGameSetUp>} />
         <Route path="/lessonPage" element={userData?(<LessonPage
           userData={ userData}
         /> ):(<div>Loading ...</div>)}  />
