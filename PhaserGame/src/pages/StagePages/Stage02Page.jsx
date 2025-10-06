@@ -1,6 +1,7 @@
 import React from "react";
 import HomeNavbar from "../../components/navbar/HomeNavbar";
 import { Link } from "react-router-dom";
+import StageLeaderboard from "../../components/stage-leaderboard/StageLeaderboard"
 
 export default function Stage02Page() {
   return (
@@ -89,30 +90,7 @@ export default function Stage02Page() {
         </div>
 
         {/* Right Column (Leaderboard) */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">Leaderboard</h2>
-            <ul className="space-y-2">
-                {[...Array(7)].map((_, i) => (
-                <li
-                    key={i}
-                    className={`flex justify-between items-center px-3 py-2 rounded-md ${
-                    i === 0
-                        ? "bg-yellow-100 font-bold"
-                        : i === 1
-                        ? "bg-gray-100"
-                        : i === 2
-                        ? "bg-red-100"
-                        : ""
-                    }`}
-                >
-                    <span>
-                    {i + 1}. Username 0{i + 1}
-                    </span>
-                    <span className="text-sm text-gray-600">Score/Total</span>
-                </li>
-                ))}
-            </ul>
-        </div>
+        <StageLeaderboard stageNumber={2}/>
         </div>
     </div>
     </>
