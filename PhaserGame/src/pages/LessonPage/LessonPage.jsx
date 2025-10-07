@@ -1,57 +1,10 @@
-import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 import './LessonPage.css';
 import './LessonSelector.css';
 
-import ListOfLessons from '../../components/list-of-lessons/ListOfLessons';
 import HomeNavbar from '../../components/navbar/HomeNavbar';
-import Leaderboard from '../../components/high-score-table/Leaderboard';
-import ViewStudents from '../../components/viewstudents/ViewStudents';
-import LevelCard from '../../components/quiz-card/LevelCard';
 import LessonCard from "../../components/lesson-card/LessonCard";
-import { useGetAllQuiz } from '../../hooks/UseQuiz';
-import * as AuthController from '../../controllers/AuthController';
-import { useTeacherClasses } from '../../hooks/UseTeacher';
-import { useGetAllStudentInformation } from '../../hooks/UseQuiz';
 
-
-// import { useUserContext } from '../../contexts/UserContext';
-
-
-
-function LessonPage({ userData }) {
-  // const role = AuthController.getCurrentUserRole();
-  // const isTeacher = role === 'teacher';
-  // const location = useLocation();
-  // const { title, uid } = location.state || {};
-  // const [selectedTab, setSelectedTab] = useState('course');
-  // const navigate = useNavigate();
-  // const [studentLeaderBoards,setstudentLeaderBoards] = useState([])
-
-  // useEffect(() =>{
-  //   console.log(studentLeaderBoards)
-  // },[studentLeaderBoards])
-  
-  // const classId = isTeacher
-  // ? userData.classes[uid]
-  //   : userData.classId || null;
-  
-  
-  // /*const studentName = !isTeacher ? userData.name : "none"
-  // const studentData = studentLeaderBoards.filter(info => info.name == studentName)
-  // console.log("STUDENTDATA: " + JSON.stringify(studentData))*/
-
-  // const { data: quizzes, loading, error } = useGetAllQuiz();
-  // //console.log(allClass)
-
-  // if (loading) return <div>Loading</div>
-  // if (error) return <p>Something went wrong: {error.message}</p>;
-
-  // const filteredList = quizzes.allQuizzes.filter(quiz => quiz.classIds[0] == classId)
-  // console.log(filteredList)
-
-  // console.log("LocalStore: " + localStorage.getItem("userData"))
+function LessonPage() {
 
 
   return (

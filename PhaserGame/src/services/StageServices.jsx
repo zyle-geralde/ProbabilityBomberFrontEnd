@@ -24,11 +24,11 @@ export const addStageInformation = async (stageNumber, score, duration, numberOf
 
 // Get specific stage info for authenticated user
 export const getSpecificStageInformation = async (stageNumber) => {
-  const payload = { stageNumber };
   const headers = await getAuthHeaders();
-  const res = await api.post("/stage/get_specific_stage_information", payload, { headers });
+  const res = await api.post("/stage/get_specific_stage_information", { stageNumber }, { headers });
   return res.data;
 };
+
 
 // Get global stage info (not user-specific)
 export const getGlobalStageInformation = async () => {
