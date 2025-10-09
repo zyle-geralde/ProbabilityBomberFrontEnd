@@ -13,6 +13,8 @@ import NextLevel from './Classes/NextLevel';
 function PhaserGameSetUp() {
     const gameRef = useRef(null);
     const gameInstance = useRef(null);
+    const location = useLocation()
+    const stageNum = location.state?.stageNum??1
 
     useEffect(() => {
         if (window.Phaser && !gameInstance.current) {
@@ -100,7 +102,7 @@ function PhaserGameSetUp() {
                     },
                     create: function () {
                         //GameInfo
-                        this.stage = 1;
+                        this.stage = stageNum;
                         this.allowInputs = true
                         this.isGameDone = false
                         this.levelEnemyPicked = null
