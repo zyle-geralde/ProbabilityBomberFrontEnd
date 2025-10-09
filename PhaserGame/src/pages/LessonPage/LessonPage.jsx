@@ -46,7 +46,7 @@ function LessonPage() {
         <LessonCard
           stageLink="/stage01Page"
           stageNo="1"
-          image="/images/deck_of_cards.jpg"
+          image="/images/colored_balls.jpg "
           title="Basic Probability"
           description="Learn the fundamentals of probability theory, including sample spaces, events, and basic probability rules."
         />
@@ -54,17 +54,17 @@ function LessonPage() {
         <LessonCard
           stageLink="/stage02Page"
           stageNo="2"
-          image="/images/colored_balls.jpg"
-          title="Independent & Dependent Probability"
-          description="Explore how different events affect one another and how to calculate their probabilities."
+          image="/images/deck_of_cards.jpg"
+          title="Mutually and Non-Mutually Exclusive Events"
+          description="Explore how mutually and non-mutually exclusive events affect one another and learn how to calculate their combined probabilities."
         />
 
         <LessonCard
           stageLink="/stage03Page"
           stageNo="3"
           image="/images/candy.jpg"
-          title="Bayes’ Theorem"
-          description="Understand how to update probabilities when new information becomes available."
+          title="Independent & Dependent Probability"
+          description="Explore how independent and dependent events relate to each other and learn how one event can influence the probability of another."
         />
     </div>
   </div>
