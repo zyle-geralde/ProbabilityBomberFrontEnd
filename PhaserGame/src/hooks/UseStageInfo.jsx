@@ -66,3 +66,14 @@ export function useStageInfo(stageNumber) {
 
   return { students, loading, error, refresh };
 }
+
+
+export async function addUserStageInfo(stageNumber,score,duration, numberOfStars) {
+  try {
+    const response = await StageController.addStageInformation(stageNumber, score, duration, numberOfStars)
+    console.log(response)
+  }
+  catch (error) {
+    alert("Failed to add user stage info.");
+  }
+}

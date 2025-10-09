@@ -1,5 +1,6 @@
 import Item from "./ItemClass";
 import Enemy from "./EnemyClass";
+import { addUserStageInfo } from "../../../hooks/UseStageInfo";
 
 class Wall {
 
@@ -59,6 +60,8 @@ class Wall {
         // Put overlay above everything else
         overlay.setScrollFactor(0);
         overlay.setDepth(9999);
+
+        addUserStageInfo(this.self.stage,this.self.pointCount,(Math.floor(this.self.Timer.elapsedMs / 1000)),this.self.numberOfStars)
 
         const { width, height } = this.self.scale;
 
