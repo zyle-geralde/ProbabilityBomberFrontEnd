@@ -46,9 +46,9 @@ export default function Stage02Page() {
 
                     {/* Header */}
                     <div className="text-center">
-                        <h1 className="!text-6xl text-center font-bold mb-2">Stage 2 - Independent & Dependent Probability</h1>
+                        <h1 className="!text-6xl text-center font-bold mb-2">Stage 2 - Mutually and Non-Mutually Exclusive Events</h1>
                         <p className="!mt-10 flex-col md:flex-row items-center justify-center gap-6 text-gray-200 text-lg">
-                            Explore how different events affect one another and how to calculate their probabilities.
+                            Explore how mutually and non-mutually exclusive events affect one another and learn how to calculate their combined probabilities.
                         </p>
                     </div>
                 </div>
@@ -68,16 +68,17 @@ export default function Stage02Page() {
                             <div className="h-auto px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-center text-gray-700 leading-relaxed">
                                 <p>
                                     In probability, events can be classified as {" "}
-                                    <span className="font-semibold">independent</span> or {" "}
-                                    <span className="font-semibold">dependent</span>.
-                                    Independent events do not influence each other—for
-                                    example, flipping a coin twice. Dependent events are
-                                    linked, where the outcome of the first affects the
-                                    probability of the second—for example, drawing two cards
-                                    from a deck without replacement. This stage focuses on
-                                    learning the difference between these types of events and
-                                    applying the multiplication rule to calculate their
-                                    probabilities correctly.
+                                    <span className="font-semibold">Mutual</span> or {" "}
+                                    <span className="font-semibold">Non Mutual</span>.
+                                    In this stage, you will learn about mutually and non-mutually
+                                    exclusive events in probability. Mutually exclusive events
+                                    are those that cannot occur at the same time, while
+                                    non-mutually exclusive events can happen together. Understanding
+                                    the difference between these two types of events helps in
+                                    identifying whether outcomes overlap or remain separate.
+                                    This concept builds a deeper understanding of how
+                                    probabilities combine and prepares you for analyzing
+                                    more complex probability relationships in future lessons.
                                 </p>
                             </div>
                         </div>

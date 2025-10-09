@@ -44,9 +44,9 @@ export default function Stage03Page() {
 
                     {/* Header */}
                     <div className="text-center">
-                        <h1 className="!text-6xl text-center font-bold mb-2">Stage 3 - Bayes’ Theorem</h1>
+                        <h1 className="!text-6xl text-center font-bold mb-2">Stage 3 - Independent and Dependent Events</h1>
                         <p className="!mt-10 flex-col md:flex-row items-center justify-center gap-6 text-gray-200 text-lg">
-                            Understand how to update probabilities when new information becomes available.
+                            Explore how independent and dependent events relate to each other and learn how one event can influence the probability of another.
                         </p>
                     </div>
                 </div>
@@ -65,17 +65,12 @@ export default function Stage03Page() {
                             </h2>
                             <div className="h-auto px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-center text-gray-700 leading-relaxed">
                                 <p>
-                                    Bayes’ Theorem is a powerful tool in probability that
-                                    allows us to calculate the probability of an event based
-                                    on prior knowledge of related conditions. It connects{" "}
-                                    <span className="font-semibold">prior probabilities</span>{" "}
-                                    (what we know before seeing data) with{" "}
-                                    <span className="font-semibold">conditional
-                                        probabilities</span> (how likely outcomes are given new
-                                    evidence). For example, it can be used in medical
-                                    testing, spam filtering, and risk assessment. In this
-                                    stage, you will learn how to apply Bayes’ Theorem to
-                                    update beliefs when new information is introduced.
+                                    In this stage, you will explore the relationship between independent and
+                                    dependent events in probability. You will learn how the outcome of one
+                                    event can either have no effect or influence the outcome of another.
+                                    Understanding these types of probabilities will help you analyze how
+                                    events are connected and develop strategies for solving more complex
+                                    probability problems in real-life situations.
                                 </p>
                             </div>
                         </div>
