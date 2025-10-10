@@ -7,6 +7,7 @@ import StageLeaderboard from "../../components/stage-leaderboard/StageLeaderboar
 export default function Stage01Page() {
     const navigate = useNavigate()
     const stageNum = 1
+    //console.log(localStorage.stageProgress)
 
     //Navigating to different stage
     const navigateToGame = () => {

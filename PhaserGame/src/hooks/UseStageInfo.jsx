@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import * as StageController from "../controllers/StageController";
 
-export function useStageInfo(stageNumber) {
+/*export function useStageInfo(stageNumber) {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -65,15 +65,44 @@ export function useStageInfo(stageNumber) {
   };
 
   return { students, loading, error, refresh };
-}
+}*/
+
+export const useGetSpecificStageInfo = (stageNumber) => {
+  const [stageInfo, setStageInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Run once on mount (empty dependency array)
+    const fetchStageInfo = async () => {
+      try {
+        setLoading(true);
+        const data = await StageController.getSpecificStageInformation(stageNumber);
+        console.log(data)
+        setStageInfo(data);
+      } catch (err) {
+        console.error("Error fetching specific stage info:", err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStageInfo();
+  }, []); // 👈 empty dependency = runs only once
+
+  return { stageInfo, loading, error };
+};
 
 
 export async function addUserStageInfo(stageNumber,score,duration, numberOfStars) {
   try {
+    console.log(stageNumber,score,duration,numberOfStars)
     const response = await StageController.addStageInformation(stageNumber, score, duration, numberOfStars)
     console.log(response)
   }
   catch (error) {
+    console.log(error)
     alert("Failed to add user stage info.");
   }
 }
