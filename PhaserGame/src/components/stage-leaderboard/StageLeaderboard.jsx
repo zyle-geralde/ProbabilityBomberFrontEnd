@@ -15,9 +15,13 @@ import LeaderboardPlaceholder from "../placeholder/LeaderboardPlaceholder";
 //   { name: "Isabella Smith", score: 91, duration: 110 },
 // ];
 
-function StageLeaderboard({ stageNumber }) {
+function StageLeaderboard({ stageNumber,setUserScore }) {
     const { stageInfo, loading, error } = useGetSpecificStageInfo(stageNumber);
     console.log("Leaderboard students:", stageInfo);
+
+    const userData = JSON.parse(localStorage.userData)
+
+    //console.log(userData.username)
 
 
     function formatDuration(seconds) {
@@ -32,11 +36,19 @@ function StageLeaderboard({ stageNumber }) {
         if (rank === 2) return "bg-amber-700 text-white";  // bronze
         return "bg-gray-200 text-gray-700";                // others
     }
+    function setUserScoreFunc() {
+        const user = stageInfo?.find(item => item.username === userData.username);
+        if (user) {
+            setUserScore(user.score)
+        }
+    }
 
 
     if (loading) return <LeaderboardLoading />;
     if (error) return <LeaderboardError />;
     if (stageInfo.length <= 0) return <LeaderboardPlaceholder />;
+
+    setUserScoreFunc()
 
     return (
         <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-6 max-w-sm mx-auto">

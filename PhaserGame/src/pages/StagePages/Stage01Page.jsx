@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link ,useNavigate} from "react-router-dom";
 import HomeNavbar from "../../components/navbar/HomeNavbar";
 import StageLeaderboard from "../../components/stage-leaderboard/StageLeaderboard"
@@ -6,7 +6,9 @@ import StageLeaderboard from "../../components/stage-leaderboard/StageLeaderboar
 
 export default function Stage01Page() {
     const navigate = useNavigate()
+    const [userScore, setUserScore] = useState(0)
     const stageNum = 1
+    
     //console.log(localStorage.stageProgress)
 
     //Navigating to different stage
@@ -87,7 +89,7 @@ export default function Stage01Page() {
                             </span>
 
                             <div className="flex items-center justify-between mt-3 p-4 border rounded-lg">
-                                <span className="text-gray-500 text-2xl">Score: 0</span>
+                                <span className="text-gray-500 text-2xl">Score: {userScore}</span>
                                 <button className="bg-[#641B2E] text-white px-4 py-2 rounded-lg hover:bg-[#501423] transition" onClick={navigateToGame}>
                                     Start Game
                                 </button>
@@ -96,7 +98,7 @@ export default function Stage01Page() {
                     </div>
 
                     {/* Right Column (Leaderboard) */}
-                    <StageLeaderboard stageNumber={1} />
+                    <StageLeaderboard stageNumber={1} setUserScore={setUserScore}/>
                 </div>
             </div>
         </>
