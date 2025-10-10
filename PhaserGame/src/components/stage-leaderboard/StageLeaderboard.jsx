@@ -36,7 +36,7 @@ function StageLeaderboard({ stageNumber }) {
 
     if (loading) return <LeaderboardLoading />;
     if (error) return <LeaderboardError />;
-    if (stageInfo.stageData.length <= 0) return <LeaderboardPlaceholder />;
+    if (stageInfo.length <= 0) return <LeaderboardPlaceholder />;
 
     return (
         <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-6 max-w-sm mx-auto">
@@ -47,9 +47,9 @@ function StageLeaderboard({ stageNumber }) {
             </div>
 
             <ul className="space-y-3 flex flex-col items-center p-0 w-full max-h-100 overflow-y-auto">
-                {stageInfo.stageData
+                {stageInfo
                     .sort((a, b) => b.score - a.score)
-                    .slice(0, 20)
+                    .slice(0, 10)
                     .map((student, i) => (
                         <li
                             key={i}

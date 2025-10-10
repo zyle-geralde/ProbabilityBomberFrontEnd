@@ -73,13 +73,35 @@ export const useGetSpecificStageInfo = (stageNumber) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Run once on mount (empty dependency array)
     const fetchStageInfo = async () => {
       try {
         setLoading(true);
         const data = await StageController.getSpecificStageInformation(stageNumber);
-        console.log(data)
-        setStageInfo(data);
+        console.log("Raw data:", data);
+
+        // Filter logic
+        const filtered = Object.values(
+          data.stageData.reduce((acc, entry) => {
+            const { username, score, duration } = entry;
+
+            // If username not in acc, add it
+            if (!acc[username]) {
+              acc[username] = entry;
+            } else {
+              const current = acc[username];
+              if (
+                score > current.score || // higher score
+                (score === current.score && duration < current.duration) // shorter duration
+              ) {
+                acc[username] = entry;
+              }
+            }
+            return acc;
+          }, {})
+        );
+
+        console.log("Filtered data:", filtered);
+        setStageInfo(filtered);
       } catch (err) {
         console.error("Error fetching specific stage info:", err);
         setError(err);
@@ -89,7 +111,7 @@ export const useGetSpecificStageInfo = (stageNumber) => {
     };
 
     fetchStageInfo();
-  }, []); // 👈 empty dependency = runs only once
+  }, []); 
 
   return { stageInfo, loading, error };
 };
