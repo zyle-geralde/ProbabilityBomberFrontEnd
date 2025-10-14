@@ -117,28 +117,20 @@ export default function ProfilePage({ userData, password, onChange, onUpdate, er
 
         {activeTab === "statistics" ? (
           <>
-            <OverAllPerformance stages={globalStageInfo} />
+            <CompletionBreakdown stages={globalStageInfo} />
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <h2 className="text-lg font-bold text-gray-900 mb-4">Stage Progress</h2>
                 <div className="h-fit">
-                  {stages.length > 0 ? (
-                    <LessonProgress stages={globalStageInfo} />
-                  ) : (
-                    <StageProgressPlaceholder />
-                  )}
+                  {<OverAllPerformance stages={globalStageInfo} />}
+                  
+
                 </div>
               </div>
 
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <h2 className="text-lg font-bold text-gray-900 mb-4">Completion Breakdown</h2>
                 <div className="h-fit">
-                  {stages.length > 0 ? (
-                    <CompletionBreakdown stages={stages} />
-                  ) : (
-                    <CompletionBreakdownPlaceholder />
-                  )}
+                  {<LessonProgress stages={globalStageInfo} />}
                 </div>
               </div>
             </div>
