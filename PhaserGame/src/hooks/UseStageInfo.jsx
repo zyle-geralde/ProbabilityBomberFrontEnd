@@ -79,12 +79,11 @@ export const useGetSpecificStageInfo = (stageNumber) => {
         const data = await StageController.getSpecificStageInformation(stageNumber);
         console.log("Raw data:", data);
 
-        // Filter logic
+        // Filter logic — one entry per username (best score / shortest duration)
         const filtered = Object.values(
           data.stageData.reduce((acc, entry) => {
             const { username, score, duration } = entry;
 
-            // If username not in acc, add it
             if (!acc[username]) {
               acc[username] = entry;
             } else {
@@ -100,8 +99,16 @@ export const useGetSpecificStageInfo = (stageNumber) => {
           }, {})
         );
 
-        console.log("Filtered data:", filtered);
-        setStageInfo(filtered);
+        // Sort by highest score, then lowest duration
+        const sorted = filtered.sort((a, b) => {
+          if (b.score === a.score) {
+            return a.duration - b.duration; // shorter duration first if scores tie
+          }
+          return b.score - a.score; // higher score first
+        });
+
+        console.log("Filtered & sorted data:", sorted);
+        setStageInfo(sorted);
       } catch (err) {
         console.error("Error fetching specific stage info:", err);
         setError(err);
@@ -111,11 +118,10 @@ export const useGetSpecificStageInfo = (stageNumber) => {
     };
 
     fetchStageInfo();
-  }, []); 
+  }, [stageNumber]); // re-run when stage changes
 
   return { stageInfo, loading, error };
 };
-
 
 export async function addUserStageInfo(stageNumber,score,duration, numberOfStars) {
   try {

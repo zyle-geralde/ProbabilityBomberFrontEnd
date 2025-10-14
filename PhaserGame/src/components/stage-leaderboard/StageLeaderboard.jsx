@@ -15,7 +15,7 @@ import LeaderboardPlaceholder from "../placeholder/LeaderboardPlaceholder";
 //   { name: "Isabella Smith", score: 91, duration: 110 },
 // ];
 
-function StageLeaderboard({ stageNumber,setUserScore }) {
+function StageLeaderboard({ stageNumber,setUserScore,setUserRank }) {
     const { stageInfo, loading, error } = useGetSpecificStageInfo(stageNumber);
     console.log("Leaderboard students:", stageInfo);
 
@@ -38,8 +38,14 @@ function StageLeaderboard({ stageNumber,setUserScore }) {
     }
     function setUserScoreFunc() {
         const user = stageInfo?.find(item => item.username === userData.username);
+        const index = stageInfo?.findIndex(item => item.username === userData.username);
         if (user) {
             setUserScore(user.score)
+
+            //setUserRank
+        }
+        if (index != -1) {
+            setUserRank(index+1)
         }
     }
 
@@ -60,7 +66,6 @@ function StageLeaderboard({ stageNumber,setUserScore }) {
 
             <ul className="space-y-3 flex flex-col items-center p-0 w-full max-h-100 overflow-y-auto">
                 {stageInfo
-                    .sort((a, b) => b.score - a.score)
                     .slice(0, 10)
                     .map((student, i) => (
                         <li

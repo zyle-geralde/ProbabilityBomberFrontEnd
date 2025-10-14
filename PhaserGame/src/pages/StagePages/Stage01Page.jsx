@@ -7,6 +7,7 @@ import StageLeaderboard from "../../components/stage-leaderboard/StageLeaderboar
 export default function Stage01Page() {
     const navigate = useNavigate()
     const [userScore, setUserScore] = useState(0)
+    const [userRank, setUserRank] = useState("none")
     const stageNum = 1
     
     //console.log(localStorage.stageProgress)
@@ -98,7 +99,7 @@ export default function Stage01Page() {
                     </div>
 
                     {/* Right Column (Leaderboard) */}
-                    <StageLeaderboard stageNumber={1} setUserScore={setUserScore}/>
+                    <StageLeaderboard stageNumber={1} setUserScore={setUserScore} setUserRank={setUserRank} />
                 </div>
             </div>
         </>
