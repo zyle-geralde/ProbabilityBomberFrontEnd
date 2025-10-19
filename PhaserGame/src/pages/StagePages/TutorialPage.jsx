@@ -96,22 +96,16 @@ export default function TutorialPage() {
                             <h2 className="text-xl font-bold text-gray-900 mb-2">Player hit</h2>
 
                             <span className="text-black-500 text-sm italic " style={{ "display": "block" }}>
-                                Player's health decreases when they are hit by an explosion or an enemy.
+                                Player's health <strong>decreases</strong> when they are hit by an <strong>explosion or an enemy</strong>.
                             </span>
                             <span className="text-black-500 text-sm italic " style={{ "display": "block" }}>
-                                Once hit, the player becomes immune for 3 seconds before they can be hit again.
-                            </span>
-                            <span className="text-black-500 text-sm italic " style={{ "display": "block" }}>
-                                Click <strong>Right Arrow key</strong> to move to the right
-                            </span>
-                            <span className="text-black-500 text-sm italic " style={{ "display": "block" }}>
-                                Click <strong>Left Arrow key</strong> to move to the left
+                                Once hit, the player becomes <strong>immune for 3 seconds</strong> before they can be hit again.
                             </span>
 
 
                             <div className="flex items-center justify-between mt-3 p-4 border rounded-lg">
                                 <video
-                                    src="/videos/UpDownMovement.mp4"
+                                    src="/videos/PlayerHit.mp4"
                                     controls
                                     className="rounded-lg w-full h-auto"
                                 />
