@@ -1,6 +1,8 @@
 import Item from "./ItemClass";
 import Enemy from "./EnemyClass";
 import { addUserStageInfo } from "../../../hooks/UseStageInfo";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 class Wall {
 
@@ -127,6 +129,7 @@ class Wall {
                 //Back button disp
                 const backGameButtonDips = this.self.add.image((width / 2), height / 2 + 155, this.self.stage == 1?"unbrkwall":"unbrkableWallStage2")
                     .setOrigin(0.5).setDepth(10050).setDisplaySize(150, star_size).setAlpha(0).setInteractive({ useHandCursor: true });
+                backGameButtonDips.on("pointerdown", () => {window.location.href = this.self.stage == 1?"/stage01Page":this.self.stage == 2?"/stage02Page":"/stage03Page"});
 
                 //Back button
                 const backButtonText = this.self.add.text((width / 2), (height / 2) + star_size + 105, "Back", {
@@ -134,6 +137,7 @@ class Wall {
                     fill: '#000000',
                     fontStyle: 'bold'
                 }).setOrigin(0.5).setDepth(10051).setAlpha(0).setInteractive({ useHandCursor: true });
+                backButtonText.on("pointerdown", () => {window.location.href = this.self.stage == 1?"/stage01Page":this.self.stage == 2?"/stage02Page":"/stage03Page"});
 
 
                 // 🎬 Fade in all UI together
