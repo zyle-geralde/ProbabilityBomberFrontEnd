@@ -57,9 +57,7 @@ export default function TutorialPage() {
                             </h2>
                             <div className="h-auto px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-center text-gray-700 leading-relaxed">
                                 This tutorial will guide you through the basic game mechanics. You will
-                                learn how to move, interact, and complete simple tasks. It’s a safe place
-                                to practice earning points and retrying without pressure, so you’ll be
-                                ready for the real challenges in later stages.
+                                learn how to move, interact, and complete simple tasks.
                             </div>
                         </div>
 
@@ -93,6 +91,32 @@ export default function TutorialPage() {
                         </div>
 
                         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <h2 className="text-xl font-bold text-gray-900 mb-2">Bomb Placement</h2>
+
+                            <span className="text-black-500 text-sm italic " style={{ "display": "block" }}>
+                                Press <strong>A key</strong> to drop bombs. You can drop a <strong>maximum of 2 bombs at a time</strong>.
+                            </span>
+                            <span className="text-black-500 text-sm italic" style={{ display: "block" }}>
+                                Enemies will <strong>disappear</strong> when hit by an explosion.
+                            </span>
+                            <span className="text-black-500 text-sm italic" style={{ display: "block" }}>
+                                Breakable walls will <strong>break</strong> when hit by an explosion, revealing the probability answer.
+                            </span>
+
+
+
+                            <div className="flex items-center justify-between mt-3 p-4 border rounded-lg">
+                                <video
+                                    src="/videos/BombPlacement.mp4"
+                                    controls
+                                    className="rounded-lg w-full h-auto"
+                                />
+                            </div>
+
+
+                        </div>
+
+                        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                             <h2 className="text-xl font-bold text-gray-900 mb-2">Player hit</h2>
 
                             <span className="text-black-500 text-sm italic " style={{ "display": "block" }}>
@@ -100,6 +124,9 @@ export default function TutorialPage() {
                             </span>
                             <span className="text-black-500 text-sm italic " style={{ "display": "block" }}>
                                 Once hit, the player becomes <strong>immune for 3 seconds</strong> before they can be hit again.
+                            </span>
+                            <span className="text-black-500 text-sm italic " style={{ "display": "block" }}>
+                                Game will end when player's life reaches <strong>0</strong>.
                             </span>
 
 
@@ -111,8 +138,62 @@ export default function TutorialPage() {
                                 />
                             </div>
 
-                            
+
                         </div>
+
+                        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <h2 className="text-xl font-bold text-gray-900 mb-2">Item Collection</h2>
+
+                            <span className="text-black-500 text-sm italic " style={{ "display": "block" }}>
+                                Collect items by <strong>running through them</strong>.
+                            </span>
+
+
+                            <div className="flex items-center justify-between mt-3 p-4 border rounded-lg">
+                                <video
+                                    src="/videos/ItemCollection.mp4"
+                                    controls
+                                    className="rounded-lg w-full h-auto"
+                                />
+                            </div>
+
+
+                        </div>
+
+                        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <h2 className="text-xl font-bold text-gray-900 mb-2">Probability Collection</h2>
+
+                            <span className="text-black-500 text-sm italic" style={{ display: "block" }}>
+                                Press <strong>S key</strong> to collect numbers.
+                            </span>
+                            <span className="text-black-500 text-sm italic" style={{ display: "block" }}>
+                                Press <strong>X key</strong> to reset your answer.
+                            </span>
+                            <span className="text-black-500 text-sm italic" style={{ display: "block" }}>
+                                The numbers you collect will appear on the <strong>banner</strong> at the top.
+                            </span>
+                            <span className="text-black-500 text-sm italic" style={{ display: "block" }}>
+                                The banner text turns <strong>green</strong> for a correct answer and <strong>red</strong> for an incorrect one.
+                            </span>
+                            <span className="text-black-500 text-sm italic" style={{ display: "block" }}>
+                                You’ll earn <strong>points</strong> for each correct answer.
+                            </span>
+
+
+
+                            <div className="flex items-center justify-between mt-3 p-4 border rounded-lg">
+                                <video
+                                    src="/videos/ProbabilityCollection.mp4"
+                                    controls
+                                    className="rounded-lg w-full h-auto"
+                                />
+                            </div>
+
+
+                        </div>
+
+
+
                     </div>
                     {/* Right Column - Placeholder for future content */}
                 </div>
