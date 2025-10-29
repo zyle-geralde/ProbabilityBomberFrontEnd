@@ -4,6 +4,8 @@ import { getAUserStageInformation } from "../../hooks/UseStageInfo";
 export default function Achievements() {
   const [userStageInfo, setUserStageInfo] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedAchievement, setSelectedAchievement] = useState(null);
+
 
   /**
    * Helper function to determine if a stage has been completed based on the current data state.
@@ -55,13 +57,7 @@ export default function Achievements() {
         
         //Corrected: Storing the data fetched
         //setUserStageInfo(data);
-        /*const testData = {
-          userStageData: [
-              { stageNumber: 1, numberOfStars: 2, score: 80, duration: 70 },
-              { stageNumber: 2, numberOfStars: 3, score: 160, duration: 35 },
-              { stageNumber: 3, numberOfStars: 3, score: 50, duration: 90 },
-          ]
-      };*/
+
       
         
         setUserStageInfo(data);
@@ -136,21 +132,21 @@ export default function Achievements() {
     },
     {
       name: "Quick Thinker",
-      description: "Complete Basic Probability in under 30 seconds.",
+      description: "Complete Basic Probability in under 10 minutes.",
       achieved: speedStage1,
       src: "/images/speedS1.png",
       key: "speed1"
     },
     {
       name: "Rapid Reasoner",
-      description: "Complete Mutually and Non-Mutually Exclusive Events in under 30 seconds.",
+      description: "Complete Mutually and Non-Mutually Exclusive Events in under 10 minutes.",
       achieved: speedStage2,
       src: "/images/speedS2.png",
       key: "speed2"
     },
     {
       name: "Speed of Certainty",
-      description: "Complete Dependent and Independent Events in under 30 seconds.",
+      description: "Complete Dependent and Independent Events in under 10 minutes.",
       achieved: speedStage3,
       src: "/images/speedS3.png",
       key: "speed3"
@@ -201,25 +197,42 @@ export default function Achievements() {
   }
   
   //Render the ACHIEVED Badges
-  return (
-    <div className="flex justify-around p-4">
-      {achievedBadges.map((achievement) => (
-        <div 
-          key={achievement.key} 
-          className="flex flex-col items-center transform transition duration-300 hover:-translate-y-2 hover:scale-110"
+return (
+  <div className="flex flex-wrap justify-around gap-6 p-4">
+    {achievedBadges.map((achievement) => {
+      const isSelected = selectedAchievement === achievement.key;
+
+      return (
+        <div
+          key={achievement.key}
+          className="relative flex flex-col items-center transform transition duration-300 hover:-translate-y-2 hover:scale-110 cursor-pointer"
+          onClick={() =>
+            setSelectedAchievement(isSelected ? null : achievement.key)
+          }
         >
-          {/* Badge Image: Always rendered without grayscale since we filtered for ACHIEVED */}
+          {/* Badge Image */}
           <img
             src={achievement.src}
             alt={achievement.name}
-            className="w-20 h-auto filter" 
+            className="w-20 h-auto"
           />
-          {/* Badge Name: Always rendered with the achieved color */}
-          <p className="mt-2 font-semibold text-gray-800">
+
+          {/* Badge Name */}
+          <p className="mt-2 font-semibold text-gray-800 text-center">
             {achievement.name}
           </p>
+
+          {/* Description (visible when clicked) */}
+          {isSelected && (
+            <div className="absolute top-full mt-3 w-56 bg-gray-800 text-white text-sm rounded-lg px-3 py-2 shadow-lg text-center z-10">
+              {achievement.description}
+              <div className="absolute left-1/2 -top-2 -translate-x-1/2 border-8 border-transparent border-b-gray-800"></div>
+            </div>
+          )}
         </div>
-      ))}
-    </div>
-  );
+      );
+    })}
+  </div>
+);
+
 }
