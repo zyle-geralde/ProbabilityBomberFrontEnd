@@ -3,9 +3,54 @@ import './LessonSelector.css';
 
 import HomeNavbar from '../../components/navbar/HomeNavbar';
 import LessonCard from "../../components/lesson-card/LessonCard";
+import { getAUserStageInformation } from '../../hooks/UseStageInfo';
+import React, { useState, useEffect } from "react";
 
 function LessonPage() {
+  const [userStageInfo, setUserStageInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  const isStageCompleted = (stageNum) => {
+    const dataArray = userStageInfo?.userStageData || userStageInfo;
+
+    if (!Array.isArray(dataArray)) {
+      return false;
+    }
+
+    return dataArray.some(
+      (entry) => entry.stageNumber === stageNum && entry.numberOfStars >= 2
+    );
+  };
+
+
+  useEffect(() => {
+    const fetchUserAchievements = async () => {
+      try {
+        setLoading(true);
+        const data = await getAUserStageInformation();
+        
+        //Corrected: Storing the data fetched
+        //setUserStageInfo(data);
+        console.log("DATAME")
+        console.log(data)
+
+
+        
+        setUserStageInfo(data);
+      } catch (error) {
+        console.error("Failed to fetch user stage information:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserAchievements();
+  }, []); // Run only on mount
+
+  let completeStage2 = isStageCompleted(1)
+  let completeStage3 = isStageCompleted(2)
+  console.log(completeStage2)
+  console.log(completeStage3)
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -41,6 +86,7 @@ function LessonPage() {
           image="/images/tutorial.png"
           title="Tutorial"
           description="Learn the basics of the game here. This tutorial will walk you through movement, interactions, and scoring so you’re ready for the main stages."
+          isLocked={false}
         />
 
         <LessonCard
@@ -49,6 +95,7 @@ function LessonPage() {
           image="/images/colored_balls.jpg "
           title="Basic Probability"
           description="Learn the fundamentals of probability theory, including sample spaces, events, and basic probability rules."
+          isLocked={false}
         />
 
         <LessonCard
@@ -57,6 +104,7 @@ function LessonPage() {
           image="/images/deck_of_cards.jpg"
           title="Mutually and Non-Mutually Exclusive Events"
           description="Explore how mutually and non-mutually exclusive events affect one another and learn how to calculate their combined probabilities."
+          isLocked={!completeStage2}
         />
 
         <LessonCard
@@ -65,6 +113,7 @@ function LessonPage() {
           image="/images/candy.jpg"
           title="Independent & Dependent Probability"
           description="Explore how independent and dependent events relate to each other and learn how one event can influence the probability of another."
+          isLocked={!completeStage3}
         />
     </div>
   </div>
