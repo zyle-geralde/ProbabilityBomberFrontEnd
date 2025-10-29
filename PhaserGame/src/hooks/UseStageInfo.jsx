@@ -114,3 +114,16 @@ export const useGetGlobalStageInfo = (username) => {
 
   return { globalStageInfo, loading, error };
 };
+
+export const getAUserStageInformation = async () => {
+  try {
+    // Assuming StageController.getAUserStageInformation() is the correct function
+    // as per your request.
+    return await StageController.getAUserStageInformation(); 
+  } catch (error) {
+    console.error("Error fetching user stage info:", error);
+    // Re-throw the error so the calling function can handle it
+    throw error;
+  }
+};
+
