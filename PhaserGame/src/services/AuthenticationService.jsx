@@ -35,7 +35,7 @@ export const forgotPassword = async (email) => {
   const baseUrl =
     import.meta.env.MODE === "development"
       ? "http://localhost:5173"
-      : "https://yourdomain.com"; // replace with your deployed domain
+      : "https://probabilitybomberfrontend.onrender.com"; // replace with your deployed domain
 
   const actionCodeSettings = {
     url: `${baseUrl}/reset-password`,
