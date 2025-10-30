@@ -109,7 +109,9 @@ class OverlapCollision {
         }
     }
     handleItemPlayerOverlap(player, item) {
+        this.self.sound.play('collectItemMusic', { volume: 1 });
         //disable body to prevent overlap
+        
         item.disableBody(true, false);
 
         this.self.tweens.add({
@@ -141,6 +143,7 @@ class OverlapCollision {
     }
     handlePlayerEnemyOverlap() {
         if (!this.self.player.isHit && this.self.Player.shieldSprite == null) {
+            this.self.sound.play('playerHitMusic', { volume: 1 });
             this.self.handlePlayerHit();
             this.self.Player.decreaseLife()
         }
@@ -214,6 +217,7 @@ class OverlapCollision {
                             //Checking answer
                             if (parseInt(this.self.numeratorAnswer) !== parseInt(this.self.probAnswer[0]) || parseInt(this.self.denominatorAnswer) !== parseInt(this.self.probAnswer[1])) {
                                 console.log("Wrong")
+                                this.self.sound.play('wrongAnswerMusic', { volume: 1 });
 
                                 this.self.allowInputs = false;
                                 this.self.tweens.add({
@@ -263,6 +267,7 @@ class OverlapCollision {
                             }
                             else {
                                 console.log("Correct")
+                                this.self.sound.play('correctAnswerMusic', { volume: 1 });
 
                                 this.self.allowInputs = false;
                                 this.self.tweens.add({

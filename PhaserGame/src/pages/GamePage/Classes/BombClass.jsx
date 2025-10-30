@@ -49,6 +49,7 @@ class Bomb {
 
             //Destroy the bomb
             this.bomb.destroy()
+            this.self.sound.play('explosionMusic', { volume: 1 });
 
             //Remove the location of the bomb
             this.self.bombLocation = this.self.bombLocation.filter(

@@ -14,7 +14,7 @@ function PhaserGameSetUp() {
     const gameRef = useRef(null);
     const gameInstance = useRef(null);
     const location = useLocation()
-    const stageNum = location.state?.stageNum??1
+    const stageNum = location.state?.stageNum ?? 1
 
     useEffect(() => {
         if (window.Phaser && !gameInstance.current) {
@@ -33,18 +33,26 @@ function PhaserGameSetUp() {
                 pixelArt: true,
                 scene: {
                     preload: function () {
+                        //Music
+                        this.load.audio('bgMusic', 'sounds/backgroundGamemusic.mp3');
+                        this.load.audio('explosionMusic', 'sounds/explosion01.wav');
+                        this.load.audio('collectItemMusic', 'sounds/collect.wav');
+                        this.load.audio('playerHitMusic', 'sounds/playerhit.mp3');
+                        this.load.audio('correctAnswerMusic', 'sounds/correct.wav');
+                        this.load.audio('wrongAnswerMusic', 'sounds/wrong.wav');
+                        //images
                         this.load.image("background1", 'images/backgroundDispF.png');
                         this.load.image("candy1", "images/candy (1).png");
                         this.load.image("candy-cane", "images/candy-cane.png");
                         this.load.image("candy", "images/candy.png")
                         this.load.image("cotton-candy", "images/cotton-candy.png")
-                        this.load.image("sweets","images/sweets.png")
+                        this.load.image("sweets", "images/sweets.png")
                         this.load.image("carddeck", "images/carddeck.jpg")
                         this.load.image("background2", 'images/backgroundDispS.png')
                         this.load.image("background3", 'images/backgroundDisp3.png')
                         this.load.image("backgroundStage2", "images/panel_square_screws.png")
                         this.load.image("unbrkableWallStage2", "images/panel_glass_screws.png")
-                        
+
                         this.load.image("brkableWallStage2", "images/button_square_header_blade_square_screws.png")
                         this.load.image("sideItemHoldStage2", "images/button_square_header_small_square.png")
                         this.load.image("titleDisplayStage2", "images/button_square_header_large_square.png")
@@ -53,7 +61,7 @@ function PhaserGameSetUp() {
                         this.load.image("brkableWallStage3", "images/extra_crate_explosive.png")
                         this.load.image("sideItemFixedStage3", "images/extra_stone_detail.png")
                         this.load.image("titleDisplayStage3", "images/extra_stone_top.png")
-                        
+
                         this.load.image("tileDisplay", "images/tileDisplay.png")
                         this.load.image('ground', 'images/background-whiteArtboard 1.png');
                         this.load.image('unbrkwall', 'images/newUnbrkWall.png');
@@ -108,9 +116,9 @@ function PhaserGameSetUp() {
                         this.levelEnemyPicked = null
                         this.levelIndic = 1
                         this.pointNeed = 7
-                        this.durationNeed = this.stage == 1? 10:20
+                        this.durationNeed = this.stage == 1 ? 10 : 20
                         this.availableEnemyList = [1]
-                        
+
                         //Wall
                         this.wallGroup = null;
                         this.wallDim = 45
@@ -232,6 +240,24 @@ function PhaserGameSetUp() {
                         this.Stars = new Stars(this)
                         this.Timer = new Timer(this)
                         this.NextLevel = new NextLevel(this)
+
+                        //Sounds
+                        this.explosionSoundKey = 'explosionMusic'; 
+                        this.sound.add(this.explosionSoundKey, { volume: 1 });
+
+                        this.collectItemSoundKey = 'collectItemMusic'; 
+                        this.sound.add(this.collectItemSoundKey, { volume: 1 });
+
+                        this.playerHitSoundKey = 'playerHitMusic'; 
+                        this.sound.add(this.playerHitSoundKey, { volume: 1 });
+
+                        this.correctAnswerSoundKey = 'correctAnswerMusic'; 
+                        this.sound.add(this.correctAnswerSoundKey, { volume: 1 });
+
+                        
+                        this.wrongAnswerSoundKey = 'wrongAnswerMusic'; 
+                        this.sound.add(this.wrongAnswerSoundKey, { volume: 1 });
+                        
 
                         //assign this to self
                         const self = this
@@ -399,6 +425,12 @@ function PhaserGameSetUp() {
 
 
 
+                        //Play background music
+                        this.bgMusic = this.sound.add('bgMusic', {
+                            loop: true,
+                            volume: 0.2
+                        });
+                        this.bgMusic.play();
 
                         //Method calls
                         this.createBackground()
@@ -478,6 +510,7 @@ function PhaserGameSetUp() {
 
             return () => {
                 if (gameInstance.current) {
+                    gameInstance.current.sound?.stopAll();
                     gameInstance.current.destroy(true);
                     gameInstance.current = null
                 }

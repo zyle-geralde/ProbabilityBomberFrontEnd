@@ -13,6 +13,7 @@ class Points {
         }).setOrigin(0.5);
     }
     addPoints() {
+        
         //Add points
         this.self.pointCount += 1;
         if (this.self.pointText) {
