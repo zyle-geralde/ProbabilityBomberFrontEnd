@@ -69,8 +69,8 @@ export const logoutUser = async ({ navigate }) => {
     await AuthService.fireBaseLogout();
     localStorage.removeItem("token");
     localStorage.removeItem("userData");
-    navigate(ViewStates.LOGIN);
-     window.location.reload();
+    navigate("/");
+
   } catch (error) {
     console.error("Logout failed:", error.message);
   }
