@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation,useNavigate } from 'react-router-dom';
 import Wall from './Classes/WallClass';
 import Player from './Classes/PlayerClass';
 import SideItems from './Classes/SideItems';
@@ -15,6 +15,13 @@ function PhaserGameSetUp() {
     const gameInstance = useRef(null);
     const location = useLocation()
     const stageNum = location.state?.stageNum ?? 1
+
+    const navigate = useNavigate();
+
+    //then in Phaser, call this function
+    const goToStage = (stage) => {
+        navigate(stage === 1 ? "/stage01Page" : stage === 2 ? "/stage02Page" : "/stage03Page");
+    };
 
     useEffect(() => {
         if (window.Phaser && !gameInstance.current) {
@@ -119,6 +126,7 @@ function PhaserGameSetUp() {
                         this.pointNeed = 7
                         this.durationNeed = this.stage == 1 ? 10 : 20
                         this.availableEnemyList = [1]
+                        this.goToStageFunc = goToStage
 
                         //Wall
                         this.wallGroup = null;
