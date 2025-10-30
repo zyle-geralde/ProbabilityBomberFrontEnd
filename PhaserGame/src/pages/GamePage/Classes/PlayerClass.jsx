@@ -146,6 +146,8 @@ class Player {
             }
             if (this.life == 0) {
                 this.self.Timer.stopTimer()
+                this.self.bgMusic.stop();
+                this.self.sound.play('gameOverSounds', { volume: 0.8 });
                 this.self.Wall.createFinishPage()
                 this.self.physics.pause();
             }

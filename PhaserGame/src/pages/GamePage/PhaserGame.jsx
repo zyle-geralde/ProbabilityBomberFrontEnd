@@ -40,6 +40,7 @@ function PhaserGameSetUp() {
                         this.load.audio('playerHitMusic', 'sounds/playerhit.mp3');
                         this.load.audio('correctAnswerMusic', 'sounds/correct.wav');
                         this.load.audio('wrongAnswerMusic', 'sounds/wrong.wav');
+                        this.load.audio('gameOverSounds', 'sounds/ThisGameIsOver.wav');
                         //images
                         this.load.image("background1", 'images/backgroundDispF.png');
                         this.load.image("candy1", "images/candy (1).png");
@@ -257,6 +258,9 @@ function PhaserGameSetUp() {
                         
                         this.wrongAnswerSoundKey = 'wrongAnswerMusic'; 
                         this.sound.add(this.wrongAnswerSoundKey, { volume: 1 });
+
+                        this.gameOverSoundKey = 'gameOverSounds'; 
+                        this.sound.add(this.gameOverSoundKey, { volume: 1 });
                         
 
                         //assign this to self
