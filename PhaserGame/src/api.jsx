@@ -37,7 +37,7 @@ export default api;*/
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: `http://127.0.0.1:5001/fir-crud-restapi-6a058/us-central1/app/api`,
+  baseURL: `https://us-central1-fir-crud-restapi-6a058.cloudfunctions.net/app/api`,
 });
 
 api.interceptors.request.use(
