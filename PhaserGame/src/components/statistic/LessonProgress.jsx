@@ -1,12 +1,24 @@
 import React, { useMemo } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChartSimple } from "@fortawesome/free-solid-svg-icons";
 
 export default function LessonProgress({ stages }) {
   // Fallback if no data
   if (!stages || !stages.length) {
     return (
-      <div className="text-gray-500 text-sm italic p-4">
-        No stage data available.
+      <div>
+        <div className="flex flex-col items-center justify-center h-fit text-center">
+          <FontAwesomeIcon
+            icon={faChartSimple}
+            size="4x"
+            className="w-16 h-16 text-gray-400 mb-2"
+          />
+          <div className="text-gray-500 text-sm italic">
+            No stage data available yet.
+          </div>
+        </div>
       </div>
+
     );
   }
 
@@ -65,7 +77,7 @@ export default function LessonProgress({ stages }) {
   };
 
   return (
-    <section className="bg-white p-4 rounded-2xl shadow-sm">
+    <section className="p-4">
       <h2 className="font-medium text-lg">Stage-by-stage Breakdown</h2>
       <div className="mt-4 space-y-3">
         {byStage.length ? (

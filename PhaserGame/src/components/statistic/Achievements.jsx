@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getAUserStageInformation } from "../../hooks/UseStageInfo";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrophy } from "@fortawesome/free-solid-svg-icons";
 
 export default function Achievements() {
   const [userStageInfo, setUserStageInfo] = useState(null);
@@ -185,15 +187,42 @@ export default function Achievements() {
   }
   
   if (!userStageInfo && !loading) {
-    return <div className="p-4 text-center text-red-600">No stage information found.</div>;
+    return (
+      <div>
+        <div className="flex flex-col items-center justify-center h-fit text-center">
+          <FontAwesomeIcon
+            icon={faTrophy}
+            size="4x"
+            className="w-16 h-16 text-gray-400 mb-2"
+          />
+          <div className="text-gray-600 text-m italic">
+            Check out the stages first!
+          </div>
+        </div>
+      </div>
+    );
   }
+
   
   // Filter for only ACHIEVED items
   const achievedBadges = achievements.filter(a => a.achieved);
 
   // If no achievements are completed (other than the hardcoded tutorial)
   if (achievedBadges.length === 0) {
-      return <div className="p-4 text-center text-gray-400">Keep playing to unlock your first achievement!</div>;
+          return (
+      <div>
+        <div className="flex flex-col items-center justify-center h-fit text-center">
+          <FontAwesomeIcon
+            icon={faTrophy}
+            size="4x"
+            className="w-16 h-16 text-yellow-400 mb-2"
+          />
+          <div className="text-gray-600 text-m italic">
+            Keep playing to unlock your first achievement!
+          </div>
+        </div>
+      </div>
+    );
   }
   
   //Render the ACHIEVED Badges

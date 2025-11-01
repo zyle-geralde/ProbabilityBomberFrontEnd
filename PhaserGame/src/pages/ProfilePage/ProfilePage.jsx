@@ -117,6 +117,7 @@ export default function ProfilePage({ userData, password, onChange, onUpdate, er
 
         {activeTab === "statistics" ? (
           <>
+            
             <CompletionBreakdown stages={globalStageInfo} />
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

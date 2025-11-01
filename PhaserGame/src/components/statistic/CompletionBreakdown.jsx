@@ -11,13 +11,24 @@ import {
   BarChart,
   Bar,
 } from "recharts";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChartSimple } from "@fortawesome/free-solid-svg-icons";
 
 export default function LessonAnalytics({ stages }) {
   // Fallback
   if (!stages || !stages.length) {
     return (
-      <div className="text-gray-500 text-sm italic p-4">
-        No analytics data available.
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-4">
+        <div className="flex flex-col items-center justify-center h-fit text-center">
+          <FontAwesomeIcon
+            icon={faChartSimple}
+            size="4x"
+            className="w-16 h-16 text-gray-400 mb-2"
+          />
+          <div className="text-gray-500 text-sm italic">
+            No stage data available yet.
+          </div>
+        </div>
       </div>
     );
   }
@@ -80,12 +91,12 @@ export default function LessonAnalytics({ stages }) {
   console.log(scoreTrend)
 
   return (
-    <section className="grid grid-cols-1 md:grid-cols-2 gap-1 mb-4">
+    <section className="grid grid-cols-1 md:grid-cols-2 gap-1 mb-4 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       {/* Score Trend */}
-      <div className="bg-white p-4 rounded-2xl shadow-sm">
+      <div className>
         <h3 className="font-medium mb-2">Score Trend (by date)</h3>
         <div className="h-64">
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="91%">
             <LineChart data={scoreTrend}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
@@ -103,7 +114,7 @@ export default function LessonAnalytics({ stages }) {
       </div>
 
       {/* Stars per Stage */}
-      <div className="bg-white p-4 rounded-2xl shadow-sm">
+      <div className>
         <h3 className="font-medium mb-2">Stars per Stage</h3>
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">

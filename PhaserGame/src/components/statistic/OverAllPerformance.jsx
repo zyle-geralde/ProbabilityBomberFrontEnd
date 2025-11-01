@@ -1,11 +1,22 @@
 import React, { useMemo } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChartSimple } from "@fortawesome/free-solid-svg-icons";
 
 export default function OverAllPerformance({ stages }) {
   // Fallback if no data yet
   if (!stages || !stages.length) {
     return (
-      <div className="text-gray-500 text-sm italic">
-        No performance data available yet.
+      <div>
+        <div className="flex flex-col items-center justify-center h-fit text-center">
+          <FontAwesomeIcon
+            icon={faChartSimple}
+            size="4x"
+            className="w-16 h-16 text-gray-400 mb-2"
+          />
+          <div className="text-gray-500 text-sm italic">
+            No stage data available yet.
+          </div>
+        </div>
       </div>
     );
   }
@@ -51,7 +62,10 @@ export default function OverAllPerformance({ stages }) {
         </div>
         <div className="p-4 rounded-lg bg-gray-50 text-center">
           <div className="text-sm text-gray-500">Average Duration</div>
-          <div className="text-3xl font-semibold text-blue-600">{stats.avgDuration} min</div>
+          <div className="flex items-end justify-center">
+            <span className="text-3xl font-semibold text-blue-600">{stats.avgDuration}</span>
+            <span className="text-sm text-gray-400 ml-1 ">min</span>
+          </div>
         </div>
       </div>
     </div>
