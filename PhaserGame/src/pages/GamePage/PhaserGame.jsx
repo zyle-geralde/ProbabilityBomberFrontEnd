@@ -123,7 +123,7 @@ function PhaserGameSetUp() {
                         this.isGameDone = false
                         this.levelEnemyPicked = null
                         this.levelIndic = 1
-                        this.pointNeed = 7
+                        this.pointNeed = 4
                         this.durationNeed = this.stage == 1 ? 10 : 20
                         this.availableEnemyList = [1]
                         this.goToStageFunc = goToStage
@@ -175,7 +175,7 @@ function PhaserGameSetUp() {
                         this.singleItemSpawnDuration = 4000//7 seconds
 
                         //Enemy
-                        this.enemyLimit = 3
+                        this.enemyLimit = this.stage == 1?3:this.stage == 2?4:5
                         this.enemyStartingLimit = 5
                         this.enemyGroup = this.physics.add.group()
                         this.advanceEnemyGroup = this.physics.add.group()
