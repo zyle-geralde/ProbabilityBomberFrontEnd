@@ -134,7 +134,7 @@ function PhaserGameSetUp() {
                         this.wallDimy = 45
                         this.wallDimx = 45
                         this.holdItemDim = 74
-                        this.cols = 13//odd
+                        this.cols = this.stage == 1?13:15//odd
                         this.rows = 8//even
                         this.insideWallCount = 6
                         this.totalWallWidth = this.cols * this.wallDim;
