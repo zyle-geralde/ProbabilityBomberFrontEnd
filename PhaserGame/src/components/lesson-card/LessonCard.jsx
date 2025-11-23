@@ -6,12 +6,12 @@ function LessonCard({ stageLink, stageNo, image, title, description, isLocked })
 
   const handleClick = (e) => {
 
-    if (isLocked) {
+    /*if (isLocked) {
       e.preventDefault();
 
       console.log(`Stage ${stageNo} is locked. Complete Stage ${stageNo - 1} first.`);
       return;
-    }
+    }*/
 
 
     if (stageLink) {
