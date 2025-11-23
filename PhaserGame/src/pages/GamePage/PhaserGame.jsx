@@ -29,7 +29,6 @@ function PhaserGameSetUp() {
                 type: window.Phaser.AUTO,
                 width: window.innerWidth,
                 height: window.innerHeight,
-                backgroundColor: '#87ffd7',
                 physics: {
                     default: 'arcade',
                     arcade: {
@@ -79,7 +78,7 @@ function PhaserGameSetUp() {
                         this.load.image('ground', 'images/background-whiteArtboard 1.png');
                         this.load.image('unbrkwall', 'images/newUnbrkWall.png');
                         this.load.image('brkwall', 'images/backgroundDisp3.png')
-                        this.load.image('bomb', 'images/bomb.png')
+                        this.load.image('bomb', stageNum != 3?'images/bomb.png': 'images/bombStage3.png')
                         this.load.image('bombItem', 'images/bombItem.png')
                         this.load.image('explodeItem', 'images/explodeItem.png')
                         this.load.image('shieldItem', 'images/shieldItem.png')
