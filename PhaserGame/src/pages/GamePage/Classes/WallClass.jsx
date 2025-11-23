@@ -34,20 +34,23 @@ class Wall {
 
     }
     createBackground() {
-        const tileSize = 120;
-        const cols = Math.ceil(this.self.sys.game.config.width / tileSize);
-        const rows = Math.ceil(this.self.sys.game.config.height / tileSize);
+        const { width, height } = this.self.sys.game.config;
 
-        for (let col = 0; col < cols; col++) {
-            for (let row = 0; row < rows; row++) {
-                // alternate between background1 and background2
-                const texture = this.self.stage == 1 ? "background2" : this.self.stage == 2? "backgroundStage2":"backgroundStage3";
-                const x = col * tileSize + tileSize / 2;
-                const y = row * tileSize + tileSize / 2;
+        const texture =
+            this.self.stage === 1
+                ? "stage1Back"
+                : this.self.stage === 2
+                    ? "stage2Back"
+                    : "stage3Back";
 
-                this.self.add.image(x, y, texture).setDisplaySize(tileSize, tileSize);
-            }
-        }
+        // Center of screen (Phaser uses origin at center by default if setOrigin(0.5))
+        const centerX = width / 2;
+        const centerY = height / 2;
+
+        this.self.add
+            .image(centerX, centerY, texture)
+            .setDisplaySize(width, height) // fills the screen
+            .setOrigin(0.5);               // center it
     }
     createFinishPage() {
         // Disable inputs
@@ -65,7 +68,7 @@ class Wall {
         overlay.setScrollFactor(0);
         overlay.setDepth(9999);
 
-        addUserStageInfo(this.self.stage,this.self.pointCount,(Math.floor(this.self.Timer.elapsedMs / 1000)),this.self.numberOfStars)
+        addUserStageInfo(this.self.stage, this.self.pointCount, (Math.floor(this.self.Timer.elapsedMs / 1000)), this.self.numberOfStars)
 
         const { width, height } = this.self.scale;
 
@@ -93,7 +96,7 @@ class Wall {
                 }).setOrigin(0.5).setDepth(10051).setAlpha(0);
 
                 //display image
-                const tileDisplay = this.self.add.image(width / 2, height / 2 + 35, this.self.stage == 1?"tileDisplay": this.self.stage == 2?"titleDisplayStage2":"titleDisplayStage3")
+                const tileDisplay = this.self.add.image(width / 2, height / 2 + 35, this.self.stage == 1 ? "tileDisplay" : this.self.stage == 2 ? "titleDisplayStage2" : "titleDisplayStage3")
                     .setOrigin(0.5).setDepth(10049).setDisplaySize(450, 410).setAlpha(0);
 
                 //star display
@@ -116,7 +119,7 @@ class Wall {
                 //Points display
                 const pointsText = this.self.add.text((width / 2), (height / 2) + star_size - 25, this.self.pointCount, {
                     fontSize: '48px',
-                    fill: this.self.stage == 1?'#ffffff':"#000000",
+                    fill: this.self.stage == 1 ? '#ffffff' : "#000000",
                     fontStyle: 'bold'
                 }).setOrigin(0.5).setDepth(10051).setAlpha(0);
 
@@ -124,14 +127,14 @@ class Wall {
                 const gameDuration = this.self.Timer.getElapsedTime();
                 const gameDurationText = this.self.add.text((width / 2), (height / 2) + star_size + 35, gameDuration, {
                     fontSize: '48px',
-                    fill: this.self.stage == 1?'#ffffff':"#000000",
+                    fill: this.self.stage == 1 ? '#ffffff' : "#000000",
                     fontStyle: 'bold'
                 }).setOrigin(0.5).setDepth(10051).setAlpha(0);
 
                 //Back button disp
-                const backGameButtonDips = this.self.add.image((width / 2), height / 2 + 155, this.self.stage == 1?"unbrkwall":"unbrkableWallStage2")
+                const backGameButtonDips = this.self.add.image((width / 2), height / 2 + 155, this.self.stage == 1 ? "unbrkwall" : "unbrkableWallStage2")
                     .setOrigin(0.5).setDepth(10050).setDisplaySize(150, star_size).setAlpha(0).setInteractive({ useHandCursor: true });
-                backGameButtonDips.on("pointerdown", () => {this.self.goToStageFunc(this.self.stage)});
+                backGameButtonDips.on("pointerdown", () => { this.self.goToStageFunc(this.self.stage) });
 
                 //Back button
                 const backButtonText = this.self.add.text((width / 2), (height / 2) + star_size + 105, "Back", {
@@ -139,7 +142,7 @@ class Wall {
                     fill: '#000000',
                     fontStyle: 'bold'
                 }).setOrigin(0.5).setDepth(10051).setAlpha(0).setInteractive({ useHandCursor: true });
-                backButtonText.on("pointerdown", () => {this.self.goToStageFunc(this.self.stage)});
+                backButtonText.on("pointerdown", () => { this.self.goToStageFunc(this.self.stage) });
 
 
                 // 🎬 Fade in all UI together
@@ -173,16 +176,16 @@ class Wall {
             { "col": 9, "row": 6 }, { "col": 8, "row": 6 }, { "col": 5, "row": 4 },
             { "col": 7, "row": 4 }]*/
         }
-        else if (this.self.stage == 2){
+        else if (this.self.stage == 2) {
             //To be placed
-            this.insideWallDimension = [ { "col": 5, "row": 2 }, { "col": 4, "row": 3 }, { "col": 4, "row": 5 },
-             { "col": 5, "row": 6 }, { "col": 10, "row": 3 }, { "col": 9, "row": 2 },
+            this.insideWallDimension = [{ "col": 5, "row": 2 }, { "col": 4, "row": 3 }, { "col": 4, "row": 5 },
+            { "col": 5, "row": 6 }, { "col": 10, "row": 3 }, { "col": 9, "row": 2 },
             { "col": 10, "row": 5 }, { "col": 9, "row": 6 }, { "col": 6, "row": 4 },
-            { "col": 8, "row": 4 },{ "col": 2, "row": 4 },{ "col": 12, "row": 4 }]
+            { "col": 8, "row": 4 }, { "col": 2, "row": 4 }, { "col": 12, "row": 4 }]
         }
         else if (this.self.stage == 3) {
-             this.insideWallDimension = [ { "col": 6, "row": 2 }, { "col": 3, "row": 3 }, { "col": 4, "row": 5 },
-             { "col": 6, "row": 6 }, { "col": 11, "row": 3 }, { "col": 8, "row": 2 },
+            this.insideWallDimension = [{ "col": 6, "row": 2 }, { "col": 3, "row": 3 }, { "col": 4, "row": 5 },
+            { "col": 6, "row": 6 }, { "col": 11, "row": 3 }, { "col": 8, "row": 2 },
             { "col": 10, "row": 5 }, { "col": 8, "row": 6 }, { "col": 6, "row": 4 },
             { "col": 8, "row": 4 }]
         }
@@ -195,7 +198,7 @@ class Wall {
         this.self.outsidewall = this.self.physics.add.group({ immovable: true });
 
         for (let nn = 0; nn < this.self.rows; nn++) {
-            let wall = this.self.outsidewall.create(xValueleft, adjustwallleft, this.self.stage == 1?'unbrkwall':this.self.stage == 2?"unbrkableWallStage2":"unbrkableWallStage3");
+            let wall = this.self.outsidewall.create(xValueleft, adjustwallleft, this.self.stage == 1 ? 'unbrkwall' : this.self.stage == 2 ? "unbrkableWallStage2" : "unbrkableWallStage3");
             this.self.unbrkWallList.push({ "x": xValueleft, "y": adjustwallleft })
             adjustwallleft += this.self.wallDim;
             //wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
@@ -210,7 +213,7 @@ class Wall {
         //this.self.brkWallGroup = self.physics.add.group({ immovable: true })
 
         for (let nn = 1; nn <= this.self.cols - 1; nn++) {
-            let wall = this.self.topwall.create(xValue, adjusttopwall, this.self.stage == 1?'unbrkwall':this.self.stage == 2?"unbrkableWallStage2":"unbrkableWallStage3");
+            let wall = this.self.topwall.create(xValue, adjusttopwall, this.self.stage == 1 ? 'unbrkwall' : this.self.stage == 2 ? "unbrkableWallStage2" : "unbrkableWallStage3");
             this.self.unbrkWallList.push({ "x": xValue, "y": adjusttopwall })
             xValue += this.self.wallDim;
             //wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
@@ -228,7 +231,7 @@ class Wall {
             let adjustinsidewall = this.adjustwall + this.self.wallDim
             for (let row = 1; row < this.self.rows; row++) {
                 if (this.insideWallDimension.some(w => w.col === col && w.row === row)) {
-                    let wall = this.self.insidewall.create(xValue, adjustinsidewall, this.self.stage == 1?'unbrkwall':this.self.stage == 2?"unbrkableWallStage2":"unbrkableWallStage3");
+                    let wall = this.self.insidewall.create(xValue, adjustinsidewall, this.self.stage == 1 ? 'unbrkwall' : this.self.stage == 2 ? "unbrkableWallStage2" : "unbrkableWallStage3");
                     this.self.unbrkWallList.push({ "x": xValue, "y": adjustinsidewall })
                     //wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
                     wall.setDisplaySize(this.self.wallDim, this.self.wallDim);
@@ -244,7 +247,7 @@ class Wall {
         this.self.rightwall = this.self.physics.add.group({ immovable: true });
 
         for (let nn = 0; nn < this.self.rows - 1; nn++) {
-            let wall = this.self.rightwall.create(xValueRight, adjustwallRight, this.self.stage == 1?'unbrkwall':this.self.stage == 2?"unbrkableWallStage2":"unbrkableWallStage3");
+            let wall = this.self.rightwall.create(xValueRight, adjustwallRight, this.self.stage == 1 ? 'unbrkwall' : this.self.stage == 2 ? "unbrkableWallStage2" : "unbrkableWallStage3");
             this.self.unbrkWallList.push({ "x": xValueRight, "y": adjustwallRight })
             adjustwallRight += this.self.wallDim;
             //wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
@@ -257,7 +260,7 @@ class Wall {
         let xValueBottom = this.centerX
 
         for (let nn = 1; nn <= this.self.cols; nn++) {
-            let wall = this.self.bottomwall.create(xValueBottom, adjustbottomwall, this.self.stage == 1?'unbrkwall':this.self.stage == 2?"unbrkableWallStage2":"unbrkableWallStage3");
+            let wall = this.self.bottomwall.create(xValueBottom, adjustbottomwall, this.self.stage == 1 ? 'unbrkwall' : this.self.stage == 2 ? "unbrkableWallStage2" : "unbrkableWallStage3");
             this.self.unbrkWallList.push({ "x": xValueBottom, "y": adjustbottomwall })
             xValueBottom += this.self.wallDim;
             //wall.body.setSize(this.self.wallDimx, this.self.wallDimy);
@@ -326,7 +329,7 @@ class Wall {
             const randomNum = availableNumbers.pop();
 
             // Create wall
-            let wall = this.self.breakablewall.create(xValue, yValue, this.self.stage == 1?"brkwall":this.self.stage == 2?"brkableWallStage2":"brkableWallStage3");
+            let wall = this.self.breakablewall.create(xValue, yValue, this.self.stage == 1 ? "brkwall" : this.self.stage == 2 ? "brkableWallStage2" : "brkableWallStage3");
             wall.setDisplaySize(this.self.wallDim, this.self.wallDim);
 
             // Store with unique number
@@ -441,7 +444,7 @@ class Wall {
             const randomNum = availableNumbers.pop();
 
             // Create wall
-            let wall = this.self.breakablewall.create(xValue, yValue,  this.self.stage == 1?"brkwall":this.self.stage == 2?"brkableWallStage2":"brkableWallStage3");
+            let wall = this.self.breakablewall.create(xValue, yValue, this.self.stage == 1 ? "brkwall" : this.self.stage == 2 ? "brkableWallStage2" : "brkableWallStage3");
             wall.setDisplaySize(this.self.wallDim, this.self.wallDim);
             wall.setAlpha(0); // start invisible
 
