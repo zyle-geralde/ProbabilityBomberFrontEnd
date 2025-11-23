@@ -147,6 +147,18 @@ export default function TutorialPage() {
                             <span className="text-black-500 text-sm italic " style={{ "display": "block" }}>
                                 Collect items by <strong>running through them</strong>.
                             </span>
+                            <span className="text-black-500 text-sm italic " style={{ "display": "block" }}>
+                                <strong>Heart Item</strong> increases life.
+                            </span>
+                            <span className="text-black-500 text-sm italic " style={{ "display": "block" }}>
+                                <strong>Boots Item</strong> increases speed.
+                            </span>
+                            <span className="text-black-500 text-sm italic " style={{ "display": "block" }}>
+                                <strong>Shield Item</strong> grants immunity.
+                            </span>
+                            <span className="text-black-500 text-sm italic " style={{ "display": "block" }}>
+                                <strong>ExplosionItem</strong> grants immunity.
+                            </span>
 
 
                             <div className="flex items-center justify-between mt-3 p-4 border rounded-lg">
