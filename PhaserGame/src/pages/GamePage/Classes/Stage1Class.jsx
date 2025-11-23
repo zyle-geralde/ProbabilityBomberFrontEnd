@@ -73,7 +73,7 @@ class StageOne {
         const y = 70;
 
         // Randomly pick 2 or 3 terms
-        const termCount = Phaser.Math.Between(2, 4);
+        const termCount = Phaser.Math.Between(2, 3);
 
         // Clone imageNames so we can remove used colors
         let availableImages = [...imageNames];
