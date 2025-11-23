@@ -51,6 +51,28 @@ class Wall {
             .image(centerX, centerY, texture)
             .setDisplaySize(width, height) // fills the screen
             .setOrigin(0.5);               // center it
+
+        const star_size = 50;
+        const { widthh, heightt } = this.self.scale;
+
+        //Back button disp
+        const backGameButtonDips = this.self.add.image(290, 50, this.self.stage == 1 ? "unbrkwall" : "unbrkableWallStage2")
+            .setOrigin(0.5).setDisplaySize(150, star_size).setInteractive({ useHandCursor: true });
+        backGameButtonDips.on("pointerdown", () => {
+            addUserStageInfo(this.self.stage, this.self.pointCount, (Math.floor(this.self.Timer.elapsedMs / 1000)), this.self.numberOfStars)
+            this.self.goToStageFunc(this.self.stage)
+        });
+
+        //Back button
+        const backButtonText = this.self.add.text(290, 50, "Finish", {
+            fontSize: '24px',
+            fill: '#000000',
+            fontStyle: 'bold'
+        }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+        backButtonText.on("pointerdown", () => {
+            addUserStageInfo(this.self.stage, this.self.pointCount, (Math.floor(this.self.Timer.elapsedMs / 1000)), this.self.numberOfStars)
+            this.self.goToStageFunc(this.self.stage)
+        });
     }
     createFinishPage() {
         // Disable inputs

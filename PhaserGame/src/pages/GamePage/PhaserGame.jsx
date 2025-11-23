@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useLocation,useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Wall from './Classes/WallClass';
 import Player from './Classes/PlayerClass';
 import SideItems from './Classes/SideItems';
@@ -78,7 +78,7 @@ function PhaserGameSetUp() {
                         this.load.image('ground', 'images/background-whiteArtboard 1.png');
                         this.load.image('unbrkwall', 'images/newUnbrkWall.png');
                         this.load.image('brkwall', 'images/backgroundDisp3.png')
-                        this.load.image('bomb', stageNum != 3?'images/bomb.png': 'images/bombStage3.png')
+                        this.load.image('bomb', stageNum != 3 ? 'images/bomb.png' : 'images/bombStage3.png')
                         this.load.image('bombItem', 'images/bombItem.png')
                         this.load.image('explodeItem', 'images/explodeItem.png')
                         this.load.image('shieldItem', 'images/shieldItem.png')
@@ -138,7 +138,7 @@ function PhaserGameSetUp() {
                         this.wallDimy = 45
                         this.wallDimx = 45
                         this.holdItemDim = 74
-                        this.cols = this.stage == 1?13:15//odd
+                        this.cols = this.stage == 1 ? 13 : 15//odd
                         this.rows = 8//even
                         this.insideWallCount = 6
                         this.totalWallWidth = this.cols * this.wallDim;
@@ -179,7 +179,7 @@ function PhaserGameSetUp() {
                         this.singleItemSpawnDuration = 4000//7 seconds
 
                         //Enemy
-                        this.enemyLimit = this.stage == 1?3:this.stage == 2?4:4
+                        this.enemyLimit = this.stage == 1 ? 3 : this.stage == 2 ? 4 : 4
                         this.enemyStartingLimit = 5
                         this.enemyGroup = this.physics.add.group()
                         this.advanceEnemyGroup = this.physics.add.group()
@@ -255,25 +255,25 @@ function PhaserGameSetUp() {
                         this.NextLevel = new NextLevel(this)
 
                         //Sounds
-                        this.explosionSoundKey = 'explosionMusic'; 
+                        this.explosionSoundKey = 'explosionMusic';
                         this.sound.add(this.explosionSoundKey, { volume: 1 });
 
-                        this.collectItemSoundKey = 'collectItemMusic'; 
+                        this.collectItemSoundKey = 'collectItemMusic';
                         this.sound.add(this.collectItemSoundKey, { volume: 1 });
 
-                        this.playerHitSoundKey = 'playerHitMusic'; 
+                        this.playerHitSoundKey = 'playerHitMusic';
                         this.sound.add(this.playerHitSoundKey, { volume: 1 });
 
-                        this.correctAnswerSoundKey = 'correctAnswerMusic'; 
+                        this.correctAnswerSoundKey = 'correctAnswerMusic';
                         this.sound.add(this.correctAnswerSoundKey, { volume: 1 });
 
-                        
-                        this.wrongAnswerSoundKey = 'wrongAnswerMusic'; 
+
+                        this.wrongAnswerSoundKey = 'wrongAnswerMusic';
                         this.sound.add(this.wrongAnswerSoundKey, { volume: 1 });
 
-                        this.gameOverSoundKey = 'gameOverSounds'; 
+                        this.gameOverSoundKey = 'gameOverSounds';
                         this.sound.add(this.gameOverSoundKey, { volume: 1 });
-                        
+
 
                         //assign this to self
                         const self = this
@@ -281,6 +281,22 @@ function PhaserGameSetUp() {
                         //game setUp
                         this.createBackground = function () {
                             self.Wall.createBackground()
+                            const star_size = 50;
+                            const { width, height } = this.scale;
+
+                            const backGameButtonDips = this.add.image((width / 2), height / 2 + 155, this.stage == 1 ? "unbrkwall" : "unbrkwall")
+                                .setOrigin(0.5).setDepth(10050).setDisplaySize(150, star_size).setAlpha(0).setInteractive({ useHandCursor: true });
+                            backGameButtonDips.on("pointerdown", () => { this.goToStageFunc(this.stage) });
+
+                            //Back button
+                            const backButtonText = this.add.text((width / 2), (height / 2) + star_size + 105, "Back", {
+                                fontSize: '24px',
+                                fill: '#000000',
+                                fontStyle: 'bold'
+                            }).setOrigin(0.5).setDepth(10051).setAlpha(0).setInteractive({ useHandCursor: true });
+                            backButtonText.on("pointerdown", () => { this.goToStageFunc(this.stage) });
+
+
                         };
                         this.createFinishPage = function () {
                             //Disable inputs
