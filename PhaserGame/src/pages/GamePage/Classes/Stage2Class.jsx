@@ -9,10 +9,9 @@ class Stage2 {
         this.buildDeck()
         //Adding random questions and answer
         const events = [
-            "Red Card", "Black Card", "Ace Card", "2 Card", "3 Card", "4 Card", "5 Card", "6 Card",
+            "Ace Card", "2 Card", "3 Card", "4 Card", "5 Card", "6 Card",
             "7 Card", "8 Card", "9 Card", "10 Card", "Jack Card", "Queen Card", "King Card",
-            "Club Card", "Diamond Card", "Spade Card", "Heart Card",
-            "Face Card", "Number Card", "Number Card greater than 7", "Number Card less than 5"
+            "Club Card", "Diamond Card", "Spade Card", "Heart Card", "Face Card"
         ];
 
         const q = this.generateQuestion(events, this.deck);
