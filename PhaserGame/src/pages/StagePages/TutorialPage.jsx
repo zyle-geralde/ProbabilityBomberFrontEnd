@@ -157,7 +157,7 @@ export default function TutorialPage() {
                                 <strong>Shield Item</strong> grants immunity.
                             </span>
                             <span className="text-black-500 text-sm italic " style={{ "display": "block" }}>
-                                <strong>ExplosionItem</strong> grants immunity.
+                                <strong>Explosion Item</strong> doubles the range of explosion.
                             </span>
 
 
