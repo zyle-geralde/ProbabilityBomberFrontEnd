@@ -281,20 +281,6 @@ function PhaserGameSetUp() {
                         //game setUp
                         this.createBackground = function () {
                             self.Wall.createBackground()
-                            const star_size = 50;
-                            const { width, height } = this.scale;
-
-                            const backGameButtonDips = this.add.image((width / 2), height / 2 + 155, this.stage == 1 ? "unbrkwall" : "unbrkwall")
-                                .setOrigin(0.5).setDepth(10050).setDisplaySize(150, star_size).setAlpha(0).setInteractive({ useHandCursor: true });
-                            backGameButtonDips.on("pointerdown", () => { this.goToStageFunc(this.stage) });
-
-                            //Back button
-                            const backButtonText = this.add.text((width / 2), (height / 2) + star_size + 105, "Back", {
-                                fontSize: '24px',
-                                fill: '#000000',
-                                fontStyle: 'bold'
-                            }).setOrigin(0.5).setDepth(10051).setAlpha(0).setInteractive({ useHandCursor: true });
-                            backButtonText.on("pointerdown", () => { this.goToStageFunc(this.stage) });
 
 
                         };

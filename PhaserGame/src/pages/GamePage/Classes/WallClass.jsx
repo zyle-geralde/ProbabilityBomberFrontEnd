@@ -59,6 +59,7 @@ class Wall {
         const backGameButtonDips = this.self.add.image(290, 50, this.self.stage == 1 ? "unbrkwall" : "unbrkableWallStage2")
             .setOrigin(0.5).setDisplaySize(150, star_size).setInteractive({ useHandCursor: true });
         backGameButtonDips.on("pointerdown", () => {
+            this.self.Timer.stopTimer(); 
             addUserStageInfo(this.self.stage, this.self.pointCount, (Math.floor(this.self.Timer.elapsedMs / 1000)), this.self.numberOfStars)
             this.self.goToStageFunc(this.self.stage)
         });
@@ -70,6 +71,7 @@ class Wall {
             fontStyle: 'bold'
         }).setOrigin(0.5).setInteractive({ useHandCursor: true });
         backButtonText.on("pointerdown", () => {
+            this.self.Timer.stopTimer(); 
             addUserStageInfo(this.self.stage, this.self.pointCount, (Math.floor(this.self.Timer.elapsedMs / 1000)), this.self.numberOfStars)
             this.self.goToStageFunc(this.self.stage)
         });
