@@ -18,7 +18,7 @@ function LessonPage() {
     }
 
     return dataArray.some(
-      (entry) => entry.stageNumber === stageNum && entry.numberOfStars >= 2
+      (entry) => entry.stageNumber === stageNum && entry.numberOfStars >= 1
     );
   };
 

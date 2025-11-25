@@ -91,7 +91,8 @@ export default function Stage02Page() {
                         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                             <h2 className="text-xl font-bold text-gray-900 mb-2">Challenge</h2>
 
-                            <strong style={{ fontSize: "18px" }}>You need 6 points or more to pass this stage</strong>
+                            <strong style={{ fontSize: "15px" }}>3 points = 1 star<br></br> 6 points = 2 stars<br></br>9 points = 3 stars<br></br></strong>
+                            <strong style={{ fontSize: "18px" }}>You need 3 points or more to pass this stage</strong>
                             
                             <span className="text-gray-400 text-sm italic " style={{display:"block"}}>
                                 Note: You can retry as much as you want

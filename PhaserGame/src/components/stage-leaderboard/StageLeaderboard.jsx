@@ -51,7 +51,7 @@ function StageLeaderboard({ stageNumber,setUserScore,setUserRank }) {
 
 
     if (loading) return <LeaderboardLoading />;
-    if (error) return <LeaderboardError />;
+    if (error) return <LeaderboardPlaceholder />;
     if (stageInfo.length <= 0) return <LeaderboardPlaceholder />;
 
     setUserScoreFunc()
