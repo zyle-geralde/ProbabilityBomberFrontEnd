@@ -20,13 +20,67 @@ class Player {
         this.explosionBuffTimer = null
     }
     createPlayer() {
-        this.self.player = this.self.physics.add.sprite(this.x, this.y, 'character');
+        const totalWallWidth = this.self.cols * this.self.wallDim;
+        const totalWallHeight = this.self.rows * this.self.wallDim;
+        
+        // Calculate wall start position (centered horizontally, fixed from top)
+        const wallStartX = (this.self.sys.game.config.width - totalWallWidth) / 2;
+        const wallStartY = this.self.bottomBannerHeight + this.self.bottomBannerY - 1;
+        
+        const corners = [
+            { 
+                x: wallStartX + this.self.wallDim, 
+                y: wallStartY + this.self.wallDim 
+            },
+            // Top-right corner
+            { 
+                x: wallStartX + totalWallWidth - (2 * this.self.wallDim), 
+                y: wallStartY + this.self.wallDim 
+            },
+            // Bottom-left corner
+            { 
+                x: wallStartX + this.self.wallDim, 
+                y: wallStartY + totalWallHeight - (2 * this.self.wallDim) 
+            },
+            // Bottom-right corner
+            { 
+                x: wallStartX + totalWallWidth - (2 * this.self.wallDim), 
+                y: wallStartY + totalWallHeight - (2 * this.self.wallDim) 
+            }
+        ];
+        
+        // Pick a random corner
+        const randomCorner = corners[Math.floor(Math.random() * corners.length)];
+        
+        // Verify the position is valid (inside grid)
+        const gridCol = Math.floor((randomCorner.x - wallStartX) / this.self.wallDim);
+        const gridRow = Math.floor((randomCorner.y - wallStartY) / this.self.wallDim);
+        
+        // Ensure it's within bounds (1 cell from edges)
+        if (gridCol < 1 || gridCol >= this.self.cols - 1 || 
+            gridRow < 1 || gridRow >= this.self.rows - 1) {
+            console.warn("Invalid spawn position, using default");
+            // Fallback to a safe position
+            randomCorner.x = wallStartX + this.self.wallDim;
+            randomCorner.y = wallStartY + this.self.wallDim;
+        }
+        
+        // Create player at the random corner position
+        this.self.player = this.self.physics.add.sprite(randomCorner.x, randomCorner.y, 'character');
         this.self.player.body.setSize(30, 50);
         this.self.player.setDisplaySize(40, 40);
         this.self.player.setCollideWorldBounds(true);
 
-        //Make sure that player always come on top
+        // Make sure that player always come on top
         this.self.player.setDepth(1000);
+        
+        // Store the wall start positions for other calculations
+        this.self.wallStartX = wallStartX;
+        this.self.wallStartY = wallStartY;
+        
+        // console.log(`Player spawned at grid position: col=${gridCol}, row=${gridRow}`);
+        // console.log(`Player pixel position: x=${randomCorner.x}, y=${randomCorner.y}`);
+
     }
     activateSpeed(duration = 5000) {
 
