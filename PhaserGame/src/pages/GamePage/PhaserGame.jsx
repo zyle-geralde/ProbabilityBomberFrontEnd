@@ -29,6 +29,11 @@ function PhaserGameSetUp() {
                 type: window.Phaser.AUTO,
                 width: window.innerWidth,
                 height: window.innerHeight,
+                scale: {
+                    mode: window.Phaser.Scale.FIT, // fits the game to the parent div
+                    autoCenter: window.Phaser.Scale.CENTER_BOTH, // centers it
+                    parent: gameRef.current,
+                },
                 physics: {
                     default: 'arcade',
                     arcade: {
