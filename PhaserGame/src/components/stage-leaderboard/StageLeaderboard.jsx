@@ -57,7 +57,7 @@ function StageLeaderboard({ stageNumber,setUserScore,setUserRank }) {
     setUserScoreFunc()
 
     return (
-        <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-6 max-w-sm mx-auto">
+        <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-6 max-w-sm mx-auto h-fit">
             <div className="flex flex-col mb-2">
                 <h2 className="text-center !text-4xl !font-bold text-gray-900">
                     Leaderboard

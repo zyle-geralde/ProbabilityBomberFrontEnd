@@ -49,9 +49,9 @@ function PhaserGameSetUp() {
                         this.load.audio('gameOverSounds', 'sounds/ThisGameIsOver.wav');
 
                         //Stage Background
-                        this.load.image("stage1Back", 'images/background-candy.png');
+                        this.load.image("stage1Back", 'images/background-colore-balls.png');
                         this.load.image("stage2Back", 'images/background-cards.png');
-                        this.load.image("stage3Back", 'images/background-colore-balls.png');
+                        this.load.image("stage3Back", 'images/background-candy.png');
                         //images
                         this.load.image("background1", 'images/backgroundDispF.png');
                         this.load.image("candy1", "images/candy (1).png");
