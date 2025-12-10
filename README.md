@@ -4,19 +4,6 @@ A full-stack web application built with **React**, **Vite**, **Firebase**, and *
 
 ---
 
-## 📖 Table of Contents
-
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-  - [Frontend](#frontend)
-  - [Backend](#backend)
-- [Deployment Instructions](#-deployment-instructions)
-  - [Frontend Render](#frontend-render)
-  - [Backend Firebase Cloud Functions](#backend-firebase-cloud-functions)
-- [Dummy Credentials](#-dummy-credentials)
-
----
-
 ## 🚀 Features
 
 - 🔐 **User Authentication** (Firebase + JWT)
