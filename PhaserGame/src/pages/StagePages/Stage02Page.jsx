@@ -27,7 +27,7 @@ export default function Stage02Page() {
 
                 {/* Background image */}
                 <img
-                    src="/images/colored_balls.jpg"
+                    src="/images/deck_of_cards.jpg"
                     alt="Stage Background"
                     className="absolute inset-0 w-full h-full object-cover opacity-30"
                     onError={(e) => (e.currentTarget.style.display = "none")}
