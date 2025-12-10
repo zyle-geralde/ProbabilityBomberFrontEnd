@@ -74,7 +74,7 @@ A full-stack web application built with **React**, **Vite**, **Firebase**, and *
 
 ## 📦 Deployment Instructions
 
-# 🌐 Frontend (Render)
+# 🌐 Frontend Render
 
 ### **Prerequisites**
 - Render.com account  
@@ -139,7 +139,7 @@ Click **Deploy** → wait for the build → copy the live URL.
 
 ---
 
-# 🔥 Backend (Firebase Cloud Functions)
+# 🔥 Backend Firebase Cloud Functions
 
 ### **Prerequisites**
 - Node.js v22  
