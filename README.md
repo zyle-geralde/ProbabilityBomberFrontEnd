@@ -11,8 +11,8 @@ A full-stack web application built with **React**, **Vite**, **Firebase**, and *
   - [Frontend](#frontend)
   - [Backend](#backend)
 - [Deployment Instructions](#-deployment-instructions)
-  - [Frontend (Render)](#frontend-render)
-  - [Backend (Firebase-cloud-functions)](#backend-firebase-cloud-functions)
+  - [Frontend Render](#frontend-render)
+  - [Backend Firebase-cloud-functions](#backend-firebase-cloud-functions)
 - [Dummy Credentials](#-dummy-credentials)
 
 ---
